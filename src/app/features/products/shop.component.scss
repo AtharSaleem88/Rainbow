@@ -3,12 +3,12 @@
 }
 
 .rh-shop-intro {
-  padding: 8px 0;
+  padding: 6px 0;
   background: linear-gradient(120deg, #f4f7ff 0%, #edf7fc 100%);
   border-bottom: 1px solid rgba(45, 44, 146, 0.08);
 
   @media (max-width: 767px) {
-    padding: 6px 0;
+    padding: 4px 0;
   }
 }
 
@@ -62,11 +62,11 @@
 }
 
 .rh-shop-section {
-  padding: 14px 0 36px;
+  padding: 10px 0 32px;
   background: #f8f9fc;
 
   @media (max-width: 767px) {
-    padding: 10px 0 24px;
+    padding: 6px 0 20px;
   }
 }
 
@@ -83,16 +83,16 @@
 /* 1. LEFT VERTICAL SUBCATEGORIES SIDEBAR (Image on top, name below) */
 .rh-shop-subcat-sidebar {
   position: sticky;
-  top: 110px;
+  top: 90px;
   width: 90px;
   flex: 0 0 90px;
-  max-height: calc(100vh - 130px);
+  max-height: calc(100vh - 110px);
   height: fit-content;
   overflow-y: auto;
   background: #ffffff;
   border: 1px solid #eef1f6;
   border-radius: 16px;
-  padding: 10px 4px;
+  padding: 6px 4px;
   box-shadow: 0 4px 16px rgba(45, 44, 146, 0.04);
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -102,9 +102,9 @@
   }
 
   @media (max-width: 575px) {
-    width: 74px;
-    flex: 0 0 74px;
-    padding: 6px 2px;
+    width: 72px;
+    flex: 0 0 72px;
+    padding: 4px 2px;
     border-radius: 14px;
   }
 }
@@ -123,8 +123,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 8px 3px;
-  margin-bottom: 6px;
+  padding: 4px 2px;
+  margin-bottom: 4px;
   background: transparent;
   border: 0;
   border-radius: 12px;
@@ -136,34 +136,34 @@
 
   .rh-subcat-tile {
     display: grid;
-    width: 58px;
-    height: 58px;
+    width: 56px;
+    height: 56px;
     place-items: center;
     border-radius: 14px;
     background: #f4f6fa;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     transition: all 180ms ease;
     overflow: hidden;
     pointer-events: none;
 
     @media (max-width: 575px) {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      margin-bottom: 4px;
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      margin-bottom: 3px;
     }
 
     img {
       width: 100%;
       height: 100%;
-      padding: 4px;
+      padding: 3px;
       object-fit: contain;
       pointer-events: none;
     }
 
     i {
       color: var(--rh-primary);
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       pointer-events: none;
     }
   }
@@ -181,17 +181,17 @@
 
     @media (max-width: 575px) {
       font-size: 0.65rem;
-      max-width: 68px;
+      max-width: 66px;
     }
   }
 
   &::before {
     content: '';
     position: absolute;
-    left: -4px;
-    top: 8px;
-    bottom: 8px;
-    width: 4px;
+    left: -2px;
+    top: 4px;
+    bottom: 4px;
+    width: 3.5px;
     border-radius: 0 4px 4px 0;
     background: var(--rh-green);
     opacity: 0;
