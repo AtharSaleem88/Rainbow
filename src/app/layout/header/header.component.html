@@ -101,9 +101,9 @@
 	</div>
 
 	<!-- Mobile / Tablet 3-Row Header Layout (Small & Medium Screens) -->
-	<div class="rh-nav-mobile-container d-flex d-lg-none flex-column gap-2 p-2">
+	<div class="rh-nav-mobile-container d-flex d-lg-none flex-column gap-3 p-3">
 		<!-- Mobile Row 1: Delivering to Pill + Account Icon & Cart -->
-		<div class="rh-mobile-row-1 d-flex align-items-center justify-content-between gap-2">
+		<div class="rh-mobile-row-1 d-flex align-items-center justify-content-between gap-2 mb-1">
 			<!-- Delivering to Pill -->
 			<button type="button" class="rh-hdr-pill rh-mobile-location-pill flex-grow-1 border-0" (click)="openLocationModal()" aria-haspopup="dialog" [attr.aria-expanded]="isLocationModalOpen()">
 				<span class="rh-hdr-pill-icon"><i class="fal fa-map-marker-alt"></i></span>
@@ -130,7 +130,7 @@
 		</div>
 
 		<!-- Mobile Row 2: Search Bar with Animated Placeholder -->
-		<div class="rh-mobile-row-2 w-100">
+		<div class="rh-mobile-row-2 w-100 mb-1">
 			<form action="#" (submit)="onSearch(); $event.preventDefault();" class="w-100">
 				<div class="rh-search-wrap w-100 position-relative">
 					<i class="fal fa-search"></i>

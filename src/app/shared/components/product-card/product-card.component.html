@@ -15,16 +15,6 @@
       <span *ngFor="let tag of displayTags" class="rh-shared-feature-tag"><i class="fal fa-check-circle"></i> {{ tag }}</span>
     </div>
     <div class="rh-shared-price-row"><strong>Rs. {{ displayPrice | number:'1.0-0' }}</strong><del *ngIf="displayOldPrice">Rs. {{ displayOldPrice | number:'1.0-0' }}</del></div>
-    
-    <div class="rh-shared-variant-slot">
-      <div class="rh-shared-variant-picker" *ngIf="product.variants?.length">
-        <div class="rh-shared-variant-options">
-          <button type="button" *ngFor="let variant of product.variants" [class.active]="selectedVariantId() === variant.id" [attr.aria-pressed]="selectedVariantId() === variant.id" (click)="selectVariant($event, variant.id)">
-            <span>{{ variant.label }}</span><strong>Rs. {{ variant.price | number:'1.0-0' }}</strong>
-          </button>
-        </div>
-      </div>
-    </div>
 
     <button *ngIf="cartQuantity === 0; else cartQuantityControl" type="button" class="rh-shared-add-button" (click)="addToCart($event)"><i class="fal fa-shopping-bag" aria-hidden="true"></i> ADD</button>
     <ng-template #cartQuantityControl>

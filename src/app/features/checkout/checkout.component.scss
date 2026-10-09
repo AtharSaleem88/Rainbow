@@ -10,10 +10,12 @@
   min-height: calc(100vh - 80px);
   padding: 24px 0 64px;
   background: #f4f6fc;
+  overflow-x: hidden;
 }
 
 .rainbow-checkout-container {
   max-width: 1120px;
+  width: 100%;
 }
 
 .rainbow-checkout-header {
@@ -899,19 +901,50 @@
 
 @media (max-width: 767px) {
   .rainbow-checkout-page {
-    padding: 14px 0 40px;
+    padding: 12px 0 40px;
+  }
+
+  .rainbow-checkout-header {
+    margin-bottom: 16px;
   }
 
   .rainbow-checkout-stepper {
-    padding: 12px 14px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  .rainbow-step {
+    gap: 6px;
+  }
+
+  .rainbow-step-num {
+    width: 30px;
+    height: 30px;
+    font-size: 0.82rem;
   }
 
   .rainbow-step-text small {
     display: none;
   }
 
+  .rainbow-step-text strong {
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
   .rainbow-step-line {
-    margin: 0 10px;
+    margin: 0 6px;
+    min-width: 6px;
+  }
+
+  .rainbow-checkout-card {
+    padding: 16px 14px;
+    border-radius: 16px;
+  }
+
+  .rainbow-saved-addresses-grid {
+    grid-template-columns: 1fr;
   }
 
   .rainbow-checkout-layout {
@@ -920,6 +953,16 @@
 
   .rainbow-form-row {
     grid-template-columns: 1fr;
+  }
+
+  .rainbow-form-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+
+    .rainbow-checkout-primary,
+    .rainbow-btn-secondary {
+      width: 100%;
+    }
   }
 
   .rainbow-success-details {
@@ -935,6 +978,27 @@
     .rainbow-btn-secondary {
       width: 100%;
     }
+  }
+}
+
+@media (max-width: 575px) {
+  .rainbow-checkout-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .rainbow-payment-card {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .rainbow-card-header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+
+  .rainbow-card-header h2 {
+    font-size: 1.1rem;
   }
 }
 

@@ -931,6 +931,14 @@ app-root {
 }
 
 /* Responsive navigation adjustments */
+.rh-mobile-row-1 {
+  margin-bottom: 8px !important;
+}
+
+.rh-mobile-row-2 {
+  margin-bottom: 8px !important;
+}
+
 .rh-mobile-location-pill {
   background: #f4f5f9;
   border-radius: 20px;
@@ -974,11 +982,12 @@ app-root {
     box-shadow: 0 4px 16px rgba(45, 44, 146, 0.08);
     border: none;
     border-bottom: 1px solid rgba(45, 44, 146, 0.08);
+    margin-bottom: 4px !important;
   }
 
   .main-content,
   .main-content-wrapper {
-    padding-top: 0 !important;
+    padding-top: 4px !important;
   }
 
   .rh-nav-inner { padding: 0 16px; height: 58px; }

@@ -7,15 +7,6 @@
       <i class="fal fa-angle-right" aria-hidden="true"></i>
       <strong>{{ categoryName }}</strong>
     </div>
-    <div class="rh-shop-page-heading">
-      <div>
-        <h1>{{ categoryName }}</h1>
-        <p>Quality groceries and everyday favourites for your home.</p>
-      </div>
-      <a routerLink="/shop" class="rh-shop-back" *ngIf="selectedCategory()" (click)="resetFilters()">
-        <i class="fal fa-arrow-left" aria-hidden="true"></i> All products
-      </a>
-    </div>
   </div>
 </section>
 
@@ -96,7 +87,6 @@
 
           <!-- Sub Sub Categories Horizontal Filter Chips -->
           <div class="rh-subsub-row">
-            <span class="rh-subsub-title">Sub Sub Categories:</span>
             <div class="rh-subsub-chips-container">
               <button type="button" 
                       class="rh-subsub-chip" 
@@ -116,7 +106,7 @@
         </div>
 
         <!-- Products Count & Title -->
-        <div class="d-flex align-items-center justify-content-between mb-3 px-1">
+        <div class="d-flex align-items-center justify-content-between mb-2 px-1">
           <h2 class="h5 mb-0 font-jost fw-bold text-primary">{{ subCategoryDisplayName }}</h2>
           <small class="text-muted">Showing {{ filteredProducts().length }} products</small>
         </div>
