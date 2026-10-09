@@ -101,9 +101,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   readonly campaignBanners = [
+    { title: 'Designer Perfumes — Best Price Ever', image: 'assets/images/banner/perfumes-hero-banner.jpg', category: 'personal-care' },
+    { title: 'Luxury Skincare — Get 15% Off', image: 'assets/images/banner/skincare-hero-banner.jpg', category: 'personal-care' },
     { title: 'Back to School — Back to delicious', image: 'assets/images/campaign-back-to-school-v2.png', category: 'grocery' },
-    { title: 'Shan Foods — Bring home the taste of Pakistan', image: 'assets/images/campaign-shan-grocery-v2.png', category: 'grocery' },
-    { title: 'L’Oréal Paris — Instant Glass Skin', image: 'assets/images/campaign-loreal-beauty-v2.png', category: 'personal-care' }
+    { title: 'Shan Foods — Bring home the taste of Pakistan', image: 'assets/images/campaign-shan-grocery-v2.png', category: 'grocery' }
   ];
   activeCampaignIndex = signal(0);
   get visibleCampaignBanners() {
@@ -116,6 +117,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentHeroIndex = signal(0);
   readonly heroSlides = [
     {
+      theme: 'rh-hero-perfumes',
+      bannerImage: 'assets/images/banner/perfumes-hero-banner.jpg',
+      imageAlt: 'Designer Perfumes at Cost Price — Roberto Cavalli, Gucci, Hugo Boss, Chanel',
+      title: 'Luxury Perfumes Collection',
+      link: '/shop',
+      queryParams: { category: 'personal-care', q: 'perfume' }
+    },
+    {
+      theme: 'rh-hero-skincare',
+      bannerImage: 'assets/images/banner/skincare-hero-banner.jpg',
+      imageAlt: 'Premium Botanical Cosmetics & Skincare — Get 15% Off',
+      title: 'Cosmetics & Skincare Rituals',
+      link: '/shop',
+      queryParams: { category: 'personal-care' }
+    },
+    {
       theme: 'rh-hero-primary',
       eyebrow: 'FRESH FROM FARM',
       title: 'Stock Up On Daily Essentials',
@@ -123,7 +140,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       imageAlt: 'A basket filled with fresh vegetables',
       artLabel: 'Fresh picks, every day',
       ctaText: 'Shop fresh',
-      link: '/shop'
+      link: '/shop',
+      queryParams: { category: 'ultra-fresh' }
     },
     {
       theme: 'rh-hero-green',
@@ -133,7 +151,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       imageAlt: 'A selection of pantry and grocery products',
       artLabel: 'Everyday favourites',
       ctaText: 'Shop groceries',
-      link: '/shop'
+      link: '/shop',
+      queryParams: { category: 'grocery' }
     },
     {
       theme: 'rh-hero-secondary',
@@ -143,7 +162,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       imageAlt: 'A selection of personal care and home essentials',
       artLabel: 'Trusted brands',
       ctaText: 'Explore offers',
-      link: '/shop'
+      link: '/shop',
+      queryParams: { category: 'personal-care' }
     }
   ];
 
