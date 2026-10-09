@@ -1,0 +1,40 @@
+<div *ngIf="product" class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.6);" (click)="onClose()">
+  <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" (click)="onClose()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="row align-items-center g-4">
+          <div class="col-md-6 text-center">
+            <img [src]="product.image" [alt]="product.title" class="img-fluid rounded max-h-300" style="max-height: 280px; object-fit: contain;">
+          </div>
+          <div class="col-md-6">
+            <span class="badge bg-primary mb-2">{{ product.category }}</span>
+            <h4 class="fw-bold text-dark mb-2">{{ product.title }}</h4>
+            
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="fs-3 fw-bold text-primary">Rs. {{ product.price }}</span>
+              <span *ngIf="product.oldPrice" class="text-muted text-decoration-line-through">Rs. {{ product.oldPrice }}</span>
+            </div>
+
+            <p class="text-secondary small mb-4">{{ product.description || product.subtitle }}</p>
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <span class="fw-bold small">Quantity:</span>
+              <div class="input-group input-group-sm w-auto">
+                <button class="btn btn-outline-secondary" (click)="decQty()">-</button>
+                <input type="text" class="form-control text-center fw-bold readonly" [value]="quantity" style="width: 45px;" readonly>
+                <button class="btn btn-outline-secondary" (click)="incQty()">+</button>
+              </div>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2 rounded-pill fw-bold" (click)="addToCart()">
+              <i class="fas fa-shopping-bag me-2"></i> Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

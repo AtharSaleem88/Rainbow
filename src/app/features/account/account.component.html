@@ -1,0 +1,556 @@
+<!-- My Account Page -->
+<section class="rainbow-account-page">
+  <div class="container rainbow-account-container">
+    <header class="rainbow-account-header">
+      <a routerLink="/" class="rainbow-account-back" aria-label="Back to Home"><i class="fal fa-arrow-left"></i></a>
+      <h1>My Account</h1>
+      <button type="button" class="rainbow-account-logout-btn" (click)="onLogout()">
+        <i class="fal fa-sign-out-alt"></i> <span>Logout</span>
+      </button>
+    </header>
+
+    <div class="rainbow-account-layout">
+      <!-- Account Sidebar Nav -->
+      <aside class="rainbow-account-sidebar">
+        <!-- User Badge -->
+        <div class="rainbow-user-card">
+          <div class="rainbow-user-avatar">
+            <i class="fal fa-user"></i>
+          </div>
+          <div class="rainbow-user-info">
+            <strong>{{ authService.userProfile().name }}</strong>
+            <p>{{ authService.userProfile().email }}</p>
+            <span class="rainbow-user-badge"><i class="fal fa-shield-check"></i> Member since {{ authService.userProfile().memberSince }}</span>
+          </div>
+        </div>
+
+        <!-- Wallet Quick Widget -->
+        <div class="rainbow-wallet-quick-widget" (click)="setActiveTab('wallet')">
+          <div>
+            <span>Rainbow Wallet</span>
+            <strong>Rs. {{ authService.walletBalance() | number:'1.0-0' }}</strong>
+          </div>
+          <span class="rainbow-wallet-icon"><i class="fal fa-wallet"></i></span>
+        </div>
+
+        <!-- Menu Tabs -->
+        <nav class="rainbow-account-nav">
+          <button type="button" [class.is-active]="activeTab() === 'orders'" (click)="setActiveTab('orders')">
+            <i class="fal fa-box"></i>
+            <span>Order History</span>
+            <span class="badge">{{ authService.orders().length }}</span>
+          </button>
+
+          <button type="button" [class.is-active]="activeTab() === 'wallet'" (click)="setActiveTab('wallet')">
+            <i class="fal fa-wallet"></i>
+            <span>Rainbow Wallet</span>
+            <span class="badge-pill">Top Up</span>
+          </button>
+
+          <button type="button" [class.is-active]="activeTab() === 'addresses'" (click)="setActiveTab('addresses')">
+            <i class="fal fa-map-marked-alt"></i>
+            <span>Saved Addresses</span>
+            <span class="badge">{{ authService.savedAddresses().length }}</span>
+          </button>
+
+          <button type="button" [class.is-active]="activeTab() === 'cards'" (click)="setActiveTab('cards')">
+            <i class="fal fa-credit-card"></i>
+            <span>Saved Cards</span>
+            <span class="badge">{{ authService.savedCards().length }}</span>
+          </button>
+
+          <button type="button" [class.is-active]="activeTab() === 'returns'" (click)="setActiveTab('returns')">
+            <i class="fal fa-undo-alt"></i>
+            <span>Returns & Refunds</span>
+            <span class="badge">{{ authService.returns().length }}</span>
+          </button>
+
+          <button type="button" [class.is-active]="activeTab() === 'settings'" (click)="setActiveTab('settings')">
+            <i class="fal fa-cog"></i>
+            <span>Account Settings</span>
+          </button>
+
+          <button type="button" class="logout-link" (click)="onLogout()">
+            <i class="fal fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="rainbow-account-main" #accountMainContent>
+        <!-- TAB 1: ORDER HISTORY -->
+        <div *ngIf="activeTab() === 'orders'" class="rainbow-tab-content">
+          <header class="rainbow-tab-header">
+            <div>
+              <h2>Order History</h2>
+              <p>View and track your previous supermarket purchases</p>
+            </div>
+          </header>
+
+          <div class="rainbow-orders-list">
+            <article *ngFor="let order of authService.orders()" class="rainbow-order-card">
+              <header class="rainbow-order-header">
+                <div>
+                  <span class="rainbow-order-id">{{ order.id }}</span>
+                  <span class="rainbow-order-date"><i class="fal fa-calendar-alt"></i> {{ order.date }}</span>
+                </div>
+                <span class="rainbow-order-status" [ngClass]="'status-' + order.status.toLowerCase().replace(' ', '-')">
+                  <i class="fal fa-circle"></i> {{ order.status }}
+                </span>
+              </header>
+
+              <div class="rainbow-order-items">
+                <div *ngFor="let item of order.items" class="rainbow-order-item-row">
+                  <img [src]="item.image" [alt]="item.title">
+                  <div class="rainbow-order-item-copy">
+                    <strong>{{ item.title }}</strong>
+                    <small>Qty: {{ item.quantity }} × Rs. {{ item.price }}</small>
+                  </div>
+                  <button type="button" class="rainbow-btn-return-link" (click)="openReturnModal(order.id, item.title, item.price * item.quantity)">
+                    <i class="fal fa-undo-alt"></i> Request Return
+                  </button>
+                </div>
+              </div>
+
+              <footer class="rainbow-order-footer">
+                <span>Payment Method: <strong>{{ order.paymentMethod }}</strong></span>
+                <span class="rainbow-order-total">Total Amount: <strong>Rs. {{ order.totalAmount | number:'1.0-0' }}</strong></span>
+              </footer>
+            </article>
+
+            <div *ngIf="authService.orders().length === 0" class="rainbow-account-empty">
+              <i class="fal fa-box-open"></i>
+              <h3>No Orders Yet</h3>
+              <p>You haven't placed any orders yet.</p>
+              <a routerLink="/shop" class="rainbow-btn-primary">Start Shopping</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: RAINBOW WALLET -->
+        <div *ngIf="activeTab() === 'wallet'" class="rainbow-tab-content">
+          <header class="rainbow-tab-header">
+            <div>
+              <h2>Rainbow Wallet</h2>
+              <p>Manage your store balance for instant & seamless checkouts</p>
+            </div>
+          </header>
+
+          <div class="rainbow-wallet-hero">
+            <div class="rainbow-wallet-hero-card">
+              <span class="lbl">Current Wallet Balance</span>
+              <strong class="balance">Rs. {{ authService.walletBalance() | number:'1.0-0' }}</strong>
+              <div class="rainbow-wallet-features">
+                <span><i class="fal fa-bolt text-amber"></i> Instant 1-Click Checkout</span>
+                <span><i class="fal fa-shield-check"></i> 100% Safe & Refund Guarantee</span>
+              </div>
+            </div>
+
+            <!-- Top Up Form -->
+            <div class="rainbow-topup-card">
+              <h3>Top Up Wallet</h3>
+              <p>Select amount to add to your Rainbow Wallet</p>
+
+              <div class="rainbow-topup-amounts">
+                <button type="button" [class.is-selected]="topUpAmount() === 500" (click)="topUpAmount.set(500)">Rs. 500</button>
+                <button type="button" [class.is-selected]="topUpAmount() === 1000" (click)="topUpAmount.set(1000)">Rs. 1,000</button>
+                <button type="button" [class.is-selected]="topUpAmount() === 2500" (click)="topUpAmount.set(2500)">Rs. 2,500</button>
+                <button type="button" [class.is-selected]="topUpAmount() === 5000" (click)="topUpAmount.set(5000)">Rs. 5,000</button>
+              </div>
+
+              <div class="rainbow-form-field my-3">
+                <label>Custom Top-up Amount (Rs.)</label>
+                <div class="rainbow-input-wrap">
+                  <i class="fal fa-money-bill-wave"></i>
+                  <input type="number" min="100" [ngModel]="topUpAmount()" (ngModelChange)="topUpAmount.set(+$event)">
+                </div>
+              </div>
+
+              <label class="rainbow-form-label mb-2">Select Payment Source</label>
+              <div class="rainbow-topup-methods">
+                <button type="button" [class.is-selected]="selectedTopUpMethod() === 'jazzcash'" (click)="selectedTopUpMethod.set('jazzcash')">
+                  <i class="fal fa-mobile-alt"></i> JazzCash
+                </button>
+                <button type="button" [class.is-selected]="selectedTopUpMethod() === 'easypaisa'" (click)="selectedTopUpMethod.set('easypaisa')">
+                  <i class="fal fa-wallet"></i> Easypaisa
+                </button>
+                <button type="button" [class.is-selected]="selectedTopUpMethod() === 'card'" (click)="selectedTopUpMethod.set('card')">
+                  <i class="fal fa-credit-card"></i> Card
+                </button>
+              </div>
+
+              <button type="button" class="rainbow-btn-primary w-100 mt-4" (click)="onTopUpWallet()">
+                Top Up Rs. {{ topUpAmount() | number:'1.0-0' }} Now
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: SAVED ADDRESSES -->
+        <div *ngIf="activeTab() === 'addresses'" class="rainbow-tab-content">
+          <header class="rainbow-tab-header d-flex align-items-center justify-content-between">
+            <div>
+              <h2>Saved Addresses</h2>
+              <p>Manage your delivery locations for faster checkout</p>
+            </div>
+            <button type="button" class="rainbow-btn-primary" (click)="openAddressModal()">
+              <i class="fal fa-plus"></i> Add New Address
+            </button>
+          </header>
+
+          <div class="rainbow-saved-addresses-list">
+            <article *ngFor="let addr of authService.savedAddresses()" class="rainbow-address-card-item">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="rainbow-address-tag"><i class="fal" [ngClass]="addr.label === 'Home' ? 'fa-home' : addr.label === 'Office' ? 'fa-building' : 'fa-map-pin'"></i> {{ addr.label }}</span>
+                <span *ngIf="addr.isDefault" class="rainbow-default-badge"><i class="fal fa-check-circle"></i> Default Address</span>
+              </div>
+              <strong>{{ addr.recipientName }}</strong>
+              <p>{{ addr.addressLine }}, {{ addr.city }}</p>
+              <small><i class="fal fa-phone"></i> {{ addr.phone }}</small>
+
+              <div class="rainbow-address-actions">
+                <button *ngIf="!addr.isDefault" type="button" class="btn-link-action" (click)="setDefaultAddress(addr.id)">Set as Default</button>
+                <button type="button" class="btn-link-danger" (click)="deleteAddress(addr.id)"><i class="fal fa-trash-alt"></i> Delete</button>
+              </div>
+            </article>
+
+            <div *ngIf="authService.savedAddresses().length === 0" class="rainbow-account-empty">
+              <i class="fal fa-map-marker-alt"></i>
+              <h3>No Saved Addresses</h3>
+              <p>Add your home or office address to enjoy quick checkout.</p>
+              <button type="button" class="rainbow-btn-primary" (click)="openAddressModal()">Add Address</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: SAVED CARDS -->
+        <div *ngIf="activeTab() === 'cards'" class="rainbow-tab-content">
+          <header class="rainbow-tab-header d-flex align-items-center justify-content-between">
+            <div>
+              <h2>Saved Payment Cards</h2>
+              <p>Save cards for 1-click checkout & wallet top-up</p>
+            </div>
+            <button type="button" class="rainbow-btn-primary" (click)="openCardModal()">
+              <i class="fal fa-plus"></i> Add New Card
+            </button>
+          </header>
+
+          <div class="rainbow-saved-cards-grid">
+            <article *ngFor="let card of authService.savedCards()" class="rainbow-card-item">
+              <div class="rainbow-card-top">
+                <i class="fal fa-credit-card"></i>
+                <span *ngIf="card.isDefault" class="rainbow-default-badge"><i class="fal fa-check-circle"></i> Default Card</span>
+              </div>
+              <strong class="rainbow-card-num">{{ card.cardNumber }}</strong>
+              <div class="rainbow-card-meta">
+                <span>{{ card.cardHolder }}</span>
+                <span>Exp: {{ card.expiryDate }}</span>
+              </div>
+              <div class="rainbow-address-actions mt-3">
+                <button *ngIf="!card.isDefault" type="button" class="btn-link-action" (click)="setDefaultCard(card.id)">Set as Default</button>
+                <button type="button" class="btn-link-danger ms-auto" (click)="deleteCard(card.id)"><i class="fal fa-trash-alt"></i> Remove</button>
+              </div>
+            </article>
+
+            <div *ngIf="authService.savedCards().length === 0" class="rainbow-account-empty">
+              <i class="fal fa-credit-card"></i>
+              <h3>No Saved Cards</h3>
+              <p>Save a card to speed up future checkouts & wallet top-ups.</p>
+              <button type="button" class="rainbow-btn-primary" (click)="openCardModal()">Add Card</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: RETURNS & REFUNDS -->
+        <div *ngIf="activeTab() === 'returns'" class="rainbow-tab-content">
+          <header class="rainbow-tab-header">
+            <div>
+              <h2>Returns & Refunds</h2>
+              <p>Track return requests and refund statuses</p>
+            </div>
+          </header>
+
+          <div class="rainbow-returns-list">
+            <article *ngFor="let ret of authService.returns()" class="rainbow-return-card">
+              <header class="rainbow-return-header">
+                <div>
+                  <strong>Return ID: {{ ret.id }}</strong>
+                  <small>Order Ref: {{ ret.orderId }} · Requested on {{ ret.date }}</small>
+                </div>
+                <span class="rainbow-return-badge" [ngClass]="'status-' + ret.status.toLowerCase()">{{ ret.status }}</span>
+              </header>
+              <div class="rainbow-return-body">
+                <strong>Item: {{ ret.itemTitle }}</strong>
+                <p>Reason: {{ ret.reason }}</p>
+                <span class="rainbow-refund-amount">Refund Amount: <strong>Rs. {{ ret.refundAmount | number:'1.0-0' }}</strong></span>
+              </div>
+            </article>
+
+            <div *ngIf="authService.returns().length === 0" class="rainbow-account-empty">
+              <i class="fal fa-undo-alt"></i>
+              <h3>No Return Requests</h3>
+              <p>You haven't requested any returns yet.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: ACCOUNT SETTINGS -->
+        <div *ngIf="activeTab() === 'settings'" class="rainbow-tab-content">
+          <header class="rainbow-tab-header">
+            <div>
+              <h2>Account Settings</h2>
+              <p>Update your personal information and delivery address</p>
+            </div>
+          </header>
+
+          <form (submit)="onSaveProfile(); $event.preventDefault();" class="rainbow-settings-form">
+            <div class="rainbow-form-row">
+              <div class="rainbow-form-field">
+                <label for="profName">Full Name</label>
+                <div class="rainbow-input-wrap">
+                  <i class="fal fa-user"></i>
+                  <input type="text" id="profName" [(ngModel)]="profileForm.name" name="profName" required>
+                </div>
+              </div>
+
+              <div class="rainbow-form-field">
+                <label for="profEmail">Email Address</label>
+                <div class="rainbow-input-wrap">
+                  <i class="fal fa-envelope"></i>
+                  <input type="email" id="profEmail" [(ngModel)]="profileForm.email" name="profEmail" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="rainbow-form-row">
+              <div class="rainbow-form-field">
+                <label for="profPhone">Phone Number</label>
+                <div class="rainbow-input-wrap">
+                  <i class="fal fa-phone"></i>
+                  <input type="tel" id="profPhone" [(ngModel)]="profileForm.phone" name="profPhone" required>
+                </div>
+              </div>
+
+              <div class="rainbow-form-field">
+                <label for="profCity">Default City</label>
+                <div class="rainbow-input-wrap">
+                  <i class="fal fa-city"></i>
+                  <input type="text" id="profCity" [(ngModel)]="profileForm.city" name="profCity" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="rainbow-form-field">
+              <label for="profAddress">Default Delivery Address</label>
+              <div class="rainbow-input-wrap">
+                <i class="fal fa-home"></i>
+                <input type="text" id="profAddress" [(ngModel)]="profileForm.address" name="profAddress" required>
+              </div>
+            </div>
+
+            <div class="mt-4 text-end">
+              <button type="submit" class="rainbow-btn-primary">Save Changes <i class="fal fa-check"></i></button>
+            </div>
+          </form>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- Add Address Modal -->
+<div *ngIf="isAddressModalOpen()" class="rh-schedule-backdrop" (click)="closeAddressModal()">
+  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="add-addr-modal-title" (click)="$event.stopPropagation()">
+    <header class="rh-schedule-header">
+      <div class="rh-schedule-header-icon">
+        <i class="fal fa-map-marker-alt"></i>
+      </div>
+      <div>
+        <span class="rh-schedule-kicker">DELIVERY ADDRESS</span>
+        <h2 id="add-addr-modal-title">Add New Address</h2>
+        <p>Save delivery location for quick doorstep ordering</p>
+      </div>
+      <button type="button" class="rh-schedule-close" (click)="closeAddressModal()"><i class="fal fa-times"></i></button>
+    </header>
+
+    <div class="rh-schedule-body">
+      <div class="rainbow-form-field mb-3">
+        <label>Address Label</label>
+        <div class="rainbow-topup-amounts">
+          <button type="button" [class.is-selected]="addressForm.label === 'Home'" (click)="addressForm.label = 'Home'">Home</button>
+          <button type="button" [class.is-selected]="addressForm.label === 'Office'" (click)="addressForm.label = 'Office'">Office</button>
+          <button type="button" [class.is-selected]="addressForm.label === 'Other'" (click)="addressForm.label = 'Other'">Other</button>
+        </div>
+      </div>
+
+      <div class="rainbow-form-row">
+        <div class="rainbow-form-field mb-3">
+          <label>Recipient Name</label>
+          <div class="rainbow-input-wrap">
+            <i class="fal fa-user"></i>
+            <input type="text" [(ngModel)]="addressForm.recipientName" placeholder="Full name">
+          </div>
+        </div>
+
+        <div class="rainbow-form-field mb-3">
+          <label>Phone Number</label>
+          <div class="rainbow-input-wrap">
+            <i class="fal fa-phone"></i>
+            <input type="tel" [(ngModel)]="addressForm.phone" placeholder="+92 300 1234567">
+          </div>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>City</label>
+        <div class="rainbow-input-wrap">
+          <i class="fal fa-city"></i>
+          <input type="text" [(ngModel)]="addressForm.city" readonly>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>Address Line</label>
+        <div class="rainbow-input-wrap">
+          <i class="fal fa-home"></i>
+          <input type="text" [(ngModel)]="addressForm.addressLine" placeholder="House/Flat No, Street, Sector">
+        </div>
+      </div>
+
+      <label class="rainbow-auth-check mt-2">
+        <input type="checkbox" [(ngModel)]="addressForm.isDefault">
+        <span>Set as default shipping address</span>
+      </label>
+    </div>
+
+    <footer class="rh-schedule-footer">
+      <button type="button" class="rh-schedule-btn-secondary" (click)="closeAddressModal()">Cancel</button>
+      <button type="button" class="rh-schedule-btn-primary" (click)="submitAddress()">Save Address</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Add Card Modal -->
+<div *ngIf="isCardModalOpen()" class="rh-schedule-backdrop" (click)="closeCardModal()">
+  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="add-card-modal-title" (click)="$event.stopPropagation()">
+    <header class="rh-schedule-header">
+      <div class="rh-schedule-header-icon">
+        <i class="fal fa-credit-card"></i>
+      </div>
+      <div>
+        <span class="rh-schedule-kicker">PAYMENT METHOD</span>
+        <h2 id="add-card-modal-title">Save Payment Card</h2>
+        <p>Save your card details for 1-click payments</p>
+      </div>
+      <button type="button" class="rh-schedule-close" (click)="closeCardModal()"><i class="fal fa-times"></i></button>
+    </header>
+
+    <div class="rh-schedule-body">
+      <div class="rainbow-form-field mb-3">
+        <label>Cardholder Name</label>
+        <div class="rainbow-input-wrap">
+          <i class="fal fa-user"></i>
+          <input type="text" [(ngModel)]="cardForm.cardHolder" placeholder="Name on card">
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>Card Number</label>
+        <div class="rainbow-input-wrap">
+          <i class="fal fa-credit-card"></i>
+          <input type="text" [(ngModel)]="cardForm.rawCardNumber" placeholder="1234 5678 9101 1121" maxlength="19">
+        </div>
+      </div>
+
+      <div class="rainbow-form-row mb-3">
+        <div class="rainbow-form-field">
+          <label>Expiry Date</label>
+          <div class="rainbow-input-wrap">
+            <i class="fal fa-calendar-alt"></i>
+            <input type="text" [(ngModel)]="cardForm.expiryDate" placeholder="MM/YY">
+          </div>
+        </div>
+
+        <div class="rainbow-form-field">
+          <label>Card Network</label>
+          <div class="rainbow-input-wrap rainbow-select-wrap">
+            <select [(ngModel)]="cardForm.brand">
+              <option value="visa">Visa</option>
+              <option value="mastercard">Mastercard</option>
+              <option value="unionpay">UnionPay</option>
+            </select>
+            <i class="fal fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+      </div>
+
+      <label class="rainbow-auth-check mt-2">
+        <input type="checkbox" [(ngModel)]="cardForm.isDefault">
+        <span>Set as default card</span>
+      </label>
+    </div>
+
+    <footer class="rh-schedule-footer">
+      <button type="button" class="rh-schedule-btn-secondary" (click)="closeCardModal()">Cancel</button>
+      <button type="button" class="rh-schedule-btn-primary" (click)="submitCard()">Save Card</button>
+    </footer>
+  </div>
+</div>
+<div *ngIf="isReturnModalOpen()" class="rh-schedule-backdrop" (click)="closeReturnModal()">
+  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="return-modal-title" (click)="$event.stopPropagation()">
+    <header class="rh-schedule-header">
+      <div class="rh-schedule-header-icon">
+        <i class="fal fa-undo-alt"></i>
+      </div>
+      <div>
+        <span class="rh-schedule-kicker">REFUND & RETURN</span>
+        <h2 id="return-modal-title">Request Item Return</h2>
+        <p>Submit a return request for refund back to your Rainbow Wallet</p>
+      </div>
+      <button type="button" class="rh-schedule-close" (click)="closeReturnModal()"><i class="fal fa-times"></i></button>
+    </header>
+
+    <div class="rh-schedule-body">
+      <div class="rainbow-form-field mb-3">
+        <label>Order ID</label>
+        <div class="rainbow-input-wrap">
+          <input type="text" [value]="returnForm.orderId" readonly>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>Item Name</label>
+        <div class="rainbow-input-wrap">
+          <input type="text" [value]="returnForm.itemTitle" readonly>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>Reason for Return</label>
+        <div class="rainbow-input-wrap rainbow-select-wrap">
+          <select [(ngModel)]="returnForm.reason">
+            <option value="Damaged or defective item">Damaged or defective item</option>
+            <option value="Expired or near expiry">Expired or near expiry</option>
+            <option value="Wrong item delivered">Wrong item delivered</option>
+            <option value="Quality not satisfactory">Quality not satisfactory</option>
+          </select>
+          <i class="fal fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field">
+        <label>Refund Amount</label>
+        <div class="rainbow-input-wrap">
+          <strong>Rs. {{ returnForm.refundAmount | number:'1.0-0' }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <footer class="rh-schedule-footer">
+      <button type="button" class="rh-schedule-btn-secondary" (click)="closeReturnModal()">Cancel</button>
+      <button type="button" class="rh-schedule-btn-primary" (click)="submitReturnRequest()">Submit Request</button>
+    </footer>
+  </div>
+</div>

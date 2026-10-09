@@ -1,0 +1,438 @@
+<!-- Checkout page -->
+<section class="rainbow-checkout-page">
+  <div class="container rainbow-checkout-container">
+    <header class="rainbow-checkout-header">
+      <a routerLink="/cart" class="rainbow-checkout-back" aria-label="Back to cart"><i class="fal fa-arrow-left" aria-hidden="true"></i></a>
+      <h1>Checkout</h1>
+      <a routerLink="/shop" class="rainbow-checkout-continue"><i class="fal fa-shopping-bag" aria-hidden="true"></i><span>Continue shopping</span></a>
+    </header>
+
+    <!-- Empty Checkout Guard (when step is not finished and cart is empty) -->
+    <div *ngIf="cartService.cartItems().length === 0 && currentStep() !== 3" class="rainbow-checkout-empty">
+      <span class="rainbow-checkout-empty-icon"><i class="fal fa-shopping-basket" aria-hidden="true"></i></span>
+      <h2>Your cart is empty</h2>
+      <p>Please add items to your cart before proceeding to checkout.</p>
+      <a routerLink="/shop" class="rainbow-checkout-primary">Return to Shop <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+
+    <!-- Active Checkout Flow -->
+    <ng-container *ngIf="cartService.cartItems().length > 0 || currentStep() === 3">
+      <!-- Checkout Stepper Progress -->
+      <nav class="rainbow-checkout-stepper" aria-label="Checkout Progress" *ngIf="currentStep() !== 3">
+        <div class="rainbow-step" [class.is-active]="currentStep() === 1" [class.is-completed]="currentStep() > 1" (click)="currentStep.set(1)">
+          <span class="rainbow-step-num">
+            <i *ngIf="currentStep() > 1" class="fal fa-check"></i>
+            <span *ngIf="currentStep() <= 1">1</span>
+          </span>
+          <div class="rainbow-step-text">
+            <strong>Shipping & Delivery</strong>
+            <small>Address details</small>
+          </div>
+        </div>
+
+        <div class="rainbow-step-line" [class.is-active]="currentStep() >= 2"></div>
+
+        <div class="rainbow-step" [class.is-active]="currentStep() === 2" [class.is-completed]="currentStep() > 2" (click)="currentStep() > 1 ? currentStep.set(2) : null">
+          <span class="rainbow-step-num">
+            <i *ngIf="currentStep() > 2" class="fal fa-check"></i>
+            <span *ngIf="currentStep() <= 2">2</span>
+          </span>
+          <div class="rainbow-step-text">
+            <strong>Review & Payment</strong>
+            <small>Payment method</small>
+          </div>
+        </div>
+
+        <div class="rainbow-step-line" [class.is-active]="currentStep() === 3"></div>
+
+        <div class="rainbow-step" [class.is-active]="currentStep() === 3">
+          <span class="rainbow-step-num">3</span>
+          <div class="rainbow-step-text">
+            <strong>Order Placed</strong>
+            <small>Confirmation</small>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Mobile Quick Order Summary Bar (Top Collapsible Toggle) -->
+      <div class="rainbow-mobile-summary-bar d-md-none mb-3" *ngIf="currentStep() !== 3">
+        <button type="button" class="rainbow-mobile-summary-btn" (click)="isMobileSummaryOpen.set(!isMobileSummaryOpen())" [attr.aria-expanded]="isMobileSummaryOpen()">
+          <span class="d-flex align-items-center gap-2">
+            <i class="fal fa-shopping-bag"></i>
+            <span>{{ isMobileSummaryOpen() ? 'Hide order summary' : 'Show order summary' }}</span>
+            <i class="fal" [ngClass]="isMobileSummaryOpen() ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+          </span>
+          <strong class="rainbow-mobile-summary-total">Rs. {{ checkoutTotal() | number:'1.0-0' }}</strong>
+        </button>
+        <div class="rainbow-mobile-summary-drawer" *ngIf="isMobileSummaryOpen()">
+          <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
+        </div>
+      </div>
+
+      <div class="rainbow-checkout-layout" *ngIf="currentStep() !== 3">
+        <!-- Main Form Content -->
+        <main class="rainbow-checkout-main">
+          
+          <!-- STEP 1: SHIPPING & DELIVERY DETAILS -->
+          <div *ngIf="currentStep() === 1" class="rainbow-checkout-card">
+            <header class="rainbow-card-header">
+              <h2><i class="fal fa-map-marker-alt"></i> Shipping & Delivery Details</h2>
+              <p>Choose from your saved addresses or enter a new delivery location</p>
+            </header>
+
+            <!-- Saved Addresses Selector -->
+            <div class="mb-4" *ngIf="authService.savedAddresses().length > 0">
+              <label class="rainbow-form-label mb-2">Select Saved Delivery Address</label>
+              <div class="rainbow-saved-addresses-grid">
+                <button type="button" 
+                        *ngFor="let addr of authService.savedAddresses()" 
+                        class="rainbow-saved-address-card"
+                        [class.is-selected]="selectedAddressId() === addr.id"
+                        (click)="selectSavedAddress(addr)">
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <span class="rainbow-address-tag"><i class="fal" [ngClass]="addr.label === 'Home' ? 'fa-home' : addr.label === 'Office' ? 'fa-building' : 'fa-map-pin'"></i> {{ addr.label }}</span>
+                    <span class="rainbow-address-check"><i class="fal fa-check"></i></span>
+                  </div>
+                  <strong>{{ addr.recipientName }}</strong>
+                  <p>{{ addr.addressLine }}, {{ addr.city }}</p>
+                  <small>{{ addr.phone }}</small>
+                </button>
+              </div>
+            </div>
+
+            <form (submit)="nextStep(); $event.preventDefault();" class="rainbow-checkout-form">
+              <div class="rainbow-form-row">
+                <div class="rainbow-form-field">
+                  <label for="firstName">First Name <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-user"></i>
+                    <input type="text" id="firstName" name="firstName" required [(ngModel)]="billingData.firstName" placeholder="e.g. Ali">
+                  </div>
+                </div>
+
+                <div class="rainbow-form-field">
+                  <label for="lastName">Last Name <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-user"></i>
+                    <input type="text" id="lastName" name="lastName" required [(ngModel)]="billingData.lastName" placeholder="e.g. Khan">
+                  </div>
+                </div>
+              </div>
+
+              <div class="rainbow-form-row">
+                <div class="rainbow-form-field">
+                  <label for="email">Email Address <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-envelope"></i>
+                    <input type="email" id="email" name="email" required [(ngModel)]="billingData.email" placeholder="name@example.com">
+                  </div>
+                </div>
+
+                <div class="rainbow-form-field">
+                  <label for="phone">Phone Number <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-phone-alt"></i>
+                    <input type="tel" id="phone" name="phone" required [(ngModel)]="billingData.phone" placeholder="+92 300 1234567">
+                  </div>
+                </div>
+              </div>
+
+              <div class="rainbow-form-row">
+                <div class="rainbow-form-field">
+                  <label for="city">City <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-city"></i>
+                    <input type="text" id="city" name="city" required [(ngModel)]="billingData.city" readonly>
+                  </div>
+                </div>
+
+                <div class="rainbow-form-field">
+                  <label for="branch">Fulfilling Rainbow Branch <sup>*</sup></label>
+                  <div class="rainbow-input-wrap rainbow-select-wrap">
+                    <i class="fal fa-store"></i>
+                    <select id="branch" name="branch" [(ngModel)]="billingData.branch">
+                      <option value="Bahria Town Branch (Lahore)">Bahria Town Branch (Lahore)</option>
+                      <option value="Gulberg Branch (Lahore)">Gulberg Branch (Lahore)</option>
+                      <option value="DHA Phase 5 Branch (Lahore)">DHA Phase 5 Branch (Lahore)</option>
+                    </select>
+                    <i class="fal fa-chevron-down select-arrow"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rainbow-form-field">
+                <label for="address">Delivery Address <sup>*</sup></label>
+                <div class="rainbow-input-wrap">
+                  <i class="fal fa-home"></i>
+                  <input type="text" id="address" name="address" required [(ngModel)]="billingData.address" placeholder="House/Flat No, Street, Phase / Block">
+                </div>
+              </div>
+
+              <div class="rainbow-form-field">
+                <label for="notes">Delivery Notes / Special Instructions <small>(Optional)</small></label>
+                <div class="rainbow-input-wrap rainbow-textarea-wrap">
+                  <i class="fal fa-sticky-note"></i>
+                  <textarea id="notes" name="notes" rows="3" [(ngModel)]="billingData.notes" placeholder="e.g. Ring the bell twice, drop off at guard room..."></textarea>
+                </div>
+              </div>
+
+              <!-- Mobile Order Summary Section (Placed before action buttons) -->
+              <div class="rainbow-mobile-summary-inline d-md-none mt-4">
+                <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
+              </div>
+
+              <div class="rainbow-form-actions">
+                <a routerLink="/cart" class="rainbow-btn-secondary"><i class="fal fa-arrow-left"></i> Back to Cart</a>
+                <button type="submit" class="rainbow-checkout-primary">Continue to Payment <i class="fal fa-arrow-right"></i></button>
+              </div>
+            </form>
+          </div>
+
+          <!-- STEP 2: REVIEW & PAYMENT -->
+          <div *ngIf="currentStep() === 2" class="rainbow-checkout-card">
+            <header class="rainbow-card-header">
+              <h2><i class="fal fa-credit-card"></i> Choose Payment Method</h2>
+              <p>Select your preferred payment method to complete the order</p>
+            </header>
+
+            <div class="rainbow-payment-options">
+              <!-- Cash on Delivery Option -->
+              <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'cod'">
+                <input type="radio" name="paymentMethod" value="cod" [(ngModel)]="selectedPaymentMethod">
+                <span class="rainbow-payment-radio"></span>
+                <div class="rainbow-payment-info">
+                  <div class="rainbow-payment-title">
+                    <strong>Cash on Delivery (COD)</strong>
+                    <span class="rainbow-badge-recommended">Popular</span>
+                  </div>
+                  <p>Pay in cash or via QR scanning when your doorstep order arrives.</p>
+                </div>
+                <div class="rainbow-payment-icon">
+                  <i class="fal fa-money-bill-wave"></i>
+                </div>
+              </label>
+
+              <!-- JazzCash Option -->
+              <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'jazzcash'">
+                <input type="radio" name="paymentMethod" value="jazzcash" [(ngModel)]="selectedPaymentMethod">
+                <span class="rainbow-payment-radio"></span>
+                <div class="rainbow-payment-info">
+                  <div class="rainbow-payment-title">
+                    <strong>JazzCash Mobile Wallet</strong>
+                    <span class="rainbow-badge-instant">Instant</span>
+                  </div>
+                  <p>Pay directly using your registered JazzCash mobile account number.</p>
+                </div>
+                <div class="rainbow-payment-icon rainbow-icon-jazzcash">
+                  <i class="fal fa-mobile-alt"></i>
+                </div>
+              </label>
+
+              <!-- JazzCash Input Drawer -->
+              <div class="rainbow-card-details-box" *ngIf="selectedPaymentMethod === 'jazzcash'">
+                <div class="rainbow-form-field">
+                  <label for="jazzcashPhone">JazzCash Mobile Account Number <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-phone"></i>
+                    <input type="tel" id="jazzcashPhone" name="jazzcashPhone" [(ngModel)]="walletAccountPhone" placeholder="0300 1234567">
+                  </div>
+                  <small class="text-muted mt-1 d-block"><i class="fal fa-info-circle"></i> You will receive a prompt on your JazzCash mobile app / phone screen to authorize payment.</small>
+                </div>
+              </div>
+
+              <!-- Easypaisa Option -->
+              <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'easypaisa'">
+                <input type="radio" name="paymentMethod" value="easypaisa" [(ngModel)]="selectedPaymentMethod">
+                <span class="rainbow-payment-radio"></span>
+                <div class="rainbow-payment-info">
+                  <div class="rainbow-payment-title">
+                    <strong>Easypaisa Wallet</strong>
+                    <span class="rainbow-badge-instant">Instant</span>
+                  </div>
+                  <p>Pay instantly from your Easypaisa app or account number.</p>
+                </div>
+                <div class="rainbow-payment-icon rainbow-icon-easypaisa">
+                  <i class="fal fa-wallet"></i>
+                </div>
+              </label>
+
+              <!-- Easypaisa Input Drawer -->
+              <div class="rainbow-card-details-box" *ngIf="selectedPaymentMethod === 'easypaisa'">
+                <div class="rainbow-form-field">
+                  <label for="easypaisaPhone">Easypaisa Registered Account Number <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-phone"></i>
+                    <input type="tel" id="easypaisaPhone" name="easypaisaPhone" [(ngModel)]="walletAccountPhone" placeholder="0345 1234567">
+                  </div>
+                  <small class="text-muted mt-1 d-block"><i class="fal fa-info-circle"></i> An approval notification will be sent to your Easypaisa App for confirmation.</small>
+                </div>
+              </div>
+
+              <!-- Credit / Debit Card Option -->
+              <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'card'">
+                <input type="radio" name="paymentMethod" value="card" [(ngModel)]="selectedPaymentMethod">
+                <span class="rainbow-payment-radio"></span>
+                <div class="rainbow-payment-info">
+                  <div class="rainbow-payment-title">
+                    <strong>Credit / Debit Card</strong>
+                  </div>
+                  <p>Pay securely using Visa, Mastercard, or UnionPay.</p>
+                </div>
+                <div class="rainbow-payment-icon">
+                  <i class="fal fa-credit-card"></i>
+                </div>
+              </label>
+
+              <!-- Card form snippet if card selected -->
+              <div class="rainbow-card-details-box" *ngIf="selectedPaymentMethod === 'card'">
+                <!-- Saved Cards Picker -->
+                <div class="mb-3" *ngIf="authService.savedCards().length > 0">
+                  <label class="rainbow-form-label mb-2">Use Saved Card</label>
+                  <div class="rainbow-saved-cards-list">
+                    <button type="button" 
+                            *ngFor="let card of authService.savedCards()" 
+                            class="rainbow-saved-card-btn"
+                            [class.is-selected]="selectedSavedCardId() === card.id"
+                            (click)="selectedSavedCardId.set(card.id)">
+                      <i class="fal fa-credit-card"></i>
+                      <span><strong>{{ card.cardNumber }}</strong> (Expires {{ card.expiryDate }})</span>
+                      <i class="fal fa-check-circle ms-auto" *ngIf="selectedSavedCardId() === card.id"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="rainbow-form-field">
+                  <label>Card Number</label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-credit-card"></i>
+                    <input type="text" placeholder="1234 5678 9101 1121">
+                  </div>
+                </div>
+                <div class="rainbow-form-row">
+                  <div class="rainbow-form-field">
+                    <label>Expiry Date</label>
+                    <div class="rainbow-input-wrap">
+                      <i class="fal fa-calendar-alt"></i>
+                      <input type="text" placeholder="MM/YY">
+                    </div>
+                  </div>
+                  <div class="rainbow-form-field">
+                    <label>CVV Code</label>
+                    <div class="rainbow-input-wrap">
+                      <i class="fal fa-lock"></i>
+                      <input type="password" placeholder="123" maxlength="4">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile Order Summary Section (Placed before action buttons) -->
+            <div class="rainbow-mobile-summary-inline d-md-none mt-4">
+              <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
+            </div>
+
+            <div class="rainbow-form-actions mt-4">
+              <button type="button" class="rainbow-btn-secondary" (click)="prevStep()"><i class="fal fa-arrow-left"></i> Back to Shipping</button>
+              <button type="button" class="rainbow-checkout-primary" (click)="placeOrder()">Place Order Now <i class="fal fa-check-circle"></i></button>
+            </div>
+          </div>
+
+        </main>
+
+        <!-- Desktop Sidebar Order Summary -->
+        <aside class="rainbow-checkout-sidebar d-none d-md-block">
+          <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
+        </aside>
+      </div>
+
+      <!-- Reusable Order Summary Template -->
+      <ng-template #orderSummaryTemplate>
+        <section class="rainbow-checkout-summary">
+          <h2>Order Summary ({{ cartService.cartCount() }} {{ cartService.cartCount() === 1 ? 'item' : 'items' }})</h2>
+
+          <!-- Items List Snapshot -->
+          <div class="rainbow-summary-items">
+            <div class="rainbow-summary-item" *ngFor="let item of cartService.cartItems()">
+              <div class="rainbow-summary-thumb">
+                <img [src]="item.product.image" [alt]="item.product.title">
+                <span class="rainbow-summary-qty">{{ item.quantity }}</span>
+              </div>
+              <div class="rainbow-summary-info">
+                <strong>{{ item.product.title }}</strong>
+                <span class="rainbow-summary-variant" *ngIf="item.variant?.label">{{ item.variant?.label }}</span>
+              </div>
+              <div class="rainbow-summary-price">
+                <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-0' }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Savings Banner if applicable -->
+          <div class="rainbow-cart-savings" *ngIf="checkoutSavings() > 0">
+            <span><i class="fal fa-sparkles"></i> Total Savings</span>
+            <strong>Rs. {{ checkoutSavings() | number:'1.0-0' }}</strong>
+          </div>
+
+          <!-- Bill Details -->
+          <div class="rainbow-summary-bill">
+            <div class="rainbow-summary-row">
+              <span>Items Subtotal</span>
+              <span>Rs. {{ checkoutOriginalTotal() > checkoutTotal() ? (checkoutOriginalTotal() | number:'1.0-0') : (checkoutTotal() | number:'1.0-0') }}</span>
+            </div>
+            <div class="rainbow-summary-row" *ngIf="checkoutSavings() > 0">
+              <span class="text-success">Promotional Discount</span>
+              <span class="text-success">- Rs. {{ checkoutSavings() | number:'1.0-0' }}</span>
+            </div>
+            <div class="rainbow-summary-row">
+              <span>Delivery Charge</span>
+              <span class="rainbow-cart-free">FREE</span>
+            </div>
+            <div class="rainbow-summary-total">
+              <strong>Total Payable</strong>
+              <strong>Rs. {{ checkoutTotal() | number:'1.0-0' }}</strong>
+            </div>
+          </div>
+
+          <div class="rainbow-checkout-trust">
+            <p><i class="fal fa-shield-check"></i> Safe & Encrypted Checkout</p>
+            <p><i class="fal fa-truck"></i> Fast Delivery from Rainbow {{ billingData.branch }}</p>
+          </div>
+        </section>
+      </ng-template>
+
+      <!-- STEP 3: ORDER COMPLETED SUCCESS -->
+      <div *ngIf="currentStep() === 3" class="rainbow-order-success">
+        <div class="rainbow-success-card">
+          <div class="rainbow-success-icon">
+            <i class="fal fa-check"></i>
+          </div>
+          <span class="rainbow-success-kicker">Order Placed Successfully</span>
+          <h2>Thank You For Shopping With Us!</h2>
+          <p>Your order number is <strong class="rainbow-order-num">{{ generatedOrderNumber() }}</strong>. We have sent order updates to <strong>{{ billingData.email || 'your email' }}</strong>.</p>
+
+          <div class="rainbow-success-details">
+            <div class="rainbow-success-col">
+              <span class="lbl"><i class="fal fa-map-marker-alt"></i> Delivery Address</span>
+              <strong>{{ billingData.firstName }} {{ billingData.lastName }}</strong>
+              <p>{{ billingData.address }}, {{ billingData.city }}</p>
+              <p class="phone"><i class="fal fa-phone"></i> {{ billingData.phone }}</p>
+            </div>
+            <div class="rainbow-success-col">
+              <span class="lbl"><i class="fal fa-store"></i> Dispatching Branch</span>
+              <strong>{{ billingData.branch }}</strong>
+              <span class="lbl mt-3"><i class="fal fa-credit-card"></i> Payment Method</span>
+              <strong>{{ selectedPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : selectedPaymentMethod === 'jazzcash' ? 'JazzCash Mobile Wallet' : selectedPaymentMethod === 'easypaisa' ? 'Easypaisa Wallet' : 'Credit / Debit Card' }}</strong>
+            </div>
+          </div>
+
+          <div class="rainbow-success-actions">
+            <a routerLink="/shop" class="rainbow-checkout-primary">Continue Shopping <i class="fal fa-arrow-right"></i></a>
+            <a routerLink="/" class="rainbow-btn-secondary">Return to Home</a>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+</section>

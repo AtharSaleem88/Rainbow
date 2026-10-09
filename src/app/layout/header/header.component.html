@@ -1,0 +1,304 @@
+<!-- announcement_bar - start -->
+<div class="rh-announce" id="rh-announce">
+	<span>&starf;</span> FREE DELIVERY ON ORDERS ABOVE RS. 2000 &mdash; SHOP NOW <span>&starf;</span>
+</div>
+<!-- announcement_bar - end -->
+
+<!-- premium_nav_section - start -->
+<header class="rh-nav" id="rh-nav" [class.rh-nav-solid]="isScrolled()">
+	<!-- Desktop Header Layout (Large Screens) -->
+	<div class="rh-nav-inner rh-nav-custom-row d-none d-lg-flex">
+		<!-- 1. Logo & Web Links -->
+		<div class="rh-hdr-col rh-hdr-logo-group">
+			<a class="rh-nav-logo" routerLink="/">
+				<img src="assets/images/logo/RainbowLogo.png" alt="Rainbow Cash &amp; Carry" />
+			</a>
+		</div>
+
+		<!-- 2. DELIVERING TO (Desktop) -->
+		<div class="rh-hdr-col rh-hdr-delivering d-none d-xl-flex">
+			<button type="button" class="rh-hdr-pill" (click)="openLocationModal()" aria-haspopup="dialog" [attr.aria-expanded]="isLocationModalOpen()">
+				<span class="rh-hdr-pill-icon"><i class="fal fa-map-marker-alt"></i></span>
+				<div class="rh-hdr-pill-text">
+					<span class="rh-hdr-lbl">Delivering to</span>
+					<strong class="rh-hdr-val">{{ selectedLocation().name }}</strong>
+				</div>
+				<i class="far fa-angle-down ms-1 text-muted" style="font-size: 11px;"></i>
+			</button>
+		</div>
+
+		<!-- 3. SEARCH (Desktop Flexible Width + Animated Placeholder) -->
+		<div class="rh-hdr-col rh-hdr-search flex-grow-1 mx-2">
+			<form action="#" (submit)="onSearch(); $event.preventDefault();" class="w-100">
+				<div class="rh-search-wrap w-100 position-relative">
+					<i class="fal fa-search"></i>
+					
+					<!-- Animated suggestion overlay -->
+					<div class="rh-animated-placeholder" 
+					     *ngIf="!searchQuery() && !isInputFocused()"
+					     aria-hidden="true">
+						<span class="rh-static-lbl">Search Your</span>
+						<span class="rh-dynamic-wrapper">
+							<span class="rh-dynamic-text" [class.rh-slide-up]="isSuggestionAnimating()">
+								{{ searchSuggestions[currentSuggestionIndex()] }}
+							</span>
+							<span class="rh-blinking-caret">|</span>
+						</span>
+					</div>
+
+					<input type="search" 
+					       name="search" 
+					       aria-label="Search your products"
+					       [ngModel]="searchQuery()" 
+					       (ngModelChange)="searchQuery.set($event)"
+					       (focus)="onInputFocus()"
+					       (blur)="onInputBlur()">
+				</div>
+			</form>
+		</div>
+
+		<!-- 4. INSTANT DELIVERY (Desktop) -->
+		<div class="rh-hdr-col rh-hdr-instant d-none d-xl-flex">
+			<div class="rh-hdr-pill">
+				<span class="rh-hdr-pill-icon rh-icon-bolt"><i class="fal fa-bolt"></i></span>
+				<div class="rh-hdr-pill-text">
+					<span class="rh-hdr-lbl">Instant Delivery</span>
+					<strong class="rh-hdr-val">In 40 Mins</strong>
+				</div>
+			</div>
+		</div>
+
+		<!-- 5. SCHEDULED DELIVERY (Desktop) -->
+		<div class="rh-hdr-col rh-hdr-scheduled d-none d-lg-flex">
+			<button type="button" class="rh-hdr-pill rh-pill-green border-0 text-start" (click)="openScheduleModal()" aria-haspopup="dialog" [attr.aria-expanded]="isScheduleModalOpen()">
+				<span class="rh-hdr-pill-icon rh-icon-lime"><i class="fal fa-clock"></i></span>
+				<div class="rh-hdr-pill-text">
+					<span class="rh-hdr-lbl-lime">Scheduled Delivery</span>
+					<strong class="rh-hdr-val-lime">{{ selectedDeliveryDate() }}, {{ selectedDeliveryTimeSlot() }}</strong>
+				</div>
+				<i class="far fa-angle-down ms-2 text-white-50" style="font-size: 11px;"></i>
+			</button>
+		</div>
+
+		<!-- 6. LOGIN & REGISTER / CART -->
+		<div class="rh-hdr-col rh-hdr-actions d-flex align-items-center gap-2">
+			<a *ngIf="!authService.isLoggedIn()" routerLink="/login" class="rh-hdr-pill rh-hdr-account text-decoration-none">
+				<span class="rh-hdr-pill-icon"><i class="fal fa-user"></i></span>
+				<span class="rh-hdr-val ms-1">Login &amp; Register</span>
+			</a>
+			<a *ngIf="authService.isLoggedIn()" routerLink="/account" class="rh-hdr-pill rh-hdr-account text-decoration-none">
+				<span class="rh-hdr-pill-icon"><i class="fal fa-user-circle"></i></span>
+				<div class="rh-hdr-pill-text ms-1">
+					<span class="rh-hdr-lbl">My Account</span>
+					<strong class="rh-hdr-val">{{ authService.userProfile().name.split(' ')[0] }}</strong>
+				</div>
+			</a>
+			<button class="rh-nav-icon rh-nav-cart cart_btn" (click)="openCart()" aria-label="Cart">
+				<i class="fal fa-shopping-bag"></i>
+				<span class="btn_badge" *ngIf="cartService.cartCount() > 0">{{ cartService.cartCount() }}</span>
+			</button>
+		</div>
+	</div>
+
+	<!-- Mobile / Tablet 3-Row Header Layout (Small & Medium Screens) -->
+	<div class="rh-nav-mobile-container d-flex d-lg-none flex-column gap-2 p-2">
+		<!-- Mobile Row 1: Delivering to Pill + Account Icon & Cart -->
+		<div class="rh-mobile-row-1 d-flex align-items-center justify-content-between gap-2">
+			<!-- Delivering to Pill -->
+			<button type="button" class="rh-hdr-pill rh-mobile-location-pill flex-grow-1 border-0" (click)="openLocationModal()" aria-haspopup="dialog" [attr.aria-expanded]="isLocationModalOpen()">
+				<span class="rh-hdr-pill-icon"><i class="fal fa-map-marker-alt"></i></span>
+				<div class="rh-hdr-pill-text text-start">
+					<span class="rh-hdr-lbl">Delivering to</span>
+					<strong class="rh-hdr-val">{{ selectedLocation().name }}</strong>
+				</div>
+				<i class="far fa-angle-down ms-auto text-muted" style="font-size: 11px;"></i>
+			</button>
+
+			<!-- Actions: Account / Login Icon (Replaces 3 lines menu icon) + Cart Icon -->
+			<div class="rh-mobile-actions d-flex align-items-center gap-1 flex-shrink-0">
+				<a *ngIf="!authService.isLoggedIn()" routerLink="/login" class="rh-nav-icon text-decoration-none" aria-label="Login">
+					<i class="fal fa-user"></i>
+				</a>
+				<a *ngIf="authService.isLoggedIn()" routerLink="/account" class="rh-nav-icon text-decoration-none" aria-label="My Account">
+					<i class="fal fa-user-circle"></i>
+				</a>
+				<button class="rh-nav-icon rh-nav-cart cart_btn" (click)="openCart()" aria-label="Cart">
+					<i class="fal fa-shopping-bag"></i>
+					<span class="btn_badge" *ngIf="cartService.cartCount() > 0">{{ cartService.cartCount() }}</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Mobile Row 2: Search Bar with Animated Placeholder -->
+		<div class="rh-mobile-row-2 w-100">
+			<form action="#" (submit)="onSearch(); $event.preventDefault();" class="w-100">
+				<div class="rh-search-wrap w-100 position-relative">
+					<i class="fal fa-search"></i>
+					<div class="rh-animated-placeholder" 
+					     *ngIf="!searchQuery() && !isInputFocused()"
+					     aria-hidden="true">
+						<span class="rh-static-lbl">Search Your</span>
+						<span class="rh-dynamic-wrapper">
+							<span class="rh-dynamic-text" [class.rh-slide-up]="isSuggestionAnimating()">
+								{{ searchSuggestions[currentSuggestionIndex()] }}
+							</span>
+							<span class="rh-blinking-caret">|</span>
+						</span>
+					</div>
+					<input type="search" 
+					       name="search" 
+					       aria-label="Search your products"
+					       [ngModel]="searchQuery()" 
+					       (ngModelChange)="searchQuery.set($event)"
+					       (focus)="onInputFocus()"
+					       (blur)="onInputBlur()">
+				</div>
+			</form>
+		</div>
+
+		<!-- Mobile Row 3: Instant Delivery + Scheduled Delivery Pills Side by Side -->
+		<div class="rh-mobile-row-3 d-flex align-items-center gap-2">
+			<!-- Instant Delivery -->
+			<div class="rh-hdr-pill rh-mobile-pill-half flex-fill">
+				<span class="rh-hdr-pill-icon rh-icon-bolt"><i class="fal fa-bolt"></i></span>
+				<div class="rh-hdr-pill-text">
+					<span class="rh-hdr-lbl">Instant Delivery</span>
+					<strong class="rh-hdr-val">In 40 Mins</strong>
+				</div>
+			</div>
+
+			<!-- Scheduled Delivery -->
+			<button type="button" class="rh-hdr-pill rh-pill-green rh-mobile-pill-half flex-fill border-0 text-start" (click)="openScheduleModal()" aria-haspopup="dialog" [attr.aria-expanded]="isScheduleModalOpen()">
+				<span class="rh-hdr-pill-icon rh-icon-lime"><i class="fal fa-clock"></i></span>
+				<div class="rh-hdr-pill-text">
+					<span class="rh-hdr-lbl-lime">Scheduled Delivery</span>
+					<strong class="rh-hdr-val-lime">{{ selectedDeliveryDate() }}, {{ selectedDeliveryTimeSlot() }}</strong>
+				</div>
+				<i class="far fa-angle-down ms-auto text-white-50" style="font-size: 11px;"></i>
+			</button>
+		</div>
+	</div>
+</header>
+<!-- premium_nav_section - end -->
+
+<!-- Scheduled Delivery Modal -->
+<div *ngIf="isScheduleModalOpen()" class="rh-schedule-backdrop" (click)="closeScheduleModal()">
+	<div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="schedule-modal-title" (click)="$event.stopPropagation()">
+		<!-- Header Banner -->
+		<header class="rh-schedule-header">
+			<div class="rh-schedule-header-icon">
+				<i class="fal fa-clock"></i>
+			</div>
+			<div>
+				<h2 id="schedule-modal-title">Schedule Delivery</h2>
+			</div>
+			<button type="button" class="rh-schedule-close" (click)="closeScheduleModal()" aria-label="Close">
+				<i class="fal fa-times"></i>
+			</button>
+		</header>
+
+		<!-- Modal Body -->
+		<div class="rh-schedule-body">
+			<!-- 1. Select Date -->
+			<section class="rh-schedule-section">
+				<label class="rh-schedule-label">
+					<span>1. Select Delivery Date</span>
+					<small>Available for the next 3 days</small>
+				</label>
+				<div class="rh-schedule-date-grid">
+					<button *ngFor="let dateItem of availableDates" 
+					        type="button" 
+					        class="rh-schedule-date-card" 
+					        [class.is-selected]="selectedDeliveryDate() === dateItem.value"
+					        (click)="selectedDeliveryDate.set(dateItem.value)">
+						<span class="rh-date-pill">{{ dateItem.label }}</span>
+						<strong class="rh-date-sub">{{ dateItem.dateStr }}</strong>
+						<span class="rh-date-check"><i class="fal fa-check"></i></span>
+					</button>
+				</div>
+			</section>
+
+			<!-- 2. Select Time Slot -->
+			<section class="rh-schedule-section mt-4">
+				<label class="rh-schedule-label">
+					<span>2. Select Time Window</span>
+					<small>Guaranteed delivery within chosen slot</small>
+				</label>
+				<div class="rh-schedule-slot-grid">
+					<button *ngFor="let slot of availableTimeSlots" 
+					        type="button" 
+					        class="rh-schedule-slot-card" 
+					        [class.is-selected]="selectedDeliveryTimeSlot() === slot"
+					        (click)="selectedDeliveryTimeSlot.set(slot)">
+						<span class="rh-slot-left">
+							<i class="fal fa-clock"></i>
+							<strong>{{ slot }}</strong>
+						</span>
+						<span class="rh-slot-radio"></span>
+					</button>
+				</div>
+			</section>
+		</div>
+
+		<!-- Modal Footer -->
+		<footer class="rh-schedule-footer">
+			<button type="button" class="rh-schedule-btn-secondary" (click)="closeScheduleModal()">Cancel</button>
+			<button type="button" class="rh-schedule-btn-primary" (click)="closeScheduleModal()">
+				<span>Confirm Schedule</span>
+				<i class="fal fa-arrow-right"></i>
+			</button>
+		</footer>
+	</div>
+</div>
+
+<!-- Location Selector Modal -->
+<div *ngIf="isLocationModalOpen()" class="rh-schedule-backdrop" (click)="closeLocationModal()">
+	<div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="location-modal-title" (click)="$event.stopPropagation()">
+		<!-- Header Banner -->
+		<header class="rh-schedule-header">
+			<div class="rh-schedule-header-icon">
+				<i class="fal fa-map-marker-alt"></i>
+			</div>
+			<div>
+				<h2 id="location-modal-title">Select Location</h2>
+			</div>
+			<button type="button" class="rh-schedule-close" (click)="closeLocationModal()" aria-label="Close">
+				<i class="fal fa-times"></i>
+			</button>
+		</header>
+
+		<!-- Modal Body -->
+		<div class="rh-schedule-body">
+			<!-- Detect Location Button -->
+			<button type="button" class="rh-location-detect-btn" [disabled]="isDetectingLocation()" (click)="detectLocation()">
+				<span *ngIf="isDetectingLocation()" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+				<i *ngIf="!isDetectingLocation()" class="fal fa-location-arrow"></i>
+				<span>{{ isDetectingLocation() ? 'Locating your address…' : 'Use Current Location' }}</span>
+			</button>
+
+			<div class="rh-location-divider"><span>OR SEARCH CITY</span></div>
+
+			<!-- Search Input -->
+			<div class="rh-location-search-wrap mb-3">
+				<i class="fal fa-search"></i>
+				<input type="search" placeholder="Type city or area name..." [ngModel]="locationQuery()" (ngModelChange)="locationQuery.set($event)">
+			</div>
+
+			<!-- Available Cities List -->
+			<div class="rh-location-list">
+				<button *ngFor="let location of filteredLocations()" 
+				        type="button" 
+				        class="rh-location-item" 
+				        [class.is-selected]="selectedLocation().id === location.id"
+				        (click)="selectLocation(location)">
+					<div>
+						<strong>{{ location.name }}</strong>
+						<small>{{ location.address }}, {{ location.city }}</small>
+					</div>
+					<i class="fal fa-chevron-right text-muted small"></i>
+				</button>
+				<p *ngIf="!filteredLocations().length" class="text-center text-muted small py-3 mb-0">No matching locations found.</p>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,826 @@
+:host {
+  display: block;
+  min-height: 100%;
+  color: var(--rh-text-dark);
+  background: #f4f6fc;
+  font-family: "Jost", "Open Sans", sans-serif;
+}
+
+.rainbow-account-page {
+  min-height: calc(100vh - 80px);
+  padding: 24px 0 64px;
+  background: #f4f6fc;
+}
+
+.rainbow-account-container {
+  max-width: 1120px;
+}
+
+.rainbow-account-header {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.rainbow-account-header h1 {
+  margin: 0;
+  color: #17192e;
+  font-family: "Jost", sans-serif;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.rainbow-account-back {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(45, 44, 146, 0.1);
+  border-radius: 50%;
+  color: var(--rh-primary);
+  background: #fff;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.rainbow-account-back:hover {
+  box-shadow: 0 6px 16px rgba(45, 44, 146, 0.12);
+  transform: translateX(-2px);
+}
+
+.rainbow-account-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding: 8px 16px;
+  border: 1px solid rgba(232, 16, 31, 0.2);
+  border-radius: 12px;
+  color: #e8101f;
+  background: rgba(232, 16, 31, 0.04);
+  font-family: "Jost", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 160ms ease;
+
+  &:hover {
+    background: rgba(232, 16, 31, 0.1);
+  }
+}
+
+.rainbow-account-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+/* Sidebar Styling */
+.rainbow-account-sidebar {
+  display: grid;
+  gap: 16px;
+}
+
+.rainbow-user-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(35, 42, 92, 0.06);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(33, 42, 90, 0.045);
+}
+
+.rainbow-user-avatar {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--rh-primary);
+  font-size: 1.35rem;
+}
+
+.rainbow-user-info strong {
+  display: block;
+  color: #17192e;
+  font-size: 0.98rem;
+}
+
+.rainbow-user-info p {
+  margin: 1px 0 4px;
+  color: #777d8d;
+  font-size: 0.78rem;
+}
+
+.rainbow-user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #2bbf4e;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.rainbow-wallet-quick-widget {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border: 1px solid rgba(75, 0, 130, 0.15);
+  border-radius: 18px;
+  color: #fff;
+  background: var(--rh-primary);
+  box-shadow: 0 8px 24px rgba(32, 32, 109, 0.12);
+  cursor: pointer;
+  transition: transform 160ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  span {
+    display: block;
+    color: #a8e5ff;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  strong {
+    display: block;
+    margin-top: 2px;
+    font-size: 1.35rem;
+  }
+}
+
+.rainbow-wallet-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 1.15rem;
+}
+
+.rainbow-account-nav {
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid rgba(35, 42, 92, 0.06);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(33, 42, 90, 0.045);
+}
+
+.rainbow-account-nav button {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 12px;
+  color: #555b70;
+  background: transparent;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 160ms ease;
+
+  i {
+    width: 20px;
+    color: var(--rh-primary);
+    font-size: 1rem;
+  }
+
+  span:not(.badge):not(.badge-pill) {
+    flex: 1;
+    text-align: left;
+  }
+
+  .badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: var(--rh-primary);
+    background: rgba(75, 0, 130, 0.08);
+    font-size: 0.72rem;
+    font-weight: 750;
+  }
+
+  .badge-pill {
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: #fff;
+    background: #2bbf4e;
+    font-size: 0.68rem;
+    font-weight: 750;
+    text-transform: uppercase;
+  }
+
+  &:hover,
+  &.is-active {
+    color: var(--rh-primary);
+    background: rgba(75, 0, 130, 0.06);
+  }
+
+  &.is-active {
+    font-weight: 750;
+  }
+
+  &.logout-link {
+    color: #e8101f;
+    i { color: #e8101f; }
+    &:hover { background: rgba(232, 16, 31, 0.06); }
+  }
+}
+
+/* Main Tab Content */
+.rainbow-account-main {
+  min-width: 0;
+}
+
+.rainbow-tab-content {
+  padding: 24px;
+  border: 1px solid rgba(35, 42, 92, 0.06);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(33, 42, 90, 0.045);
+}
+
+.rainbow-tab-header {
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #edf0f6;
+
+  h2 {
+    margin: 0 0 4px;
+    color: #17192e;
+    font-family: "Jost", sans-serif;
+    font-size: 1.35rem;
+    font-weight: 750;
+  }
+
+  p {
+    margin: 0;
+    color: #777d8d;
+    font-size: 0.88rem;
+  }
+}
+
+/* Form Controls & Grid Layout */
+.rainbow-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.rainbow-form-field {
+  display: grid;
+  gap: 6px;
+}
+
+.rainbow-form-field label {
+  color: #3e4157;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.rainbow-input-wrap {
+  position: relative;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid #e0e4ef;
+  border-radius: 12px;
+  color: #80869a;
+  background: #fbfcff;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+
+  &:focus-within {
+    border-color: var(--rh-primary);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(61, 168, 224, 0.12);
+  }
+
+  > i {
+    flex: 0 0 auto;
+    color: var(--rh-primary);
+    font-size: 0.94rem;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    color: #22243a;
+    background: transparent;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  input {
+    height: 46px;
+  }
+
+  select {
+    height: 46px;
+    appearance: none;
+    cursor: pointer;
+  }
+}
+
+.rainbow-select-wrap {
+  position: relative;
+
+  .select-arrow {
+    position: absolute;
+    right: 14px;
+    pointer-events: none;
+    font-size: 0.8rem;
+    color: #80869a;
+  }
+}
+
+.rainbow-settings-form {
+  display: grid;
+  gap: 16px;
+}
+
+.rainbow-form-label {
+  display: block;
+  color: #3e4157;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+/* Order History Cards */
+.rainbow-orders-list {
+  display: grid;
+  gap: 16px;
+}
+
+.rainbow-order-card {
+  border: 1px solid #e0e4ef;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.rainbow-order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #edf0f6;
+  background: #fbfcfe;
+}
+
+.rainbow-order-id {
+  color: #17192e;
+  font-family: "Jost", sans-serif;
+  font-weight: 750;
+  margin-right: 12px;
+}
+
+.rainbow-order-date {
+  color: #777d8d;
+  font-size: 0.82rem;
+
+  i { margin-right: 4px; color: var(--rh-primary); }
+}
+
+.rainbow-order-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 750;
+
+  &.status-delivered {
+    color: #1e8737;
+    background: #e8f8ec;
+  }
+
+  &.status-in-transit {
+    color: #2867cf;
+    background: #eaf2ff;
+  }
+}
+
+.rainbow-order-items {
+  padding: 8px 18px;
+}
+
+.rainbow-order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+
+  & + .rainbow-order-item-row {
+    border-top: 1px solid #edf0f6;
+  }
+
+  img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    padding: 4px;
+    border: 1px solid #edf0f4;
+    border-radius: 8px;
+  }
+}
+
+.rainbow-order-item-copy {
+  flex: 1;
+  min-width: 0;
+
+  strong {
+    display: block;
+    color: #202239;
+    font-size: 0.88rem;
+  }
+
+  small {
+    color: #777d8d;
+    font-size: 0.78rem;
+  }
+}
+
+.rainbow-btn-return-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid #e0e4ef;
+  border-radius: 8px;
+  color: #555b70;
+  background: #fff;
+  font-family: "Jost", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--rh-primary);
+    color: var(--rh-primary);
+  }
+}
+
+.rainbow-order-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-top: 1px solid #edf0f6;
+  background: #fbfcfe;
+  color: #656b7e;
+  font-size: 0.84rem;
+
+  strong { color: #17192e; }
+}
+
+.rainbow-order-total strong {
+  color: var(--rh-primary);
+  font-size: 1rem;
+}
+
+/* Wallet Top Up Tab */
+.rainbow-wallet-hero {
+  display: grid;
+  gap: 20px;
+}
+
+.rainbow-wallet-hero-card {
+  padding: 24px;
+  border-radius: 20px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--rh-primary), #3b3aa6);
+
+  .lbl {
+    display: block;
+    color: #a8e5ff;
+    font-size: 0.8rem;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .balance {
+    display: block;
+    margin: 6px 0 16px;
+    font-size: 2.2rem;
+  }
+}
+
+.rainbow-wallet-features {
+  display: flex;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.82rem;
+}
+
+.rainbow-topup-card {
+  padding: 20px;
+  border: 1px solid #edf0f6;
+  border-radius: 18px;
+  background: #fbfcfe;
+
+  h3 {
+    margin: 0 0 4px;
+    font-size: 1.15rem;
+    font-weight: 750;
+  }
+
+  p {
+    margin: 0 0 16px;
+    color: #777d8d;
+    font-size: 0.84rem;
+  }
+}
+
+.rainbow-topup-amounts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  button {
+    height: 44px;
+    border: 1px solid #e0e4ef;
+    border-radius: 10px;
+    color: #202239;
+    background: #fff;
+    font-family: "Jost", sans-serif;
+    font-weight: 750;
+    cursor: pointer;
+
+    &.is-selected {
+      border-color: var(--rh-primary);
+      color: #fff;
+      background: var(--rh-primary);
+    }
+  }
+}
+
+.rainbow-topup-methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  button {
+    display: flex;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid #e0e4ef;
+    border-radius: 12px;
+    color: #202239;
+    background: #fff;
+    font-family: "Jost", sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+
+    &.is-selected {
+      border-color: var(--rh-primary);
+      background: rgba(75, 0, 130, 0.06);
+      box-shadow: 0 0 0 3px rgba(75, 0, 130, 0.1);
+    }
+  }
+}
+
+.rainbow-account-empty {
+  display: flex;
+  min-height: 240px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+
+  i {
+    font-size: 2.5rem;
+    color: var(--rh-secondary);
+    margin-bottom: 12px;
+  }
+
+  h3 { margin: 0 0 6px; font-size: 1.25rem; font-weight: 750; }
+  p { margin: 0 0 16px; color: #777d8d; }
+}
+
+.rainbow-btn-primary {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border: 1px solid var(--rh-primary);
+  border-radius: 13px;
+  color: #fff;
+  background: var(--rh-primary);
+  font-family: "Jost", sans-serif;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 180ms ease;
+
+  &:hover {
+    border-color: var(--rh-secondary) !important;
+    color: var(--rh-primary) !important;
+    background: var(--rh-secondary) !important;
+    transform: translateY(-2px);
+  }
+}
+
+/* Returns list */
+.rainbow-returns-list {
+  display: grid;
+  gap: 14px;
+}
+
+.rainbow-return-card {
+  border: 1px solid #e0e4ef;
+  border-radius: 14px;
+  padding: 16px;
+  background: #fff;
+}
+
+.rainbow-return-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  strong { display: block; color: #17192e; }
+  small { color: #777d8d; }
+}
+
+.rainbow-return-badge {
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.74rem;
+  font-weight: 750;
+
+  &.status-approved {
+    color: #1e8737;
+    background: #e8f8ec;
+  }
+
+  &.status-pending {
+    color: #d97706;
+    background: #fffbeb;
+  }
+}
+
+.rainbow-return-body {
+  p { margin: 4px 0 8px; color: #656b7e; font-size: 0.86rem; }
+}
+
+.rainbow-refund-amount {
+  color: #777d8d;
+  font-size: 0.84rem;
+  strong { color: var(--rh-primary); font-size: 0.94rem; }
+}
+
+/* Saved Addresses & Saved Cards Tabs */
+.rainbow-saved-addresses-list,
+.rainbow-saved-cards-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.rainbow-address-card-item,
+.rainbow-card-item {
+  position: relative;
+  padding: 16px;
+  border: 1px solid #e0e4ef;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.rainbow-address-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 8px;
+  color: var(--rh-primary);
+  background: rgba(75, 0, 130, 0.08);
+  font-size: 0.74rem;
+  font-weight: 750;
+}
+
+.rainbow-default-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #2bbf4e;
+  font-size: 0.74rem;
+  font-weight: 750;
+}
+
+.rainbow-address-card-item strong {
+  display: block;
+  color: #17192e;
+  font-size: 0.94rem;
+}
+
+.rainbow-address-card-item p {
+  margin: 3px 0 6px;
+  color: #656b7e;
+  font-size: 0.86rem;
+}
+
+.rainbow-address-card-item small {
+  color: #858b9a;
+  font-size: 0.78rem;
+}
+
+.rainbow-address-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #edf0f6;
+}
+
+.btn-link-action {
+  padding: 0;
+  border: 0;
+  color: var(--rh-primary);
+  background: transparent;
+  font-family: "Jost", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.btn-link-danger {
+  padding: 0;
+  border: 0;
+  color: #e8101f;
+  background: transparent;
+  font-family: "Jost", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rainbow-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  i {
+    font-size: 1.4rem;
+    color: var(--rh-primary);
+  }
+}
+
+.rainbow-card-num {
+  display: block;
+  font-family: monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.1em;
+  color: #17192e;
+  margin-bottom: 8px;
+}
+
+.rainbow-card-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #777d8d;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 800px) {
+  .rainbow-account-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rainbow-form-row {
+    grid-template-columns: 1fr;
+  }
+}

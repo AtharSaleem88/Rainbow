@@ -1,0 +1,319 @@
+<!-- Rainbow grocery hero -->
+<section class="rh-hero-section" aria-label="Featured offers">
+  <div class="container maxw_1460">
+    <div class="rh-hero-frame" (mouseenter)="stopHeroSlider()" (mouseleave)="startHeroSlider()" (focusin)="stopHeroSlider()" (focusout)="startHeroSlider()">
+      <article *ngFor="let slide of heroSlides; let i = index" class="rh-hero-slide" [class.rh-hero-active]="currentHeroIndex() === i" [ngClass]="slide.theme" [attr.aria-hidden]="currentHeroIndex() !== i" role="group" aria-roledescription="slide" [attr.aria-label]="(i + 1) + ' of ' + heroSlides.length">
+        <div class="rh-hero-copy">
+          <span class="rh-hero-eyebrow">{{ slide.eyebrow }}</span>
+          <h1 class="rh-hero-heading">{{ slide.title }}</h1>
+          <a [routerLink]="slide.link" class="rh-hero-cta">{{ slide.ctaText }}<i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="rh-hero-art">
+          <div class="rh-hero-rainbow-cloud-wrap" aria-hidden="true">
+            <img src="assets/images/rainbow-cloud-swirl.png" alt="" class="rh-hero-rainbow-cloud-bg">
+          </div>
+          <img [src]="slide.image" [alt]="slide.imageAlt" [attr.fetchpriority]="i === 0 ? 'high' : 'auto'" [attr.loading]="i === 0 ? 'eager' : 'lazy'">
+        </div>
+      </article>
+      <div class="rh-hero-controls" aria-label="Hero slider controls">
+        <button type="button" class="rh-hero-arrow" (click)="prevHeroSlide()" aria-label="Previous slide"><i class="fal fa-arrow-left" aria-hidden="true"></i></button>
+        <div class="rh-hero-dots" role="group" aria-label="Choose a slide">
+          <button *ngFor="let slide of heroSlides; let i = index" type="button" class="rh-hero-dot" [class.rh-hero-dot-active]="currentHeroIndex() === i" (click)="setHeroSlide(i)" [attr.aria-label]="'Show slide ' + (i + 1)" [attr.aria-current]="currentHeroIndex() === i ? 'true' : null"></button>
+        </div>
+        <button type="button" class="rh-hero-arrow" (click)="nextHeroSlide()" aria-label="Next slide"><i class="fal fa-arrow-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Shop by category -->
+<section class="rh-category-section" aria-labelledby="home-category-title">
+  <div class="container maxw_1460">
+    <div class="rh-category-heading">
+      <h2 id="home-category-title">Shop by Category</h2>
+      <div class="gray_line" aria-hidden="true"></div>
+    </div>
+    <div class="rh-category-grid" #categoryGrid (scroll)="onCategoryScroll($event)">
+      <a *ngFor="let cat of categories"
+         class="rh-category-item"
+         [routerLink]="['/shop']"
+         [queryParams]="{category: cat.slug}"
+        [attr.aria-label]="'Shop ' + cat.name">
+        <span class="rh-category-image">
+          <img *ngIf="cat.image" [src]="cat.image" [alt]="cat.name" loading="lazy" decoding="async">
+          <i *ngIf="!cat.image && cat.icon" class="fas" [ngClass]="cat.icon" aria-hidden="true"></i>
+        </span>
+        <span class="rh-category-name">{{ cat.name }}</span>
+      </a>
+    </div>
+
+    <!-- Mobile Category Scroll Indicator (Pill Track with Sky Blue Active Capsule) -->
+    <div class="rh-category-indicator-wrap d-flex d-md-none align-items-center justify-content-center mt-3">
+      <div class="rh-category-indicator-pill" role="group" aria-label="Category pages">
+        <button *ngFor="let page of [0, 1, 2]" 
+                type="button" 
+                class="rh-category-indicator-dot" 
+                [class.active]="activeCategoryPageIndex() === page" 
+                (click)="scrollToCategoryPage(page)"
+                [attr.aria-label]="'Go to category page ' + (page + 1)">
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Shop by category end -->
+
+<!-- Monthly Deals -->
+<section class="rh-monthly-deals sec_ptb_100 bg_white" aria-labelledby="rh-monthly-deals-title">
+  <div class="container maxw_1460">
+    <header class="rh-monthly-heading">
+      <div>
+        <h2 id="rh-monthly-deals-title">Monthly Savings</h2>
+      </div>
+    </header>
+
+    <div class="rh-monthly-flyer">
+      <!-- Single Embossed Rainbow Cloud Watermark -->
+      <img src="assets/images/logo/rainbow-cloud-icon.png" alt="" class="rh-monthly-rainbow rh-monthly-embossed-cloud" aria-hidden="true">
+      <div class="rh-monthly-flyer-intro">
+        <h3>Monthly Ad</h3>
+        <div class="rh-monthly-flyer-highlights" aria-label="Monthly ad highlights">
+          <span><i class="fal fa-leaf" aria-hidden="true"></i> Fresh picks</span>
+          <span><i class="fal fa-shopping-basket" aria-hidden="true"></i> Everyday favourites</span>
+          <span><i class="fal fa-tags" aria-hidden="true"></i> Great value</span>
+        </div>
+      </div>
+      <button type="button" class="rh-monthly-flyer-preview" (click)="openMonthlyFlyer($event)" aria-label="Open the Rainbow monthly flyer in a larger view">
+        <img src="assets/images/rainbowflyer.jpg" alt="Rainbow Cash & Carry monthly savings flyer featuring Pakistani produce, ghee, cooking oil and pantry products" loading="lazy" decoding="async">
+        <span class="rh-monthly-flyer-preview-label"><i class="fal fa-expand-alt" aria-hidden="true"></i> View full monthly ad</span>
+      </button>
+    </div>
+
+    <div class="rh-monthly-deal-content">
+      <div class="rh-monthly-subheading">
+        <div><h3 id="rh-monthly-deal-list-title">Monthly Special Deals</h3></div>
+        <div class="rh-monthly-rail-meta">
+          <span>{{ monthlyDeals.length }} offers</span>
+          <div class="rh-monthly-rail-controls" *ngIf="monthlyDeals.length > 3" aria-label="Browse monthly offers">
+            <button type="button" (click)="scrollMonthlyOffers(-1)" aria-label="Scroll to previous monthly offers"><i class="fal fa-arrow-left" aria-hidden="true"></i></button>
+            <button type="button" (click)="scrollMonthlyOffers(1)" aria-label="Scroll to more monthly offers"><i class="fal fa-arrow-right" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <nav class="rh-monthly-category-nav" aria-label="Filter monthly deals by category">
+        <button type="button" [class.active]="activeMonthlyDealCategory() === 'all'" [attr.aria-pressed]="activeMonthlyDealCategory() === 'all'" (click)="activeMonthlyDealCategory.set('all')">All Deals</button>
+        <button *ngFor="let category of monthlyDeal.categories" type="button" [class.active]="activeMonthlyDealCategory() === category.id" [attr.aria-pressed]="activeMonthlyDealCategory() === category.id" (click)="activeMonthlyDealCategory.set(category.id)">{{ category.name }}</button>
+      </nav>
+
+      <div class="rh-monthly-products" id="rh-monthly-deal-list" #monthlyProducts tabindex="0" aria-label="Monthly offers carousel" *ngIf="monthlyDeals.length; else noMonthlyDeals">
+        <app-product-card *ngFor="let deal of monthlyDeals" [product]="deal" [sectionLabel]="'Monthly Deals'"></app-product-card>
+      </div>
+      <ng-template #noMonthlyDeals>
+        <p class="rh-monthly-empty">There are no deals in this category right now.</p>
+      </ng-template>
+    </div>
+
+    <div *ngIf="monthlyFlyerOpen()" class="rh-monthly-flyer-modal" (click)="closeMonthlyFlyer()" role="dialog" aria-modal="true" aria-label="Rainbow monthly flyer" (keydown.escape)="closeMonthlyFlyer()">
+      <div class="rh-monthly-flyer-modal-panel" (click)="$event.stopPropagation()">
+        <button id="rh-monthly-flyer-close" type="button" class="rh-monthly-flyer-close" (click)="closeMonthlyFlyer()" aria-label="Close flyer">
+          <i class="fal fa-times" aria-hidden="true"></i>
+        </button>
+        <img src="assets/images/rainbowflyer.jpg" alt="Full-size Rainbow Cash & Carry monthly savings flyer" decoding="async">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fresh From Farm -->
+<section class="rh-product-collection" aria-labelledby="rh-farm-title">
+  <div class="container maxw_1460">
+    <header class="rh-collection-heading">
+      <div><h2 id="rh-farm-title">Fresh From Farm</h2><p>Seasonal produce and everyday fresh picks from local farms.</p></div>
+      <a routerLink="/shop" [queryParams]="{category: 'ultra-fresh'}" class="rh-collection-see-all">See all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+    </header>
+    <div class="rh-product-rail" aria-label="Fresh from farm products">
+      <app-product-card *ngFor="let product of farmProducts" [product]="product" [sectionLabel]="'Fresh From Farm'"></app-product-card>
+    </div>
+  </div>
+</section>
+
+<!-- Rainbow Finds -->
+<section class="rh-product-collection rh-product-collection-tint" aria-labelledby="rh-finds-title">
+  <div class="container maxw_1460">
+    <header class="rh-collection-heading">
+      <div><h2 id="rh-finds-title">Rainbow Finds</h2></div>
+      <a routerLink="/shop" [queryParams]="{category: 'grocery'}" class="rh-collection-see-all">See all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+    </header>
+    <div class="rh-product-rail" aria-label="Rainbow Finds products">
+      <app-product-card *ngFor="let product of rainbowFinds" [product]="product" [sectionLabel]="'Rainbow Finds'"></app-product-card>
+    </div>
+  </div>
+</section>
+
+<!-- Frozen Food Section -->
+<section class="rh-product-collection" aria-labelledby="rh-frozen-title">
+  <div class="container maxw_1460">
+    <header class="rh-collection-heading">
+      <div><h2 id="rh-frozen-title">Frozen Food Section</h2><p>Stock the freezer with convenient favourites for any time of day.</p></div>
+      <a routerLink="/shop" [queryParams]="{category: 'frozen-food'}" class="rh-collection-see-all">See all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+    </header>
+    <div class="rh-product-rail" aria-label="Frozen food products">
+      <app-product-card *ngFor="let product of frozenProducts" [product]="product" [sectionLabel]="'Frozen Food Section'"></app-product-card>
+    </div>
+  </div>
+</section>
+
+<!-- Premium category banners -->
+<section class="rh-promo-banners" aria-label="Explore more at Rainbow">
+  <div class="container maxw_1460">
+    <div class="rh-promo-banner-grid">
+      <a routerLink="/shop" class="rh-promo-banner rh-promo-health">
+        <img class="rh-promo-banner-image" src="assets/images/rainbow-health-beauty-banner.png" alt="Premium skincare and personal care products" loading="lazy" decoding="async">
+        <span class="rh-promo-banner-shade" aria-hidden="true"></span>
+        <span class="rh-promo-banner-copy">
+          <span class="rh-promo-banner-eyebrow"><i class="fal fa-sparkles" aria-hidden="true"></i> YOUR EVERYDAY RITUAL</span>
+          <strong class="rh-promo-banner-title">Health &amp; Beauty</strong>
+          <span class="rh-promo-banner-description">Little care, lasting confidence.</span>
+          <span class="rh-promo-banner-cta">Explore the collection <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
+        </span>
+      </a>
+
+      <a routerLink="/shop" class="rh-promo-banner rh-promo-electronics">
+        <img class="rh-promo-banner-image" src="assets/images/rainbow-electronics-banner.png" alt="Modern everyday electronics including headphones, a phone, and a smartwatch" loading="lazy" decoding="async">
+        <span class="rh-promo-banner-shade" aria-hidden="true"></span>
+        <span class="rh-promo-banner-copy">
+          <span class="rh-promo-banner-eyebrow">SMARTER EVERYDAY</span>
+          <strong class="rh-promo-banner-title">Electronics &amp; Gadgets</strong>
+          <span class="rh-promo-banner-cta">Explore Collection <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS YOU TRUST SECTION - start -->
+<section class="rh-brands" id="rh-brands">
+  <div class="rh-brands-header">
+    <h2 class="rh-brands-title">Brands You Trust</h2>
+    <p class="rh-brands-subtitle">Authentic products directly from Pakistan's leading manufacturers</p>
+    <div class="rh-brands-accent"></div>
+  </div>
+  <div class="rh-brands-track-wrap">
+    <div class="rh-brands-fade rh-brands-fade-left"></div>
+    <div class="rh-brands-track" id="rh-brands-track">
+      <!-- SET A -->
+      <div class="rh-brands-set">
+        <button *ngFor="let brand of brands" type="button" class="rh-brand-item" (click)="openBrand(brand)" [attr.aria-label]="'Explore ' + brand.name + ' products'">
+          <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
+        </button>
+      </div>
+      <!-- SET B (Duplicate for smooth infinite ticker) -->
+      <div class="rh-brands-set" aria-hidden="true">
+        <div *ngFor="let brand of brands" class="rh-brand-item">
+          <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
+        </div>
+      </div>
+    </div>
+    <div class="rh-brands-fade rh-brands-fade-right"></div>
+  </div>
+</section>
+<!-- BRANDS YOU TRUST SECTION - end -->
+
+<div *ngIf="selectedBrand() as brand" class="rh-brand-overlay" (click)="closeBrand()" role="presentation">
+  <section class="rh-brand-store" role="dialog" aria-modal="true" [attr.aria-label]="brand.name + ' brand offers'" (click)="$event.stopPropagation()">
+    <button id="rh-brand-close" type="button" class="rh-brand-close" aria-label="Close brand offers" (click)="closeBrand()"><i class="fal fa-times" aria-hidden="true"></i></button>
+    <div class="rh-brand-hero">
+      <div class="rh-brand-hero-copy">
+        <span class="rh-brand-kicker">FEATURED BRAND</span>
+        <h2>{{ brand.name }}</h2>
+      </div>
+      <div class="rh-brand-hero-logo"><img [src]="brand.logo" [alt]="brand.name + ' logo'"></div>
+      <span class="rh-brand-hero-orb rh-brand-hero-orb-one" aria-hidden="true"></span>
+      <span class="rh-brand-hero-orb rh-brand-hero-orb-two" aria-hidden="true"></span>
+    </div>
+    <div class="rh-brand-store-content">
+      <div class="rh-brand-store-heading">
+        <div><span class="rh-brand-kicker">SHOP THE BRAND</span><h3>{{ brand.name }} favourites</h3></div>
+        <div class="rh-monthly-rail-controls" *ngIf="selectedBrandProducts.length > 3">
+          <button type="button" aria-label="Scroll products left" (click)="scrollBrandProducts(-1)"><i class="fal fa-chevron-left" aria-hidden="true"></i></button>
+          <button type="button" aria-label="Scroll products right" (click)="scrollBrandProducts(1)"><i class="fal fa-chevron-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div #brandProductsRail class="rh-brand-products" *ngIf="selectedBrandProducts.length; else brandComingSoon">
+        <app-product-card *ngFor="let product of selectedBrandProducts" [product]="product" [showSectionLabel]="false"></app-product-card>
+      </div>
+      <ng-template #brandComingSoon>
+        <div class="rh-brand-coming-soon"><span class="rh-brand-coming-icon"><i class="fal fa-box-open" aria-hidden="true"></i></span><div><strong>Brand offers are on the way</strong><p>We’re preparing a curated selection of {{ brand.name }} products. Check back soon for their latest offers.</p></div></div>
+      </ng-template>
+    </div>
+  </section>
+</div>
+
+<section class="rh-category-spotlights" aria-labelledby="rh-category-spotlights-title">
+  <div class="rh-category-spotlights-inner">
+    <div class="rh-category-spotlights-heading">
+      <div><h2 id="rh-category-spotlights-title">More to love at Rainbow</h2></div>
+    </div>
+    <div class="rh-category-spotlights-grid">
+      <a *ngFor="let category of spotlightCategories" class="rh-category-spotlight" [ngClass]="'rh-category-spotlight-' + category.theme" [routerLink]="['/shop']" [queryParams]="{ category: category.category }">
+        <span class="rh-category-spotlight-image"><img [src]="category.image" [alt]="category.title + ' essentials'" loading="lazy"></span>
+        <span class="rh-category-spotlight-content">
+          <span class="rh-category-spotlight-title">{{ category.title }}</span>
+          <span class="rh-category-spotlight-description">{{ category.description }}</span>
+          <span class="rh-category-spotlight-link">Shop Now <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Prices Drop Section -->
+<section class="rh-product-collection rh-product-collection-tint" aria-labelledby="rh-price-drops-title">
+  <div class="container maxw_1460">
+    <header class="rh-collection-heading">
+      <div><h2 id="rh-price-drops-title">Price Drops</h2><p>Exclusive deals and price reductions on everyday essentials.</p></div>
+      <a routerLink="/shop" class="rh-collection-see-all">See all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+    </header>
+    <div class="rh-product-rail" aria-label="Price drops products">
+      <app-product-card *ngFor="let product of priceDropProducts" [product]="product" [sectionLabel]="'Price Drop'"></app-product-card>
+    </div>
+  </div>
+</section>
+
+<section class="rh-campaign-section" aria-labelledby="rh-campaign-heading">
+  <div class="rh-campaign-inner">
+    <div class="rh-campaign-heading-row">
+      <div><span class="rh-campaign-eyebrow">A LITTLE MORE TO DISCOVER</span></div>
+      <div class="rh-campaign-controls">
+        <button type="button" aria-label="Previous banner" (click)="prevCampaignBanner()"><i class="fal fa-chevron-left" aria-hidden="true"></i></button>
+        <button type="button" aria-label="Next banner" (click)="nextCampaignBanner()"><i class="fal fa-chevron-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="rh-campaign-viewport" aria-live="polite">
+      <div class="rh-campaign-track">
+        <a *ngFor="let banner of visibleCampaignBanners" class="rh-campaign-banner" [routerLink]="['/shop']" [queryParams]="{ category: banner.category }" [attr.aria-label]="banner.title">
+          <img class="rh-campaign-image" [src]="banner.image" [alt]="banner.title" loading="lazy" decoding="async">
+        </a>
+      </div>
+    </div>
+    <div class="rh-campaign-dots" aria-label="Choose a campaign">
+      <button *ngFor="let banner of campaignBanners; let i = index" type="button" [class.active]="activeCampaignIndex() === i" [attr.aria-label]="'Show ' + banner.title" [attr.aria-current]="activeCampaignIndex() === i ? 'true' : null" (click)="selectCampaignBanner(i)"></button>
+    </div>
+  </div>
+</section>
+
+<!-- Store trust factors -->
+<section class="policy_section sec_ptb_50 pb-0 clearfix">
+  <div class="container maxw_1460">
+    <div class="supermarket_policy clearfix">
+      <ul class="ul_li clearfix">
+        <li><div class="supermarket_policy_item clearfix"><div class="item_icon"><img src="assets/images/icons/supermarket/icon_12.png" alt="Free Delivery"></div><div class="item_content"><h3 class="text-uppercase">Free Delivery</h3><p>For all orders over Rs. 2000</p></div></div></li>
+        <li><div class="supermarket_policy_item clearfix"><div class="item_icon"><img src="assets/images/icons/supermarket/icon_13.png" alt="Safe Payment"></div><div class="item_content"><h3 class="text-uppercase">Safe payment</h3><p>100% secure checkout</p></div></div></li>
+        <li><div class="supermarket_policy_item clearfix"><div class="item_icon"><img src="assets/images/icons/supermarket/icon_14.png" alt="Shop With Confidence"></div><div class="item_content"><h3 class="text-uppercase">Shop with confidence</h3><p>Freshness guarantee</p></div></div></li>
+        <li><div class="supermarket_policy_item clearfix"><div class="item_icon"><img src="assets/images/icons/supermarket/icon_15.png" alt="Help Center"></div><div class="item_content"><h3 class="text-uppercase">24/7 help center</h3><p>Dedicated customer support</p></div></div></li>
+        <li><div class="supermarket_policy_item clearfix"><div class="item_icon"><img src="assets/images/icons/supermarket/icon_16.png" alt="Friendly Services"></div><div class="item_content"><h3 class="text-uppercase">Friendly services</h3><p>Satisfaction guarantee</p></div></div></li>
+      </ul>
+    </div>
+  </div>
+</section>

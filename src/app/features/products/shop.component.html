@@ -1,0 +1,143 @@
+<section class="rh-shop-intro">
+  <div class="container maxw_1460">
+    <div class="rh-shop-breadcrumb">
+      <a routerLink="/">Home</a>
+      <i class="fal fa-angle-right" aria-hidden="true"></i>
+      <span>Shop</span>
+      <i class="fal fa-angle-right" aria-hidden="true"></i>
+      <strong>{{ categoryName }}</strong>
+    </div>
+    <div class="rh-shop-page-heading">
+      <div>
+        <h1>{{ categoryName }}</h1>
+        <p>Quality groceries and everyday favourites for your home.</p>
+      </div>
+      <a routerLink="/shop" class="rh-shop-back" *ngIf="selectedCategory()" (click)="resetFilters()">
+        <i class="fal fa-arrow-left" aria-hidden="true"></i> All products
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="rh-shop-section">
+  <div class="container maxw_1460">
+    <div class="rh-shop-layout">
+      <!-- 1. VERTICAL SUBCATEGORIES SIDEBAR (Left side: image on top & name below) -->
+      <aside class="rh-shop-subcat-sidebar" aria-label="Vertical subcategories sidebar">
+        <div class="rh-subcat-sidebar-scroll">
+          <!-- All Option -->
+          <button type="button" 
+                  class="rh-subcat-item" 
+                  [class.active]="!selectedSubCategory()" 
+                  (click)="onSubCategorySelect('')">
+            <span class="rh-subcat-tile">
+              <i class="fal fa-th-large"></i>
+            </span>
+            <span class="rh-subcat-label">All</span>
+          </button>
+
+          <!-- Subcategory Items with Image on Top & Name Below -->
+          <button *ngFor="let item of subCategoryItems" 
+                  type="button" 
+                  class="rh-subcat-item" 
+                  [class.active]="selectedSubCategory() === item.name" 
+                  (click)="onSubCategorySelect(item.name)">
+            <span class="rh-subcat-tile">
+              <img *ngIf="item.image" [src]="item.image" [alt]="item.name" loading="lazy">
+              <i *ngIf="!item.image && item.icon" class="fas" [ngClass]="item.icon" aria-hidden="true"></i>
+              <i *ngIf="!item.image && !item.icon" class="fal fa-tags"></i>
+            </span>
+            <span class="rh-subcat-label">{{ item.name }}</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- 2. MAIN RESULTS AREA (Right side: Brand dropdown, Price Filter, Sort By & Sub Sub Categories) -->
+      <main class="rh-shop-results flex-grow-1">
+        <!-- Header Filters Bar (Consistent, Perfectly Aligned Controls Row) -->
+        <div class="rh-shop-header-filters">
+          <div class="rh-filter-controls-row">
+            <!-- Brand Dropdown -->
+            <div class="rh-filter-field">
+              <span class="rh-filter-label">Brand</span>
+              <select id="rh-shop-brand-select" class="rh-filter-select" [value]="selectedBrand()" (change)="selectedBrand.set($any($event.target).value); applyFilters()">
+                <option value="">All brands</option>
+                <option value="Rainbow Farm">Rainbow Farm</option>
+                <option value="Rainbow Organic">Rainbow Organic</option>
+                <option value="Rainbow Select">Rainbow Select</option>
+                <option value="Rainbow Frozen">Rainbow Frozen</option>
+                <option value="Shan">Shan</option>
+              </select>
+            </div>
+
+            <!-- Price Filter (Min & Max Price inputs) -->
+            <div class="rh-filter-field">
+              <span class="rh-filter-label">Price (Rs.)</span>
+              <div class="rh-price-range-group">
+                <input type="number" min="0" placeholder="Min" class="rh-filter-input" [value]="minPrice()" (input)="minPrice.set(+$any($event.target).value); applyFilters()">
+                <span class="rh-price-dash">-</span>
+                <input type="number" min="0" placeholder="Max" class="rh-filter-input" [value]="maxPrice()" (input)="maxPrice.set(+$any($event.target).value); applyFilters()">
+              </div>
+            </div>
+
+            <!-- Sort By Dropdown -->
+            <div class="rh-filter-field ms-auto">
+              <span class="rh-filter-label">Sort By</span>
+              <select id="rh-shop-sort-select" class="rh-filter-select" (change)="onSortChange($event)">
+                <option value="featured">Recommended</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="rh-filter-divider"></div>
+
+          <!-- Sub Sub Categories Horizontal Filter Chips -->
+          <div class="rh-subsub-row">
+            <span class="rh-subsub-title">Sub Sub Categories:</span>
+            <div class="rh-subsub-chips-container">
+              <button type="button" 
+                      class="rh-subsub-chip" 
+                      [class.active]="!selectedSubSubCategory()" 
+                      (click)="selectedSubSubCategory.set(''); applyFilters()">
+                All
+              </button>
+              <button *ngFor="let subSubCat of subSubCategories" 
+                      type="button" 
+                      class="rh-subsub-chip" 
+                      [class.active]="selectedSubSubCategory() === subSubCat" 
+                      (click)="selectedSubSubCategory.set(subSubCat); applyFilters()">
+                {{ subSubCat }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products Count & Title -->
+        <div class="d-flex align-items-center justify-content-between mb-3 px-1">
+          <h2 class="h5 mb-0 font-jost fw-bold text-primary">{{ subCategoryDisplayName }}</h2>
+          <small class="text-muted">Showing {{ filteredProducts().length }} products</small>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="rh-shop-products" [class.rh-shop-products-list]="viewMode() === 'list'" *ngIf="filteredProducts().length; else emptyResults">
+          <app-product-card *ngFor="let product of filteredProducts()" [product]="product" [viewMode]="viewMode()" [showSectionLabel]="false"></app-product-card>
+        </div>
+
+        <ng-template #emptyResults>
+          <div class="rh-shop-empty">
+            <i class="fal fa-search" aria-hidden="true"></i>
+            <h3>No products found</h3>
+            <p>Try adjusting your filters or selecting another category.</p>
+            <button type="button" (click)="resetFilters()" class="btn btn-primary">Clear filters</button>
+          </div>
+        </ng-template>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- Quick View Modal Component -->
+<app-product-quick-view [product]="selectedQuickViewProduct()" (close)="closeQuickView()"></app-product-quick-view>

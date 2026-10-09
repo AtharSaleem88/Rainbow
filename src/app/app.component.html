@@ -1,0 +1,13 @@
+<!-- Header Bar -->
+<app-header *ngIf="showStorefrontChrome()"></app-header>
+
+<!-- Main Page Router Content -->
+<main class="main-content" [class.auth-layout]="!showStorefrontChrome()">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Cart Sidebar Drawer -->
+<app-cart-drawer *ngIf="showStorefrontChrome()"></app-cart-drawer>
+
+<!-- Footer Bar -->
+<app-footer *ngIf="showStorefrontChrome()"></app-footer>

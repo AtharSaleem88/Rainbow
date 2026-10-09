@@ -1,0 +1,38 @@
+<article class="rh-shared-product-card" [class.rh-shared-product-list]="viewMode === 'list'" [class.rh-no-section-label]="!showSectionLabel" [routerLink]="['/products', product.id]" style="cursor: pointer;">
+  <div class="rh-shared-card-top">
+    <span *ngIf="showSectionLabel" class="rh-shared-section-tag">{{ sectionTag }}</span>
+    <button type="button" class="rh-shared-favorite" [class.active]="favorite()" [attr.aria-pressed]="favorite()" [attr.aria-label]="(favorite() ? 'Remove ' : 'Add ') + product.title + ' from favorites'" (click)="toggleFavorite($event)"><i class="fal fa-heart" aria-hidden="true"></i></button>
+  </div>
+
+  <a [routerLink]="['/products', product.id]" class="rh-shared-product-image" [attr.aria-label]="'View ' + product.title">
+    <img [src]="product.image" [alt]="product.title" loading="lazy" decoding="async">
+  </a>
+
+  <div class="rh-shared-product-copy">
+    <span class="rh-shared-product-category">{{ product.category }}</span>
+    <h3><a [routerLink]="['/products', product.id]">{{ product.title }}</a></h3>
+    <div class="rh-shared-tags-column">
+      <span *ngFor="let tag of displayTags" class="rh-shared-feature-tag"><i class="fal fa-check-circle"></i> {{ tag }}</span>
+    </div>
+    <div class="rh-shared-price-row"><strong>Rs. {{ displayPrice | number:'1.0-0' }}</strong><del *ngIf="displayOldPrice">Rs. {{ displayOldPrice | number:'1.0-0' }}</del></div>
+    
+    <div class="rh-shared-variant-slot">
+      <div class="rh-shared-variant-picker" *ngIf="product.variants?.length">
+        <div class="rh-shared-variant-options">
+          <button type="button" *ngFor="let variant of product.variants" [class.active]="selectedVariantId() === variant.id" [attr.aria-pressed]="selectedVariantId() === variant.id" (click)="selectVariant($event, variant.id)">
+            <span>{{ variant.label }}</span><strong>Rs. {{ variant.price | number:'1.0-0' }}</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button *ngIf="cartQuantity === 0; else cartQuantityControl" type="button" class="rh-shared-add-button" (click)="addToCart($event)"><i class="fal fa-shopping-bag" aria-hidden="true"></i> ADD</button>
+    <ng-template #cartQuantityControl>
+      <div class="rh-shared-quantity" [attr.aria-label]="'Quantity of ' + product.title + ' in cart'">
+        <button type="button" (click)="changeQuantity($event, -1)" [attr.aria-label]="'Remove one ' + product.title">−</button>
+        <span aria-live="polite">{{ cartQuantity }}</span>
+        <button type="button" (click)="changeQuantity($event, 1)" [attr.aria-label]="'Add one ' + product.title">+</button>
+      </div>
+    </ng-template>
+  </div>
+</article>

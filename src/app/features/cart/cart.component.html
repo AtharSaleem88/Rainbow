@@ -1,0 +1,140 @@
+<!-- Cart page -->
+<section class="rainbow-cart-page">
+  <div class="container rainbow-cart-container">
+    <header class="rainbow-cart-header">
+      <a routerLink="/" class="rainbow-cart-back" aria-label="Back to home"><i class="fal fa-arrow-left" aria-hidden="true"></i></a>
+      <h1>My Cart</h1>
+      <a routerLink="/shop" class="rainbow-cart-continue"><i class="fal fa-shopping-bag" aria-hidden="true"></i><span>Continue shopping</span></a>
+    </header>
+
+    <div *ngIf="cartService.cartItems().length === 0" class="rainbow-cart-empty">
+      <span class="rainbow-cart-empty-icon"><i class="fal fa-shopping-basket" aria-hidden="true"></i></span>
+      <h2>Your cart is waiting</h2>
+      <p>Find your everyday favorites and add them to your Rainbow cart.</p>
+      <a routerLink="/shop" class="rainbow-cart-primary">Start shopping <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+
+    <div *ngIf="cartService.cartItems().length > 0" class="rainbow-cart-layout">
+      <main class="rainbow-cart-main">
+        <div class="rainbow-cart-savings" *ngIf="totalSavings() > 0">
+          <span><i class="fal fa-sparkles" aria-hidden="true"></i> Your total savings</span>
+          <strong>Rs. {{ totalSavings() | number:'1.0-0' }}</strong>
+        </div>
+
+        <section class="rainbow-cart-delivery" aria-label="Delivery information">
+          <span class="rainbow-cart-delivery-icon"><i class="fal fa-shipping-fast" aria-hidden="true"></i></span>
+          <div>
+            <h2>Ready for delivery</h2>
+            <p>{{ cartService.cartCount() }} {{ cartService.cartCount() === 1 ? 'item' : 'items' }} in your cart</p>
+          </div>
+          <span class="rainbow-cart-delivery-status" [class.rainbow-cart-status-unavailable]="hasUnavailableItems()"><i class="fal" [ngClass]="hasUnavailableItems() ? 'fa-exclamation-circle' : 'fa-check'" aria-hidden="true"></i> {{ hasUnavailableItems() ? 'Review unavailable items' : 'In stock' }}</span>
+        </section>
+
+        <section class="rainbow-cart-items" aria-label="Items in your cart">
+          <article class="rainbow-cart-item" *ngFor="let item of cartService.cartItems()">
+            <a class="rainbow-cart-product-image" [routerLink]="['/products', item.product.id]" [attr.aria-label]="'View ' + item.product.title">
+              <img [src]="item.product.image" [alt]="item.product.title" loading="lazy" decoding="async">
+            </a>
+            <div class="rainbow-cart-product-details">
+              <span class="rainbow-cart-product-category">{{ item.product.category }}</span>
+              <h3><a [routerLink]="['/products', item.product.id]">{{ item.product.title }}</a></h3>
+              <span class="rainbow-cart-product-unit" *ngIf="item.variant?.label || item.product.additionalInfo?.['Weight'] || item.product.additionalInfo?.['Volume'] || item.product.additionalInfo?.['Quantity']">{{ item.variant?.label || item.product.additionalInfo?.['Weight'] || item.product.additionalInfo?.['Volume'] || item.product.additionalInfo?.['Quantity'] }}</span>
+              <button type="button" class="rainbow-cart-remove" (click)="removeItem(item.product.id, item.variant?.id)"><i class="fal fa-trash-alt" aria-hidden="true"></i> Remove</button>
+            </div>
+            <div class="rainbow-cart-item-actions">
+              <div class="rainbow-cart-quantity" [attr.aria-label]="'Quantity for ' + item.product.title">
+                <button type="button" (click)="updateQty(item.product.id, item.quantity - 1, item.variant?.id)" [attr.aria-label]="'Remove one ' + item.product.title">−</button>
+                <span aria-live="polite">{{ item.quantity }}</span>
+                <button type="button" (click)="updateQty(item.product.id, item.quantity + 1, item.variant?.id)" [attr.aria-label]="'Add one ' + item.product.title">+</button>
+              </div>
+              <div class="rainbow-cart-prices">
+                <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-0' }}</strong>
+                <del *ngIf="((item.variant?.oldPrice ?? item.product.oldPrice) || 0) > (item.variant?.price ?? item.product.price)">Rs. {{ ((item.variant?.oldPrice ?? item.product.oldPrice) ?? 0) * item.quantity | number:'1.0-0' }}</del>
+              </div>
+            </div>
+            <div class="rainbow-cart-instructions">
+              <span class="rainbow-cart-instructions-label">Item instructions</span>
+              <button type="button" class="rainbow-cart-instruction-link" (click)="openInstructions(item)">
+                <i class="fal fa-sync-alt" aria-hidden="true"></i>
+                <span><strong>If out of stock:</strong> {{ item.outOfStockChoice === 'refund' ? 'Refund this item' : item.outOfStockChoice === 'specific' ? 'Replacement chosen' : 'Replace with best match' }}<small *ngIf="item.outOfStockChoice === 'specific'">{{ item.replacementProductIds?.length || 0 }} selected · Modify</small><small *ngIf="item.outOfStockChoice !== 'specific'">Modify</small></span>
+                <i class="fal fa-chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </article>
+        </section>
+
+        <div class="rainbow-cart-actions">
+          <a routerLink="/shop"><i class="fal fa-arrow-left" aria-hidden="true"></i> Continue shopping</a>
+          <button type="button" (click)="clearAll()"><i class="fal fa-trash-alt" aria-hidden="true"></i> Clear cart</button>
+        </div>
+      </main>
+
+      <aside class="rainbow-cart-sidebar">
+        <section class="rainbow-cart-bill" aria-labelledby="rainbow-cart-bill-title">
+          <h2 id="rainbow-cart-bill-title">Bill details</h2>
+          <div class="rainbow-cart-bill-row">
+            <span><i class="fal fa-receipt" aria-hidden="true"></i> Items total <small *ngIf="totalSavings() > 0">Saved Rs. {{ totalSavings() | number:'1.0-0' }}</small></span>
+            <span class="rainbow-cart-bill-prices"><del *ngIf="itemsOriginalTotal() > cartService.cartTotal()">Rs. {{ itemsOriginalTotal() | number:'1.0-0' }}</del><strong>Rs. {{ cartService.cartTotal() | number:'1.0-0' }}</strong></span>
+          </div>
+          <div class="rainbow-cart-bill-row">
+            <span><i class="fal fa-shipping-fast" aria-hidden="true"></i> Delivery charge</span>
+            <span class="rainbow-cart-free">FREE</span>
+          </div>
+          <div class="rainbow-cart-bill-total"><strong>Grand total</strong><strong>Rs. {{ cartService.cartTotal() | number:'1.0-0' }}</strong></div>
+          <div class="rainbow-cart-savings rainbow-cart-savings-bottom" *ngIf="totalSavings() > 0">
+            <span>Your total savings</span><strong>Rs. {{ totalSavings() | number:'1.0-0' }}</strong>
+          </div>
+          <a routerLink="/checkout" class="rainbow-cart-primary">Proceed to checkout <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+          <p class="rainbow-cart-secure"><i class="fal fa-lock" aria-hidden="true"></i> Secure checkout</p>
+        </section>
+
+        <section class="rainbow-cart-policy" aria-labelledby="rainbow-cart-policy-title">
+          <h2 id="rainbow-cart-policy-title"><i class="fal fa-info-circle" aria-hidden="true"></i> Cancellation policy</h2>
+          <p>Orders cannot be cancelled once packed for delivery. If an unexpected delay occurs, any applicable refund will be provided according to our order policy.</p>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <div class="rainbow-replacement-backdrop" *ngIf="instructionProductId() !== null" (click)="closeInstructions()">
+    <section class="rainbow-replacement-dialog" role="dialog" aria-modal="true" aria-labelledby="rainbow-replacement-title" (click)="$event.stopPropagation()">
+      <ng-container *ngIf="selectedInstructionItem() as selectedItem">
+        <header class="rainbow-replacement-product">
+          <img [src]="selectedItem.product.image" [alt]="selectedItem.product.title">
+          <div><strong>{{ selectedItem.product.title }}</strong><span>{{ selectedItem.quantity }} {{ selectedItem.quantity === 1 ? 'item' : 'items' }}<ng-container *ngIf="selectedItem.variant?.label"> · {{ selectedItem.variant?.label }}</ng-container> · Rs. {{ selectedItem.variant?.price ?? selectedItem.product.price | number:'1.0-0' }} each</span></div>
+          <button type="button" class="rainbow-replacement-close" aria-label="Close" (click)="closeInstructions()"><i class="fal fa-times" aria-hidden="true"></i></button>
+        </header>
+        <h2 id="rainbow-replacement-title">If out of stock…</h2>
+        <div class="rainbow-replacement-choices">
+          <div class="rainbow-replacement-choice rainbow-replacement-choice-specific" [class.is-selected]="instructionChoice() === 'specific'">
+            <button type="button" class="rainbow-replacement-choice-button" (click)="setInstructionChoice('specific')">
+              <span class="rainbow-choice-radio" [class.is-checked]="instructionChoice() === 'specific'"></span>
+              <span><strong>Replace with specific item</strong><small>Choose up to 3 replacement options</small></span>
+            </button>
+            <div class="rainbow-replacement-products" *ngIf="instructionChoice() === 'specific'">
+              <button type="button" class="rainbow-replacement-option" *ngFor="let product of replacementOptions(selectedItem)" [class.is-selected]="replacementIds().includes(product.id)" [attr.aria-pressed]="replacementIds().includes(product.id)" (click)="toggleReplacement(product.id)">
+                <span class="rainbow-replacement-check"><i class="fal fa-check" aria-hidden="true"></i></span>
+                <span class="rainbow-replacement-product-image"><img [src]="product.image" [alt]="product.title" loading="lazy"></span>
+                <strong>{{ product.title }}</strong><span>Rs. {{ product.price | number:'1.0-0' }}</span>
+              </button>
+              <p class="rainbow-replacement-empty" *ngIf="replacementOptions(selectedItem).length === 0">No in-stock alternatives are available right now. Choose another option below.</p>
+            </div>
+            <small class="rainbow-replacement-count" *ngIf="instructionChoice() === 'specific'">{{ replacementIds().length }} of 3 selected</small>
+          </div>
+          <button type="button" class="rainbow-replacement-choice" [class.is-selected]="instructionChoice() === 'best-match'" (click)="setInstructionChoice('best-match')">
+            <span class="rainbow-choice-radio" [class.is-checked]="instructionChoice() === 'best-match'"></span>
+            <span><strong>Replace with best match</strong><small>Your shopper will look for the most similar item.</small></span>
+          </button>
+          <button type="button" class="rainbow-replacement-choice" [class.is-selected]="instructionChoice() === 'refund'" (click)="setInstructionChoice('refund')">
+            <span class="rainbow-choice-radio" [class.is-checked]="instructionChoice() === 'refund'"></span>
+            <span><strong>Refund this item</strong><small>Item will be refunded, not replaced.</small></span>
+          </button>
+        </div>
+        <footer class="rainbow-replacement-footer">
+          <button type="button" class="rainbow-replacement-cancel" (click)="closeInstructions()">Cancel</button>
+          <button type="button" class="rainbow-replacement-save" [disabled]="instructionChoice() === 'specific' && replacementIds().length === 0" (click)="saveInstructions()">Save instructions</button>
+        </footer>
+      </ng-container>
+    </section>
+  </div>
+</section>

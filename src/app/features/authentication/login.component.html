@@ -1,0 +1,60 @@
+<section class="rh-auth-page">
+  <div class="rh-auth-topbar">
+    <a class="rh-auth-back" routerLink="/" aria-label="Back to Rainbow home">
+      <i class="fal fa-arrow-left" aria-hidden="true"></i>
+      <span>Back to shopping</span>
+    </a>
+  </div>
+
+  <div class="rh-auth-card">
+    <div class="rh-auth-card-header">
+      <img src="assets/images/logo/RainbowLogo.png" alt="Rainbow Cash &amp; Carry" class="rh-auth-card-logo">
+      <h2>Login to your account</h2>
+      <p class="rh-auth-card-sub">Welcome back! Please enter your details</p>
+    </div>
+
+    <form class="rh-auth-form" (ngSubmit)="onLogin()">
+      <label class="rh-auth-field">
+        <span>Email address</span>
+        <span class="rh-auth-input-wrap">
+          <i class="fal fa-envelope" aria-hidden="true"></i>
+          <input type="email" name="email" [(ngModel)]="credentials.email" placeholder="Enter your email address" autocomplete="email" required>
+        </span>
+      </label>
+
+      <label class="rh-auth-field">
+        <span>Password</span>
+        <span class="rh-auth-input-wrap">
+          <i class="fal fa-lock" aria-hidden="true"></i>
+          <input [type]="passwordVisible ? 'text' : 'password'" name="password" [(ngModel)]="credentials.password" placeholder="Enter your password" autocomplete="current-password" required>
+          <button type="button" class="rh-auth-password-toggle" (click)="togglePassword()" [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'">
+            <i class="fal" [ngClass]="passwordVisible ? 'fa-eye-slash' : 'fa-eye'" aria-hidden="true"></i>
+          </button>
+        </span>
+      </label>
+
+      <div class="rh-auth-form-meta">
+        <label class="rh-auth-check">
+          <input type="checkbox" name="remember">
+          <span>Remember Me</span>
+        </label>
+        <a routerLink="/contact" class="rh-auth-text-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="rh-auth-submit">
+        <span>Login</span>
+        <i class="fal fa-arrow-right" aria-hidden="true"></i>
+      </button>
+    </form>
+
+    <div class="rh-auth-card-footer">
+      <p class="rh-auth-footer-text">Don't have an account? <a routerLink="/signup" class="rh-auth-link-bold">Sign up</a></p>
+      <div class="rh-auth-support">
+        <span class="rh-auth-support-lbl">Need Support?</span>
+        <a routerLink="/contact" class="rh-auth-link-primary">Contact customer service</a>
+      </div>
+    </div>
+  </div>
+
+  <p class="rh-auth-copyright">&copy; {{ currentYear }} Rainbow Cash &amp; Carry. All rights reserved.</p>
+</section>

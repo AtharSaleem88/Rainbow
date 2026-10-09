@@ -1,0 +1,148 @@
+<!-- Product Details Page -->
+<section class="rh-details-page" *ngIf="product() as p">
+  <div class="container rh-details-container">
+    <!-- Breadcrumbs -->
+    <nav class="rh-details-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a>
+      <i class="fal fa-angle-right"></i>
+      <a routerLink="/shop">Shop</a>
+      <i class="fal fa-angle-right"></i>
+      <a [routerLink]="['/shop']" [queryParams]="{category: p.categorySlug}">{{ p.category }}</a>
+      <i class="fal fa-angle-right"></i>
+      <strong>{{ p.title }}</strong>
+    </nav>
+
+    <!-- Main Details Layout -->
+    <div class="rh-details-layout">
+      <!-- Left: Image Gallery & Badges -->
+      <div class="rh-details-gallery">
+        <div class="rh-gallery-featured">
+          <span class="rh-gallery-tag" *ngIf="p.badge">{{ p.badge }}</span>
+          <img [src]="selectedImage()" [alt]="p.title">
+        </div>
+
+        <div class="rh-gallery-thumbs" *ngIf="p.galleryImages && p.galleryImages.length">
+          <button type="button" 
+                  *ngFor="let img of p.galleryImages" 
+                  class="rh-gallery-thumb" 
+                  [class.is-active]="selectedImage() === img" 
+                  (click)="selectThumb(img)">
+            <img [src]="img" [alt]="p.title + ' thumbnail'">
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Content & Purchase Controls -->
+      <div class="rh-details-content">
+        <span class="rh-details-category">{{ p.category }}</span>
+        <h1>{{ p.title }}</h1>
+        <p *ngIf="p.subtitle" class="rh-details-subtitle">{{ p.subtitle }}</p>
+
+        <!-- Brand & Stock Row -->
+        <div class="rh-details-meta">
+          <span class="rh-details-brand"><i class="fal fa-store"></i> Brand: <strong>{{ p.brand }}</strong></span>
+          <span class="rh-details-stock" [class.is-out]="!p.inStock">
+            <i class="fal" [ngClass]="p.inStock ? 'fa-check-circle' : 'fa-times-circle'"></i>
+            {{ p.inStock ? 'In Stock & Ready to Ship' : 'Out of Stock' }}
+          </span>
+        </div>
+
+        <!-- Vertical Feature Badges/Tags -->
+        <div class="rh-details-tags">
+          <span *ngFor="let tag of displayTags" class="rh-details-tag-item">
+            <i class="fal fa-check-circle"></i> {{ tag }}
+          </span>
+        </div>
+
+        <!-- Pricing -->
+        <div class="rh-details-price-box">
+          <strong class="rh-price-current">Rs. {{ currentPrice | number:'1.0-0' }}</strong>
+          <del *ngIf="currentOldPrice" class="rh-price-old">Rs. {{ currentOldPrice | number:'1.0-0' }}</del>
+          <span *ngIf="currentOldPrice" class="rh-price-save">Save Rs. {{ (currentOldPrice - currentPrice) | number:'1.0-0' }}</span>
+        </div>
+
+        <!-- Variants Picker (if available) -->
+        <div class="rh-details-variants" *ngIf="p.variants && p.variants.length">
+          <label class="rh-details-label">Select Package Size / Option:</label>
+          <div class="rh-details-variant-grid">
+            <button type="button" 
+                    *ngFor="let variant of p.variants" 
+                    class="rh-details-variant-btn" 
+                    [class.is-selected]="selectedVariantId() === variant.id" 
+                    (click)="selectVariant(variant.id)">
+              <strong>{{ variant.label }}</strong>
+              <span>Rs. {{ variant.price | number:'1.0-0' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Description Snippet -->
+        <p class="rh-details-desc-snippet" *ngIf="p.description">{{ p.description }}</p>
+
+        <!-- Quantity & CTA Actions -->
+        <div class="rh-details-actions">
+          <div class="rh-details-qty">
+            <button type="button" (click)="decQty()" aria-label="Decrease quantity">−</button>
+            <span>{{ quantity() }}</span>
+            <button type="button" (click)="incQty()" aria-label="Increase quantity">+</button>
+          </div>
+
+          <button type="button" class="rh-details-btn-cart" (click)="addToCart()">
+            <i class="fal fa-shopping-bag"></i> Add To Cart
+          </button>
+
+          <button type="button" class="rh-details-btn-buy" (click)="buyNow()">
+            Buy Now <i class="fal fa-bolt"></i>
+          </button>
+        </div>
+
+        <!-- Trust Features -->
+        <div class="rh-details-trust-bar">
+          <div><i class="fal fa-truck"></i> Fast Doorstep Delivery</div>
+          <div><i class="fal fa-shield-check"></i> Quality Guaranteed</div>
+          <div><i class="fal fa-sync"></i> Easy Returns</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Tabs: Description & Specifications -->
+    <div class="rh-details-tabs-card">
+      <nav class="rh-details-tabs-nav">
+        <button type="button" [class.is-active]="activeTab() === 'desc'" (click)="activeTab.set('desc')">Product Description</button>
+        <button type="button" [class.is-active]="activeTab() === 'info'" (click)="activeTab.set('info')">Specifications & Info</button>
+      </nav>
+
+      <div class="rh-details-tabs-body" [ngSwitch]="activeTab()">
+        <div *ngSwitchCase="'desc'">
+          <p>{{ p.description || 'Quality product sourced carefully for Rainbow Cash & Carry customers.' }}</p>
+        </div>
+        <div *ngSwitchCase="'info'">
+          <table class="rh-details-info-table" *ngIf="p.additionalInfo">
+            <tbody>
+              <tr *ngFor="let item of p.additionalInfo | keyvalue">
+                <th>{{ item.key }}</th>
+                <td>{{ item.value }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p *ngIf="!p.additionalInfo" class="text-muted">No additional specifications available for this item.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <section class="rh-details-related" *ngIf="relatedProducts().length > 0">
+      <header class="rh-related-heading">
+        <h2>You Might Also Like</h2>
+        <a routerLink="/shop" [queryParams]="{category: p.categorySlug}">View Category <i class="fal fa-arrow-right"></i></a>
+      </header>
+
+      <div class="rh-related-grid">
+        <div *ngFor="let item of relatedProducts().slice(0, 4)">
+          <app-product-card [product]="item" [showSectionLabel]="false"></app-product-card>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</section>

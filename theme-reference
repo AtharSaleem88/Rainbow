@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+		<title>Register Page - Rainbow Cash & Carry</title>
+		<link rel="shortcut icon" href="assets/images/logo/RainbowLogo.png">
+
+		<!-- fraimwork - css include -->
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+
+		<!-- icon - css include -->
+		<link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
+
+		<!-- animation - css include -->
+		<link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+
+		<!-- nice select - css include -->
+		<link rel="stylesheet" type="text/css" href="assets/css/nice-select.css">
+
+		<!-- carousel - css include -->
+		<link rel="stylesheet" type="text/css" href="assets/css/slick.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
+
+		<!-- popup images & videos - css include -->
+		<link rel="stylesheet" type="text/css" href="assets/css/magnific-popup.css">
+
+		<!-- jquery ui - css include -->
+		<link rel="stylesheet" type="text/css" href="assets/css/jquery-ui.css">
+
+		<!-- custom - css include -->
+		<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+	</head>
+
+
+	<body>
+
+
+		<!-- main body - start
+		================================================== -->
+		<main>
+
+
+			<!-- register_section - start
+			================================================== -->
+			<section class="register_section sec_ptb_140 parallaxie clearfix" data-background="assets/images/Login/Rainbow_Login_1.jpg">
+				<div class="container">
+					<div class="reg_form_wrap signup_form">
+						<form action="#">
+							<div class="reg_form">
+								<img src="assets/images/Login/RainbowLogo.png" class="form_title">
+								<div class="form_item">
+									<input type="text" name="firstname" placeholder="First Name">
+								</div>
+								<div class="form_item">
+									<input type="text" name="lastname" placeholder="Last Name">
+								</div>
+								<div class="form_item">
+									<input type="text" name="company" placeholder="Company Name">
+								</div>
+								<div class="form_item">
+									<input type="email" name="email" placeholder="Email">
+								</div>
+								<div class="form_item">
+									<input type="tel" name="phone" placeholder="phone">
+								</div>
+								<div class="form_item">
+									<input type="password" name="password" placeholder="Password">
+								</div>
+								<div class="form_item">
+									<input type="password" name="password" placeholder="Confirm Password">
+								</div>
+								<div class="checkbox_item mb_30">
+									<label for="agree_checkbox"><input id="agree_checkbox" type="checkbox"> I agree to the Terms of User</label>
+								</div>
+								<button type="submit" class="custom_btn bg_default_red text-uppercase mb_50">Create Account</button>
+
+								<div class="social_signup text-center mb_50">
+            <div class="social_buttons">
+              <a href="#!" class="social_btn facebook_btn">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#!" class="social_btn google_btn">
+                <i class="fab fa-google"></i>
+              </a>
+            </div>
+          </div>
+
+								<div class="create_account text-center">
+									<h4 class="small_title_text text-center text-uppercase">Have not account yet?</h4>
+									<a class="create_account_btn text-uppercase" href="login.html">Login</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</section>
+			<!-- register_section - end
+			================================================== -->
+
+
+		</main>
+		<!-- main body - end
+		================================================== -->
+
+
+		
+		<!-- fraimwork - jquery include -->
+		<script src="assets/js/jquery-3.5.1.min.js"></script>
+		<script src="assets/js/popper.min.js"></script>
+		<script src="assets/js/bootstrap.min.js"></script>
+
+		<!-- mobile menu - jquery include -->
+        <script src="assets/js/mCustomScrollbar.js"></script>
+
+		<!-- google map - jquery include -->
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk2HrmqE4sWSei0XdKGbOMOHN3Mm2Bf-M&ver=2.1.6"></script>
+        <script src="assets/js/gmaps.min.js"></script>
+
+		<!-- animation - jquery include -->
+        <script src="assets/js/parallaxie.js"></script>
+        <script src="assets/js/wow.min.js"></script>
+
+		<!-- nice select - jquery include -->
+        <script src="assets/js/nice-select.min.js"></script>
+
+		<!-- carousel - jquery include -->
+        <script src="assets/js/slick.min.js"></script>
+
+		<!-- countdown timer - jquery include -->
+        <script src="assets/js/countdown.js"></script>
+
+		<!-- popup images & videos - jquery include -->
+        <script src="assets/js/magnific-popup.min.js"></script>
+
+		<!-- filtering & masonry layout - jquery include -->
+        <script src="assets/js/isotope.pkgd.min.js"></script>
+        <script src="assets/js/masonry.pkgd.min.js"></script>
+        <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+
+		<!-- jquery ui - jquery include -->
+        <script src="assets/js/jquery-ui.js"></script>
+
+		<!-- custom - jquery include -->
+		<script src="assets/js/custom.js"></script>
+
+		
+	</body>
+</html>
