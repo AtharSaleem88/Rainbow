@@ -356,7 +356,7 @@
 
           <!-- Items List Snapshot -->
           <div class="rainbow-summary-items">
-            <div class="rainbow-summary-item" *ngFor="let item of cartService.cartItems()">
+            <div class="rainbow-summary-item" *ngFor="let item of cartService.cartItems(); trackBy: trackByCartItem">
               <div class="rainbow-summary-thumb">
                 <img [src]="item.product.image" [alt]="item.product.title">
                 <span class="rainbow-summary-qty">{{ item.quantity }}</span>

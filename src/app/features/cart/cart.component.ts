@@ -96,5 +96,7 @@ export class CartComponent {
     return this.cartService.cartItems().find(item => item.product.id === id && (item.variant?.id ?? null) === this.instructionVariantId());
   }
 
+  trackByCartItem = (_index: number, item: CartItem): string => this.itemKey(item);
+
   private itemKey(item: CartItem): string { return `${item.product.id}:${item.variant?.id ?? 'default'}`; }
 }

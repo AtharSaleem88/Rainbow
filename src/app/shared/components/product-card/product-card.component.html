@@ -1,4 +1,4 @@
-<article class="rh-shared-product-card" [class.rh-shared-product-list]="viewMode === 'list'" [class.rh-no-section-label]="!showSectionLabel" [routerLink]="['/products', product.id]" style="cursor: pointer;">
+<article class="rh-shared-product-card" [class.rh-shared-product-list]="viewMode === 'list'" [class.rh-no-section-label]="!showSectionLabel">
   <div class="rh-shared-card-top">
     <span *ngIf="showSectionLabel" class="rh-shared-section-tag">{{ sectionTag }}</span>
     <button type="button" class="rh-shared-favorite" [class.active]="favorite()" [attr.aria-pressed]="favorite()" [attr.aria-label]="(favorite() ? 'Remove ' : 'Add ') + product.title + ' from favorites'" (click)="toggleFavorite($event)"><i class="fal fa-heart" aria-hidden="true"></i></button>

@@ -20,7 +20,7 @@
   </div>
 
   <div class="rh-drawer-items" *ngIf="cartService.cartItems().length > 0; else emptyDrawer">
-    <article class="rh-drawer-item" *ngFor="let item of cartService.cartItems()">
+    <article class="rh-drawer-item" *ngFor="let item of cartService.cartItems(); trackBy: trackByCartItem">
       <a class="rh-drawer-image" [routerLink]="['/products', item.product.id]" (click)="onClose()" [attr.aria-label]="'View ' + item.product.title">
         <img [src]="item.product.image" [alt]="item.product.title" loading="lazy">
       </a>

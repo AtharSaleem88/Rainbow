@@ -103,4 +103,6 @@ export class CheckoutComponent {
     this.currentStep.set(3);
     this.cartService.clearCart();
   }
+
+  trackByCartItem = (_index: number, item: any): string => `${item.product?.id}:${item.variant?.id ?? 'default'}`;
 }

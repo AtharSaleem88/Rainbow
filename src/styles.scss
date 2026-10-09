@@ -255,13 +255,18 @@ app-root {
   font-size: 17px;
   background: none;
   border: none;
-  cursor: pointer;
-  position: relative;
-  transition: background 0.25s ease, color 0.25s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 
-  &:hover {
-    background: rgba(61,168,224,0.06);
-    color: #25aae1;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: rgba(61,168,224,0.06);
+      color: #25aae1;
+    }
+  }
+
+  &:active {
+    background: rgba(61,168,224,0.12);
   }
 }
 
@@ -361,9 +366,8 @@ app-root {
   border-radius: 20px;
   box-shadow: 0 12px 35px rgba(45,44,146,0.08);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 
   &::after {
     content: '';
@@ -374,13 +378,19 @@ app-root {
     opacity: 0.5;
   }
 
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 18px 45px rgba(45,44,146,0.14);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 45px rgba(45,44,146,0.14);
 
-    img {
-      transform: scale(1.06);
+      img {
+        transform: scale(1.06);
+      }
     }
+  }
+
+  &:active {
+    transform: scale(0.97);
   }
 
   img {
@@ -814,9 +824,17 @@ app-root {
   transition: background 0.25s ease;
   font-family: "Jost", sans-serif;
   color: var(--rh-primary);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 
-  &:hover {
-    background: #e9ecf5;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: #e9ecf5;
+    }
+  }
+
+  &:active {
+    background: #dee2ee;
   }
 }
 
@@ -852,9 +870,17 @@ app-root {
   color: var(--rh-white);
   border-radius: 20px;
   padding: 6px 16px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 
-  &:hover {
-    background: var(--rh-secondary);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: var(--rh-secondary);
+    }
+  }
+
+  &:active {
+    opacity: 0.92;
   }
 }
 

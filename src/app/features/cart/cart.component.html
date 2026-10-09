@@ -31,7 +31,7 @@
         </section>
 
         <section class="rainbow-cart-items" aria-label="Items in your cart">
-          <article class="rainbow-cart-item" *ngFor="let item of cartService.cartItems()">
+          <article class="rainbow-cart-item" *ngFor="let item of cartService.cartItems(); trackBy: trackByCartItem">
             <a class="rainbow-cart-product-image" [routerLink]="['/products', item.product.id]" [attr.aria-label]="'View ' + item.product.title">
               <img [src]="item.product.image" [alt]="item.product.title" loading="lazy" decoding="async">
             </a>
