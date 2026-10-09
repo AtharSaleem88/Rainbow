@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.s
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnInit {
   readonly cartService = inject(CartService);
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
@@ -58,6 +58,10 @@ export class CheckoutComponent {
     }
   }
 
+  ngOnInit() {
+    this.scrollToTop();
+  }
+
   selectSavedAddress(addr: SavedAddress) {
     this.selectedAddressId.set(addr.id);
     const names = addr.recipientName.split(' ');
@@ -84,9 +88,15 @@ export class CheckoutComponent {
     this.checkoutSavings.set(Math.max(0, origTotal - currentCartTotal));
   }
 
+  goToStep(step: 1 | 2) {
+    this.currentStep.set(step);
+    this.scrollToTop();
+  }
+
   nextStep() {
     if (this.currentStep() === 1) {
       this.currentStep.set(2);
+      this.scrollToTop();
     } else if (this.currentStep() === 2) {
       this.placeOrder();
     }
@@ -95,6 +105,7 @@ export class CheckoutComponent {
   prevStep() {
     if (this.currentStep() > 1) {
       this.currentStep.update(s => (s - 1) as any);
+      this.scrollToTop();
     }
   }
 
@@ -102,6 +113,13 @@ export class CheckoutComponent {
     this.isOrderPlaced.set(true);
     this.currentStep.set(3);
     this.cartService.clearCart();
+    this.scrollToTop();
+  }
+
+  private scrollToTop() {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
   }
 
   trackByCartItem = (_index: number, item: any): string => `${item.product?.id}:${item.variant?.id ?? 'default'}`;

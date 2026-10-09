@@ -19,7 +19,7 @@
     <ng-container *ngIf="cartService.cartItems().length > 0 || currentStep() === 3">
       <!-- Checkout Stepper Progress -->
       <nav class="rainbow-checkout-stepper" aria-label="Checkout Progress" *ngIf="currentStep() !== 3">
-        <div class="rainbow-step" [class.is-active]="currentStep() === 1" [class.is-completed]="currentStep() > 1" (click)="currentStep.set(1)">
+        <div class="rainbow-step" [class.is-active]="currentStep() === 1" [class.is-completed]="currentStep() > 1" (click)="goToStep(1)">
           <span class="rainbow-step-num">
             <i *ngIf="currentStep() > 1" class="fal fa-check"></i>
             <span *ngIf="currentStep() <= 1">1</span>
@@ -33,7 +33,7 @@
 
         <div class="rainbow-step-line" [class.is-active]="currentStep() >= 2"></div>
 
-        <div class="rainbow-step" [class.is-active]="currentStep() === 2" [class.is-completed]="currentStep() > 2" (click)="currentStep() > 1 ? currentStep.set(2) : null">
+        <div class="rainbow-step" [class.is-active]="currentStep() === 2" [class.is-completed]="currentStep() > 2" (click)="currentStep() > 1 ? goToStep(2) : null">
           <span class="rainbow-step-num">
             <i *ngIf="currentStep() > 2" class="fal fa-check"></i>
             <span *ngIf="currentStep() <= 2">2</span>
@@ -179,12 +179,7 @@
                 </div>
               </div>
 
-              <!-- Mobile Order Summary Section (Placed before action buttons) -->
-              <div class="rainbow-mobile-summary-inline d-md-none mt-4">
-                <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
-              </div>
-
-              <div class="rainbow-form-actions">
+              <div class="rainbow-form-actions mt-4">
                 <a routerLink="/cart" class="rainbow-btn-secondary"><i class="fal fa-arrow-left"></i> Back to Cart</a>
                 <button type="submit" class="rainbow-checkout-primary">Continue to Payment <i class="fal fa-arrow-right"></i></button>
               </div>
@@ -328,11 +323,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Mobile Order Summary Section (Placed before action buttons) -->
-            <div class="rainbow-mobile-summary-inline d-md-none mt-4">
-              <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
             </div>
 
             <div class="rainbow-form-actions mt-4">

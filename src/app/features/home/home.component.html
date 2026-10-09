@@ -210,9 +210,9 @@
       </div>
       <!-- SET B (Duplicate for smooth infinite ticker) -->
       <div class="rh-brands-set" aria-hidden="true">
-        <div *ngFor="let brand of brands" class="rh-brand-item">
+        <button *ngFor="let brand of brands" type="button" class="rh-brand-item" (click)="openBrand(brand)" tabindex="-1" [attr.aria-label]="'Explore ' + brand.name + ' products'">
           <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
-        </div>
+        </button>
       </div>
     </div>
     <div class="rh-brands-fade rh-brands-fade-right"></div>

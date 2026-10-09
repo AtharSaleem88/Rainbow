@@ -1024,10 +1024,18 @@
   font-size: 0.92rem;
   font-weight: 700;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 160ms ease;
 
-  &:hover {
-    background: rgba(75, 0, 130, 0.03);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: rgba(75, 0, 130, 0.03);
+    }
+  }
+
+  &:active {
+    background: rgba(75, 0, 130, 0.06);
   }
 
   i {
@@ -1050,16 +1058,5 @@
     box-shadow: none;
     padding: 14px 0 0;
     background: transparent;
-  }
-}
-
-.rainbow-mobile-summary-inline {
-  border-top: 1px solid #edf0f6;
-  padding-top: 20px;
-
-  .rainbow-checkout-summary {
-    border: 1px solid rgba(45, 44, 146, 0.1);
-    background: #fbfcfe;
-    border-radius: 16px;
   }
 }

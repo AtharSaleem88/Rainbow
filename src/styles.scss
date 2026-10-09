@@ -436,20 +436,26 @@ app-root {
   right: 0;
   background: linear-gradient(270deg, #fff 0%, transparent 100%);
 }
-.rh-brands-track-wrap:hover .rh-brands-track {
-  animation-play-state: paused;
-}
 .rh-brands-track-wrap .rh-brand-item {
   opacity: 0.92;
   transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
-.rh-brands-track-wrap:hover .rh-brand-item {
-  opacity: 0.62;
-}
-.rh-brands-track-wrap .rh-brand-item:hover {
-  opacity: 1 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(45,44,146,0.08);
+
+@media (hover: hover) and (pointer: fine) {
+  .rh-brands-track-wrap:hover .rh-brands-track {
+    animation-play-state: paused;
+  }
+  .rh-brands-track-wrap:hover .rh-brand-item {
+    opacity: 0.62;
+  }
+  .rh-brands-track-wrap .rh-brand-item:hover {
+    opacity: 1 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(45,44,146,0.08);
+  }
 }
 
 /* Paid brand placements */
