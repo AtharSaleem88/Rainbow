@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -41,6 +41,35 @@ export class ShopComponent implements OnInit {
   selectedQuickViewProduct = signal<Product | null>(null);
 
   subSubCategories = ['Organic', 'Imported', 'Local Farm', 'Pre-Cut & Cleaned'];
+
+  readonly subCategories = computed<string[]>(() => {
+    const products = this.productService.getProducts(this.selectedCategory() ? { category: this.selectedCategory() } : undefined);
+    return [...new Set(products.map(product => product.subCategory).filter((category): category is string => !!category))];
+  });
+
+  readonly subCategoryItems = computed<SubCategoryItem[]>(() => {
+    const defaultList: SubCategoryItem[] = [
+      { name: 'Fresh Vegetables', image: 'assets/images/ultra_fresh/Palak.jpg' },
+      { name: 'Fresh Fruits', image: 'assets/images/ultra_fresh/gwa.jpg' },
+      { name: 'Mangoes & Melons', image: 'assets/images/ultra_fresh/gwa.jpg' },
+      { name: 'Seasonal', image: 'assets/images/ultra_fresh/carrot.webp' },
+      { name: 'Exotics', image: 'assets/images/ultra_fresh/Curly-Kale.webp' },
+      { name: 'Freshly Cut & Sprouts', image: 'assets/images/ultra_fresh/gwa.jpg' },
+      { name: 'Frozen Veg', image: 'assets/images/frozen/nugets.jpg' }
+    ];
+
+    const rawSubCats = this.subCategories();
+    if (!rawSubCats.length) return defaultList;
+
+    const allProducts = this.productService.getProducts();
+    return rawSubCats.map(subCat => {
+      const matchProduct = allProducts.find(p => p.subCategory === subCat && p.image);
+      return {
+        name: subCat,
+        image: matchProduct?.image ?? 'assets/images/ultra_fresh/gwa.jpg'
+      };
+    });
+  });
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -111,35 +140,6 @@ export class ShopComponent implements OnInit {
       return 'All ' + this.categoryName;
     }
     return 'All Products';
-  }
-
-  get subCategories(): string[] {
-    const products = this.productService.getProducts(this.selectedCategory() ? { category: this.selectedCategory() } : undefined);
-    return [...new Set(products.map(product => product.subCategory).filter((category): category is string => !!category))];
-  }
-
-  get subCategoryItems(): SubCategoryItem[] {
-    const defaultList: SubCategoryItem[] = [
-      { name: 'Fresh Vegetables', image: 'assets/images/ultra_fresh/Palak.jpg' },
-      { name: 'Fresh Fruits', image: 'assets/images/ultra_fresh/gwa.jpg' },
-      { name: 'Mangoes & Melons', image: 'assets/images/ultra_fresh/gwa.jpg' },
-      { name: 'Seasonal', image: 'assets/images/ultra_fresh/carrot.webp' },
-      { name: 'Exotics', image: 'assets/images/ultra_fresh/Curly-Kale.webp' },
-      { name: 'Freshly Cut & Sprouts', image: 'assets/images/ultra_fresh/gwa.jpg' },
-      { name: 'Frozen Veg', image: 'assets/images/frozen/nugets.jpg' }
-    ];
-
-    const rawSubCats = this.subCategories;
-    if (!rawSubCats.length) return defaultList;
-
-    const allProducts = this.productService.getProducts();
-    return rawSubCats.map(subCat => {
-      const matchProduct = allProducts.find(p => p.subCategory === subCat && p.image);
-      return {
-        name: subCat,
-        image: matchProduct?.image ?? 'assets/images/ultra_fresh/gwa.jpg'
-      };
-    });
   }
 
   onSortChange(event: Event) {

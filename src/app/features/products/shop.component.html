@@ -28,7 +28,7 @@
           </button>
 
           <!-- Subcategory Items with Image on Top & Name Below -->
-          <button *ngFor="let item of subCategoryItems" 
+          <button *ngFor="let item of subCategoryItems()" 
                   type="button" 
                   class="rh-subcat-item" 
                   [class.active]="selectedSubCategory() === item.name" 

@@ -527,23 +527,67 @@
 }
 
 @media (max-width: 991px) {
+  .rh-details-page {
+    padding: 12px 0 40px;
+  }
+
+  .rh-details-breadcrumb {
+    margin-bottom: 14px;
+    font-size: 0.78rem;
+  }
+
   .rh-details-layout {
     grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
+    gap: 20px;
+    padding: 16px 14px;
+    border-radius: 18px;
+  }
+
+  .rh-gallery-featured {
+    height: 270px;
+    border-radius: 14px;
+  }
+
+  .rh-gallery-thumb {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+  }
+
+  .rh-details-trust-bar {
+    flex-wrap: wrap;
+    gap: 10px 14px;
   }
 
   .rh-related-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 }
 
 @media (max-width: 576px) {
   .rh-details-actions {
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
 
+    .rh-details-qty,
     .rh-details-btn-cart,
     .rh-details-btn-buy {
       width: 100%;
     }
+  }
+
+  .rh-details-tabs-card {
+    margin: 20px 0 28px;
+    border-radius: 16px;
+  }
+
+  .rh-details-tabs-nav button {
+    padding: 12px 14px;
+    font-size: 0.84rem;
+  }
+
+  .rh-details-tabs-body {
+    padding: 16px;
   }
 }
