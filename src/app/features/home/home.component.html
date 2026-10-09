@@ -5,40 +5,23 @@
       <article *ngFor="let slide of heroSlides; let i = index" 
                class="rh-hero-slide" 
                [class.rh-hero-active]="currentHeroIndex() === i" 
-               [class.rh-hero-full-banner-slide]="!!slide.bannerImage"
                [ngClass]="slide.theme" 
                [attr.aria-hidden]="currentHeroIndex() !== i" 
                role="group" 
                aria-roledescription="slide" 
                [attr.aria-label]="(i + 1) + ' of ' + heroSlides.length">
         
-        <!-- Full Graphic Banner Slide -->
-        <a *ngIf="slide.bannerImage" 
-           [routerLink]="slide.link" 
-           [queryParams]="slide.queryParams" 
-           class="rh-hero-banner-link" 
-           [attr.aria-label]="slide.imageAlt || slide.title">
-          <img [src]="slide.bannerImage" 
-               [alt]="slide.imageAlt || slide.title" 
-               class="rh-hero-banner-img" 
-               [attr.fetchpriority]="i === 0 ? 'high' : 'auto'" 
-               [attr.loading]="i === 0 ? 'eager' : 'lazy'">
-        </a>
-
-        <!-- Dynamic Content Slide -->
-        <ng-container *ngIf="!slide.bannerImage">
-          <div class="rh-hero-copy">
-            <span class="rh-hero-eyebrow">{{ slide.eyebrow }}</span>
-            <h1 class="rh-hero-heading">{{ slide.title }}</h1>
-            <a [routerLink]="slide.link" [queryParams]="slide.queryParams" class="rh-hero-cta">{{ slide.ctaText }}<i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+        <div class="rh-hero-copy">
+          <span class="rh-hero-eyebrow">{{ slide.eyebrow }}</span>
+          <h1 class="rh-hero-heading">{{ slide.title }}</h1>
+          <a [routerLink]="slide.link" [queryParams]="slide.queryParams" class="rh-hero-cta">{{ slide.ctaText }}<i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="rh-hero-art">
+          <div class="rh-hero-rainbow-cloud-wrap" aria-hidden="true">
+            <img src="assets/images/rainbow-cloud-swirl.png" alt="" class="rh-hero-rainbow-cloud-bg">
           </div>
-          <div class="rh-hero-art">
-            <div class="rh-hero-rainbow-cloud-wrap" aria-hidden="true">
-              <img src="assets/images/rainbow-cloud-swirl.png" alt="" class="rh-hero-rainbow-cloud-bg">
-            </div>
-            <img [src]="slide.image" [alt]="slide.imageAlt" [attr.fetchpriority]="i === 0 ? 'high' : 'auto'" [attr.loading]="i === 0 ? 'eager' : 'lazy'">
-          </div>
-        </ng-container>
+          <img [src]="slide.image" [alt]="slide.imageAlt" [attr.fetchpriority]="i === 0 ? 'high' : 'auto'" [attr.loading]="i === 0 ? 'eager' : 'lazy'">
+        </div>
       </article>
 
       <div class="rh-hero-controls" aria-label="Hero slider controls">

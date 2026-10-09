@@ -101,7 +101,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   readonly campaignBanners = [
-    { title: 'Designer Perfumes — Best Price Ever', image: 'assets/images/banner/perfumes-hero-banner.jpg', category: 'personal-care' },
     { title: 'Back to School — Back to delicious', image: 'assets/images/campaign-back-to-school-v2.png', category: 'grocery' },
     { title: 'Shan Foods — Bring home the taste of Pakistan', image: 'assets/images/campaign-shan-grocery-v2.png', category: 'grocery' }
   ];
@@ -115,25 +114,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   // Hero slider state
   currentHeroIndex = signal(0);
   readonly heroSlides = [
-    {
-      theme: 'rh-hero-perfumes',
-      bannerImage: 'assets/images/banner/perfumes-hero-banner.jpg',
-      imageAlt: 'Designer Perfumes at Cost Price — Roberto Cavalli, Gucci, Hugo Boss, Chanel',
-      title: 'Luxury Perfumes Collection',
-      link: '/shop',
-      queryParams: { category: 'personal-care', q: 'perfume' }
-    },
-    {
-      theme: 'rh-hero-primary',
-      eyebrow: 'FRESH FROM FARM',
-      title: 'Stock Up On Daily Essentials',
-      image: 'assets/images/slider/supermarket/img_01.png',
-      imageAlt: 'A basket filled with fresh vegetables',
-      artLabel: 'Fresh picks, every day',
-      ctaText: 'Shop fresh',
-      link: '/shop',
-      queryParams: { category: 'ultra-fresh' }
-    },
     {
       theme: 'rh-hero-green',
       eyebrow: 'EVERYDAY GROCERIES',
