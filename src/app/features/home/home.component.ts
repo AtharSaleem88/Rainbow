@@ -102,7 +102,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   readonly campaignBanners = [
     { title: 'Designer Perfumes — Best Price Ever', image: 'assets/images/banner/perfumes-hero-banner.jpg', category: 'personal-care' },
-    { title: 'Luxury Skincare — Get 15% Off', image: 'assets/images/banner/skincare-hero-banner.jpg', category: 'personal-care' },
     { title: 'Back to School — Back to delicious', image: 'assets/images/campaign-back-to-school-v2.png', category: 'grocery' },
     { title: 'Shan Foods — Bring home the taste of Pakistan', image: 'assets/images/campaign-shan-grocery-v2.png', category: 'grocery' }
   ];
@@ -123,14 +122,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       title: 'Luxury Perfumes Collection',
       link: '/shop',
       queryParams: { category: 'personal-care', q: 'perfume' }
-    },
-    {
-      theme: 'rh-hero-skincare',
-      bannerImage: 'assets/images/banner/skincare-hero-banner.jpg',
-      imageAlt: 'Premium Botanical Cosmetics & Skincare — Get 15% Off',
-      title: 'Cosmetics & Skincare Rituals',
-      link: '/shop',
-      queryParams: { category: 'personal-care' }
     },
     {
       theme: 'rh-hero-primary',
