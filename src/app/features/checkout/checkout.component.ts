@@ -117,9 +117,37 @@ export class CheckoutComponent implements OnInit {
   }
 
   private scrollToTop() {
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    if (typeof window === 'undefined') return;
+
+    // 1. Defocus active input/button to prevent mobile browsers from anchoring scroll to focused element
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
     }
+
+    // 2. Immediate synchronous reset
+    window.scrollTo(0, 0);
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+
+    // 3. Post-render RAF scroll to ensure new step's top is in view
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      const topEl = document.getElementById('checkout-top') || document.querySelector('.rainbow-checkout-header');
+      if (topEl) {
+        topEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
+    });
+
+    // 4. Fallback timeout for mobile virtual keyboard dismissal / async layout stabilization
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+      if (document.documentElement) document.documentElement.scrollTop = 0;
+      if (document.body) document.body.scrollTop = 0;
+      const topEl = document.getElementById('checkout-top') || document.querySelector('.rainbow-checkout-header');
+      if (topEl) {
+        topEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
+    }, 60);
   }
 
   trackByCartItem = (_index: number, item: any): string => `${item.product?.id}:${item.variant?.id ?? 'default'}`;
