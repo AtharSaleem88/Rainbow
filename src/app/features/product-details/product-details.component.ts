@@ -75,25 +75,35 @@ export class ProductDetailsComponent implements OnInit {
     this.selectedVariantId.set(variantId);
   }
 
-  incQty() {
-    this.quantity.update(q => q + 1);
-  }
-
-  decQty() {
-    if (this.quantity() > 1) {
-      this.quantity.update(q => q - 1);
-    }
+  get cartQuantity(): number {
+    const prod = this.product();
+    if (!prod) return 0;
+    const targetVarId = this.selectedVariant?.id ?? null;
+    return this.cartService.cartItems().find(item =>
+      Number(item.product.id) === Number(prod.id) && (item.variant?.id ?? null) === targetVarId
+    )?.quantity ?? 0;
   }
 
   addToCart() {
-    if (this.product()) {
-      this.cartService.addToCart(this.product()!, this.quantity(), this.selectedVariant);
+    const prod = this.product();
+    if (prod) {
+      this.cartService.addToCart(prod, 1, this.selectedVariant);
     }
   }
 
+  changeQuantity(delta: number) {
+    const prod = this.product();
+    if (!prod) return;
+    const newQty = this.cartQuantity + delta;
+    this.cartService.updateQuantity(prod.id, newQty, this.selectedVariant?.id);
+  }
+
   buyNow() {
-    if (this.product()) {
-      this.cartService.addToCart(this.product()!, this.quantity(), this.selectedVariant);
+    const prod = this.product();
+    if (prod) {
+      if (this.cartQuantity === 0) {
+        this.cartService.addToCart(prod, 1, this.selectedVariant);
+      }
       this.router.navigate(['/checkout']);
     }
   }

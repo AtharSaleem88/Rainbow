@@ -94,7 +94,6 @@
                         (click)="selectSavedAddress(addr)">
                   <div class="d-flex align-items-center justify-content-between mb-1">
                     <span class="rainbow-address-tag"><i class="fal" [ngClass]="addr.label === 'Home' ? 'fa-home' : addr.label === 'Office' ? 'fa-building' : 'fa-map-pin'"></i> {{ addr.label }}</span>
-                    <span class="rainbow-address-check"><i class="fal fa-check"></i></span>
                   </div>
                   <strong>{{ addr.recipientName }}</strong>
                   <p>{{ addr.addressLine }}, {{ addr.city }}</p>
@@ -275,7 +274,6 @@
                             (click)="selectedSavedCardId.set(card.id)">
                       <i class="fal fa-credit-card"></i>
                       <span><strong>{{ card.cardNumber }}</strong> (Expires {{ card.expiryDate }})</span>
-                      <i class="fal fa-check-circle ms-auto" *ngIf="selectedSavedCardId() === card.id"></i>
                     </button>
                   </div>
                 </div>

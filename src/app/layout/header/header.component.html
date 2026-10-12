@@ -1,3 +1,30 @@
+<!-- announcement_bar - start -->
+<div class="rh-announce" id="rh-announce" role="region" aria-label="Announcements">
+	<div class="rh-announce-track">
+		<div class="rh-announce-content">
+			<span class="rh-announce-item"><i class="fal fa-truck-moving" aria-hidden="true"></i> FREE DELIVERY ON ORDERS ABOVE RS. 2,000</span>
+			<span class="rh-announce-sep" aria-hidden="true">&bull;</span>
+			<span class="rh-announce-item"><i class="fal fa-bolt" aria-hidden="true"></i> 60-MIN EXPRESS DELIVERY IN LAHORE</span>
+			<span class="rh-announce-sep" aria-hidden="true">&bull;</span>
+			<span class="rh-announce-item"><i class="fal fa-badge-percent" aria-hidden="true"></i> GET 10% OFF YOUR FIRST ORDER &mdash; CODE: <strong>RAINBOW10</strong></span>
+			<span class="rh-announce-sep" aria-hidden="true">&bull;</span>
+			<span class="rh-announce-item"><i class="fal fa-leaf" aria-hidden="true"></i> 100% FARM FRESH PRODUCE GUARANTEED</span>
+			<span class="rh-announce-sep" aria-hidden="true">&bull;</span>
+		</div>
+		<div class="rh-announce-content" aria-hidden="true">
+			<span class="rh-announce-item"><i class="fal fa-truck-moving" aria-hidden="true"></i> FREE DELIVERY ON ORDERS ABOVE RS. 2,000</span>
+			<span class="rh-announce-sep" aria-hidden="true">&bull;</span>
+			<span class="rh-announce-item"><i class="fal fa-bolt" aria-hidden="true"></i> 60-MIN EXPRESS DELIVERY IN LAHORE</span>
+			<span class="rh-announce-sep" aria-hidden="true">&bull;</span>
+			<span class="rh-announce-item"><i class="fal fa-badge-percent" aria-hidden="true"></i> GET 10% OFF YOUR FIRST ORDER &mdash; CODE: <strong>RAINBOW10</strong></span>
+			<span class="rh-announce-sep" aria-hidden="true">&bull;</span>
+			<span class="rh-announce-item"><i class="fal fa-leaf" aria-hidden="true"></i> 100% FARM FRESH PRODUCE GUARANTEED</span>
+			<span class="rh-announce-sep" aria-hidden="true">&bull;</span>
+		</div>
+	</div>
+</div>
+<!-- announcement_bar - end -->
+
 <!-- premium_nav_section - start -->
 <header class="rh-nav" id="rh-nav" [class.rh-nav-solid]="isScrolled()">
 	<!-- Desktop Header Layout (Large Screens) -->
@@ -95,9 +122,9 @@
 	</div>
 
 	<!-- Mobile / Tablet 3-Row Header Layout (Small & Medium Screens) -->
-	<div class="rh-nav-mobile-container d-flex d-lg-none flex-column gap-3 p-3">
+	<div class="rh-nav-mobile-container d-flex d-lg-none flex-column gap-2 px-3 py-2">
 		<!-- Mobile Row 1: Delivering to Pill + Account Icon & Cart -->
-		<div class="rh-mobile-row-1 d-flex align-items-center justify-content-between gap-2 mb-1">
+		<div class="rh-mobile-row-1 d-flex align-items-center justify-content-between gap-2">
 			<!-- Delivering to Pill -->
 			<button type="button" class="rh-hdr-pill rh-mobile-location-pill flex-grow-1 border-0" (click)="openLocationModal()" aria-haspopup="dialog" [attr.aria-expanded]="isLocationModalOpen()">
 				<span class="rh-hdr-pill-icon"><i class="fal fa-map-marker-alt"></i></span>
@@ -124,7 +151,7 @@
 		</div>
 
 		<!-- Mobile Row 2: Search Bar with Animated Placeholder -->
-		<div class="rh-mobile-row-2 w-100 mb-1">
+		<div class="rh-mobile-row-2 w-100">
 			<form action="#" (submit)="onSearch(); $event.preventDefault();" class="w-100">
 				<div class="rh-search-wrap w-100 position-relative">
 					<i class="fal fa-search"></i>
@@ -207,7 +234,6 @@
 					        (click)="selectedDeliveryDate.set(dateItem.value)">
 						<span class="rh-date-pill">{{ dateItem.label }}</span>
 						<strong class="rh-date-sub">{{ dateItem.dateStr }}</strong>
-						<span class="rh-date-check"><i class="fal fa-check"></i></span>
 					</button>
 				</div>
 			</section>

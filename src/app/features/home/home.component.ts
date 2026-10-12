@@ -299,4 +299,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  showScrollTop = signal(false);
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.showScrollTop.set(window.scrollY > 300);
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

@@ -1,6 +1,13 @@
 /* Component specific header styling */
 :host {
   display: block;
+
+  @media (max-width: 991px) {
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+    background: #ffffff;
+  }
 }
 
 .rh-hdr-pill {

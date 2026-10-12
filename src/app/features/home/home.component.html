@@ -113,7 +113,7 @@
 </section>
 
 <!-- Monthly Deals -->
-<section class="rh-monthly-deals sec_ptb_100 bg_white" aria-labelledby="rh-monthly-deals-title">
+<section class="rh-monthly-deals" aria-labelledby="rh-monthly-deals-title">
   <div class="container maxw_1460">
     <header class="rh-monthly-heading">
       <div>
@@ -334,7 +334,7 @@
 </section>
 
 <!-- Store trust factors -->
-<section class="policy_section sec_ptb_50 pb-0 clearfix">
+<section class="policy_section rh-policy-section" aria-label="Store trust factors">
   <div class="container maxw_1460">
     <div class="supermarket_policy clearfix">
       <ul class="ul_li clearfix">
@@ -347,3 +347,26 @@
     </div>
   </div>
 </section>
+
+<!-- Floating Action Controls: Top Scroller & WhatsApp -->
+<div class="rh-floating-actions" aria-label="Quick action controls">
+  <!-- Top Scroller Button -->
+  <button type="button" 
+          class="rh-floating-btn rh-scroll-top-btn" 
+          [class.visible]="showScrollTop()" 
+          (click)="scrollToTop()" 
+          aria-label="Scroll to top of page" 
+          title="Back to top">
+    <i class="fal fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://api.whatsapp.com/send/?phone=923107779651&text=Hello%20Rainbow%20Cash%20%26%20Carry&type=phone_number&app_absent=0" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     class="rh-floating-btn rh-whatsapp-btn" 
+     aria-label="Chat with Rainbow on WhatsApp" 
+     title="Chat on WhatsApp">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+  </a>
+</div>

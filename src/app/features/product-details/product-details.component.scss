@@ -326,37 +326,98 @@
 .rh-details-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   margin-bottom: 22px;
 }
 
+/* 1. ADD Button (When not in cart - matches .rh-shared-add-button on hover) */
+.rh-details-btn-cart {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 32px;
+  border: 1px solid var(--rh-primary);
+  border-radius: 10px;
+  color: #fff !important;
+  background: var(--rh-primary) !important;
+  font-family: "Jost", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 180ms ease !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
+  i {
+    font-size: 1.05rem;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border-color: var(--rh-secondary) !important;
+      color: var(--rh-primary) !important;
+      background: var(--rh-secondary) !important;
+      box-shadow: 0 4px 14px rgba(135, 206, 235, 0.4) !important;
+    }
+  }
+
+  &:focus-visible {
+    border-color: var(--rh-secondary) !important;
+    color: var(--rh-primary) !important;
+    background: var(--rh-secondary) !important;
+  }
+
+  &:active {
+    opacity: 0.9 !important;
+    transform: scale(0.98);
+  }
+}
+
+/* 2. Quantity Stepper (When in cart) */
 .rh-details-qty {
   display: inline-flex;
-  min-width: 110px;
-  min-height: 48px;
+  min-width: 130px;
+  min-height: 44px;
   align-items: center;
-  justify-content: space-around;
-  border-radius: 12px;
+  justify-content: space-between;
+  border: 1px solid var(--rh-primary);
+  border-radius: 10px;
   color: #fff;
   background: var(--rh-primary);
-  box-shadow: 0 5px 14px rgba(75, 0, 130, 0.2);
+  padding: 0 6px;
 
   button {
     display: grid;
     width: 36px;
-    height: 40px;
+    height: 36px;
     place-items: center;
     border: 0;
+    border-radius: 8px;
     color: inherit;
     background: transparent;
     font-size: 1.25rem;
+    font-weight: 700;
     cursor: pointer;
+    transition: background 150ms ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    &:active {
+      background: rgba(255, 255, 255, 0.28);
+    }
   }
 
-  span {
-    min-width: 24px;
+  span.rh-qty-num {
+    min-width: 30px;
     text-align: center;
+    font-size: 1.05rem;
     font-weight: 750;
+    user-select: none;
   }
 }
 
@@ -521,11 +582,11 @@
 @media (max-width: 576px) {
   .rh-details-actions {
     flex-direction: column;
+    align-items: stretch;
     gap: 10px;
 
-    .rh-details-qty,
     .rh-details-btn-cart,
-    .rh-details-btn-buy {
+    .rh-details-qty {
       width: 100%;
     }
   }

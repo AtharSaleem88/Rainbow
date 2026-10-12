@@ -72,16 +72,20 @@
         <!-- Description Snippet -->
         <!-- Quantity & CTA Actions -->
         <div class="rh-details-actions">
-          <div class="rh-details-qty">
-            <button type="button" (click)="decQty()" aria-label="Decrease quantity">−</button>
-            <span>{{ quantity() }}</span>
-            <button type="button" (click)="incQty()" aria-label="Increase quantity">+</button>
-          </div>
-
-          <button type="button" class="rh-details-btn-cart" (click)="addToCart()">
-            <i class="fal fa-shopping-bag"></i> Add To Cart
+          <button *ngIf="cartQuantity === 0; else cartQuantityControl" 
+                  type="button" 
+                  class="rh-details-btn-cart" 
+                  (click)="addToCart()">
+            <i class="fal fa-shopping-bag" aria-hidden="true"></i> ADD
           </button>
 
+          <ng-template #cartQuantityControl>
+            <div class="rh-details-qty" [attr.aria-label]="'Quantity in cart'">
+              <button type="button" (click)="changeQuantity(-1)" aria-label="Decrease quantity">−</button>
+              <span class="rh-qty-num">{{ cartQuantity }}</span>
+              <button type="button" (click)="changeQuantity(1)" aria-label="Increase quantity">+</button>
+            </div>
+          </ng-template>
         </div>
 
         <!-- Trust Features -->
