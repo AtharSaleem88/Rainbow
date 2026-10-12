@@ -5,28 +5,33 @@ import { Product, Category, ProductFilter } from '../models/product.model';
   providedIn: 'root'
 })
 export class ProductService {
-  private categories = signal<Category[]>([
-    { id: 1, name: 'Paan Corner', slug: 'paan-corner', image: 'assets/images/slider/supermarket/img_03.png', itemCount: 0 },
-    { id: 2, name: 'Dairy, Bread & Eggs', slug: 'dairy-eggs', icon: 'fa-egg', image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg', itemCount: 32 },
-    { id: 3, name: 'Fruits & Vegetables', slug: 'ultra-fresh', icon: 'fa-apple-alt', image: 'assets/images/slider/supermarket/img_01.png', itemCount: 48 },
-    { id: 4, name: 'Cold Drinks & Juices', slug: 'beverages', icon: 'fa-glass-cheers', image: 'assets/images/Head/beverage.jpg', itemCount: 0 },
-    { id: 5, name: 'Snacks & Munchies', slug: 'snacks-bakery', icon: 'fa-cookie-bite', image: 'assets/images/shop/supermarket/img_03.png', itemCount: 0 },
-    { id: 6, name: 'Breakfast & Instant Food', slug: 'breakfast-instant-food', image: 'assets/images/Classic_ecom/Rolled Oats 1kg.jpg', itemCount: 0 },
-    { id: 7, name: 'Sweet Tooth', slug: 'sweet-tooth', image: 'assets/images/shop/supermarket/img_03.png', itemCount: 0 },
-    { id: 8, name: 'Bakery & Biscuits', slug: 'bakery-biscuits', image: 'assets/images/slider/supermarket/img_04.png', itemCount: 0 },
-    { id: 9, name: 'Tea, Coffee & Milk Drinks', slug: 'tea-coffee-milk-drinks', image: 'assets/images/Head/beverage.jpg', itemCount: 0 },
-    { id: 10, name: 'Atta, Rice & Dal', slug: 'grocery', icon: 'fa-shopping-basket', image: 'assets/images/Head/rice.webp', itemCount: 120 },
-    { id: 11, name: 'Masala, Oil & More', slug: 'masala-oil-more', image: 'assets/images/Head/oilGhee.jpg', itemCount: 0 },
-    { id: 12, name: 'Sauces & Spreads', slug: 'sauces-spreads', image: 'assets/images/slider/supermarket/img_04.png', itemCount: 0 },
-    { id: 13, name: 'Chicken, Meat & Fish', slug: 'chicken-meat-fish', image: 'assets/images/Head/Head_Meat.jpg', itemCount: 0 },
-    { id: 14, name: 'Organic & Healthy Living', slug: 'organic-veggies', icon: 'fa-leaf', image: 'assets/images/ultra_fresh/Curly-Kale.webp', itemCount: 50 },
-    { id: 15, name: 'Baby Care', slug: 'baby-care', image: 'assets/images/shop/supermarket/img_01.png', itemCount: 0 },
-    { id: 16, name: 'Pharma & Wellness', slug: 'pharma-wellness', image: 'assets/images/shop/supermarket/img_06.png', itemCount: 2 },
-    { id: 17, name: 'Cleaning Essentials', slug: 'cleaning-essentials', image: 'assets/images/shop/supermarket/img_04.png', itemCount: 0 },
-    { id: 18, name: 'Home & Office', slug: 'home-office', image: 'assets/images/shop/supermarket/img_05.png', itemCount: 0 },
-    { id: 19, name: 'Personal Care', slug: 'personal-care', image: 'assets/images/shop/supermarket/img_02.png', itemCount: 13 },
-    { id: 20, name: 'Frozen Food', slug: 'frozen-food', image: 'assets/images/Head/Head_Frozen.jpg', itemCount: 11 },
-  ]);
+ private categories = signal<Category[]>(
+  [
+    { id: 1, name: 'Paan Corner', slug: 'paan-corner', itemCount: 0 },
+    { id: 2, name: 'Dairy, Bread & Eggs', slug: 'dairy-eggs', icon: 'fa-egg', itemCount: 32 },
+    { id: 3, name: 'Fruits & Vegetables', slug: 'ultra-fresh', icon: 'fa-apple-alt', itemCount: 48 },
+    { id: 4, name: 'Cold Drinks & Juices', slug: 'beverages', icon: 'fa-glass-cheers', itemCount: 0 },
+    { id: 5, name: 'Snacks & Munchies', slug: 'snacks-bakery', icon: 'fa-cookie-bite', itemCount: 0 },
+    { id: 6, name: 'Breakfast & Instant Food', slug: 'breakfast-instant-food', itemCount: 0 },
+    { id: 7, name: 'Sweet Tooth', slug: 'sweet-tooth', itemCount: 0 },
+    { id: 8, name: 'Bakery & Biscuits', slug: 'bakery-biscuits', itemCount: 0 },
+    { id: 9, name: 'Tea & Coffee', slug: 'tea-coffee-milk-drinks', itemCount: 0 },
+    { id: 10, name: 'Atta, Rice & Dal', slug: 'grocery', icon: 'fa-shopping-basket', itemCount: 120 },
+    { id: 11, name: 'Oil & Ghee', slug: 'masala-oil-more', itemCount: 0 },
+    { id: 12, name: 'Sauces & Spreads', slug: 'sauces-spreads', itemCount: 0 },
+    { id: 13, name: 'Chicken, Meat & Fish', slug: 'chicken-meat-fish', itemCount: 0 },
+    { id: 14, name: 'Organic & Healthy Living', slug: 'organic-veggies', icon: 'fa-leaf', itemCount: 50 },
+    { id: 15, name: 'Baby Care', slug: 'baby-care', itemCount: 0 },
+    { id: 16, name: 'Pharma & Wellness', slug: 'pharma-wellness', itemCount: 2 },
+    { id: 17, name: 'Cleaning Essentials', slug: 'cleaning-essentials', itemCount: 0 },
+    { id: 18, name: 'Home & Office', slug: 'home-office', itemCount: 0 },
+    { id: 19, name: 'Personal Care', slug: 'personal-care', itemCount: 13 },
+    { id: 20, name: 'Frozen Food', slug: 'frozen-food', itemCount: 11 },
+  ].map(category => ({
+    ...category,
+    image: `assets/images/slider/supermarket/${category.name}.jpg`
+  }))
+);
 
   private products = signal<Product[]>([
     {

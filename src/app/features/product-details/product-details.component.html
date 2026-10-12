@@ -36,17 +36,10 @@
       <div class="rh-details-content">
         <span class="rh-details-category">{{ p.category }}</span>
         <h1>{{ p.title }}</h1>
-        <p *ngIf="p.subtitle" class="rh-details-subtitle">{{ p.subtitle }}</p>
-
         <!-- Brand & Stock Row -->
         <div class="rh-details-meta">
           <span class="rh-details-brand"><i class="fal fa-store"></i> Brand: <strong>{{ p.brand }}</strong></span>
-          <span class="rh-details-stock" [class.is-out]="!p.inStock">
-            <i class="fal" [ngClass]="p.inStock ? 'fa-check-circle' : 'fa-times-circle'"></i>
-            {{ p.inStock ? 'In Stock & Ready to Ship' : 'Out of Stock' }}
-          </span>
         </div>
-
         <!-- Vertical Feature Badges/Tags -->
         <div class="rh-details-tags">
           <span *ngFor="let tag of displayTags" class="rh-details-tag-item">
@@ -77,8 +70,6 @@
         </div>
 
         <!-- Description Snippet -->
-        <p class="rh-details-desc-snippet" *ngIf="p.description">{{ p.description }}</p>
-
         <!-- Quantity & CTA Actions -->
         <div class="rh-details-actions">
           <div class="rh-details-qty">
@@ -91,9 +82,6 @@
             <i class="fal fa-shopping-bag"></i> Add To Cart
           </button>
 
-          <button type="button" class="rh-details-btn-buy" (click)="buyNow()">
-            Buy Now <i class="fal fa-bolt"></i>
-          </button>
         </div>
 
         <!-- Trust Features -->

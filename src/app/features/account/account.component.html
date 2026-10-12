@@ -30,7 +30,6 @@
             <span>Rainbow Wallet</span>
             <strong>Rs. {{ authService.walletBalance() | number:'1.0-0' }}</strong>
           </div>
-          <span class="rainbow-wallet-icon"><i class="fal fa-wallet"></i></span>
         </div>
 
         <!-- Menu Tabs -->
@@ -84,7 +83,6 @@
           <header class="rainbow-tab-header">
             <div>
               <h2>Order History</h2>
-              <p>View and track your previous supermarket purchases</p>
             </div>
           </header>
 
@@ -133,7 +131,6 @@
           <header class="rainbow-tab-header">
             <div>
               <h2>Rainbow Wallet</h2>
-              <p>Manage your store balance for instant & seamless checkouts</p>
             </div>
           </header>
 
@@ -141,10 +138,6 @@
             <div class="rainbow-wallet-hero-card">
               <span class="lbl">Current Wallet Balance</span>
               <strong class="balance">Rs. {{ authService.walletBalance() | number:'1.0-0' }}</strong>
-              <div class="rainbow-wallet-features">
-                <span><i class="fal fa-bolt text-amber"></i> Instant 1-Click Checkout</span>
-                <span><i class="fal fa-shield-check"></i> 100% Safe & Refund Guarantee</span>
-              </div>
             </div>
 
             <!-- Top Up Form -->
@@ -192,7 +185,6 @@
           <header class="rainbow-tab-header d-flex align-items-center justify-content-between">
             <div>
               <h2>Saved Addresses</h2>
-              <p>Manage your delivery locations for faster checkout</p>
             </div>
             <button type="button" class="rainbow-btn-primary" (click)="openAddressModal()">
               <i class="fal fa-plus"></i> Add New Address
@@ -229,7 +221,6 @@
           <header class="rainbow-tab-header d-flex align-items-center justify-content-between">
             <div>
               <h2>Saved Payment Cards</h2>
-              <p>Save cards for 1-click checkout & wallet top-up</p>
             </div>
             <button type="button" class="rainbow-btn-primary" (click)="openCardModal()">
               <i class="fal fa-plus"></i> Add New Card
@@ -267,7 +258,6 @@
           <header class="rainbow-tab-header">
             <div>
               <h2>Returns & Refunds</h2>
-              <p>Track return requests and refund statuses</p>
             </div>
           </header>
 
@@ -300,7 +290,6 @@
           <header class="rainbow-tab-header">
             <div>
               <h2>Account Settings</h2>
-              <p>Update your personal information and delivery address</p>
             </div>
           </header>
 
@@ -368,9 +357,7 @@
         <i class="fal fa-map-marker-alt"></i>
       </div>
       <div>
-        <span class="rh-schedule-kicker">DELIVERY ADDRESS</span>
         <h2 id="add-addr-modal-title">Add New Address</h2>
-        <p>Save delivery location for quick doorstep ordering</p>
       </div>
       <button type="button" class="rh-schedule-close" (click)="closeAddressModal()"><i class="fal fa-times"></i></button>
     </header>
@@ -378,7 +365,7 @@
     <div class="rh-schedule-body">
       <div class="rainbow-form-field mb-3">
         <label>Address Label</label>
-        <div class="rainbow-topup-amounts">
+        <div class="rainbow-label-selector">
           <button type="button" [class.is-selected]="addressForm.label === 'Home'" (click)="addressForm.label = 'Home'">Home</button>
           <button type="button" [class.is-selected]="addressForm.label === 'Office'" (click)="addressForm.label = 'Office'">Office</button>
           <button type="button" [class.is-selected]="addressForm.label === 'Other'" (click)="addressForm.label = 'Other'">Other</button>
@@ -440,9 +427,7 @@
         <i class="fal fa-credit-card"></i>
       </div>
       <div>
-        <span class="rh-schedule-kicker">PAYMENT METHOD</span>
         <h2 id="add-card-modal-title">Save Payment Card</h2>
-        <p>Save your card details for 1-click payments</p>
       </div>
       <button type="button" class="rh-schedule-close" (click)="closeCardModal()"><i class="fal fa-times"></i></button>
     </header>
@@ -505,9 +490,7 @@
         <i class="fal fa-undo-alt"></i>
       </div>
       <div>
-        <span class="rh-schedule-kicker">REFUND & RETURN</span>
         <h2 id="return-modal-title">Request Item Return</h2>
-        <p>Submit a return request for refund back to your Rainbow Wallet</p>
       </div>
       <button type="button" class="rh-schedule-close" (click)="closeReturnModal()"><i class="fal fa-times"></i></button>
     </header>

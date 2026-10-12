@@ -1,9 +1,15 @@
-<!-- Rainbow grocery hero -->
-<section class="rh-hero-section" aria-label="Featured offers">
+<!-- Rainbow Hero Banner Slider -->
+<section class="rh-hero-section" aria-label="Featured category showcases">
   <div class="container maxw_1460">
-    <div class="rh-hero-frame" (mouseenter)="stopHeroSlider()" (mouseleave)="startHeroSlider()" (focusin)="stopHeroSlider()" (focusout)="startHeroSlider()">
+    <div class="rh-hero-frame" 
+         (mouseenter)="stopHeroSlider()" 
+         (mouseleave)="startHeroSlider()" 
+         (focusin)="stopHeroSlider()" 
+         (focusout)="startHeroSlider()"
+         (touchstart)="onTouchStart($event)"
+         (touchend)="onTouchEnd($event)">
       <article *ngFor="let slide of heroSlides; let i = index" 
-               class="rh-hero-slide" 
+               class="rh-hero-slide rh-hero-banner-slide" 
                [class.rh-hero-active]="currentHeroIndex() === i" 
                [ngClass]="slide.theme" 
                [attr.aria-hidden]="currentHeroIndex() !== i" 
@@ -11,29 +17,46 @@
                aria-roledescription="slide" 
                [attr.aria-label]="(i + 1) + ' of ' + heroSlides.length">
         
+        <img class="rh-hero-banner-image" 
+             [src]="slide.image" 
+             [alt]="slide.imageAlt" 
+             [attr.fetchpriority]="i === 0 ? 'high' : 'auto'" 
+             [attr.loading]="i === 0 ? 'eager' : 'lazy'" 
+             decoding="async">
+        <span class="rh-hero-banner-shade" aria-hidden="true"></span>
+
         <div class="rh-hero-copy">
-          <span class="rh-hero-eyebrow">{{ slide.eyebrow }}</span>
-          <h1 class="rh-hero-heading">{{ slide.title }}</h1>
-          <a [routerLink]="slide.link" [queryParams]="slide.queryParams" class="rh-hero-cta">{{ slide.ctaText }}<i class="fal fa-arrow-right" aria-hidden="true"></i></a>
-        </div>
-        <div class="rh-hero-art">
-          <div class="rh-hero-rainbow-cloud-wrap" aria-hidden="true">
-            <img src="assets/images/rainbow-cloud-swirl.png" alt="" class="rh-hero-rainbow-cloud-bg">
-          </div>
-          <img [src]="slide.image" [alt]="slide.imageAlt" [attr.fetchpriority]="i === 0 ? 'high' : 'auto'" [attr.loading]="i === 0 ? 'eager' : 'lazy'">
+          <h2 class="rh-hero-heading">{{ slide.title }}</h2>
+          <p class="rh-hero-sub" *ngIf="slide.description">{{ slide.description }}</p>
+          <a [routerLink]="slide.link" [queryParams]="slide.queryParams" class="rh-hero-cta">
+            {{ slide.ctaText }} <i class="fal fa-arrow-right" aria-hidden="true"></i>
+          </a>
         </div>
       </article>
 
       <div class="rh-hero-controls" aria-label="Hero slider controls">
-        <button type="button" class="rh-hero-arrow" (click)="prevHeroSlide()" aria-label="Previous slide"><i class="fal fa-arrow-left" aria-hidden="true"></i></button>
+        <button type="button" class="rh-hero-arrow" (click)="prevHeroSlide()" aria-label="Previous slide">
+          <i class="fal fa-arrow-left" aria-hidden="true"></i>
+        </button>
         <div class="rh-hero-dots" role="group" aria-label="Choose a slide">
-          <button *ngFor="let slide of heroSlides; let i = index" type="button" class="rh-hero-dot" [class.rh-hero-dot-active]="currentHeroIndex() === i" (click)="setHeroSlide(i)" [attr.aria-label]="'Show slide ' + (i + 1)" [attr.aria-current]="currentHeroIndex() === i ? 'true' : null"></button>
+          <button *ngFor="let slide of heroSlides; let i = index" 
+                  type="button" 
+                  class="rh-hero-dot" 
+                  [class.rh-hero-dot-active]="currentHeroIndex() === i" 
+                  (click)="setHeroSlide(i)" 
+                  [attr.aria-label]="'Show slide ' + (i + 1)" 
+                  [attr.aria-current]="currentHeroIndex() === i ? 'true' : null">
+          </button>
         </div>
-        <button type="button" class="rh-hero-arrow" (click)="nextHeroSlide()" aria-label="Next slide"><i class="fal fa-arrow-right" aria-hidden="true"></i></button>
+        <button type="button" class="rh-hero-arrow" (click)="nextHeroSlide()" aria-label="Next slide">
+          <i class="fal fa-arrow-right" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
   </div>
 </section>
+
+
 
 <!-- Shop by category -->
 <section class="rh-category-section" aria-labelledby="home-category-title">
@@ -71,6 +94,23 @@
   </div>
 </section>
 <!-- Shop by category end -->
+
+
+
+<section class="rh-category-spotlights" aria-labelledby="rh-category-spotlights-title">
+  <div class="rh-category-spotlights-inner">
+    <div class="rh-category-spotlights-grid">
+      <a *ngFor="let category of spotlightCategories" class="rh-category-spotlight" [ngClass]="'rh-category-spotlight-' + category.theme" [routerLink]="['/shop']" [queryParams]="{ category: category.category }">
+        <span class="rh-category-spotlight-image"><img [src]="category.image" [alt]="category.title + ' essentials'" loading="lazy"></span>
+        <span class="rh-category-spotlight-content">
+          <span class="rh-category-spotlight-title">{{ category.title }}</span>
+          <span class="rh-category-spotlight-description">{{ category.description }}</span>
+          <span class="rh-category-spotlight-link">Shop Now <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- Monthly Deals -->
 <section class="rh-monthly-deals sec_ptb_100 bg_white" aria-labelledby="rh-monthly-deals-title">
@@ -138,7 +178,7 @@
 <section class="rh-product-collection" aria-labelledby="rh-farm-title">
   <div class="container maxw_1460">
     <header class="rh-collection-heading">
-      <div><h2 id="rh-farm-title">Fresh From Farm</h2><p>Seasonal produce and everyday fresh picks from local farms.</p></div>
+      <div><h2 id="rh-farm-title">Fresh From Farm</h2></div>
       <a routerLink="/shop" [queryParams]="{category: 'ultra-fresh'}" class="rh-collection-see-all">See all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
     </header>
     <div class="rh-product-rail" aria-label="Fresh from farm products">
@@ -164,7 +204,7 @@
 <section class="rh-product-collection" aria-labelledby="rh-frozen-title">
   <div class="container maxw_1460">
     <header class="rh-collection-heading">
-      <div><h2 id="rh-frozen-title">Frozen Food Section</h2><p>Stock the freezer with convenient favourites for any time of day.</p></div>
+      <div><h2 id="rh-frozen-title">Frozen Food Section</h2></div>
       <a routerLink="/shop" [queryParams]="{category: 'frozen-food'}" class="rh-collection-see-all">See all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
     </header>
     <div class="rh-product-rail" aria-label="Frozen food products">
@@ -181,10 +221,9 @@
         <img class="rh-promo-banner-image" src="assets/images/rainbow-health-beauty-banner.png" alt="Premium skincare and personal care products" loading="lazy" decoding="async">
         <span class="rh-promo-banner-shade" aria-hidden="true"></span>
         <span class="rh-promo-banner-copy">
-          <span class="rh-promo-banner-eyebrow"><i class="fal fa-sparkles" aria-hidden="true"></i> YOUR EVERYDAY RITUAL</span>
           <strong class="rh-promo-banner-title">Health &amp; Beauty</strong>
           <span class="rh-promo-banner-description">Little care, lasting confidence.</span>
-          <span class="rh-promo-banner-cta">Explore the collection <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
+          <span class="rh-promo-banner-cta">See the Collection <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
         </span>
       </a>
 
@@ -192,9 +231,8 @@
         <img class="rh-promo-banner-image" src="assets/images/rainbow-electronics-banner.png" alt="Modern everyday electronics including headphones, a phone, and a smartwatch" loading="lazy" decoding="async">
         <span class="rh-promo-banner-shade" aria-hidden="true"></span>
         <span class="rh-promo-banner-copy">
-          <span class="rh-promo-banner-eyebrow">SMARTER EVERYDAY</span>
           <strong class="rh-promo-banner-title">Electronics &amp; Gadgets</strong>
-          <span class="rh-promo-banner-cta">Explore Collection <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
+          <span class="rh-promo-banner-cta">See Smart Products <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
         </span>
       </a>
     </div>
@@ -243,7 +281,6 @@
     </div>
     <div class="rh-brand-store-content">
       <div class="rh-brand-store-heading">
-        <div><span class="rh-brand-kicker">SHOP THE BRAND</span><h3>{{ brand.name }} favourites</h3></div>
         <div class="rh-monthly-rail-controls" *ngIf="selectedBrandProducts.length > 3">
           <button type="button" aria-label="Scroll products left" (click)="scrollBrandProducts(-1)"><i class="fal fa-chevron-left" aria-hidden="true"></i></button>
           <button type="button" aria-label="Scroll products right" (click)="scrollBrandProducts(1)"><i class="fal fa-chevron-right" aria-hidden="true"></i></button>
@@ -259,23 +296,7 @@
   </section>
 </div>
 
-<section class="rh-category-spotlights" aria-labelledby="rh-category-spotlights-title">
-  <div class="rh-category-spotlights-inner">
-    <div class="rh-category-spotlights-heading">
-      <div><h2 id="rh-category-spotlights-title">More to love at Rainbow</h2></div>
-    </div>
-    <div class="rh-category-spotlights-grid">
-      <a *ngFor="let category of spotlightCategories" class="rh-category-spotlight" [ngClass]="'rh-category-spotlight-' + category.theme" [routerLink]="['/shop']" [queryParams]="{ category: category.category }">
-        <span class="rh-category-spotlight-image"><img [src]="category.image" [alt]="category.title + ' essentials'" loading="lazy"></span>
-        <span class="rh-category-spotlight-content">
-          <span class="rh-category-spotlight-title">{{ category.title }}</span>
-          <span class="rh-category-spotlight-description">{{ category.description }}</span>
-          <span class="rh-category-spotlight-link">Shop Now <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
-        </span>
-      </a>
-    </div>
-  </div>
-</section>
+
 
 <!-- Prices Drop Section -->
 <section class="rh-product-collection rh-product-collection-tint" aria-labelledby="rh-price-drops-title">

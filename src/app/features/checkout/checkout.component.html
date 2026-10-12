@@ -60,10 +60,10 @@
       <!-- Mobile Quick Order Summary Bar (Top Collapsible Toggle) -->
       <div class="rainbow-mobile-summary-bar d-md-none mb-3" *ngIf="currentStep() !== 3">
         <button type="button" class="rainbow-mobile-summary-btn" (click)="isMobileSummaryOpen.set(!isMobileSummaryOpen())" [attr.aria-expanded]="isMobileSummaryOpen()">
-          <span class="d-flex align-items-center gap-2">
-            <i class="fal fa-shopping-bag"></i>
-            <span>{{ isMobileSummaryOpen() ? 'Hide order summary' : 'Show order summary' }}</span>
-            <i class="fal" [ngClass]="isMobileSummaryOpen() ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+          <span class="rainbow-mobile-summary-toggle">
+            <i class="fal fa-shopping-bag summary-bag-icon" aria-hidden="true"></i>
+            <span class="summary-text">{{ isMobileSummaryOpen() ? 'Hide order summary' : 'Show order summary' }}</span>
+            <i class="fal summary-chevron-icon" [ngClass]="isMobileSummaryOpen() ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i>
           </span>
           <strong class="rainbow-mobile-summary-total">Rs. {{ checkoutTotal() | number:'1.0-0' }}</strong>
         </button>
@@ -190,7 +190,6 @@
           <div *ngIf="currentStep() === 2" class="rainbow-checkout-card">
             <header class="rainbow-card-header">
               <h2><i class="fal fa-credit-card"></i> Choose Payment Method</h2>
-              <p>Select your preferred payment method to complete the order</p>
             </header>
 
             <div class="rainbow-payment-options">
@@ -201,12 +200,7 @@
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
                     <strong>Cash on Delivery (COD)</strong>
-                    <span class="rainbow-badge-recommended">Popular</span>
                   </div>
-                  <p>Pay in cash or via QR scanning when your doorstep order arrives.</p>
-                </div>
-                <div class="rainbow-payment-icon">
-                  <i class="fal fa-money-bill-wave"></i>
                 </div>
               </label>
 
@@ -217,12 +211,7 @@
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
                     <strong>JazzCash Mobile Wallet</strong>
-                    <span class="rainbow-badge-instant">Instant</span>
                   </div>
-                  <p>Pay directly using your registered JazzCash mobile account number.</p>
-                </div>
-                <div class="rainbow-payment-icon rainbow-icon-jazzcash">
-                  <i class="fal fa-mobile-alt"></i>
                 </div>
               </label>
 
@@ -245,12 +234,7 @@
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
                     <strong>Easypaisa Wallet</strong>
-                    <span class="rainbow-badge-instant">Instant</span>
                   </div>
-                  <p>Pay instantly from your Easypaisa app or account number.</p>
-                </div>
-                <div class="rainbow-payment-icon rainbow-icon-easypaisa">
-                  <i class="fal fa-wallet"></i>
                 </div>
               </label>
 
@@ -274,11 +258,8 @@
                   <div class="rainbow-payment-title">
                     <strong>Credit / Debit Card</strong>
                   </div>
-                  <p>Pay securely using Visa, Mastercard, or UnionPay.</p>
                 </div>
-                <div class="rainbow-payment-icon">
-                  <i class="fal fa-credit-card"></i>
-                </div>
+                
               </label>
 
               <!-- Card form snippet if card selected -->
@@ -402,7 +383,7 @@
           </div>
           <span class="rainbow-success-kicker">Order Placed Successfully</span>
           <h2>Thank You For Shopping With Us!</h2>
-          <p>Your order number is <strong class="rainbow-order-num">{{ generatedOrderNumber() }}</strong>. We have sent order updates to <strong>{{ billingData.email || 'your email' }}</strong>.</p>
+          <p>Your order number is <strong class="rainbow-order-num">{{ generatedOrderNumber() }}</strong>.</p>
 
           <div class="rainbow-success-details">
             <div class="rainbow-success-col">

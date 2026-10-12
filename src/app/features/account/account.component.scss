@@ -163,16 +163,6 @@
   }
 }
 
-.rainbow-wallet-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border-radius: 12px;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
-  font-size: 1.15rem;
-}
 
 .rainbow-account-nav {
   display: grid;
@@ -564,20 +554,94 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 
+  @media (max-width: 540px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
   button {
-    height: 44px;
-    border: 1px solid #e0e4ef;
-    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    height: 46px;
+    padding: 0 10px;
+    border: 1.5px solid #e0e4ef;
+    border-radius: 12px;
     color: #202239;
     background: #fff;
     font-family: "Jost", sans-serif;
+    font-size: 0.95rem;
     font-weight: 750;
+    white-space: nowrap;
+    line-height: 1;
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 180ms ease;
+
+    &:hover {
+      border-color: var(--rh-primary);
+      background: rgba(45, 44, 146, 0.04);
+    }
 
     &.is-selected {
       border-color: var(--rh-primary);
       color: #fff;
       background: var(--rh-primary);
+      box-shadow: 0 4px 12px rgba(45, 44, 146, 0.22);
+    }
+
+    @media (max-width: 540px) {
+      font-size: 0.92rem;
+      min-height: 44px;
+      height: 44px;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 360px) {
+      font-size: 0.86rem;
+      padding: 0 6px;
+    }
+  }
+}
+
+.rainbow-label-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    height: 44px;
+    padding: 0 8px;
+    border: 1.5px solid #e0e4ef;
+    border-radius: 10px;
+    color: #202239;
+    background: #fff;
+    font-family: "Jost", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    line-height: 1;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 180ms ease;
+
+    &:hover {
+      border-color: var(--rh-primary);
+      background: rgba(45, 44, 146, 0.04);
+    }
+
+    &.is-selected {
+      border-color: var(--rh-primary);
+      color: #fff;
+      background: var(--rh-primary);
+      box-shadow: 0 4px 12px rgba(45, 44, 146, 0.2);
     }
   }
 }
@@ -587,24 +651,58 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
+
   button {
-    display: flex;
+    display: inline-flex;
+    min-height: 46px;
     height: 46px;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    border: 1px solid #e0e4ef;
+    padding: 0 10px;
+    border: 1.5px solid #e0e4ef;
     border-radius: 12px;
     color: #202239;
     background: #fff;
     font-family: "Jost", sans-serif;
+    font-size: 0.88rem;
     font-weight: 700;
+    white-space: nowrap;
+    line-height: 1;
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 180ms ease;
+
+    &:hover {
+      border-color: var(--rh-primary);
+      background: rgba(45, 44, 146, 0.04);
+    }
 
     &.is-selected {
       border-color: var(--rh-primary);
-      background: rgba(75, 0, 130, 0.06);
-      box-shadow: 0 0 0 3px rgba(75, 0, 130, 0.1);
+      background: rgba(45, 44, 146, 0.06);
+      box-shadow: 0 0 0 3px rgba(45, 44, 146, 0.12);
+    }
+
+    @media (max-width: 440px) {
+      font-size: 0.8rem;
+      gap: 5px;
+      padding: 0 6px;
+      border-radius: 10px;
+
+      i {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      font-size: 0.74rem;
+      gap: 4px;
+      padding: 0 3px;
     }
   }
 }
@@ -824,3 +922,75 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 600px) {
+  .rainbow-account-page {
+    padding: 16px 0 44px;
+  }
+
+  .rainbow-account-header {
+    gap: 12px;
+    margin-bottom: 16px;
+
+    h1 {
+      font-size: 1.35rem;
+    }
+  }
+
+  .rainbow-account-back {
+    width: 38px;
+    height: 38px;
+  }
+
+  .rainbow-account-logout-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .rainbow-tab-content {
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+
+  .rainbow-wallet-hero-card {
+    padding: 18px 16px;
+    border-radius: 16px;
+
+    .balance {
+      font-size: 1.85rem;
+      margin: 4px 0 12px;
+    }
+  }
+
+  .rainbow-topup-card {
+    padding: 16px 12px;
+    border-radius: 16px;
+
+    h3 {
+      font-size: 1.05rem;
+    }
+  }
+
+  .rainbow-order-header {
+    padding: 12px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .rainbow-order-items {
+    padding: 6px 14px;
+  }
+
+  .rainbow-order-footer {
+    padding: 12px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .rainbow-saved-addresses-list,
+  .rainbow-saved-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

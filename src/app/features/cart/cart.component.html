@@ -27,7 +27,6 @@
             <h2>Ready for delivery</h2>
             <p>{{ cartService.cartCount() }} {{ cartService.cartCount() === 1 ? 'item' : 'items' }} in your cart</p>
           </div>
-          <span class="rainbow-cart-delivery-status" [class.rainbow-cart-status-unavailable]="hasUnavailableItems()"><i class="fal" [ngClass]="hasUnavailableItems() ? 'fa-exclamation-circle' : 'fa-check'" aria-hidden="true"></i> {{ hasUnavailableItems() ? 'Review unavailable items' : 'In stock' }}</span>
         </section>
 
         <section class="rainbow-cart-items" aria-label="Items in your cart">
@@ -85,7 +84,6 @@
             <span>Your total savings</span><strong>Rs. {{ totalSavings() | number:'1.0-0' }}</strong>
           </div>
           <a routerLink="/checkout" class="rainbow-cart-primary">Proceed to checkout <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
-          <p class="rainbow-cart-secure"><i class="fal fa-lock" aria-hidden="true"></i> Secure checkout</p>
         </section>
 
         <section class="rainbow-cart-policy" aria-labelledby="rainbow-cart-policy-title">

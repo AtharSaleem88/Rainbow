@@ -1181,13 +1181,6 @@ body.rh-monthly-flyer-modal-open {
   object-fit: contain;
 }
 
-.rh-auth-card-sub {
-  margin: 0;
-  color: #72788e;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
 .rh-auth-tabs {
   display: flex;
   background: #f2f4fa;
@@ -1905,3 +1898,10 @@ body.rh-monthly-flyer-modal-open {
   from { opacity: 0; transform: translateY(16px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* Flex Gap Utility Classes for Bootstrap 4 */
+.gap-1 { gap: 0.25rem !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+.gap-4 { gap: 1.5rem !important; }
+

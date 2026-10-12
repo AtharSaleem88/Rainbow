@@ -115,34 +115,63 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentHeroIndex = signal(0);
   readonly heroSlides = [
     {
-      theme: 'rh-hero-green',
-      eyebrow: 'EVERYDAY GROCERIES',
-      title: 'Everything You need, All In One Place',
-      image: 'assets/images/slider/supermarket/img_04.png',
-      imageAlt: 'A selection of pantry and grocery products',
-      artLabel: 'Everyday favourites',
-      ctaText: 'Shop groceries',
-      link: '/shop',
-      queryParams: { category: 'grocery' }
-    },
-    {
-      theme: 'rh-hero-secondary',
-      eyebrow: 'GREAT VALUE, EVERY DAY',
-      title: 'Good Finds For Your Whole Home',
-      image: 'assets/images/slider/supermarket/img_03.png',
-      imageAlt: 'A selection of personal care and home essentials',
-      artLabel: 'Trusted brands',
-      ctaText: 'Explore offers',
+      id: 'health-beauty',
+      theme: 'rh-hero-health',
+      eyebrow: 'YOUR EVERYDAY RITUAL',
+      hasSparkle: true,
+      title: 'Health & Beauty',
+      description: 'Little care, lasting confidence.',
+      ctaText: 'Explore the collection',
+      image: 'assets/images/rainbow-health-beauty-banner.png',
+      imageAlt: 'Premium skincare and personal care products',
       link: '/shop',
       queryParams: { category: 'personal-care' }
+    },
+    {
+      id: 'electronics',
+      theme: 'rh-hero-electronics',
+      eyebrow: 'SMARTER EVERYDAY',
+      hasSparkle: false,
+      title: 'Electronics & Gadgets',
+      description: 'Smart accessories and everyday tech essentials.',
+      ctaText: 'Explore Collection',
+      image: 'assets/images/rainbow-electronics-banner.png',
+      imageAlt: 'Modern everyday electronics including headphones, a phone, and a smartwatch',
+      link: '/shop',
+      queryParams: { category: 'home-office' }
     }
   ];
 
   sliderInterval: ReturnType<typeof setInterval> | null = null;
+  private touchStartX = 0;
+  private touchStartY = 0;
 
   ngOnInit() {
     this.startHeroSlider();
     this.startCampaignSlider();
+  }
+
+  onTouchStart(e: TouchEvent) {
+    this.stopHeroSlider();
+    if (e.touches && e.touches.length > 0) {
+      this.touchStartX = e.touches[0].clientX;
+      this.touchStartY = e.touches[0].clientY;
+    }
+  }
+
+  onTouchEnd(e: TouchEvent) {
+    if (e.changedTouches && e.changedTouches.length > 0) {
+      const deltaX = e.changedTouches[0].clientX - this.touchStartX;
+      const deltaY = e.changedTouches[0].clientY - this.touchStartY;
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+        if (deltaX < 0) {
+          this.nextHeroSlide();
+        } else {
+          this.prevHeroSlide();
+        }
+      }
+    }
+    this.startHeroSlider();
   }
 
   ngOnDestroy() {
