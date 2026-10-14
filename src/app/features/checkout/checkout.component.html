@@ -65,7 +65,7 @@
             <span class="summary-text">{{ isMobileSummaryOpen() ? 'Hide order summary' : 'Show order summary' }}</span>
             <i class="fal summary-chevron-icon" [ngClass]="isMobileSummaryOpen() ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i>
           </span>
-          <strong class="rainbow-mobile-summary-total">Rs. {{ checkoutTotal() | number:'1.0-0' }}</strong>
+          <strong class="rainbow-mobile-summary-total">Rs. {{ payment().payable | number:'1.0-2' }}</strong>
         </button>
         <div class="rainbow-mobile-summary-drawer" *ngIf="isMobileSummaryOpen()">
           <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
@@ -191,7 +191,34 @@
               <h2><i class="fal fa-credit-card"></i> Choose Payment Method</h2>
             </header>
 
-            <div class="rainbow-payment-options">
+            <div class="rainbow-payment-options mb-3">
+              <div class="rainbow-payment-card align-items-center p-3" [class.is-selected]="useWallet() && payment().walletApplied > 0">
+                <div class="rainbow-payment-info">
+                  <label class="rainbow-payment-title" for="use-wallet"><strong>Use Wallet</strong></label>
+                  <p>Available: Rs. {{ (authService.isLoggedIn() ? authService.walletBalance() : 0) | number:'1.0-2' }}</p>
+                </div>
+                <div class="custom-control custom-switch mb-0 ml-auto">
+                  <input id="use-wallet" type="checkbox" role="switch" class="custom-control-input" aria-label="Use Wallet" [ngModel]="useWallet()" (ngModelChange)="useWallet.set($event)" [disabled]="!authService.isLoggedIn() || authService.walletBalance() <= 0">
+                  <label class="custom-control-label" for="use-wallet"><span class="sr-only">Use Wallet</span></label>
+                </div>
+              </div>
+              <div class="rainbow-payment-card align-items-center p-3" [class.is-selected]="useLoyaltyPoints() && payment().pointsUsed > 0">
+                <div class="rainbow-payment-info">
+                  <label class="rainbow-payment-title" for="use-loyalty-points"><strong>Use Loyalty Points</strong></label>
+                  <p>{{ loyaltyService.balance() | number:'1.0-0' }} points available &middot; 1 point = Rs. {{ loyaltyService.valuePerPoint | number:'1.0-2' }}</p>
+                </div>
+                <div class="custom-control custom-switch mb-0 ml-auto">
+                  <input id="use-loyalty-points" type="checkbox" role="switch" class="custom-control-input" aria-label="Use Loyalty Points" [ngModel]="useLoyaltyPoints()" (ngModelChange)="useLoyaltyPoints.set($event)" [disabled]="!loyaltyService.isMember() || loyaltyService.balance() <= 0">
+                  <label class="custom-control-label" for="use-loyalty-points"><span class="sr-only">Use Loyalty Points</span></label>
+                </div>
+              </div>
+              <p *ngIf="!authService.isLoggedIn()" class="small text-muted mb-0"><a routerLink="/login">Sign in</a> to use your wallet and loyalty points.</p>
+            </div>
+
+            <p *ngIf="payment().payable > 0" class="small text-muted">Pay the remaining <strong>Rs. {{ payment().payable | number:'1.0-2' }}</strong> with your chosen payment method.</p>
+            <div *ngIf="payment().payable === 0" class="rainbow-card-details-box mb-3"><p class="small mb-0"><i class="fal fa-check-circle" aria-hidden="true"></i> Your wallet and loyalty points cover this order.</p></div>
+
+            <div class="rainbow-payment-options" *ngIf="payment().payable > 0">
               <!-- Cash on Delivery Option -->
               <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'cod'">
                 <input type="radio" name="paymentMethod" value="cod" [(ngModel)]="selectedPaymentMethod">
@@ -308,6 +335,7 @@
               <button type="button" class="rainbow-btn-secondary" (click)="prevStep()"><i class="fal fa-arrow-left"></i> Back to Shipping</button>
               <button type="button" class="rainbow-checkout-primary" (click)="placeOrder()">Place Order Now <i class="fal fa-check-circle"></i></button>
             </div>
+            <p *ngIf="paymentError()" class="text-danger small mt-3" role="alert">{{ paymentError() }}</p>
           </div>
 
         </main>
@@ -360,13 +388,27 @@
               <span>Delivery Charge</span>
               <span class="rainbow-cart-free">FREE</span>
             </div>
+            <div class="rainbow-summary-row" *ngIf="loyaltyService.isMember()" aria-live="polite">
+              <span>Loyalty points to earn</span>
+              <strong>{{ pointsToEarn() | number:'1.0-0' }} points</strong>
+            </div>
+            <div class="rainbow-summary-row" *ngIf="payment().pointsUsed > 0">
+              <span>Loyalty points ({{ payment().pointsUsed | number:'1.0-0' }} used)</span>
+              <strong>- Rs. {{ payment().loyaltyDiscount | number:'1.0-2' }}</strong>
+            </div>
+            <div class="rainbow-summary-row" *ngIf="payment().walletApplied > 0">
+              <span>Wallet applied</span>
+              <strong>- Rs. {{ payment().walletApplied | number:'1.0-2' }}</strong>
+            </div>
             <div class="rainbow-summary-total">
               <strong>Total Payable</strong>
-              <strong>Rs. {{ checkoutTotal() | number:'1.0-0' }}</strong>
+              <strong aria-live="polite">Rs. {{ payment().payable | number:'1.0-2' }}</strong>
             </div>
           </div>
 
           <div class="rainbow-checkout-trust">
+            <p *ngIf="loyaltyService.isMember()"><i class="fal fa-star" aria-hidden="true"></i> Earn 1 point per Rs. {{ loyaltyService.spendPerPoint | number:'1.0-0' }} spent on items after loyalty discounts.</p>
+            <p *ngIf="!loyaltyService.isMember()"><a routerLink="/login">Sign in</a> to earn loyalty points on this order.</p>
             <p><i class="fal fa-shield-check"></i> Safe & Encrypted Checkout</p>
             <p><i class="fal fa-truck"></i> Fast Delivery from Rainbow {{ billingData.branch }}</p>
           </div>
@@ -382,6 +424,7 @@
           <span class="rainbow-success-kicker">Order Placed Successfully</span>
           <h2>Thank You For Shopping With Us!</h2>
           <p>Your order number is <strong class="rainbow-order-num">{{ generatedOrderNumber() }}</strong>.</p>
+          <p *ngIf="earnedLoyaltyPoints() > 0" aria-live="polite"><i class="fal fa-star" aria-hidden="true"></i> You earned <strong>{{ earnedLoyaltyPoints() | number:'1.0-0' }} loyalty points</strong> on this order. Your balance is <strong>{{ loyaltyService.balance() | number:'1.0-0' }} points</strong>. <a routerLink="/account">View your account</a></p>
 
           <div class="rainbow-success-details">
             <div class="rainbow-success-col">
@@ -394,10 +437,17 @@
               <span class="lbl"><i class="fal fa-store"></i> Dispatching Branch</span>
               <strong>{{ billingData.branch }}</strong>
               <span class="lbl mt-3"><i class="fal fa-credit-card"></i> Payment Method</span>
-              <strong>{{ selectedPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : selectedPaymentMethod === 'jazzcash' ? 'JazzCash Mobile Wallet' : selectedPaymentMethod === 'easypaisa' ? 'Easypaisa Wallet' : 'Credit / Debit Card' }}</strong>
+              <strong>{{ payment().payable === 0 ? (payment().walletApplied > 0 ? 'Rainbow Wallet' : 'Loyalty Points') : selectedPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : selectedPaymentMethod === 'jazzcash' ? 'JazzCash Mobile Wallet' : selectedPaymentMethod === 'easypaisa' ? 'Easypaisa Wallet' : 'Credit / Debit Card' }}</strong>
             </div>
           </div>
 
+          <section class="rainbow-card-details-box w-100 text-left d-block mt-0 mb-4" *ngIf="completedPayment() as paid" aria-labelledby="payment-summary-title">
+            <div id="payment-summary-title" class="h6 mb-3 font-weight-bold" role="heading" aria-level="3"><i class="fal fa-receipt rainbow-order-num mr-2" aria-hidden="true"></i>Payment Summary</div>
+            <div class="rainbow-summary-row"><span class="mr-3">Items total</span><strong class="text-nowrap flex-shrink-0">Rs. {{ checkoutTotal() | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-summary-row" *ngIf="paid.pointsUsed > 0"><span class="mr-3">Loyalty points used: {{ paid.pointsUsed }}</span><strong class="text-success text-nowrap flex-shrink-0">- Rs. {{ paid.loyaltyDiscount | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-summary-row" *ngIf="paid.walletApplied > 0"><span class="mr-3">Paid from wallet</span><strong class="text-nowrap flex-shrink-0">- Rs. {{ paid.walletApplied | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-summary-total"><strong class="mr-3">{{ paid.payable > 0 ? 'Remaining payment' : 'Remaining payable' }}</strong><strong class="text-nowrap flex-shrink-0">Rs. {{ paid.payable | number:'1.0-2' }}</strong></div>
+          </section>
           <div class="rainbow-success-actions">
             <a routerLink="/shop" class="rainbow-checkout-primary">Continue Shopping <i class="fal fa-arrow-right"></i></a>
             <a routerLink="/" class="rainbow-btn-secondary">Return to Home</a>

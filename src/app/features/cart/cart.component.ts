@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
+import { LoyaltyService } from '../../core/services/loyalty.service';
 import { ProductService } from '../../core/services/product.service';
 import { CartItem, Product } from '../../core/models/product.model';
 
@@ -14,6 +15,7 @@ import { CartItem, Product } from '../../core/models/product.model';
 })
 export class CartComponent {
   readonly cartService = inject(CartService);
+  readonly loyaltyService = inject(LoyaltyService);
   private readonly productService = inject(ProductService);
   readonly instructionProductId = signal<number | null>(null);
   readonly instructionVariantId = signal<string | null>(null);

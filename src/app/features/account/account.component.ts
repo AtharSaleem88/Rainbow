@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
+import { LoyaltyService } from '../../core/services/loyalty.service';
 
 @Component({
   selector: 'app-account',
@@ -13,11 +14,12 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class AccountComponent {
   readonly authService = inject(AuthService);
+  readonly loyaltyService = inject(LoyaltyService);
   readonly router = inject(Router);
 
   @ViewChild('accountMainContent') accountMainContent?: ElementRef<HTMLElement>;
 
-  activeTab = signal<'orders' | 'wallet' | 'addresses' | 'cards' | 'settings' | 'returns'>('orders');
+  activeTab = signal<'orders' | 'wallet' | 'loyalty' | 'addresses' | 'cards' | 'settings' | 'returns'>('orders');
 
   // New Address Modal State
   isAddressModalOpen = signal<boolean>(false);
@@ -56,7 +58,7 @@ export class AccountComponent {
     refundAmount: 0
   };
 
-  setActiveTab(tab: 'orders' | 'wallet' | 'addresses' | 'cards' | 'settings' | 'returns') {
+  setActiveTab(tab: 'orders' | 'wallet' | 'loyalty' | 'addresses' | 'cards' | 'settings' | 'returns') {
     this.activeTab.set(tab);
     if (window.innerWidth < 992 && this.accountMainContent?.nativeElement) {
       setTimeout(() => {

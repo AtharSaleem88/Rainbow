@@ -32,6 +32,14 @@
           </div>
         </div>
 
+        <button *ngIf="loyaltyService.isMember()" type="button" class="rainbow-wallet-quick-widget w-100 text-start mt-3" (click)="setActiveTab('loyalty')">
+          <div>
+            <span>Loyalty Points</span>
+            <strong aria-live="polite">{{ loyaltyService.balance() | number:'1.0-0' }} points</strong>
+          </div>
+          <i class="fal fa-star" aria-hidden="true"></i>
+        </button>
+
         <!-- Menu Tabs -->
         <nav class="rainbow-account-nav">
           <button type="button" [class.is-active]="activeTab() === 'orders'" (click)="setActiveTab('orders')">
@@ -44,6 +52,12 @@
             <i class="fal fa-wallet"></i>
             <span>Rainbow Wallet</span>
             <span class="badge-pill">Top Up</span>
+          </button>
+
+          <button *ngIf="loyaltyService.isMember()" type="button" [class.is-active]="activeTab() === 'loyalty'" (click)="setActiveTab('loyalty')">
+            <i class="fal fa-star" aria-hidden="true"></i>
+            <span>Loyalty Points</span>
+            <span class="badge">{{ loyaltyService.balance() | number:'1.0-0' }}</span>
           </button>
 
           <button type="button" [class.is-active]="activeTab() === 'addresses'" (click)="setActiveTab('addresses')">
@@ -177,6 +191,43 @@
                 Top Up Rs. {{ topUpAmount() | number:'1.0-0' }} Now
               </button>
             </div>
+          </div>
+        </div>
+
+        <div *ngIf="activeTab() === 'loyalty' && loyaltyService.isMember()" class="rainbow-tab-content">
+          <header class="rainbow-tab-header"><h2>Loyalty Points</h2></header>
+          <div class="rainbow-wallet-hero">
+            <div class="rainbow-wallet-hero-card">
+              <span class="lbl">Your Loyalty Balance</span>
+              <strong class="balance" aria-live="polite">{{ loyaltyService.balance() | number:'1.0-0' }} points</strong>
+              <div class="rainbow-wallet-features">
+                <span>Earn 1 point for every Rs. {{ loyaltyService.spendPerPoint | number:'1.0-0' }} spent on items. Points are added when you place an order.</span>
+              </div>
+            </div>
+            <section class="rainbow-topup-card">
+              <h3>Points History</h3>
+              <p>Points earned and used on your Rainbow orders. 1 point = Rs. {{ loyaltyService.valuePerPoint | number:'1.0-0' }} at checkout.</p>
+              <div class="rainbow-orders-list" *ngIf="loyaltyService.history().length > 0; else noLoyaltyHistory">
+                <article class="rainbow-order-card" *ngFor="let entry of loyaltyService.history()">
+                  <header class="rainbow-order-header">
+                    <div>
+                      <span class="rainbow-order-id">{{ entry.orderId }}</span>
+                      <span class="rainbow-order-date">{{ entry.date | date:'mediumDate' }}</span>
+                    </div>
+                    <strong class="text-nowrap">{{ entry.points > 0 ? '+' : '' }}{{ entry.points | number:'1.0-0' }} points</strong>
+                  </header>
+                  <div class="rainbow-order-footer"><span>{{ entry.type === 'redeemed' ? 'Loyalty discount' : 'Eligible order amount' }}</span><strong>Rs. {{ entry.totalAmount | number:'1.0-0' }}</strong></div>
+                </article>
+              </div>
+              <ng-template #noLoyaltyHistory>
+                <div class="rainbow-account-empty">
+                  <i class="fal fa-star" aria-hidden="true"></i>
+                  <h3>Start Earning Points</h3>
+                  <p>Place your first eligible order to earn loyalty points.</p>
+                  <a routerLink="/shop" class="rainbow-btn-primary">Start Shopping</a>
+                </div>
+              </ng-template>
+            </section>
           </div>
         </div>
 

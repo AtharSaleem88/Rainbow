@@ -114,9 +114,12 @@
 					<strong class="rh-hdr-val">{{ authService.userProfile().name.split(' ')[0] }}</strong>
 				</div>
 			</a>
-			<button class="rh-nav-icon rh-nav-cart cart_btn" (click)="openCart()" aria-label="Cart">
-				<i class="fal fa-shopping-bag"></i>
-				<span class="btn_badge" *ngIf="cartService.cartCount() > 0">{{ cartService.cartCount() }}</span>
+			<button type="button" class="rh-hdr-pill rh-pill-green rh-pill-compact cart_btn flex-shrink-0" (click)="openCart()" [attr.aria-expanded]="cartService.isCartOpen()" aria-haspopup="dialog" [attr.aria-label]="'Open cart: ' + cartService.cartCount() + (cartService.cartCount() === 1 ? ' item, Rs. ' : ' items, Rs. ') + (cartService.cartTotal() | number:'1.0-0')">
+				<span class="rh-hdr-pill-icon text-white"><i class="fal fa-shopping-cart" aria-hidden="true"></i></span>
+				<span class="rh-hdr-pill-text text-start text-nowrap" aria-live="polite" aria-atomic="true">
+					<span class="rh-hdr-lbl-lime">{{ cartService.cartCount() }} {{ cartService.cartCount() === 1 ? 'item' : 'items' }}</span>
+					<strong class="rh-hdr-val-lime">Rs. {{ cartService.cartTotal() | number:'1.0-0' }}</strong>
+				</span>
 			</button>
 		</div>
 	</div>
@@ -143,9 +146,12 @@
 				<a *ngIf="authService.isLoggedIn()" routerLink="/account" class="rh-nav-icon text-decoration-none" aria-label="My Account">
 					<i class="fal fa-user-circle"></i>
 				</a>
-				<button class="rh-nav-icon rh-nav-cart cart_btn" (click)="openCart()" aria-label="Cart">
-					<i class="fal fa-shopping-bag"></i>
-					<span class="btn_badge" *ngIf="cartService.cartCount() > 0">{{ cartService.cartCount() }}</span>
+				<button type="button" class="rh-hdr-pill rh-pill-green rh-pill-compact cart_btn flex-shrink-0" (click)="openCart()" [attr.aria-expanded]="cartService.isCartOpen()" aria-haspopup="dialog" [attr.aria-label]="'Open cart: ' + cartService.cartCount() + (cartService.cartCount() === 1 ? ' item, Rs. ' : ' items, Rs. ') + (cartService.cartTotal() | number:'1.0-0')">
+					<span class="rh-hdr-pill-icon text-white"><i class="fal fa-shopping-cart" aria-hidden="true"></i></span>
+					<span class="rh-hdr-pill-text text-start text-nowrap" aria-live="polite" aria-atomic="true">
+						<span class="rh-hdr-lbl-lime">{{ cartService.cartCount() }} {{ cartService.cartCount() === 1 ? 'item' : 'items' }}</span>
+						<strong class="rh-hdr-val-lime">Rs. {{ cartService.cartTotal() | number:'1.0-0' }}</strong>
+					</span>
 				</button>
 			</div>
 		</div>

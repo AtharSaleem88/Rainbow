@@ -1,8 +1,10 @@
-import { Component, computed, inject, signal, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
+import { LoyaltyService } from '../../core/services/loyalty.service';
+import { CheckoutPaymentService, PaymentBreakdown } from '../../core/services/checkout-payment.service';
 import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.service';
 
 @Component({
@@ -14,8 +16,17 @@ import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.s
 })
 export class CheckoutComponent implements OnInit {
   readonly cartService = inject(CartService);
+  readonly loyaltyService = inject(LoyaltyService);
+  readonly earnedLoyaltyPoints = signal(0);
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
+  private readonly paymentService = inject(CheckoutPaymentService);
+  readonly useWallet = signal(false);
+  readonly useLoyaltyPoints = signal(false);
+  readonly paymentError = signal('');
+  readonly completedPayment = signal<PaymentBreakdown | null>(null);
+  readonly payment = computed(() => this.completedPayment() ?? this.paymentService.quote(this.cartService.cartTotal(), this.useWallet(), this.useLoyaltyPoints()));
+  readonly pointsToEarn = computed(() => this.loyaltyService.isMember() ? this.loyaltyService.pointsForAmount(this.payment().earningAmount) : 0);
 
   readonly currentStep = signal<1 | 2 | 3>(1);
 
@@ -48,6 +59,9 @@ export class CheckoutComponent implements OnInit {
 
   constructor() {
     this.syncCartSnapshot();
+    effect(() => {
+      if (!this.isOrderPlaced()) this.syncCartSnapshot();
+    });
     const defaultAddr = this.authService.savedAddresses().find(a => a.isDefault);
     if (defaultAddr) {
       this.selectSavedAddress(defaultAddr);
@@ -110,6 +124,16 @@ export class CheckoutComponent implements OnInit {
   }
 
   placeOrder() {
+    if (this.isOrderPlaced() || this.currentStep() !== 2 || this.cartService.cartItems().length === 0) return;
+    this.syncCartSnapshot();
+    const payment = this.paymentService.settle(this.generatedOrderNumber(), this.checkoutTotal(), this.useWallet(), this.useLoyaltyPoints());
+    if (!payment) {
+      this.paymentError.set('Unable to apply your balances. Please review your payment options and try again.');
+      return;
+    }
+    this.completedPayment.set(payment);
+    this.paymentError.set('');
+    this.earnedLoyaltyPoints.set(this.loyaltyService.creditOrder(this.generatedOrderNumber(), payment.earningAmount));
     this.isOrderPlaced.set(true);
     this.currentStep.set(3);
     this.cartService.clearCart();

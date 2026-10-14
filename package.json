@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "test:loyalty": "node --test tests/loyalty.service.test.cjs",
+    "test:checkout": "node --test tests/loyalty.service.test.cjs tests/checkout-payment.service.test.cjs",
     "build": "ng build",
     "watch": "ng build --watch --configuration development"
   },
