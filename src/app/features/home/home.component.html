@@ -59,37 +59,46 @@
 
 
 <!-- Shop by category -->
-<section class="rh-category-section" aria-labelledby="home-category-title">
+<section class="rh-category-section py-4" aria-labelledby="home-category-title">
   <div class="container maxw_1460">
     <div class="rh-category-heading">
       <div class="gray_line" aria-hidden="true"></div>
       <h2 id="home-category-title">Shop by Category</h2>
       <div class="gray_line" aria-hidden="true"></div>
     </div>
-    <div class="rh-category-grid" #categoryGrid (scroll)="onCategoryScroll($event)">
-      <a *ngFor="let cat of categories"
-         class="rh-category-item"
+    <div class="rh-category-grid py-2" id="home-category-grid" #categoryGrid role="group" aria-label="Shop by category" [attr.tabindex]="categoryHasOverflow() ? 0 : null" (scroll)="onCategoryScroll($event)" (keydown)="onCategoryGridKeydown($event)">
+      <a *ngFor="let cat of categories; trackBy: trackCategory"
+         class="rh-category-item bg-white rounded-lg shadow-sm py-2 p-md-2 h-100"
          [routerLink]="['/shop']"
          [queryParams]="{category: cat.slug}"
-        [attr.aria-label]="'Shop ' + cat.name">
-        <span class="rh-category-image">
+         [attr.title]="cat.name"
+         [attr.aria-label]="'Shop ' + cat.name">
+        <span class="rh-category-image rounded-circle bg-white border">
           <img *ngIf="cat.image" [src]="cat.image" [alt]="cat.name" loading="lazy" decoding="async">
           <i *ngIf="!cat.image && cat.icon" class="fas" [ngClass]="cat.icon" aria-hidden="true"></i>
         </span>
-        <span class="rh-category-name">{{ cat.name }}</span>
+        <span class="rh-category-name px-1">{{ cat.name }}</span>
       </a>
     </div>
 
-    <!-- Mobile Category Scroll Indicator (Pill Track with Sky Blue Active Capsule) -->
-    <div class="rh-category-indicator-wrap d-flex d-md-none align-items-center justify-content-center mt-3">
+    <p *ngIf="categoryHasOverflow()" class="d-md-none small text-muted text-center mt-3 mb-2">Swipe to explore more categories</p>
+    <div *ngIf="categoryHasOverflow()" class="rh-category-indicator-wrap d-flex d-md-none align-items-center justify-content-center" aria-label="Browse categories">
+      <div class="rh-monthly-rail-controls mr-3">
+        <button type="button" aria-label="Previous category page" aria-controls="home-category-grid" [disabled]="activeCategoryPageIndex() === 0" [class.text-muted]="activeCategoryPageIndex() === 0" (click)="scrollToCategoryPage(activeCategoryPageIndex() - 1)"><i class="fal fa-arrow-left" aria-hidden="true"></i></button>
+      </div>
       <div class="rh-category-indicator-pill" role="group" aria-label="Category pages">
         <button *ngFor="let page of [0, 1, 2]" 
                 type="button" 
                 class="rh-category-indicator-dot" 
                 [class.active]="activeCategoryPageIndex() === page" 
                 (click)="scrollToCategoryPage(page)"
+                [attr.aria-pressed]="activeCategoryPageIndex() === page"
+                aria-controls="home-category-grid"
                 [attr.aria-label]="'Go to category page ' + (page + 1)">
         </button>
+      </div>
+      <div class="rh-monthly-rail-controls ml-3">
+        <button type="button" aria-label="Next category page" aria-controls="home-category-grid" [disabled]="activeCategoryPageIndex() === 2" [class.text-muted]="activeCategoryPageIndex() === 2" (click)="scrollToCategoryPage(activeCategoryPageIndex() + 1)"><i class="fal fa-arrow-right" aria-hidden="true"></i></button>
       </div>
     </div>
   </div>
