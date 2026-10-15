@@ -331,6 +331,25 @@
               </div>
             </div>
 
+            <section class="rainbow-card-details-box mt-4" aria-labelledby="rider-tip-title">
+              <header class="rainbow-card-header border-0 pb-0 mb-2">
+                <h2 id="rider-tip-title">Tip your rider</h2>
+                <p>Your rider receives 100% of the tip</p>
+              </header>
+              <div class="d-flex flex-wrap" role="group" aria-label="Rider tip amount">
+                <div *ngFor="let amount of tipOptions" class="mr-2 mb-2 text-center">
+                  <button type="button" class="rainbow-saved-card-btn rounded-pill justify-content-center" [class.is-selected]="tipAmount() === amount" [attr.aria-pressed]="tipAmount() === amount" [attr.aria-describedby]="amount === 100 ? 'rider-tip-common' : null" (click)="selectTip(amount)">
+                    {{ amount === 0 ? 'Not now' : 'Rs. ' + (amount | number:'1.2-2') }}
+                  </button>
+                  <small *ngIf="amount === 100" id="rider-tip-common" class="d-block text-muted mt-1">Most common</small>
+                </div>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="save-rider-tip" class="custom-control-input" [ngModel]="saveTipPreference()" (ngModelChange)="setSaveTipPreference($event)">
+                <label class="custom-control-label" for="save-rider-tip">Save it for the next order</label>
+              </div>
+            </section>
+
             <div class="rainbow-form-actions mt-4">
               <button type="button" class="rainbow-btn-secondary" (click)="prevStep()"><i class="fal fa-arrow-left"></i> Back to Shipping</button>
               <button type="button" class="rainbow-checkout-primary" (click)="placeOrder()">Place Order Now <i class="fal fa-check-circle"></i></button>
@@ -400,6 +419,10 @@
               <span>Wallet applied</span>
               <strong>- Rs. {{ payment().walletApplied | number:'1.0-2' }}</strong>
             </div>
+            <div class="rainbow-summary-row" *ngIf="payment().tipAmount > 0">
+              <span>Rider tip</span>
+              <strong>Rs. {{ payment().tipAmount | number:'1.0-2' }}</strong>
+            </div>
             <div class="rainbow-summary-total">
               <strong>Total Payable</strong>
               <strong aria-live="polite">Rs. {{ payment().payable | number:'1.0-2' }}</strong>
@@ -444,6 +467,7 @@
           <section class="rainbow-card-details-box w-100 text-left d-block mt-0 mb-4" *ngIf="completedPayment() as paid" aria-labelledby="payment-summary-title">
             <div id="payment-summary-title" class="h6 mb-3 font-weight-bold" role="heading" aria-level="3"><i class="fal fa-receipt rainbow-order-num mr-2" aria-hidden="true"></i>Payment Summary</div>
             <div class="rainbow-summary-row"><span class="mr-3">Items total</span><strong class="text-nowrap flex-shrink-0">Rs. {{ checkoutTotal() | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-summary-row" *ngIf="paid.tipAmount > 0"><span class="mr-3">Rider tip</span><strong class="text-nowrap flex-shrink-0">Rs. {{ paid.tipAmount | number:'1.0-2' }}</strong></div>
             <div class="rainbow-summary-row" *ngIf="paid.pointsUsed > 0"><span class="mr-3">Loyalty points used: {{ paid.pointsUsed }}</span><strong class="text-success text-nowrap flex-shrink-0">- Rs. {{ paid.loyaltyDiscount | number:'1.0-2' }}</strong></div>
             <div class="rainbow-summary-row" *ngIf="paid.walletApplied > 0"><span class="mr-3">Paid from wallet</span><strong class="text-nowrap flex-shrink-0">- Rs. {{ paid.walletApplied | number:'1.0-2' }}</strong></div>
             <div class="rainbow-summary-total"><strong class="mr-3">{{ paid.payable > 0 ? 'Remaining payment' : 'Remaining payable' }}</strong><strong class="text-nowrap flex-shrink-0">Rs. {{ paid.payable | number:'1.0-2' }}</strong></div>

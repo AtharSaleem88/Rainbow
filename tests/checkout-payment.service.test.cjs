@@ -107,3 +107,43 @@ test('empty or invalid orders cannot spend balances', () => {
   assert.equal(service.settle('',510,true,true),null);
   assert.equal(auth.walletBalance(),200);
 });
+
+test('tips increase payable without earning points or being discounted by loyalty', () => {
+  const { calculate } = setup();
+  const payment = calculate(510,0,1000,false,true,1,100);
+  assert.equal(payment.pointsUsed,510);
+  assert.equal(payment.loyaltyDiscount,510);
+  assert.equal(payment.tipAmount,100);
+  assert.equal(payment.payable,100);
+  assert.equal(payment.earningAmount,0);
+  assert.equal(calculate(510,0,0,false,false,1,100).earningAmount,510);
+});
+
+test('wallet can cover both items and tip without overcharging', () => {
+  const { calculate } = setup();
+  const payment = calculate(510,1000,50,true,true,1,100);
+  assert.equal(payment.walletApplied,560);
+  assert.equal(payment.payable,0);
+  assert.equal(payment.earningAmount,460);
+  const partial = calculate(510,200,50,true,true,1,100);
+  assert.equal(partial.payable,360);
+  assert.equal(partial.walletApplied + partial.loyaltyDiscount + partial.payable,610);
+});
+
+test('changing or removing a tip produces a fresh quote without debiting balances', () => {
+  const { service, auth } = setup();
+  assert.equal(service.quote(510,true,true,100).payable,360);
+  assert.equal(service.quote(510,true,true,300).payable,560);
+  assert.equal(service.quote(510,true,true,0).payable,260);
+  assert.equal(auth.walletBalance(),200);
+});
+
+test('settlement includes tip once and rejects invalid tips', () => {
+  const { service, auth } = setup();
+  for (const tip of [-50,NaN,Infinity]) assert.equal(service.settle('RH-TIP',510,true,true,tip),null);
+  assert.equal(auth.walletBalance(),200);
+  const payment = service.settle('RH-TIP',510,true,true,100);
+  assert.equal(payment.tipAmount,100);
+  assert.equal(payment.payable,360);
+  assert.equal(service.settle('RH-TIP',510,true,true,100),null);
+});
