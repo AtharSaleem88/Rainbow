@@ -1,8 +1,10 @@
-import { Component, computed, inject, signal, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
+import { LoyaltyService } from '../../core/services/loyalty.service';
+import { CheckoutPaymentService, PaymentBreakdown } from '../../core/services/checkout-payment.service';
 import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.service';
 
 @Component({
@@ -14,8 +16,20 @@ import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.s
 })
 export class CheckoutComponent implements OnInit {
   readonly cartService = inject(CartService);
+  readonly loyaltyService = inject(LoyaltyService);
+  readonly earnedLoyaltyPoints = signal(0);
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
+  private readonly paymentService = inject(CheckoutPaymentService);
+  readonly useWallet = signal(false);
+  readonly useLoyaltyPoints = signal(false);
+  readonly tipOptions = [0, 50, 100, 200, 300];
+  readonly tipAmount = signal(0);
+  readonly saveTipPreference = signal(false);
+  readonly paymentError = signal('');
+  readonly completedPayment = signal<PaymentBreakdown | null>(null);
+  readonly payment = computed(() => this.completedPayment() ?? this.paymentService.quote(this.cartService.cartTotal(), this.useWallet(), this.useLoyaltyPoints(), this.tipAmount()));
+  readonly pointsToEarn = computed(() => this.loyaltyService.isMember() ? this.loyaltyService.pointsForAmount(this.payment().earningAmount) : 0);
 
   readonly currentStep = signal<1 | 2 | 3>(1);
 
@@ -48,6 +62,21 @@ export class CheckoutComponent implements OnInit {
 
   constructor() {
     this.syncCartSnapshot();
+    effect(() => {
+      const key = this.tipPreferenceKey();
+      try {
+        const stored: unknown = JSON.parse(localStorage.getItem(key) ?? 'null');
+        const valid = typeof stored === 'number' && this.tipOptions.includes(stored);
+        this.tipAmount.set(valid ? stored : 0);
+        this.saveTipPreference.set(valid);
+      } catch {
+        this.tipAmount.set(0);
+        this.saveTipPreference.set(false);
+      }
+    });
+    effect(() => {
+      if (!this.isOrderPlaced()) this.syncCartSnapshot();
+    });
     const defaultAddr = this.authService.savedAddresses().find(a => a.isDefault);
     if (defaultAddr) {
       this.selectSavedAddress(defaultAddr);
@@ -109,7 +138,43 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
+  selectTip(amount: number) {
+    if (!this.tipOptions.includes(amount)) return;
+    this.tipAmount.set(amount);
+    this.persistTipPreference();
+  }
+
+  setSaveTipPreference(save: boolean) {
+    this.saveTipPreference.set(save);
+    this.persistTipPreference();
+  }
+
+  private tipPreferenceKey(): string {
+    const member = this.authService.isLoggedIn() ? this.authService.userProfile().email.trim().toLowerCase() : 'guest';
+    return `rainbow-rider-tip-v1:${member}`;
+  }
+
+  private persistTipPreference() {
+    try {
+      const key = this.tipPreferenceKey();
+      if (this.saveTipPreference()) localStorage.setItem(key, JSON.stringify(this.tipAmount()));
+      else localStorage.removeItem(key);
+    } catch {
+      // The current tip selection still works if browser storage is unavailable.
+    }
+  }
+
   placeOrder() {
+    if (this.isOrderPlaced() || this.currentStep() !== 2 || this.cartService.cartItems().length === 0) return;
+    this.syncCartSnapshot();
+    const payment = this.paymentService.settle(this.generatedOrderNumber(), this.checkoutTotal(), this.useWallet(), this.useLoyaltyPoints(), this.tipAmount());
+    if (!payment) {
+      this.paymentError.set('Unable to apply your balances. Please review your payment options and try again.');
+      return;
+    }
+    this.completedPayment.set(payment);
+    this.paymentError.set('');
+    this.earnedLoyaltyPoints.set(this.loyaltyService.creditOrder(this.generatedOrderNumber(), payment.earningAmount));
     this.isOrderPlaced.set(true);
     this.currentStep.set(3);
     this.cartService.clearCart();

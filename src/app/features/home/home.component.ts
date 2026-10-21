@@ -1,8 +1,8 @@
-import { Component, inject, signal, OnInit, OnDestroy, HostListener, ElementRef, ViewChild } from '@angular/core';
+import { Component, inject, signal, OnInit, OnDestroy, AfterViewInit, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
-import { Product } from '../../core/models/product.model';
+import { Category, Product } from '../../core/models/product.model';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 
 @Component({
@@ -12,10 +12,11 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   productService = inject(ProductService);
 
   categories = this.productService.getCategories();
+  readonly trackCategory = (_index: number, category: Category) => category.id;
   allProducts = this.productService.getProducts();
   readonly farmProducts = this.allProducts.filter(product => ['ultra-fresh', 'organic-veggies'].includes(product.categorySlug));
   readonly priceDropProducts = this.allProducts.filter(product => product.oldPrice && product.oldPrice > product.price);
@@ -47,26 +48,43 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('categoryGrid') categoryGrid?: ElementRef<HTMLElement>;
   private monthlyFlyerTrigger: HTMLElement | null = null;
   activeCategoryPageIndex = signal<number>(0);
+  readonly categoryHasOverflow = signal(false);
+  private categoryResizeObserver?: ResizeObserver;
+
+  ngAfterViewInit() {
+    const grid = this.categoryGrid?.nativeElement;
+    if (!grid) return;
+    this.categoryResizeObserver = new ResizeObserver(() => this.updateCategoryScrollState(grid));
+    this.categoryResizeObserver.observe(grid);
+  }
 
   onCategoryScroll(event: Event) {
-    const target = event.target as HTMLElement;
-    if (target) {
-      const scrollLeft = target.scrollLeft;
-      const maxScroll = target.scrollWidth - target.clientWidth;
-      if (maxScroll > 0) {
-        const progress = Math.min(1, Math.max(0, scrollLeft / maxScroll));
-        const pageIndex = Math.min(2, Math.round(progress * 2));
-        this.activeCategoryPageIndex.set(pageIndex);
-      }
-    }
+    this.updateCategoryScrollState(event.target as HTMLElement);
+  }
+
+  private updateCategoryScrollState(grid: HTMLElement) {
+    const maxScroll = Math.max(0, grid.scrollWidth - grid.clientWidth);
+    const overflow = grid.clientWidth > 0 && maxScroll > 1;
+    this.categoryHasOverflow.set(overflow);
+    this.activeCategoryPageIndex.set(overflow ? Math.round(Math.min(1, Math.max(0, grid.scrollLeft / maxScroll)) * 2) : 0);
+  }
+
+  onCategoryGridKeydown(event: KeyboardEvent) {
+    if (event.target !== event.currentTarget || !this.categoryHasOverflow()) return;
+    const page = event.key === 'Home' ? 0 : event.key === 'End' ? 2
+      : event.key === 'ArrowLeft' ? this.activeCategoryPageIndex() - 1
+      : event.key === 'ArrowRight' ? this.activeCategoryPageIndex() + 1 : null;
+    if (page === null) return;
+    event.preventDefault();
+    this.scrollToCategoryPage(page);
   }
 
   scrollToCategoryPage(pageIndex: number) {
     if (this.categoryGrid?.nativeElement) {
-      const maxScroll = this.categoryGrid.nativeElement.scrollWidth - this.categoryGrid.nativeElement.clientWidth;
-      const targetScroll = (pageIndex / 2) * maxScroll;
-      this.categoryGrid.nativeElement.scrollTo({ left: targetScroll, behavior: 'smooth' });
-      this.activeCategoryPageIndex.set(pageIndex);
+      const maxScroll = Math.max(0, this.categoryGrid.nativeElement.scrollWidth - this.categoryGrid.nativeElement.clientWidth);
+      const page = Math.min(2, Math.max(0, pageIndex));
+      const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      this.categoryGrid.nativeElement.scrollTo({ left: (page / 2) * maxScroll, behavior });
     }
   }
 
@@ -175,6 +193,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.categoryResizeObserver?.disconnect();
     this.stopHeroSlider();
     this.stopCampaignSlider();
     document.body.classList.remove('rh-monthly-flyer-modal-open');
