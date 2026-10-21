@@ -1,0 +1,54 @@
+<div class="rh-schedule-backdrop" (click)="onClose()">
+  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="return-modal-title" (click)="$event.stopPropagation()">
+    <header class="rh-schedule-header">
+      <div class="rh-schedule-header-icon">
+        <i class="fal fa-undo-alt"></i>
+      </div>
+      <div>
+        <h2 id="return-modal-title">Request Item Return</h2>
+      </div>
+      <button type="button" class="rh-schedule-close" (click)="onClose()"><i class="fal fa-times"></i></button>
+    </header>
+
+    <div class="rh-schedule-body">
+      <div class="rainbow-form-field mb-3">
+        <label>Order ID</label>
+        <div class="rainbow-input-wrap">
+          <input type="text" [value]="orderId" readonly>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>Item Name</label>
+        <div class="rainbow-input-wrap">
+          <input type="text" [value]="itemTitle" readonly>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>Reason for Return</label>
+        <div class="rainbow-input-wrap rainbow-select-wrap">
+          <select [(ngModel)]="reason">
+            <option value="Damaged or defective item">Damaged or defective item</option>
+            <option value="Expired or near expiry">Expired or near expiry</option>
+            <option value="Wrong item delivered">Wrong item delivered</option>
+            <option value="Quality not satisfactory">Quality not satisfactory</option>
+          </select>
+          <i class="fal fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field">
+        <label>Refund Amount</label>
+        <div class="rainbow-input-wrap">
+          <strong>Rs. {{ refundAmount | number:'1.0-0' }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <footer class="rh-schedule-footer">
+      <button type="button" class="rh-schedule-btn-secondary" (click)="onClose()">Cancel</button>
+      <button type="button" class="rh-schedule-btn-primary" (click)="onSubmit()">Submit Request</button>
+    </footer>
+  </div>
+</div>

@@ -18,44 +18,11 @@
     <!-- Active Checkout Flow -->
     <ng-container *ngIf="cartService.cartItems().length > 0 || currentStep() === 3">
       <!-- Checkout Stepper Progress -->
-      <nav class="rainbow-checkout-stepper" aria-label="Checkout Progress" *ngIf="currentStep() !== 3">
-        <div class="rainbow-step" [class.is-active]="currentStep() === 1" [class.is-completed]="currentStep() > 1" (click)="goToStep(1)">
-          <span class="rainbow-step-num">
-            <i *ngIf="currentStep() > 1" class="fal fa-check"></i>
-            <span *ngIf="currentStep() <= 1">1</span>
-          </span>
-          <div class="rainbow-step-text">
-            <strong class="d-none d-sm-inline">Shipping & Delivery</strong>
-            <strong class="d-sm-none">Shipping</strong>
-            <small>Address details</small>
-          </div>
-        </div>
-
-        <div class="rainbow-step-line" [class.is-active]="currentStep() >= 2"></div>
-
-        <div class="rainbow-step" [class.is-active]="currentStep() === 2" [class.is-completed]="currentStep() > 2" (click)="currentStep() > 1 ? goToStep(2) : null">
-          <span class="rainbow-step-num">
-            <i *ngIf="currentStep() > 2" class="fal fa-check"></i>
-            <span *ngIf="currentStep() <= 2">2</span>
-          </span>
-          <div class="rainbow-step-text">
-            <strong class="d-none d-sm-inline">Review & Payment</strong>
-            <strong class="d-sm-none">Payment</strong>
-            <small>Payment method</small>
-          </div>
-        </div>
-
-        <div class="rainbow-step-line" [class.is-active]="currentStep() === 3"></div>
-
-        <div class="rainbow-step" [class.is-active]="currentStep() === 3">
-          <span class="rainbow-step-num">3</span>
-          <div class="rainbow-step-text">
-            <strong class="d-none d-sm-inline">Order Placed</strong>
-            <strong class="d-sm-none">Placed</strong>
-            <small>Confirmation</small>
-          </div>
-        </div>
-      </nav>
+      <app-checkout-stepper
+        *ngIf="currentStep() !== 3"
+        [currentStep]="currentStep()"
+        (stepChange)="goToStep($event)">
+      </app-checkout-stepper>
 
       <!-- Mobile Quick Order Summary Bar (Top Collapsible Toggle) -->
       <div class="rainbow-mobile-summary-bar d-md-none mb-3" *ngIf="currentStep() !== 3">
@@ -68,7 +35,21 @@
           <strong class="rainbow-mobile-summary-total">Rs. {{ payment().payable | number:'1.0-2' }}</strong>
         </button>
         <div class="rainbow-mobile-summary-drawer" *ngIf="isMobileSummaryOpen()">
-          <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
+          <app-checkout-summary
+            [items]="cartService.cartItems()"
+            [cartCount]="cartService.cartCount()"
+            [checkoutTotal]="checkoutTotal()"
+            [checkoutOriginalTotal]="checkoutOriginalTotal()"
+            [checkoutSavings]="checkoutSavings()"
+            [payment]="payment()"
+            [pointsToEarn]="pointsToEarn()"
+            [isMember]="loyaltyService.isMember()"
+            [spendPerPoint]="loyaltyService.spendPerPoint"
+            [fulfillingBranch]="billingData.branch"
+            [deliveryType]="cartService.deliveryType()"
+            [deliveryDate]="cartService.selectedDeliveryDate()"
+            [deliveryTimeSlot]="cartService.selectedDeliveryTimeSlot()">
+          </app-checkout-summary>
         </div>
       </div>
 
@@ -80,8 +61,56 @@
           <div *ngIf="currentStep() === 1" class="rainbow-checkout-card">
             <header class="rainbow-card-header">
               <h2><i class="fal fa-map-marker-alt"></i> Shipping & Delivery Details</h2>
-              <p>Choose from your saved addresses or enter a new delivery location</p>
+              <p>Choose your delivery method, saved address or enter a new delivery location</p>
             </header>
+
+            <!-- Delivery Method Selection (Instant vs Scheduled) -->
+            <div class="mb-4">
+              <label class="rainbow-form-label mb-2">Delivery Method</label>
+              <div class="rainbow-delivery-cards-grid">
+                <!-- Instant Express Delivery Card -->
+                <button type="button" 
+                        class="rainbow-delivery-method-card"
+                        [class.is-selected]="cartService.deliveryType() === 'instant'"
+                        (click)="cartService.setDeliveryType('instant')">
+                  <div class="rainbow-delivery-method-icon instant-icon">
+                    <i class="fal fa-bolt"></i>
+                  </div>
+                  <div class="rainbow-delivery-method-content">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                      <strong>Instant Express Delivery</strong>
+                      <span class="rainbow-delivery-pill-badge" [class.badge-active]="cartService.deliveryType() === 'instant'">In 40 Mins</span>
+                    </div>
+                    <p>Guaranteed express delivery within 40 minutes to your address</p>
+                  </div>
+                  <div class="rainbow-delivery-method-radio">
+                    <i class="fal" [ngClass]="cartService.deliveryType() === 'instant' ? 'fa-dot-circle text-primary' : 'fa-circle text-muted'"></i>
+                  </div>
+                </button>
+
+                <!-- Scheduled Delivery Card -->
+                <button type="button" 
+                        class="rainbow-delivery-method-card"
+                        [class.is-selected]="cartService.deliveryType() === 'scheduled'"
+                        (click)="selectScheduledDelivery()">
+                  <div class="rainbow-delivery-method-icon scheduled-icon">
+                    <i class="fal fa-clock"></i>
+                  </div>
+                  <div class="rainbow-delivery-method-content">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                      <strong>Scheduled Delivery</strong>
+                      <span class="rainbow-delivery-pill-badge" [class.badge-active]="cartService.deliveryType() === 'scheduled'">
+                        {{ cartService.selectedDeliveryDate() }}, {{ cartService.selectedDeliveryTimeSlot() }}
+                      </span>
+                    </div>
+                    <p>Select your convenient date and 2-hour delivery window (click to customize)</p>
+                  </div>
+                  <div class="rainbow-delivery-method-radio">
+                    <i class="fal" [ngClass]="cartService.deliveryType() === 'scheduled' ? 'fa-dot-circle text-primary' : 'fa-circle text-muted'"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
 
             <!-- Saved Addresses Selector -->
             <div class="mb-4" *ngIf="authService.savedAddresses().length > 0">
@@ -241,105 +270,43 @@
                 </div>
               </label>
 
-              <!-- JazzCash Input Drawer -->
-              <div class="rainbow-card-details-box" *ngIf="selectedPaymentMethod === 'jazzcash'">
-                <div class="rainbow-form-field">
-                  <label for="jazzcashPhone">JazzCash Mobile Account Number <sup>*</sup></label>
-                  <div class="rainbow-input-wrap">
-                    <i class="fal fa-phone"></i>
-                    <input type="tel" id="jazzcashPhone" name="jazzcashPhone" [(ngModel)]="walletAccountPhone" placeholder="0300 1234567">
-                  </div>
-                  <small class="text-muted mt-1 d-block"><i class="fal fa-info-circle"></i> You will receive a prompt on your JazzCash mobile app / phone screen to authorize payment.</small>
-                </div>
-              </div>
-
               <!-- Easypaisa Option -->
               <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'easypaisa'">
                 <input type="radio" name="paymentMethod" value="easypaisa" [(ngModel)]="selectedPaymentMethod">
                 <span class="rainbow-payment-radio"></span>
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
-                    <strong>Easypaisa Wallet</strong>
+                    <strong>Easypaisa Mobile Account</strong>
                   </div>
                 </div>
               </label>
 
-              <!-- Easypaisa Input Drawer -->
-              <div class="rainbow-card-details-box" *ngIf="selectedPaymentMethod === 'easypaisa'">
-                <div class="rainbow-form-field">
-                  <label for="easypaisaPhone">Easypaisa Registered Account Number <sup>*</sup></label>
-                  <div class="rainbow-input-wrap">
-                    <i class="fal fa-phone"></i>
-                    <input type="tel" id="easypaisaPhone" name="easypaisaPhone" [(ngModel)]="walletAccountPhone" placeholder="0345 1234567">
-                  </div>
-                  <small class="text-muted mt-1 d-block"><i class="fal fa-info-circle"></i> An approval notification will be sent to your Easypaisa App for confirmation.</small>
-                </div>
-              </div>
-
-              <!-- Credit / Debit Card Option -->
+              <!-- Credit/Debit Card Option -->
               <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'card'">
                 <input type="radio" name="paymentMethod" value="card" [(ngModel)]="selectedPaymentMethod">
                 <span class="rainbow-payment-radio"></span>
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
-                    <strong>Credit / Debit Card</strong>
+                    <strong>Debit / Credit Card (Visa / Mastercard)</strong>
                   </div>
                 </div>
-                
               </label>
-
-              <!-- Card form snippet if card selected -->
-              <div class="rainbow-card-details-box" *ngIf="selectedPaymentMethod === 'card'">
-                <!-- Saved Cards Picker -->
-                <div class="mb-3" *ngIf="authService.savedCards().length > 0">
-                  <label class="rainbow-form-label mb-2">Use Saved Card</label>
-                  <div class="rainbow-saved-cards-list">
-                    <button type="button" 
-                            *ngFor="let card of authService.savedCards()" 
-                            class="rainbow-saved-card-btn"
-                            [class.is-selected]="selectedSavedCardId() === card.id"
-                            (click)="selectedSavedCardId.set(card.id)">
-                      <i class="fal fa-credit-card"></i>
-                      <span><strong>{{ card.cardNumber }}</strong> (Expires {{ card.expiryDate }})</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div class="rainbow-form-field">
-                  <label>Card Number</label>
-                  <div class="rainbow-input-wrap">
-                    <i class="fal fa-credit-card"></i>
-                    <input type="text" placeholder="1234 5678 9101 1121">
-                  </div>
-                </div>
-                <div class="rainbow-form-row">
-                  <div class="rainbow-form-field">
-                    <label>Expiry Date</label>
-                    <div class="rainbow-input-wrap">
-                      <i class="fal fa-calendar-alt"></i>
-                      <input type="text" placeholder="MM/YY">
-                    </div>
-                  </div>
-                  <div class="rainbow-form-field">
-                    <label>CVV Code</label>
-                    <div class="rainbow-input-wrap">
-                      <i class="fal fa-lock"></i>
-                      <input type="password" placeholder="123" maxlength="4">
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            <section class="rainbow-card-details-box mt-4" aria-labelledby="rider-tip-title">
-              <header class="rainbow-card-header border-0 pb-0 mb-2">
-                <h2 id="rider-tip-title">Tip your rider</h2>
-                <p>Your rider receives 100% of the tip</p>
-              </header>
-              <div class="d-flex flex-wrap" role="group" aria-label="Rider tip amount">
-                <div *ngFor="let amount of tipOptions" class="mr-2 mb-2 text-center">
-                  <button type="button" class="rainbow-saved-card-btn rounded-pill justify-content-center" [class.is-selected]="tipAmount() === amount" [attr.aria-pressed]="tipAmount() === amount" [attr.aria-describedby]="amount === 100 ? 'rider-tip-common' : null" (click)="selectTip(amount)">
-                    {{ amount === 0 ? 'Not now' : 'Rs. ' + (amount | number:'1.2-2') }}
+            <!-- Rider Tip Section -->
+            <section class="rainbow-card-details-box mt-4 mb-3" aria-labelledby="rider-tip-heading">
+              <div id="rider-tip-heading" class="h6 mb-2 font-weight-bold" role="heading" aria-level="3">Tip your delivery rider</div>
+              <p class="small text-muted mb-3">100% of the tip goes directly to the delivery rider who brings your groceries.</p>
+              <div class="rainbow-tip-options mb-3" role="group" aria-label="Rider tip options">
+                <div *ngFor="let amount of tipOptions" class="rainbow-tip-option-col text-center">
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary btn-sm w-100"
+                    [class.active]="tipAmount() === amount"
+                    [attr.aria-pressed]="tipAmount() === amount"
+                    [attr.aria-describedby]="amount === 100 ? 'rider-tip-common' : null"
+                    (click)="selectTip(amount)">
+                    {{ amount === 0 ? 'Not now' : ('Rs. ' + amount) }}
                   </button>
                   <small *ngIf="amount === 100" id="rider-tip-common" class="d-block text-muted mt-1">Most common</small>
                 </div>
@@ -361,82 +328,23 @@
 
         <!-- Desktop Sidebar Order Summary -->
         <aside class="rainbow-checkout-sidebar d-none d-md-block">
-          <ng-container *ngTemplateOutlet="orderSummaryTemplate"></ng-container>
+          <app-checkout-summary
+            [items]="cartService.cartItems()"
+            [cartCount]="cartService.cartCount()"
+            [checkoutTotal]="checkoutTotal()"
+            [checkoutOriginalTotal]="checkoutOriginalTotal()"
+            [checkoutSavings]="checkoutSavings()"
+            [payment]="payment()"
+            [pointsToEarn]="pointsToEarn()"
+            [isMember]="loyaltyService.isMember()"
+            [spendPerPoint]="loyaltyService.spendPerPoint"
+            [fulfillingBranch]="billingData.branch"
+            [deliveryType]="cartService.deliveryType()"
+            [deliveryDate]="cartService.selectedDeliveryDate()"
+            [deliveryTimeSlot]="cartService.selectedDeliveryTimeSlot()">
+          </app-checkout-summary>
         </aside>
       </div>
-
-      <!-- Reusable Order Summary Template -->
-      <ng-template #orderSummaryTemplate>
-        <section class="rainbow-checkout-summary">
-          <h2>Order Summary ({{ cartService.cartCount() }} {{ cartService.cartCount() === 1 ? 'item' : 'items' }})</h2>
-
-          <!-- Items List Snapshot -->
-          <div class="rainbow-summary-items">
-            <div class="rainbow-summary-item" *ngFor="let item of cartService.cartItems(); trackBy: trackByCartItem">
-              <div class="rainbow-summary-thumb">
-                <img [src]="item.product.image" [alt]="item.product.title">
-                <span class="rainbow-summary-qty">{{ item.quantity }}</span>
-              </div>
-              <div class="rainbow-summary-info">
-                <strong>{{ item.product.title }}</strong>
-                <span class="rainbow-summary-variant" *ngIf="item.variant?.label">{{ item.variant?.label }}</span>
-              </div>
-              <div class="rainbow-summary-price">
-                <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-0' }}</strong>
-              </div>
-            </div>
-          </div>
-
-          <!-- Savings Banner if applicable -->
-          <div class="rainbow-cart-savings" *ngIf="checkoutSavings() > 0">
-            <span><i class="fal fa-sparkles"></i> Total Savings</span>
-            <strong>Rs. {{ checkoutSavings() | number:'1.0-0' }}</strong>
-          </div>
-
-          <!-- Bill Details -->
-          <div class="rainbow-summary-bill">
-            <div class="rainbow-summary-row">
-              <span>Items Subtotal</span>
-              <span>Rs. {{ checkoutOriginalTotal() > checkoutTotal() ? (checkoutOriginalTotal() | number:'1.0-0') : (checkoutTotal() | number:'1.0-0') }}</span>
-            </div>
-            <div class="rainbow-summary-row" *ngIf="checkoutSavings() > 0">
-              <span class="text-success">Promotional Discount</span>
-              <span class="text-success">- Rs. {{ checkoutSavings() | number:'1.0-0' }}</span>
-            </div>
-            <div class="rainbow-summary-row">
-              <span>Delivery Charge</span>
-              <span class="rainbow-cart-free">FREE</span>
-            </div>
-            <div class="rainbow-summary-row" *ngIf="loyaltyService.isMember()" aria-live="polite">
-              <span>Loyalty points to earn</span>
-              <strong>{{ pointsToEarn() | number:'1.0-0' }} points</strong>
-            </div>
-            <div class="rainbow-summary-row" *ngIf="payment().pointsUsed > 0">
-              <span>Loyalty points ({{ payment().pointsUsed | number:'1.0-0' }} used)</span>
-              <strong>- Rs. {{ payment().loyaltyDiscount | number:'1.0-2' }}</strong>
-            </div>
-            <div class="rainbow-summary-row" *ngIf="payment().walletApplied > 0">
-              <span>Wallet applied</span>
-              <strong>- Rs. {{ payment().walletApplied | number:'1.0-2' }}</strong>
-            </div>
-            <div class="rainbow-summary-row" *ngIf="payment().tipAmount > 0">
-              <span>Rider tip</span>
-              <strong>Rs. {{ payment().tipAmount | number:'1.0-2' }}</strong>
-            </div>
-            <div class="rainbow-summary-total">
-              <strong>Total Payable</strong>
-              <strong aria-live="polite">Rs. {{ payment().payable | number:'1.0-2' }}</strong>
-            </div>
-          </div>
-
-          <div class="rainbow-checkout-trust">
-            <p *ngIf="loyaltyService.isMember()"><i class="fal fa-star" aria-hidden="true"></i> Earn 1 point per Rs. {{ loyaltyService.spendPerPoint | number:'1.0-0' }} spent on items after loyalty discounts.</p>
-            <p *ngIf="!loyaltyService.isMember()"><a routerLink="/login">Sign in</a> to earn loyalty points on this order.</p>
-            <p><i class="fal fa-shield-check"></i> Safe & Encrypted Checkout</p>
-            <p><i class="fal fa-truck"></i> Fast Delivery from Rainbow {{ billingData.branch }}</p>
-          </div>
-        </section>
-      </ng-template>
 
       <!-- STEP 3: ORDER COMPLETED SUCCESS -->
       <div *ngIf="currentStep() === 3" class="rainbow-order-success">
@@ -457,7 +365,9 @@
               <p class="phone"><i class="fal fa-phone"></i> {{ billingData.phone }}</p>
             </div>
             <div class="rainbow-success-col">
-              <span class="lbl"><i class="fal fa-store"></i> Dispatching Branch</span>
+              <span class="lbl"><i class="fal fa-truck"></i> Delivery Method</span>
+              <strong class="text-primary">{{ cartService.deliveryType() === 'instant' ? '⚡ Instant Express Delivery (In 40 Mins)' : '🕒 Scheduled Delivery (' + cartService.selectedDeliveryDate() + ', ' + cartService.selectedDeliveryTimeSlot() + ')' }}</strong>
+              <span class="lbl mt-3"><i class="fal fa-store"></i> Dispatching Branch</span>
               <strong>{{ billingData.branch }}</strong>
               <span class="lbl mt-3"><i class="fal fa-credit-card"></i> Payment Method</span>
               <strong>{{ payment().payable === 0 ? (payment().walletApplied > 0 ? 'Rainbow Wallet' : 'Loyalty Points') : selectedPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : selectedPaymentMethod === 'jazzcash' ? 'JazzCash Mobile Wallet' : selectedPaymentMethod === 'easypaisa' ? 'Easypaisa Wallet' : 'Credit / Debit Card' }}</strong>
@@ -482,3 +392,65 @@
     </ng-container>
   </div>
 </section>
+
+<!-- Scheduled Delivery Modal (when customizing scheduled slot in checkout) -->
+<div *ngIf="isScheduleModalOpen()" class="rh-schedule-backdrop" (click)="closeScheduleModal()">
+	<div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="checkout-schedule-modal-title" (click)="$event.stopPropagation()">
+		<header class="rh-schedule-header">
+			<div class="rh-schedule-header-icon">
+				<i class="fal fa-clock"></i>
+			</div>
+			<div>
+				<h2 id="checkout-schedule-modal-title">Schedule Delivery Window</h2>
+			</div>
+			<button type="button" class="rh-schedule-close" (click)="closeScheduleModal()" aria-label="Close">
+				<i class="fal fa-times"></i>
+			</button>
+		</header>
+		<div class="rh-schedule-body">
+			<section class="rh-schedule-section">
+				<label class="rh-schedule-label">
+					<span>1. Select Delivery Date</span>
+					<small>Available for the next 3 days</small>
+				</label>
+				<div class="rh-schedule-date-grid">
+					<button *ngFor="let dateItem of availableDates" 
+					        type="button" 
+					        class="rh-schedule-date-card" 
+					        [class.is-selected]="selectedDate() === dateItem.value"
+					        (click)="selectedDate.set(dateItem.value)">
+						<span class="rh-date-pill">{{ dateItem.label }}</span>
+						<strong class="rh-date-sub">{{ dateItem.dateStr }}</strong>
+					</button>
+				</div>
+			</section>
+
+			<section class="rh-schedule-section mt-4">
+				<label class="rh-schedule-label">
+					<span>2. Select Time Window</span>
+					<small>Guaranteed delivery within chosen slot</small>
+				</label>
+				<div class="rh-schedule-slot-grid">
+					<button *ngFor="let slot of availableTimeSlots" 
+					        type="button" 
+					        class="rh-schedule-slot-card" 
+					        [class.is-selected]="selectedTimeSlot() === slot"
+					        (click)="selectedTimeSlot.set(slot)">
+						<span class="rh-slot-left">
+							<i class="fal fa-clock"></i>
+							<strong>{{ slot }}</strong>
+						</span>
+						<span class="rh-slot-radio"></span>
+					</button>
+				</div>
+			</section>
+		</div>
+		<footer class="rh-schedule-footer">
+			<button type="button" class="rh-schedule-btn-secondary" (click)="closeScheduleModal()">Cancel</button>
+			<button type="button" class="rh-schedule-btn-primary" (click)="confirmSchedule()">
+				<span>Confirm Schedule</span>
+				<i class="fal fa-arrow-right"></i>
+			</button>
+		</footer>
+	</div>
+</div>

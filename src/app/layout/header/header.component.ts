@@ -1,4 +1,4 @@
-import { Component, signal, HostListener, inject, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, signal, HostListener, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -23,23 +23,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isDeptOpen = signal<boolean>(false);
   searchQuery = signal<string>('');
   readonly availableLocations = [
-    { id: 'lahore', name: 'Lahore', address: 'Lahore', city: 'Lahore' },
-    { id: 'islamabad', name: 'Islamabad', address: 'Islamabad', city: 'Islamabad' },
-    { id: 'karachi', name: 'Karachi', address: 'Karachi', city: 'Karachi' },
-    { id: 'rawalpindi', name: 'Rawalpindi', address: 'Rawalpindi', city: 'Rawalpindi' },
-    { id: 'faisalabad', name: 'Faisalabad', address: 'Faisalabad', city: 'Faisalabad' }
+    { id: 'lahore', name: 'Lahore', address: 'Lahore Main', city: 'Lahore' },
+    { id: 'islamabad', name: 'Islamabad', address: 'Blue Area', city: 'Islamabad' },
+    { id: 'karachi', name: 'Karachi', address: 'Clifton & DHA', city: 'Karachi' },
+    { id: 'rawalpindi', name: 'Rawalpindi', address: 'Saddar', city: 'Rawalpindi' },
+    { id: 'faisalabad', name: 'Faisalabad', address: 'D-Ground', city: 'Faisalabad' }
   ];
   selectedLocation = signal(this.availableLocations[0]);
-  isLocationModalOpen = signal(false);
-  isDetectingLocation = signal(false);
-  locationQuery = signal('');
+  isLocationDropdownOpen = signal<boolean>(false);
+  isDetectingLocation = signal<boolean>(false);
+  locationQuery = signal<string>('');
+  popoverPosition = signal<{ top: number; left: number }>({ top: 110, left: 200 });
+  popoverStyle = () => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return {};
+    }
+    return {
+      top: `${this.popoverPosition().top}px`,
+      left: `${this.popoverPosition().left}px`
+    };
+  };
   filteredLocations = () => {
     const query = this.locationQuery().trim().toLocaleLowerCase();
     return query ? this.availableLocations.filter(location =>
       `${location.name} ${location.address} ${location.city}`.toLocaleLowerCase().includes(query)) : this.availableLocations;
   };
-  @ViewChild('locationModal') private locationModal?: ElementRef<HTMLElement>;
-  private previousFocus: HTMLElement | null = null;
   private detectionTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Delivery Schedule State
@@ -71,11 +79,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     document.body.classList.remove('modal-open');
   }
 
-  confirmSchedule(dateVal: string, slotVal: string) {
-    this.selectedDeliveryDate.set(dateVal);
-    this.selectedDeliveryTimeSlot.set(slotVal);
+  selectInstantDelivery() {
+    this.cartService.setDeliveryType('instant');
+  }
+
+  confirmSchedule(dateVal?: string, slotVal?: string) {
+    const d = dateVal || this.selectedDeliveryDate();
+    const s = slotVal || this.selectedDeliveryTimeSlot();
+    this.selectedDeliveryDate.set(d);
+    this.selectedDeliveryTimeSlot.set(s);
+    this.cartService.setScheduledDelivery(d, s);
     this.closeScheduleModal();
   }
+
   searchSuggestions = [
     'Fresh From Farm',
     'Groceries',
@@ -146,26 +162,39 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.cartService.openCartDrawer();
   }
 
-  openLocationModal() {
-    this.previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    this.isLocationModalOpen.set(true);
-    document.body.classList.add('modal-open');
-    setTimeout(() => this.locationModal?.nativeElement.querySelector<HTMLElement>('button, input')?.focus());
+  toggleLocationDropdown(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    const nextState = !this.isLocationDropdownOpen();
+    if (nextState) {
+      this.locationQuery.set('');
+      if (event && event.currentTarget instanceof HTMLElement) {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const top = Math.round(rect.bottom + 8);
+        const cardWidth = 530;
+        const maxLeft = typeof window !== 'undefined' ? Math.max(16, window.innerWidth - cardWidth - 16) : 200;
+        const left = Math.max(16, Math.min(Math.round(rect.left), maxLeft));
+        this.popoverPosition.set({ top, left });
+      }
+    }
+    this.isLocationDropdownOpen.set(nextState);
   }
 
-  closeLocationModal() {
-    this.isLocationModalOpen.set(false);
+  closeLocationDropdown() {
+    this.isLocationDropdownOpen.set(false);
     this.isDetectingLocation.set(false);
-    document.body.classList.remove('modal-open');
-    this.previousFocus?.focus();
   }
 
   @HostListener('document:keydown.escape')
   onEscape() {
-    if (this.isLocationModalOpen()) this.closeLocationModal();
+    if (this.isLocationDropdownOpen()) this.closeLocationDropdown();
+    if (this.isScheduleModalOpen()) this.closeScheduleModal();
   }
 
-  detectLocation() {
+  detectLocation(event?: Event) {
+    if (event) event.stopPropagation();
     if (this.isDetectingLocation()) return;
     this.isDetectingLocation.set(true);
     this.detectionTimer = setTimeout(() => {
@@ -176,6 +205,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   selectLocation(location: typeof this.availableLocations[number]) {
     this.selectedLocation.set(location);
-    this.closeLocationModal();
+    this.closeLocationDropdown();
   }
 }

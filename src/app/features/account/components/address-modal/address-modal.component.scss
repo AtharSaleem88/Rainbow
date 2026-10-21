@@ -1,0 +1,42 @@
+:host {
+  display: contents;
+}
+
+.rainbow-label-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    height: 44px;
+    padding: 0 8px;
+    border: 1.5px solid #e0e4ef;
+    border-radius: 10px;
+    color: #202239;
+    background: #fff;
+    font-family: "Jost", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    line-height: 1;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 180ms ease;
+
+    &:hover {
+      border-color: var(--rh-primary);
+      background: rgba(45, 44, 146, 0.04);
+    }
+
+    &.is-selected {
+      border-color: var(--rh-primary);
+      color: #fff;
+      background: var(--rh-primary);
+    }
+  }
+}

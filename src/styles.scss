@@ -207,9 +207,11 @@ app-root {
 }
 
 .rh-nav-logo img {
-  height: 38px;
+  height: 48px;
+  max-height: 52px;
   width: auto;
   display: block;
+  object-fit: contain;
 }
 
 .rh-nav-mtrigger {
@@ -1170,7 +1172,7 @@ app-root {
 }
 
 @media (max-width: 575px) {
-  .rh-nav-logo img { height: 28px; }
+  .rh-nav-logo img { height: 34px; max-height: 38px; }
   .rh-hdr-nav-links { gap: 2px; }
   .rh-hdr-nav-links a { padding: 3px 6px; font-size: 11px; }
   .rh-hdr-actions-group { gap: 4px; }

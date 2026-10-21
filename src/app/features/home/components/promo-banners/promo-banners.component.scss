@@ -1,0 +1,153 @@
+:host { display: block; }
+.rh-promo-banners {
+  padding: 14px 0 20px;
+}
+
+.rh-promo-banners-top {
+  padding-top: 0 !important;
+  padding-bottom: 8px !important;
+
+  @media (max-width: 767px) {
+    padding-top: 0 !important;
+    padding-bottom: 12px !important;
+  }
+}
+
+.rh-promo-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.rh-promo-banner {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 252px;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(45, 44, 146, .12);
+  border-radius: 22px;
+  color: #202239;
+  background: #f5f4f0;
+  box-shadow: 0 14px 36px rgba(33, 42, 90, .09);
+  text-decoration: none;
+  transition: transform 240ms ease, box-shadow 240ms ease;
+}
+
+.rh-promo-banner:hover {
+  color: inherit;
+  box-shadow: 0 20px 46px rgba(33, 42, 90, .16);
+  transform: translateY(-4px);
+}
+
+.rh-promo-banner-image,
+.rh-promo-banner-shade {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rh-promo-banner-image {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 700ms cubic-bezier(.2, .75, .25, 1);
+}
+
+.rh-promo-banner:hover .rh-promo-banner-image { transform: scale(1.045); }
+
+.rh-promo-banner-shade {
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(255, 253, 249, .98) 0%, rgba(255, 253, 249, .9) 38%, rgba(255, 253, 249, .16) 72%, rgba(255, 253, 249, 0) 100%);
+}
+
+.rh-promo-electronics .rh-promo-banner-shade {
+  background: linear-gradient(90deg, rgba(12, 18, 57, .96) 0%, rgba(17, 29, 77, .87) 38%, rgba(17, 29, 77, .22) 72%, rgba(17, 29, 77, .04) 100%);
+}
+
+.rh-promo-banner-copy {
+  display: flex;
+  width: min(66%, 360px);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 28px 30px;
+}
+
+.rh-promo-banner-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--rh-primary);
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+
+.rh-promo-electronics .rh-promo-banner-eyebrow { color: #89d7ff; }
+
+.rh-promo-banner-title {
+  color: #202239;
+  font: 750 clamp(1.45rem, 2.2vw, 2rem)/1.08 "Jost", sans-serif;
+  letter-spacing: -.035em;
+}
+
+.rh-promo-electronics .rh-promo-banner-title { color: #fff; }
+
+.rh-promo-banner-description {
+  max-width: 270px;
+  color: #626779;
+  font-size: .9rem;
+  line-height: 1.45;
+}
+
+.rh-promo-electronics .rh-promo-banner-description { color: rgba(255,255,255,.78); }
+
+.rh-promo-banner-cta {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 9px;
+  margin-top: 3px;
+  padding: 8px 14px;
+  border: 1px solid rgba(45, 44, 146, .16);
+  border-radius: 999px;
+  color: var(--rh-primary);
+  background: rgba(255, 255, 255, .8);
+  font-size: .82rem;
+  font-weight: 750;
+  transition: gap 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.rh-promo-electronics .rh-promo-banner-cta {
+  border-color: rgba(255,255,255,.3);
+  color: #fff;
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(8px);
+}
+
+.rh-promo-banner:hover .rh-promo-banner-cta { gap: 13px; }
+.rh-promo-banner-mark { position: absolute; top: 16px; right: 17px; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid rgba(255,255,255,.56); border-radius: 50%; color: #fff; background: linear-gradient(135deg, #34339d, #35a9df 58%, #e45d9b); font: 750 .8rem "Jost", sans-serif; box-shadow: 0 4px 13px rgba(20,25,60,.18); }
+
+@media (max-width: 767px) {
+  .rh-promo-banners { padding: 10px 0 16px; }
+  .rh-promo-banner-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .rh-promo-banner { min-height: 232px; border-radius: 18px; }
+  .rh-promo-banner-copy { width: 68%; gap: 8px; padding: 23px 21px; }
+  .rh-promo-banner-title { font-size: clamp(1.45rem, 6vw, 1.85rem); }
+  .rh-promo-banner-description { font-size: .84rem; }
+}
+
+@media (max-width: 420px) {
+  .rh-promo-banner { min-height: 220px; }
+  .rh-promo-banner-copy { width: 72%; padding: 20px 16px; }
+  .rh-promo-banner-eyebrow { font-size: .62rem; letter-spacing: .1em; }
+  .rh-promo-banner-cta { min-height: 35px; font-size: .75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-promo-banner, .rh-promo-banner-image, .rh-promo-banner-cta { transition: none; }
+}

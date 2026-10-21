@@ -1,0 +1,23 @@
+<div class="rh-floating-actions" aria-label="Quick action controls">
+  <!-- Top Scroller Button -->
+  <button
+    type="button"
+    class="rh-floating-btn rh-scroll-top-btn"
+    [class.visible]="showScrollTop()"
+    (click)="scrollToTop()"
+    aria-label="Scroll to top of page"
+    title="Back to top">
+    <i class="fal fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- WhatsApp Floating Button -->
+  <a
+    href="https://api.whatsapp.com/send/?phone=923107779651&text=Hello%20Rainbow%20Cash%20%26%20Carry&type=phone_number&app_absent=0"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="rh-floating-btn rh-whatsapp-btn"
+    aria-label="Chat with Rainbow on WhatsApp"
+    title="Chat on WhatsApp">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+  </a>
+</div>

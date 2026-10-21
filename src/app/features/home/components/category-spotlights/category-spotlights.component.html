@@ -1,0 +1,21 @@
+<section class="rh-category-spotlights" aria-labelledby="rh-category-spotlights-title">
+  <div class="rh-category-spotlights-inner">
+    <div class="rh-category-spotlights-grid">
+      <a
+        *ngFor="let category of spotlights"
+        class="rh-category-spotlight"
+        [ngClass]="'rh-category-spotlight-' + category.theme"
+        [routerLink]="['/shop']"
+        [queryParams]="{ category: category.category }">
+        <span class="rh-category-spotlight-image">
+          <img [src]="category.image" [alt]="category.title + ' essentials'" loading="lazy">
+        </span>
+        <span class="rh-category-spotlight-content">
+          <span class="rh-category-spotlight-title">{{ category.title }}</span>
+          <span class="rh-category-spotlight-description">{{ category.description }}</span>
+          <span class="rh-category-spotlight-link">Shop Now <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>

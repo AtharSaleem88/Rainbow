@@ -1,0 +1,59 @@
+<section class="rh-hero-section" aria-label="Featured category showcases">
+  <div class="container maxw_1460">
+    <div
+      class="rh-hero-frame"
+      (mouseenter)="stopHeroSlider()"
+      (mouseleave)="startHeroSlider()"
+      (focusin)="stopHeroSlider()"
+      (focusout)="startHeroSlider()"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)">
+      <article
+        *ngFor="let slide of slides; let i = index"
+        class="rh-hero-slide rh-hero-banner-slide"
+        [class.rh-hero-active]="currentHeroIndex() === i"
+        [ngClass]="slide.theme"
+        [attr.aria-hidden]="currentHeroIndex() !== i"
+        role="group"
+        aria-roledescription="slide"
+        [attr.aria-label]="(i + 1) + ' of ' + slides.length">
+        <img
+          class="rh-hero-banner-image"
+          [src]="slide.image"
+          [alt]="slide.imageAlt"
+          [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
+          [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+          decoding="async">
+        <span class="rh-hero-banner-shade" aria-hidden="true"></span>
+
+        <div class="rh-hero-copy">
+          <h2 class="rh-hero-heading">{{ slide.title }}</h2>
+          <p class="rh-hero-sub" *ngIf="slide.description">{{ slide.description }}</p>
+          <a [routerLink]="slide.link" [queryParams]="slide.queryParams" class="rh-hero-cta">
+            {{ slide.ctaText }} <i class="fal fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </article>
+
+      <div class="rh-hero-controls" aria-label="Hero slider controls">
+        <button type="button" class="rh-hero-arrow" (click)="prevHeroSlide()" aria-label="Previous slide">
+          <i class="fal fa-arrow-left" aria-hidden="true"></i>
+        </button>
+        <div class="rh-hero-dots" role="group" aria-label="Choose a slide">
+          <button
+            *ngFor="let slide of slides; let i = index"
+            type="button"
+            class="rh-hero-dot"
+            [class.rh-hero-dot-active]="currentHeroIndex() === i"
+            (click)="setHeroSlide(i)"
+            [attr.aria-label]="'Show slide ' + (i + 1)"
+            [attr.aria-current]="currentHeroIndex() === i ? 'true' : null">
+          </button>
+        </div>
+        <button type="button" class="rh-hero-arrow" (click)="nextHeroSlide()" aria-label="Next slide">
+          <i class="fal fa-arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

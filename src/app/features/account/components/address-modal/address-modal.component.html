@@ -1,0 +1,68 @@
+<div class="rh-schedule-backdrop" (click)="onClose()">
+  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="add-addr-modal-title" (click)="$event.stopPropagation()">
+    <header class="rh-schedule-header">
+      <div class="rh-schedule-header-icon">
+        <i class="fal fa-map-marker-alt"></i>
+      </div>
+      <div>
+        <h2 id="add-addr-modal-title">Add New Address</h2>
+      </div>
+      <button type="button" class="rh-schedule-close" (click)="onClose()"><i class="fal fa-times"></i></button>
+    </header>
+
+    <div class="rh-schedule-body">
+      <div class="rainbow-form-field mb-3">
+        <label>Address Label</label>
+        <div class="rainbow-label-selector">
+          <button type="button" [class.is-selected]="form.label === 'Home'" (click)="form.label = 'Home'">Home</button>
+          <button type="button" [class.is-selected]="form.label === 'Office'" (click)="form.label = 'Office'">Office</button>
+          <button type="button" [class.is-selected]="form.label === 'Other'" (click)="form.label = 'Other'">Other</button>
+        </div>
+      </div>
+
+      <div class="rainbow-form-row">
+        <div class="rainbow-form-field mb-3">
+          <label>Recipient Name</label>
+          <div class="rainbow-input-wrap">
+            <i class="fal fa-user"></i>
+            <input type="text" [(ngModel)]="form.recipientName" placeholder="Full name">
+          </div>
+        </div>
+
+        <div class="rainbow-form-field mb-3">
+          <label>Phone Number</label>
+          <div class="rainbow-input-wrap">
+            <i class="fal fa-phone"></i>
+            <input type="tel" [(ngModel)]="form.phone" placeholder="+92 300 1234567">
+          </div>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>City</label>
+        <div class="rainbow-input-wrap">
+          <i class="fal fa-city"></i>
+          <input type="text" [(ngModel)]="form.city" readonly>
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>Address Line</label>
+        <div class="rainbow-input-wrap">
+          <i class="fal fa-home"></i>
+          <input type="text" [(ngModel)]="form.addressLine" placeholder="House/Flat No, Street, Sector">
+        </div>
+      </div>
+
+      <label class="rainbow-auth-check mt-2">
+        <input type="checkbox" [(ngModel)]="form.isDefault">
+        <span>Set as default shipping address</span>
+      </label>
+    </div>
+
+    <footer class="rh-schedule-footer">
+      <button type="button" class="rh-schedule-btn-secondary" (click)="onClose()">Cancel</button>
+      <button type="button" class="rh-schedule-btn-primary" (click)="onSubmit()">Save Address</button>
+    </footer>
+  </div>
+</div>

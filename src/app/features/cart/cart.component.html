@@ -98,45 +98,16 @@
     </div>
   </div>
 
-  <div class="rainbow-replacement-backdrop" *ngIf="instructionProductId() !== null" (click)="closeInstructions()">
-    <section class="rainbow-replacement-dialog" role="dialog" aria-modal="true" aria-labelledby="rainbow-replacement-title" (click)="$event.stopPropagation()">
-      <ng-container *ngIf="selectedInstructionItem() as selectedItem">
-        <header class="rainbow-replacement-product">
-          <img [src]="selectedItem.product.image" [alt]="selectedItem.product.title">
-          <div><strong>{{ selectedItem.product.title }}</strong><span>{{ selectedItem.quantity }} {{ selectedItem.quantity === 1 ? 'item' : 'items' }}<ng-container *ngIf="selectedItem.variant?.label"> · {{ selectedItem.variant?.label }}</ng-container> · Rs. {{ selectedItem.variant?.price ?? selectedItem.product.price | number:'1.0-0' }} each</span></div>
-          <button type="button" class="rainbow-replacement-close" aria-label="Close" (click)="closeInstructions()"><i class="fal fa-times" aria-hidden="true"></i></button>
-        </header>
-        <h2 id="rainbow-replacement-title">If out of stock…</h2>
-        <div class="rainbow-replacement-choices">
-          <div class="rainbow-replacement-choice rainbow-replacement-choice-specific" [class.is-selected]="instructionChoice() === 'specific'">
-            <button type="button" class="rainbow-replacement-choice-button" (click)="setInstructionChoice('specific')">
-              <span class="rainbow-choice-radio" [class.is-checked]="instructionChoice() === 'specific'"></span>
-              <span><strong>Replace with specific item</strong><small>Choose up to 3 replacement options</small></span>
-            </button>
-            <div class="rainbow-replacement-products" *ngIf="instructionChoice() === 'specific'">
-              <button type="button" class="rainbow-replacement-option" *ngFor="let product of replacementOptions(selectedItem)" [class.is-selected]="replacementIds().includes(product.id)" [attr.aria-pressed]="replacementIds().includes(product.id)" (click)="toggleReplacement(product.id)">
-                <span class="rainbow-replacement-check"><i class="fal fa-check" aria-hidden="true"></i></span>
-                <span class="rainbow-replacement-product-image"><img [src]="product.image" [alt]="product.title" loading="lazy"></span>
-                <strong>{{ product.title }}</strong><span>Rs. {{ product.price | number:'1.0-0' }}</span>
-              </button>
-              <p class="rainbow-replacement-empty" *ngIf="replacementOptions(selectedItem).length === 0">No in-stock alternatives are available right now. Choose another option below.</p>
-            </div>
-            <small class="rainbow-replacement-count" *ngIf="instructionChoice() === 'specific'">{{ replacementIds().length }} of 3 selected</small>
-          </div>
-          <button type="button" class="rainbow-replacement-choice" [class.is-selected]="instructionChoice() === 'best-match'" (click)="setInstructionChoice('best-match')">
-            <span class="rainbow-choice-radio" [class.is-checked]="instructionChoice() === 'best-match'"></span>
-            <span><strong>Replace with best match</strong><small>Your shopper will look for the most similar item.</small></span>
-          </button>
-          <button type="button" class="rainbow-replacement-choice" [class.is-selected]="instructionChoice() === 'refund'" (click)="setInstructionChoice('refund')">
-            <span class="rainbow-choice-radio" [class.is-checked]="instructionChoice() === 'refund'"></span>
-            <span><strong>Refund this item</strong><small>Item will be refunded, not replaced.</small></span>
-          </button>
-        </div>
-        <footer class="rainbow-replacement-footer">
-          <button type="button" class="rainbow-replacement-cancel" (click)="closeInstructions()">Cancel</button>
-          <button type="button" class="rainbow-replacement-save" [disabled]="instructionChoice() === 'specific' && replacementIds().length === 0" (click)="saveInstructions()">Save instructions</button>
-        </footer>
-      </ng-container>
-    </section>
-  </div>
+  <!-- Out of Stock Item Instructions Modal -->
+  <app-cart-instructions-modal
+    *ngIf="instructionProductId() !== null"
+    [selectedItem]="selectedInstructionItem()"
+    [replacementOptions]="selectedInstructionItem() ? replacementOptions(selectedInstructionItem()!) : []"
+    [choice]="instructionChoice()"
+    [replacementIds]="replacementIds()"
+    (close)="closeInstructions()"
+    (choiceChange)="setInstructionChoice($event)"
+    (toggleReplacement)="toggleReplacement($event)"
+    (save)="saveInstructions()">
+  </app-cart-instructions-modal>
 </section>

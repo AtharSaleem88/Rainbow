@@ -1,0 +1,27 @@
+<section
+  class="rh-product-collection"
+  [class.rh-product-collection-tint]="isTinted"
+  [attr.aria-labelledby]="sectionId">
+  <div class="container maxw_1460">
+    <header class="rh-collection-heading-centered">
+      <div class="rh-collection-title-row">
+        <div class="gray_line" aria-hidden="true"></div>
+        <h2 [id]="sectionId">{{ title }}</h2>
+        <div class="gray_line" aria-hidden="true"></div>
+      </div>
+      <div class="rh-collection-sub-row" *ngIf="subtitle || seeAllLink">
+        <p *ngIf="subtitle" class="rh-collection-subtitle mb-0">{{ subtitle }}</p>
+        <a *ngIf="seeAllLink" [routerLink]="seeAllLink" [queryParams]="seeAllQueryParams" class="rh-collection-see-all ms-auto">
+          See all <i class="fal fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+    </header>
+    <div class="rh-product-rail" [attr.aria-label]="title + ' products'">
+      <app-product-card
+        *ngFor="let product of products"
+        [product]="product"
+        [sectionLabel]="sectionLabel">
+      </app-product-card>
+    </div>
+  </div>
+</section>

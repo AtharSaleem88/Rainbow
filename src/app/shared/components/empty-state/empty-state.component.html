@@ -1,0 +1,12 @@
+<div class="rh-empty-state" role="status" aria-live="polite">
+  <div class="rh-empty-state-icon" aria-hidden="true">
+    <i [ngClass]="iconClass"></i>
+  </div>
+  <h3 class="rh-empty-state-title">{{ title }}</h3>
+  <p *ngIf="description" class="rh-empty-state-message">{{ description }}</p>
+  <div *ngIf="actionText" class="rh-empty-state-actions">
+    <button type="button" class="btn btn-primary" (click)="onAction()">
+      {{ actionText }}
+    </button>
+  </div>
+</div>

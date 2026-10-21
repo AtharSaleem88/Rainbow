@@ -1,0 +1,20 @@
+<!-- Store trust factors -->
+<section class="policy_section rh-policy-section" aria-label="Store trust factors">
+  <div class="container maxw_1460">
+    <div class="supermarket_policy clearfix">
+      <ul class="ul_li clearfix">
+        <li *ngFor="let policy of policies">
+          <div class="supermarket_policy_item clearfix">
+            <div class="item_icon">
+              <img [src]="policy.icon" [alt]="policy.title">
+            </div>
+            <div class="item_content">
+              <h3 class="text-uppercase">{{ policy.title }}</h3>
+              <p>{{ policy.desc }}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

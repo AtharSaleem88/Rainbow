@@ -1,8 +1,9 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
+import { SeoService } from '../../core/services/seo.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { Product, ProductVariant } from '../../core/models/product.model';
 
@@ -16,6 +17,7 @@ import { Product, ProductVariant } from '../../core/models/product.model';
 export class ProductDetailsComponent implements OnInit {
   productService = inject(ProductService);
   cartService = inject(CartService);
+  seoService = inject(SeoService);
   route = inject(ActivatedRoute);
   router = inject(Router);
 
@@ -37,6 +39,10 @@ export class ProductDetailsComponent implements OnInit {
         this.relatedProducts.set(
           this.productService.getProducts({ category: found.categorySlug }).filter(p => p.id !== found.id)
         );
+        this.seoService.setPageTitle(`${found.title} — Online Grocery`);
+        if (found.description) {
+          this.seoService.setMetaDescription(found.description);
+        }
       }
     });
   }

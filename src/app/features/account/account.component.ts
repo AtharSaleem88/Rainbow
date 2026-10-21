@@ -1,20 +1,25 @@
-import { Component, inject, signal, ElementRef, ViewChild } from '@angular/core';
+import { Component, inject, signal, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.service';
 import { LoyaltyService } from '../../core/services/loyalty.service';
+import { SeoService } from '../../core/services/seo.service';
+import { AddressModalComponent } from './components/address-modal/address-modal.component';
+import { CardModalComponent } from './components/card-modal/card-modal.component';
+import { ReturnModalComponent } from './components/return-modal/return-modal.component';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, AddressModalComponent, CardModalComponent, ReturnModalComponent],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
-export class AccountComponent {
+export class AccountComponent implements OnInit {
   readonly authService = inject(AuthService);
   readonly loyaltyService = inject(LoyaltyService);
+  readonly seoService = inject(SeoService);
   readonly router = inject(Router);
 
   @ViewChild('accountMainContent') accountMainContent?: ElementRef<HTMLElement>;
@@ -23,24 +28,9 @@ export class AccountComponent {
 
   // New Address Modal State
   isAddressModalOpen = signal<boolean>(false);
-  addressForm = {
-    label: 'Home' as 'Home' | 'Office' | 'Other',
-    recipientName: '',
-    phone: '',
-    addressLine: '',
-    city: 'Lahore',
-    isDefault: false
-  };
 
   // New Card Modal State
   isCardModalOpen = signal<boolean>(false);
-  cardForm = {
-    cardHolder: '',
-    rawCardNumber: '',
-    expiryDate: '',
-    brand: 'visa' as 'visa' | 'mastercard' | 'unionpay',
-    isDefault: false
-  };
 
   // Wallet Top-up state
   topUpAmount = signal<number>(1000);
@@ -58,6 +48,11 @@ export class AccountComponent {
     refundAmount: 0
   };
 
+  ngOnInit(): void {
+    this.seoService.setPageTitle('My Account');
+    this.seoService.setMetaDescription('Manage your Rainbow Cash & Carry account, orders, addresses, loyalty points and wallet.');
+  }
+
   setActiveTab(tab: 'orders' | 'wallet' | 'loyalty' | 'addresses' | 'cards' | 'settings' | 'returns') {
     this.activeTab.set(tab);
     if (window.innerWidth < 992 && this.accountMainContent?.nativeElement) {
@@ -69,14 +64,6 @@ export class AccountComponent {
 
   // Address Handlers
   openAddressModal() {
-    this.addressForm = {
-      label: 'Home',
-      recipientName: this.authService.userProfile().name,
-      phone: this.authService.userProfile().phone,
-      addressLine: '',
-      city: 'Lahore',
-      isDefault: false
-    };
     this.isAddressModalOpen.set(true);
   }
 
@@ -84,11 +71,9 @@ export class AccountComponent {
     this.isAddressModalOpen.set(false);
   }
 
-  submitAddress() {
-    if (this.addressForm.recipientName && this.addressForm.addressLine) {
-      this.authService.addAddress(this.addressForm);
-      this.closeAddressModal();
-    }
+  submitAddress(data: Omit<SavedAddress, 'id'>) {
+    this.authService.addAddress(data);
+    this.closeAddressModal();
   }
 
   deleteAddress(id: string) {
@@ -101,13 +86,6 @@ export class AccountComponent {
 
   // Card Handlers
   openCardModal() {
-    this.cardForm = {
-      cardHolder: this.authService.userProfile().name,
-      rawCardNumber: '',
-      expiryDate: '',
-      brand: 'visa',
-      isDefault: false
-    };
     this.isCardModalOpen.set(true);
   }
 
@@ -115,11 +93,9 @@ export class AccountComponent {
     this.isCardModalOpen.set(false);
   }
 
-  submitCard() {
-    if (this.cardForm.cardHolder && this.cardForm.rawCardNumber.length >= 12) {
-      this.authService.addCard(this.cardForm);
-      this.closeCardModal();
-    }
+  submitCard(data: { cardHolder: string; rawCardNumber: string; expiryDate: string; brand: 'visa' | 'mastercard' | 'unionpay'; isDefault: boolean }) {
+    this.authService.addCard(data);
+    this.closeCardModal();
   }
 
   deleteCard(id: string) {
@@ -156,17 +132,15 @@ export class AccountComponent {
     this.isReturnModalOpen.set(false);
   }
 
-  submitReturnRequest() {
-    if (this.returnForm.orderId && this.returnForm.itemTitle) {
-      this.authService.requestReturn(
-        this.returnForm.orderId,
-        this.returnForm.itemTitle,
-        this.returnForm.reason,
-        this.returnForm.refundAmount
-      );
-      this.closeReturnModal();
-      this.setActiveTab('returns');
-    }
+  submitReturnRequest(data: { orderId: string; itemTitle: string; reason: string; refundAmount: number }) {
+    this.authService.requestReturn(
+      data.orderId,
+      data.itemTitle,
+      data.reason,
+      data.refundAmount
+    );
+    this.closeReturnModal();
+    this.setActiveTab('returns');
   }
 
   onLogout() {

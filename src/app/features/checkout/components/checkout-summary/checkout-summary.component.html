@@ -1,0 +1,79 @@
+<section class="rainbow-checkout-summary">
+  <h2>Order Summary ({{ cartCount }} {{ cartCount === 1 ? 'item' : 'items' }})</h2>
+
+  <!-- Items List Snapshot -->
+  <div class="rainbow-summary-items">
+    <div class="rainbow-summary-item" *ngFor="let item of items; trackBy: trackByCartItem">
+      <div class="rainbow-summary-thumb">
+        <img [src]="item.product.image" [alt]="item.product.title">
+        <span class="rainbow-summary-qty">{{ item.quantity }}</span>
+      </div>
+      <div class="rainbow-summary-info">
+        <strong>{{ item.product.title }}</strong>
+        <span class="rainbow-summary-variant" *ngIf="item.variant?.label">{{ item.variant?.label }}</span>
+      </div>
+      <div class="rainbow-summary-price">
+        <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-0' }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Savings Banner if applicable -->
+  <div class="rainbow-cart-savings" *ngIf="checkoutSavings > 0">
+    <span><i class="fal fa-sparkles"></i> Total Savings</span>
+    <strong>Rs. {{ checkoutSavings | number:'1.0-0' }}</strong>
+  </div>
+
+  <!-- Bill Details -->
+  <div class="rainbow-summary-bill">
+    <div class="rainbow-summary-row">
+      <span>Items Subtotal</span>
+      <span>Rs. {{ checkoutOriginalTotal > checkoutTotal ? (checkoutOriginalTotal | number:'1.0-0') : (checkoutTotal | number:'1.0-0') }}</span>
+    </div>
+    <div class="rainbow-summary-row" *ngIf="checkoutSavings > 0">
+      <span class="text-success">Promotional Discount</span>
+      <span class="text-success">- Rs. {{ checkoutSavings | number:'1.0-0' }}</span>
+    </div>
+    <div class="rainbow-summary-row">
+      <span>Delivery Charge</span>
+      <span class="rainbow-cart-free">FREE</span>
+    </div>
+    <div class="rainbow-summary-row">
+      <span>Delivery Method</span>
+      <span class="font-weight-bold" [ngClass]="deliveryType === 'instant' ? 'text-primary' : 'text-success'">
+        <i class="fal" [ngClass]="deliveryType === 'instant' ? 'fa-bolt' : 'fa-clock'"></i>
+        {{ deliveryType === 'instant' ? 'Instant (In 40 Mins)' : 'Scheduled (' + deliveryDate + ', ' + deliveryTimeSlot + ')' }}
+      </span>
+    </div>
+    <div class="rainbow-summary-row" *ngIf="isMember" aria-live="polite">
+      <span>Loyalty points to earn</span>
+      <strong>{{ pointsToEarn | number:'1.0-0' }} points</strong>
+    </div>
+    <div class="rainbow-summary-row" *ngIf="payment.pointsUsed > 0">
+      <span>Loyalty points ({{ payment.pointsUsed | number:'1.0-0' }} used)</span>
+      <strong>- Rs. {{ payment.loyaltyDiscount | number:'1.0-2' }}</strong>
+    </div>
+    <div class="rainbow-summary-row" *ngIf="payment.walletApplied > 0">
+      <span>Wallet applied</span>
+      <strong>- Rs. {{ payment.walletApplied | number:'1.0-2' }}</strong>
+    </div>
+    <div class="rainbow-summary-row" *ngIf="payment.tipAmount > 0">
+      <span>Rider tip</span>
+      <strong>Rs. {{ payment.tipAmount | number:'1.0-2' }}</strong>
+    </div>
+    <div class="rainbow-summary-total">
+      <strong>Total Payable</strong>
+      <strong aria-live="polite">Rs. {{ payment.payable | number:'1.0-2' }}</strong>
+    </div>
+  </div>
+
+  <div class="rainbow-checkout-trust">
+    <p *ngIf="isMember"><i class="fal fa-star" aria-hidden="true"></i> Earn 1 point per Rs. {{ spendPerPoint | number:'1.0-0' }} spent on items after loyalty discounts.</p>
+    <p *ngIf="!isMember"><a routerLink="/login">Sign in</a> to earn loyalty points on this order.</p>
+    <p><i class="fal fa-shield-check"></i> Safe & Encrypted Checkout</p>
+    <p>
+      <i class="fal" [ngClass]="deliveryType === 'instant' ? 'fa-bolt text-warning' : 'fa-clock text-success'"></i> 
+      {{ deliveryType === 'instant' ? 'Instant Express Delivery (In 40 Mins)' : 'Scheduled Delivery (' + deliveryDate + ', ' + deliveryTimeSlot + ')' }} from Rainbow {{ fulfillingBranch }}
+    </p>
+  </div>
+</section>

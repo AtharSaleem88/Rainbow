@@ -1,0 +1,84 @@
+<div class="rh-shop-header-filters">
+  <div class="rh-filter-controls-row">
+    <!-- Brand Dropdown -->
+    <div class="rh-filter-field">
+      <span class="rh-filter-label">Brand</span>
+      <select
+        id="rh-shop-brand-select"
+        class="rh-filter-select"
+        [value]="selectedBrand"
+        (change)="onBrandChange($event)"
+        aria-label="Filter by brand">
+        <option value="">All brands</option>
+        <option value="Rainbow Farm">Rainbow Farm</option>
+        <option value="Rainbow Organic">Rainbow Organic</option>
+        <option value="Rainbow Select">Rainbow Select</option>
+        <option value="Rainbow Frozen">Rainbow Frozen</option>
+        <option value="Shan">Shan</option>
+      </select>
+    </div>
+
+    <!-- Price Filter (Min & Max Price inputs) -->
+    <div class="rh-filter-field">
+      <span class="rh-filter-label">Price (Rs.)</span>
+      <div class="rh-price-range-group">
+        <input
+          type="number"
+          min="0"
+          placeholder="Min"
+          class="rh-filter-input"
+          [value]="minPrice"
+          (input)="onMinPriceChange($event)"
+          aria-label="Minimum price">
+        <span class="rh-price-dash">-</span>
+        <input
+          type="number"
+          min="0"
+          placeholder="Max"
+          class="rh-filter-input"
+          [value]="maxPrice"
+          (input)="onMaxPriceChange($event)"
+          aria-label="Maximum price">
+      </div>
+    </div>
+
+    <!-- Sort By Dropdown -->
+    <div class="rh-filter-field ms-auto">
+      <span class="rh-filter-label">Sort By</span>
+      <select
+        id="rh-shop-sort-select"
+        class="rh-filter-select"
+        [value]="selectedSort"
+        (change)="onSortChange($event)"
+        aria-label="Sort products">
+        <option value="featured">Recommended</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="rh-filter-divider"></div>
+
+  <!-- Sub Sub Categories Horizontal Filter Chips -->
+  <div class="rh-subsub-row">
+    <div class="rh-subsub-chips-container" role="group" aria-label="Subcategory filters">
+      <button
+        type="button"
+        class="rh-subsub-chip"
+        [class.active]="!selectedSubSubCategory"
+        (click)="selectSubSubCategory('')">
+        All
+      </button>
+      <button
+        *ngFor="let subSubCat of subSubCategories"
+        type="button"
+        class="rh-subsub-chip"
+        [class.active]="selectedSubSubCategory === subSubCat"
+        (click)="selectSubSubCategory(subSubCat)">
+        {{ subSubCat }}
+      </button>
+    </div>
+  </div>
+</div>

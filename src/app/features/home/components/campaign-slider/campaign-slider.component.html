@@ -1,0 +1,44 @@
+<section class="rh-campaign-section" aria-labelledby="rh-campaign-heading">
+  <div class="rh-campaign-inner">
+    <div class="rh-campaign-title-row">
+      <div class="gray_line" aria-hidden="true"></div>
+      <h2 id="rh-campaign-heading" class="rh-campaign-title">Discover Campaigns</h2>
+      <div class="gray_line" aria-hidden="true"></div>
+    </div>
+    <div class="rh-campaign-heading-row">
+      <div>
+        <span class="rh-campaign-eyebrow">A LITTLE MORE TO DISCOVER</span>
+      </div>
+      <div class="rh-campaign-controls">
+        <button type="button" aria-label="Previous banner" (click)="prevCampaignBanner()">
+          <i class="fal fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <button type="button" aria-label="Next banner" (click)="nextCampaignBanner()">
+          <i class="fal fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="rh-campaign-viewport" aria-live="polite">
+      <div class="rh-campaign-track">
+        <a
+          *ngFor="let banner of visibleCampaignBanners"
+          class="rh-campaign-banner"
+          [routerLink]="['/shop']"
+          [queryParams]="{ category: banner.category }"
+          [attr.aria-label]="banner.title">
+          <img class="rh-campaign-image" [src]="banner.image" [alt]="banner.title" loading="lazy" decoding="async">
+        </a>
+      </div>
+    </div>
+    <div class="rh-campaign-dots" role="group" aria-label="Choose a campaign">
+      <button
+        *ngFor="let banner of banners; let i = index"
+        type="button"
+        [class.active]="activeCampaignIndex() === i"
+        [attr.aria-label]="'Show ' + banner.title"
+        [attr.aria-current]="activeCampaignIndex() === i ? 'true' : null"
+        (click)="selectCampaignBanner(i)">
+      </button>
+    </div>
+  </div>
+</section>

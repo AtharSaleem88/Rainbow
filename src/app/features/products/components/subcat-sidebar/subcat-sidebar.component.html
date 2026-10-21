@@ -1,0 +1,32 @@
+<aside class="rh-shop-subcat-sidebar" aria-label="Vertical subcategories sidebar">
+  <div class="rh-subcat-sidebar-scroll">
+    <!-- All Option -->
+    <button
+      type="button"
+      class="rh-subcat-item"
+      [class.active]="!selectedSubCategory"
+      (click)="selectSubCategory('')"
+      aria-label="All Subcategories">
+      <span class="rh-subcat-tile">
+        <i class="fal fa-th-large" aria-hidden="true"></i>
+      </span>
+      <span class="rh-subcat-label">All</span>
+    </button>
+
+    <!-- Subcategory Items with Image on Top & Name Below -->
+    <button
+      *ngFor="let item of items"
+      type="button"
+      class="rh-subcat-item"
+      [class.active]="selectedSubCategory === item.name"
+      (click)="selectSubCategory(item.name)"
+      [attr.aria-label]="item.name">
+      <span class="rh-subcat-tile">
+        <img *ngIf="item.image" [src]="item.image" [alt]="item.name" loading="lazy">
+        <i *ngIf="!item.image && item.icon" class="fas" [ngClass]="item.icon" aria-hidden="true"></i>
+        <i *ngIf="!item.image && !item.icon" class="fal fa-tags" aria-hidden="true"></i>
+      </span>
+      <span class="rh-subcat-label">{{ item.name }}</span>
+    </button>
+  </div>
+</aside>

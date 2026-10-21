@@ -1,0 +1,127 @@
+:host { display: block; }
+.rh-product-collection {
+  padding: 18px 0 22px;
+  background: #fff;
+}
+
+.rh-product-collection-tint {
+  border-top: 1px solid rgba(45, 44, 146, 0.05);
+  border-bottom: 1px solid rgba(45, 44, 146, 0.05);
+  background: linear-gradient(135deg, #f6f8ff 0%, #f1f7fc 100%);
+}
+
+.rh-collection-heading-centered {
+  margin-bottom: 14px;
+}
+
+.rh-collection-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 8px;
+
+  h2 {
+    flex: 0 0 auto;
+    margin: 0;
+    color: var(--rh-primary);
+    font-family: "Jost", sans-serif;
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  .gray_line {
+    flex: 1 1 auto;
+  }
+}
+
+.rh-collection-sub-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 2px;
+}
+
+.rh-collection-subtitle {
+  margin: 0;
+  color: #74798c;
+  font-size: 0.94rem;
+}
+
+.rh-collection-see-all {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 0;
+  color: var(--rh-primary);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 160ms ease, gap 160ms ease;
+
+  &:hover {
+    gap: 13px;
+    color: var(--rh-secondary);
+  }
+}
+
+.rh-product-rail {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 2px 2px 12px;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: rgba(45, 44, 146, 0.25) transparent;
+  scrollbar-width: thin;
+}
+
+.rh-product-rail > app-product-card {
+  flex: 0 0 clamp(220px, 19vw, 258px);
+}
+
+.rh-home-product-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 767px) {
+  .rh-product-collection {
+    padding: 14px 0 18px;
+  }
+
+  .rh-collection-title-row {
+    gap: 1rem;
+    margin-bottom: 6px;
+  }
+
+  .rh-collection-subtitle {
+    font-size: 0.83rem;
+    line-height: 1.4;
+  }
+
+  .rh-collection-see-all {
+    gap: 5px;
+    font-size: 0.85rem;
+  }
+
+  .rh-product-rail {
+    gap: 12px;
+    margin-right: -12px;
+    padding-right: 12px;
+  }
+
+  .rh-product-rail > app-product-card {
+    flex-basis: 220px;
+  }
+
+  .rh-home-product-groups {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+}

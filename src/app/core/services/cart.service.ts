@@ -41,6 +41,21 @@ export class CartService {
 
   isCartOpen = signal<boolean>(false);
 
+  // Delivery Mode State (Instant vs Scheduled - mutually exclusive)
+  readonly deliveryType = signal<'instant' | 'scheduled'>('instant');
+  readonly selectedDeliveryDate = signal<string>('Today');
+  readonly selectedDeliveryTimeSlot = signal<string>('2:00pm - 4:00pm');
+
+  setDeliveryType(type: 'instant' | 'scheduled') {
+    this.deliveryType.set(type);
+  }
+
+  setScheduledDelivery(date: string, timeSlot: string) {
+    this.selectedDeliveryDate.set(date);
+    this.selectedDeliveryTimeSlot.set(timeSlot);
+    this.deliveryType.set('scheduled');
+  }
+
   cartCount = computed(() => {
     return this.cartItems().reduce((total, item) => total + item.quantity, 0);
   });

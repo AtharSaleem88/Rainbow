@@ -1,22 +1,25 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { LoyaltyService } from '../../core/services/loyalty.service';
 import { ProductService } from '../../core/services/product.service';
+import { SeoService } from '../../core/services/seo.service';
 import { CartItem, Product } from '../../core/models/product.model';
+import { CartInstructionsModalComponent } from './components/cart-instructions-modal/cart-instructions-modal.component';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CartInstructionsModalComponent],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
   readonly cartService = inject(CartService);
   readonly loyaltyService = inject(LoyaltyService);
   private readonly productService = inject(ProductService);
+  private readonly seoService = inject(SeoService);
   readonly instructionProductId = signal<number | null>(null);
   readonly instructionVariantId = signal<string | null>(null);
   readonly instructionChoice = signal<NonNullable<CartItem['outOfStockChoice']>>('best-match');
@@ -32,6 +35,11 @@ export class CartComponent {
         queueMicrotask(() => this.openInstructions(unavailable));
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.seoService.setPageTitle('Shopping Cart');
+    this.seoService.setMetaDescription('Review items in your Rainbow Cash & Carry cart and proceed to checkout.');
   }
 
   readonly itemsOriginalTotal = computed(() => this.cartService.cartItems().reduce((total, item) => {

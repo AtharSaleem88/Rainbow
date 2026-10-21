@@ -1,0 +1,63 @@
+<div class="rh-schedule-backdrop" (click)="onClose()">
+  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="add-card-modal-title" (click)="$event.stopPropagation()">
+    <header class="rh-schedule-header">
+      <div class="rh-schedule-header-icon">
+        <i class="fal fa-credit-card"></i>
+      </div>
+      <div>
+        <h2 id="add-card-modal-title">Save Payment Card</h2>
+      </div>
+      <button type="button" class="rh-schedule-close" (click)="onClose()"><i class="fal fa-times"></i></button>
+    </header>
+
+    <div class="rh-schedule-body">
+      <div class="rainbow-form-field mb-3">
+        <label>Cardholder Name</label>
+        <div class="rainbow-input-wrap">
+          <i class="fal fa-user"></i>
+          <input type="text" [(ngModel)]="form.cardHolder" placeholder="Name on card">
+        </div>
+      </div>
+
+      <div class="rainbow-form-field mb-3">
+        <label>Card Number</label>
+        <div class="rainbow-input-wrap">
+          <i class="fal fa-credit-card"></i>
+          <input type="text" [(ngModel)]="form.rawCardNumber" placeholder="1234 5678 9101 1121" maxlength="19">
+        </div>
+      </div>
+
+      <div class="rainbow-form-row mb-3">
+        <div class="rainbow-form-field">
+          <label>Expiry Date</label>
+          <div class="rainbow-input-wrap">
+            <i class="fal fa-calendar-alt"></i>
+            <input type="text" [(ngModel)]="form.expiryDate" placeholder="MM/YY">
+          </div>
+        </div>
+
+        <div class="rainbow-form-field">
+          <label>Card Network</label>
+          <div class="rainbow-input-wrap rainbow-select-wrap">
+            <select [(ngModel)]="form.brand">
+              <option value="visa">Visa</option>
+              <option value="mastercard">Mastercard</option>
+              <option value="unionpay">UnionPay</option>
+            </select>
+            <i class="fal fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+      </div>
+
+      <label class="rainbow-auth-check mt-2">
+        <input type="checkbox" [(ngModel)]="form.isDefault">
+        <span>Set as default card</span>
+      </label>
+    </div>
+
+    <footer class="rh-schedule-footer">
+      <button type="button" class="rh-schedule-btn-secondary" (click)="onClose()">Cancel</button>
+      <button type="button" class="rh-schedule-btn-primary" (click)="onSubmit()">Save Card</button>
+    </footer>
+  </div>
+</div>

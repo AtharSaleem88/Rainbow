@@ -1,28 +1,35 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../core/services/product.service';
+import { SeoService } from '../../core/services/seo.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ProductQuickViewComponent } from '../../shared/components/modals/product-quick-view/product-quick-view.component';
+import { BreadcrumbsComponent, BreadcrumbItem } from '../../shared/components/breadcrumbs/breadcrumbs.component';
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { SubcatSidebarComponent, SubCategoryItem, ShopFiltersComponent } from './components';
 import { Product, ProductFilter } from '../../core/models/product.model';
-
-export interface SubCategoryItem {
-  name: string;
-  image?: string;
-  icon?: string;
-}
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ProductCardComponent, ProductQuickViewComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ProductCardComponent,
+    ProductQuickViewComponent,
+    BreadcrumbsComponent,
+    EmptyStateComponent,
+    SubcatSidebarComponent,
+    ShopFiltersComponent
+  ],
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
-  productService = inject(ProductService);
-  route = inject(ActivatedRoute);
+  private productService = inject(ProductService);
+  private seoService = inject(SeoService);
+  private route = inject(ActivatedRoute);
 
   categories = this.productService.getCategories();
   filteredProducts = signal<Product[]>([]);
@@ -40,7 +47,7 @@ export class ShopComponent implements OnInit {
 
   selectedQuickViewProduct = signal<Product | null>(null);
 
-  subSubCategories = ['Organic', 'Imported', 'Local Farm', 'Pre-Cut & Cleaned'];
+  readonly subSubCategories = ['Organic', 'Imported', 'Local Farm', 'Pre-Cut & Cleaned'];
 
   readonly subCategories = computed<string[]>(() => {
     const products = this.productService.getProducts(this.selectedCategory() ? { category: this.selectedCategory() } : undefined);
@@ -71,6 +78,14 @@ export class ShopComponent implements OnInit {
     });
   });
 
+  get breadcrumbs(): BreadcrumbItem[] {
+    return [
+      { label: 'Home', url: '/' },
+      { label: 'Shop', url: '/shop' },
+      { label: this.categoryName }
+    ];
+  }
+
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params['category']) {
@@ -91,7 +106,15 @@ export class ShopComponent implements OnInit {
         this.searchQuery.set('');
       }
       this.applyFilters();
+      this.updatePageSeo();
     });
+  }
+
+  private updatePageSeo(): void {
+    const catName = this.categoryName;
+    const title = catName === 'All Grocery' ? 'Online Supermarket & Grocery Shop' : `${catName} — Online Supermarket`;
+    this.seoService.setPageTitle(title);
+    this.seoService.setMetaDescription(`Explore our fresh selection of ${catName.toLowerCase()} and grocery essentials at Rainbow Cash & Carry.`);
   }
 
   applyFilters() {
@@ -109,8 +132,8 @@ export class ShopComponent implements OnInit {
     // Apply sub-subcategory query filter if selected
     if (this.selectedSubSubCategory()) {
       const subsub = this.selectedSubSubCategory().toLowerCase();
-      products = products.filter(p => 
-        p.title.toLowerCase().includes(subsub) || 
+      products = products.filter(p =>
+        p.title.toLowerCase().includes(subsub) ||
         p.subtitle?.toLowerCase().includes(subsub) ||
         p.description?.toLowerCase().includes(subsub) ||
         (subsub === 'organic' && p.brand.toLowerCase().includes('organic'))
@@ -125,11 +148,37 @@ export class ShopComponent implements OnInit {
     this.selectedSubCategory.set('');
     this.selectedSubSubCategory.set('');
     this.applyFilters();
+    this.updatePageSeo();
   }
 
   onSubCategorySelect(subCategory: string) {
     this.selectedSubCategory.set(subCategory === this.selectedSubCategory() ? '' : subCategory);
     this.selectedSubSubCategory.set('');
+    this.applyFilters();
+  }
+
+  onBrandChange(brand: string) {
+    this.selectedBrand.set(brand);
+    this.applyFilters();
+  }
+
+  onMinPriceChange(val: number) {
+    this.minPrice.set(val);
+    this.applyFilters();
+  }
+
+  onMaxPriceChange(val: number) {
+    this.maxPrice.set(val);
+    this.applyFilters();
+  }
+
+  onSortChangeValue(sortVal: string) {
+    this.selectedSort.set(sortVal as any);
+    this.applyFilters();
+  }
+
+  onSubSubCategoryChange(subSubCat: string) {
+    this.selectedSubSubCategory.set(subSubCat);
     this.applyFilters();
   }
 
@@ -147,12 +196,6 @@ export class ShopComponent implements OnInit {
     return 'All Products';
   }
 
-  onSortChange(event: Event) {
-    const val = (event.target as HTMLSelectElement).value as any;
-    this.selectedSort.set(val);
-    this.applyFilters();
-  }
-
   resetFilters() {
     this.selectedCategory.set('');
     this.selectedSubCategory.set('');
@@ -163,6 +206,7 @@ export class ShopComponent implements OnInit {
     this.selectedSort.set('featured');
     this.searchQuery.set('');
     this.applyFilters();
+    this.updatePageSeo();
   }
 
   openQuickView(product: Product) {

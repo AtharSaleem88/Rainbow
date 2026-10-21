@@ -3,46 +3,52 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent)
+    loadChildren: () => import('./features/home/home.routes').then(m => m.HOME_ROUTES)
   },
   {
     path: 'shop',
-    loadComponent: () => import('./features/products/shop.component').then(m => m.ShopComponent)
+    loadChildren: () => import('./features/products/products.routes').then(m => m.PRODUCT_ROUTES)
   },
   {
     path: 'products/:id',
-    loadComponent: () => import('./features/product-details/product-details.component').then(m => m.ProductDetailsComponent)
+    loadComponent: () => import('./features/product-details/product-details.component').then(m => m.ProductDetailsComponent),
+    title: 'Product Details — Rainbow'
   },
   {
     path: 'cart',
-    loadComponent: () => import('./features/cart/cart.component').then(m => m.CartComponent)
+    loadChildren: () => import('./features/cart/cart.routes').then(m => m.CART_ROUTES)
   },
   {
     path: 'checkout',
-    loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent)
+    loadChildren: () => import('./features/checkout/checkout.routes').then(m => m.CHECKOUT_ROUTES)
   },
   {
     path: 'account',
-    loadComponent: () => import('./features/account/account.component').then(m => m.AccountComponent)
+    loadChildren: () => import('./features/account/account.routes').then(m => m.ACCOUNT_ROUTES)
   },
   {
     path: 'login',
-    loadComponent: () => import('./features/authentication/login.component').then(m => m.LoginComponent)
+    loadComponent: () => import('./features/authentication/login.component').then(m => m.LoginComponent),
+    title: 'Sign In — Rainbow'
   },
   {
     path: 'signup',
-    loadComponent: () => import('./features/authentication/signup.component').then(m => m.SignupComponent)
+    loadComponent: () => import('./features/authentication/signup.component').then(m => m.SignupComponent),
+    title: 'Create an Account — Rainbow'
   },
   {
     path: 'about',
-    loadComponent: () => import('./features/about/about.component').then(m => m.AboutComponent)
+    loadComponent: () => import('./features/about/about.component').then(m => m.AboutComponent),
+    title: 'About Us — Rainbow Cash & Carry'
   },
   {
     path: 'contact',
-    loadComponent: () => import('./features/contact/contact.component').then(m => m.ContactComponent)
+    loadComponent: () => import('./features/contact/contact.component').then(m => m.ContactComponent),
+    title: 'Contact Us — Rainbow Cash & Carry'
   },
   {
     path: '**',
-    loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent)
+    loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent),
+    title: 'Page Not Found — Rainbow'
   }
 ];

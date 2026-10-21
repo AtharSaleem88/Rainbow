@@ -6,21 +6,26 @@ import { CartService } from '../../core/services/cart.service';
 import { LoyaltyService } from '../../core/services/loyalty.service';
 import { CheckoutPaymentService, PaymentBreakdown } from '../../core/services/checkout-payment.service';
 import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.service';
+import { SeoService } from '../../core/services/seo.service';
+import { CheckoutStepperComponent } from './components/checkout-stepper/checkout-stepper.component';
+import { CheckoutSummaryComponent } from './components/checkout-summary/checkout-summary.component';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, CheckoutStepperComponent, CheckoutSummaryComponent],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
   readonly cartService = inject(CartService);
   readonly loyaltyService = inject(LoyaltyService);
-  readonly earnedLoyaltyPoints = signal(0);
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
   private readonly paymentService = inject(CheckoutPaymentService);
+  private readonly seoService = inject(SeoService);
+
+  readonly earnedLoyaltyPoints = signal(0);
   readonly useWallet = signal(false);
   readonly useLoyaltyPoints = signal(false);
   readonly tipOptions = [0, 50, 100, 200, 300];
@@ -32,6 +37,47 @@ export class CheckoutComponent implements OnInit {
   readonly pointsToEarn = computed(() => this.loyaltyService.isMember() ? this.loyaltyService.pointsForAmount(this.payment().earningAmount) : 0);
 
   readonly currentStep = signal<1 | 2 | 3>(1);
+
+  // Delivery Schedule State for Checkout
+  readonly isScheduleModalOpen = signal(false);
+  readonly selectedDate = signal<string>('Today');
+  readonly selectedTimeSlot = signal<string>('2:00pm - 4:00pm');
+  readonly availableDates = [
+    { label: 'Today', value: 'Today', dateStr: 'Today, Oct 8' },
+    { label: 'Tomorrow', value: 'Tomorrow', dateStr: 'Tomorrow, Oct 9' },
+    { label: 'Friday', value: 'Friday', dateStr: 'Friday, Oct 10' }
+  ];
+  readonly availableTimeSlots = [
+    '10:00am - 12:00pm',
+    '12:00pm - 2:00pm',
+    '2:00pm - 4:00pm',
+    '4:00pm - 6:00pm',
+    '6:00pm - 8:00pm'
+  ];
+
+  selectInstantDelivery() {
+    this.cartService.setDeliveryType('instant');
+  }
+
+  selectScheduledDelivery() {
+    this.cartService.setDeliveryType('scheduled');
+    this.openScheduleModal();
+  }
+
+  openScheduleModal() {
+    this.selectedDate.set(this.cartService.selectedDeliveryDate());
+    this.selectedTimeSlot.set(this.cartService.selectedDeliveryTimeSlot());
+    this.isScheduleModalOpen.set(true);
+  }
+
+  closeScheduleModal() {
+    this.isScheduleModalOpen.set(false);
+  }
+
+  confirmSchedule() {
+    this.cartService.setScheduledDelivery(this.selectedDate(), this.selectedTimeSlot());
+    this.closeScheduleModal();
+  }
 
   // Form Fields
   billingData = {
@@ -88,6 +134,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.seoService.setPageTitle('Checkout');
+    this.seoService.setMetaDescription('Secure checkout for your Rainbow Cash & Carry order.');
     this.scrollToTop();
   }
 

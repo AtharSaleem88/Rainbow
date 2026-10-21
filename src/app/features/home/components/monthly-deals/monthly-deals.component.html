@@ -1,0 +1,105 @@
+<section class="rh-monthly-deals" aria-labelledby="rh-monthly-deals-title">
+  <div class="container maxw_1460">
+    <header class="rh-monthly-heading">
+      <div class="gray_line" aria-hidden="true"></div>
+      <h2 id="rh-monthly-deals-title">Monthly Savings</h2>
+      <div class="gray_line" aria-hidden="true"></div>
+    </header>
+
+    <div class="rh-monthly-flyer">
+      <!-- Single Embossed Rainbow Cloud Watermark -->
+      <img src="assets/images/logo/rainbow-cloud-icon.png" alt="" class="rh-monthly-rainbow rh-monthly-embossed-cloud" aria-hidden="true">
+      <div class="rh-monthly-flyer-intro">
+        <h3>Monthly Ad</h3>
+        <div class="rh-monthly-flyer-highlights" aria-label="Monthly ad highlights">
+          <span><i class="fal fa-leaf" aria-hidden="true"></i> Fresh picks</span>
+          <span><i class="fal fa-shopping-basket" aria-hidden="true"></i> Everyday favourites</span>
+          <span><i class="fal fa-tags" aria-hidden="true"></i> Great value</span>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="rh-monthly-flyer-preview"
+        (click)="openMonthlyFlyer($event)"
+        aria-label="Open the Rainbow monthly flyer in a larger view">
+        <img
+          src="assets/images/rainbowflyer.jpg"
+          alt="Rainbow Cash & Carry monthly savings flyer featuring Pakistani produce, ghee, cooking oil and pantry products"
+          loading="lazy"
+          decoding="async">
+        <span class="rh-monthly-flyer-preview-label">
+          <i class="fal fa-expand-alt" aria-hidden="true"></i> View full monthly ad
+        </span>
+      </button>
+    </div>
+
+    <div class="rh-monthly-deal-content">
+      <div class="rh-monthly-subheading">
+        <div><h3 id="rh-monthly-deal-list-title">Monthly Special Deals</h3></div>
+        <div class="rh-monthly-rail-meta">
+          <span>{{ monthlyDeals.length }} offers</span>
+          <div class="rh-monthly-rail-controls" *ngIf="monthlyDeals.length > 3" aria-label="Browse monthly offers">
+            <button type="button" (click)="scrollMonthlyOffers(-1)" aria-label="Scroll to previous monthly offers">
+              <i class="fal fa-arrow-left" aria-hidden="true"></i>
+            </button>
+            <button type="button" (click)="scrollMonthlyOffers(1)" aria-label="Scroll to more monthly offers">
+              <i class="fal fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <nav class="rh-monthly-category-nav" aria-label="Filter monthly deals by category">
+        <button
+          type="button"
+          [class.active]="activeMonthlyDealCategory() === 'all'"
+          [attr.aria-pressed]="activeMonthlyDealCategory() === 'all'"
+          (click)="activeMonthlyDealCategory.set('all')">
+          All Deals
+        </button>
+        <button
+          *ngFor="let category of dealData.categories"
+          type="button"
+          [class.active]="activeMonthlyDealCategory() === category.id"
+          [attr.aria-pressed]="activeMonthlyDealCategory() === category.id"
+          (click)="activeMonthlyDealCategory.set(category.id)">
+          {{ category.name }}
+        </button>
+      </nav>
+
+      <div
+        class="rh-monthly-products"
+        id="rh-monthly-deal-list"
+        #monthlyProducts
+        tabindex="0"
+        aria-label="Monthly offers carousel"
+        *ngIf="monthlyDeals.length; else noMonthlyDeals">
+        <app-product-card *ngFor="let deal of monthlyDeals" [product]="deal" [sectionLabel]="'Monthly Deals'"></app-product-card>
+      </div>
+      <ng-template #noMonthlyDeals>
+        <p class="rh-monthly-empty">There are no deals in this category right now.</p>
+      </ng-template>
+    </div>
+
+    <div
+      *ngIf="monthlyFlyerOpen()"
+      class="rh-monthly-flyer-modal"
+      (click)="closeMonthlyFlyer()"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Rainbow monthly flyer"
+      (keydown.escape)="closeMonthlyFlyer()">
+      <div class="rh-monthly-flyer-modal-panel" (click)="$event.stopPropagation()">
+        <button
+          id="rh-monthly-flyer-close"
+          type="button"
+          class="rh-monthly-flyer-close"
+          (click)="closeMonthlyFlyer()"
+          aria-label="Close flyer">
+          <i class="fal fa-times" aria-hidden="true"></i>
+        </button>
+        <img src="assets/images/rainbowflyer.jpg" alt="Full-size Rainbow Cash & Carry monthly savings flyer" decoding="async">
+      </div>
+    </div>
+  </div>
+</section>

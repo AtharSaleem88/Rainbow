@@ -1,0 +1,90 @@
+<!-- BRANDS YOU TRUST SECTION - start -->
+<section class="rh-brands" id="rh-brands">
+  <div class="container maxw_1460">
+    <div class="rh-brands-heading-row">
+      <div class="gray_line" aria-hidden="true"></div>
+      <h2 class="rh-brands-title">Brands You Trust</h2>
+      <div class="gray_line" aria-hidden="true"></div>
+    </div>
+    <p class="rh-brands-subtitle text-center">Authentic products directly from Pakistan's leading manufacturers</p>
+  </div>
+  <div class="rh-brands-track-wrap">
+    <div class="rh-brands-fade rh-brands-fade-left"></div>
+    <div class="rh-brands-track" id="rh-brands-track">
+      <!-- SET A -->
+      <div class="rh-brands-set">
+        <button
+          *ngFor="let brand of brands"
+          type="button"
+          class="rh-brand-item"
+          (click)="openBrand(brand)"
+          [attr.aria-label]="'Explore ' + brand.name + ' products'">
+          <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
+        </button>
+      </div>
+      <!-- SET B (Duplicate for smooth infinite ticker) -->
+      <div class="rh-brands-set" aria-hidden="true">
+        <button
+          *ngFor="let brand of brands"
+          type="button"
+          class="rh-brand-item"
+          (click)="openBrand(brand)"
+          tabindex="-1"
+          [attr.aria-label]="'Explore ' + brand.name + ' products'">
+          <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
+        </button>
+      </div>
+    </div>
+    <div class="rh-brands-fade rh-brands-fade-right"></div>
+  </div>
+</section>
+<!-- BRANDS YOU TRUST SECTION - end -->
+
+<!-- Brand Store Modal -->
+<div *ngIf="selectedBrand() as brand" class="rh-brand-overlay" (click)="closeBrand()" role="presentation">
+  <section
+    class="rh-brand-store"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="brand.name + ' brand offers'"
+    (click)="$event.stopPropagation()">
+    <button id="rh-brand-close" type="button" class="rh-brand-close" aria-label="Close brand offers" (click)="closeBrand()">
+      <i class="fal fa-times" aria-hidden="true"></i>
+    </button>
+    <div class="rh-brand-hero">
+      <div class="rh-brand-hero-copy">
+        <span class="rh-brand-kicker">FEATURED BRAND</span>
+        <h2>{{ brand.name }}</h2>
+      </div>
+      <div class="rh-brand-hero-logo">
+        <img [src]="brand.logo" [alt]="brand.name + ' logo'">
+      </div>
+      <span class="rh-brand-hero-orb rh-brand-hero-orb-one" aria-hidden="true"></span>
+      <span class="rh-brand-hero-orb rh-brand-hero-orb-two" aria-hidden="true"></span>
+    </div>
+    <div class="rh-brand-store-content">
+      <div class="rh-brand-store-heading">
+        <div class="rh-monthly-rail-controls" *ngIf="selectedBrandProducts.length > 3">
+          <button type="button" aria-label="Scroll products left" (click)="scrollBrandProducts(-1)">
+            <i class="fal fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <button type="button" aria-label="Scroll products right" (click)="scrollBrandProducts(1)">
+            <i class="fal fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div #brandProductsRail class="rh-brand-products" *ngIf="selectedBrandProducts.length; else brandComingSoon">
+        <app-product-card *ngFor="let product of selectedBrandProducts" [product]="product" [showSectionLabel]="false"></app-product-card>
+      </div>
+      <ng-template #brandComingSoon>
+        <div class="rh-brand-coming-soon">
+          <span class="rh-brand-coming-icon"><i class="fal fa-box-open" aria-hidden="true"></i></span>
+          <div>
+            <strong>Brand offers are on the way</strong>
+            <p>We’re preparing a curated selection of {{ brand.name }} products. Check back soon for their latest offers.</p>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </section>
+</div>

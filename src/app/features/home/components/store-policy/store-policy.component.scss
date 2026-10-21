@@ -1,0 +1,237 @@
+:host { display: block; }
+/* ============================================== */
+.policy_section,
+.rh-policy-section {
+  padding: 16px 0 22px;
+}
+
+.supermarket_policy {
+  padding: 20px 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(46, 49, 146, 0.08);
+  box-shadow: 0 4px 20px rgba(45, 44, 146, 0.03);
+
+  > ul {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li {
+      flex: none;
+      max-width: 100%;
+      width: 100%;
+      padding: 0;
+    }
+  }
+}
+
+.supermarket_policy_item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f8fbff;
+  border: 1px solid rgba(46, 49, 146, 0.06);
+  border-radius: 14px;
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(37, 170, 225, 0.35);
+    box-shadow: 0 6px 18px rgba(45, 44, 146, 0.08);
+  }
+
+  .item_icon {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #eef5ff 0%, #e0efff 100%);
+    border: 1px solid rgba(37, 170, 225, 0.22);
+    border-radius: 11px;
+
+    img {
+      max-width: 26px;
+      max-height: 26px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  .item_content {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    h3 {
+      font-family: "Jost", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: var(--rh-primary);
+      margin: 0 0 2px 0;
+      line-height: 1.25;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    p {
+      font-size: 11.5px;
+      color: #6c728a;
+      margin: 0;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+/* Mobile Screens Trust Factor: Attractive Aligned View */
+@media (max-width: 991px) {
+  .policy_section,
+  .rh-policy-section {
+    padding: 12px 0 18px !important;
+  }
+
+  .supermarket_policy {
+    padding: 16px 14px !important;
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(46, 49, 146, 0.08) !important;
+    box-shadow: 0 4px 18px rgba(45, 44, 146, 0.04) !important;
+
+    > ul {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 10px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+
+      > li {
+        flex: none !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+
+        &:last-child:nth-child(odd) {
+          grid-column: 1 / -1 !important;
+        }
+      }
+    }
+  }
+
+  .supermarket_policy_item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 11px 14px !important;
+    background: #f8fbff !important;
+    border: 1px solid rgba(46, 49, 146, 0.06) !important;
+    border-radius: 12px !important;
+    height: 100% !important;
+
+    .item_icon {
+      flex: 0 0 42px !important;
+      width: 42px !important;
+      height: 42px !important;
+      margin: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: linear-gradient(135deg, #eef5ff 0%, #e0efff 100%) !important;
+      border: 1px solid rgba(37, 170, 225, 0.22) !important;
+      border-radius: 10px !important;
+
+      img {
+        max-width: 24px !important;
+        max-height: 24px !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+      }
+    }
+
+    .item_content {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+
+      h3 {
+        font-family: "Jost", sans-serif !important;
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.3px !important;
+        color: var(--rh-primary) !important;
+        margin: 0 0 2px 0 !important;
+        line-height: 1.25 !important;
+      }
+
+      p {
+        font-size: 11px !important;
+        color: #6c728a !important;
+        margin: 0 !important;
+        line-height: 1.2 !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .policy_section,
+  .rh-policy-section {
+    padding: 10px 0 16px !important;
+  }
+
+  .supermarket_policy {
+    padding: 12px 10px !important;
+    border-radius: 14px !important;
+
+    > ul {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+
+      > li {
+        width: 100% !important;
+      }
+    }
+  }
+
+  .supermarket_policy_item {
+    gap: 12px !important;
+    padding: 10px 12px !important;
+
+    .item_icon {
+      flex: 0 0 38px !important;
+      width: 38px !important;
+      height: 38px !important;
+
+      img {
+        max-width: 22px !important;
+        max-height: 22px !important;
+      }
+    }
+
+    .item_content {
+      h3 {
+        font-size: 12px !important;
+        letter-spacing: 0.2px !important;
+      }
+
+      p {
+        font-size: 10.5px !important;
+      }
+    }
+  }
+}

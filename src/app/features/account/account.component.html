@@ -400,191 +400,26 @@
   </div>
 </section>
 
-<!-- Add Address Modal -->
-<div *ngIf="isAddressModalOpen()" class="rh-schedule-backdrop" (click)="closeAddressModal()">
-  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="add-addr-modal-title" (click)="$event.stopPropagation()">
-    <header class="rh-schedule-header">
-      <div class="rh-schedule-header-icon">
-        <i class="fal fa-map-marker-alt"></i>
-      </div>
-      <div>
-        <h2 id="add-addr-modal-title">Add New Address</h2>
-      </div>
-      <button type="button" class="rh-schedule-close" (click)="closeAddressModal()"><i class="fal fa-times"></i></button>
-    </header>
+  <!-- Add Address Modal -->
+  <app-address-modal
+    *ngIf="isAddressModalOpen()"
+    (close)="closeAddressModal()"
+    (saveAddress)="submitAddress($event)">
+  </app-address-modal>
 
-    <div class="rh-schedule-body">
-      <div class="rainbow-form-field mb-3">
-        <label>Address Label</label>
-        <div class="rainbow-label-selector">
-          <button type="button" [class.is-selected]="addressForm.label === 'Home'" (click)="addressForm.label = 'Home'">Home</button>
-          <button type="button" [class.is-selected]="addressForm.label === 'Office'" (click)="addressForm.label = 'Office'">Office</button>
-          <button type="button" [class.is-selected]="addressForm.label === 'Other'" (click)="addressForm.label = 'Other'">Other</button>
-        </div>
-      </div>
+  <!-- Add Card Modal -->
+  <app-card-modal
+    *ngIf="isCardModalOpen()"
+    (close)="closeCardModal()"
+    (saveCard)="submitCard($event)">
+  </app-card-modal>
 
-      <div class="rainbow-form-row">
-        <div class="rainbow-form-field mb-3">
-          <label>Recipient Name</label>
-          <div class="rainbow-input-wrap">
-            <i class="fal fa-user"></i>
-            <input type="text" [(ngModel)]="addressForm.recipientName" placeholder="Full name">
-          </div>
-        </div>
-
-        <div class="rainbow-form-field mb-3">
-          <label>Phone Number</label>
-          <div class="rainbow-input-wrap">
-            <i class="fal fa-phone"></i>
-            <input type="tel" [(ngModel)]="addressForm.phone" placeholder="+92 300 1234567">
-          </div>
-        </div>
-      </div>
-
-      <div class="rainbow-form-field mb-3">
-        <label>City</label>
-        <div class="rainbow-input-wrap">
-          <i class="fal fa-city"></i>
-          <input type="text" [(ngModel)]="addressForm.city" readonly>
-        </div>
-      </div>
-
-      <div class="rainbow-form-field mb-3">
-        <label>Address Line</label>
-        <div class="rainbow-input-wrap">
-          <i class="fal fa-home"></i>
-          <input type="text" [(ngModel)]="addressForm.addressLine" placeholder="House/Flat No, Street, Sector">
-        </div>
-      </div>
-
-      <label class="rainbow-auth-check mt-2">
-        <input type="checkbox" [(ngModel)]="addressForm.isDefault">
-        <span>Set as default shipping address</span>
-      </label>
-    </div>
-
-    <footer class="rh-schedule-footer">
-      <button type="button" class="rh-schedule-btn-secondary" (click)="closeAddressModal()">Cancel</button>
-      <button type="button" class="rh-schedule-btn-primary" (click)="submitAddress()">Save Address</button>
-    </footer>
-  </div>
-</div>
-
-<!-- Add Card Modal -->
-<div *ngIf="isCardModalOpen()" class="rh-schedule-backdrop" (click)="closeCardModal()">
-  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="add-card-modal-title" (click)="$event.stopPropagation()">
-    <header class="rh-schedule-header">
-      <div class="rh-schedule-header-icon">
-        <i class="fal fa-credit-card"></i>
-      </div>
-      <div>
-        <h2 id="add-card-modal-title">Save Payment Card</h2>
-      </div>
-      <button type="button" class="rh-schedule-close" (click)="closeCardModal()"><i class="fal fa-times"></i></button>
-    </header>
-
-    <div class="rh-schedule-body">
-      <div class="rainbow-form-field mb-3">
-        <label>Cardholder Name</label>
-        <div class="rainbow-input-wrap">
-          <i class="fal fa-user"></i>
-          <input type="text" [(ngModel)]="cardForm.cardHolder" placeholder="Name on card">
-        </div>
-      </div>
-
-      <div class="rainbow-form-field mb-3">
-        <label>Card Number</label>
-        <div class="rainbow-input-wrap">
-          <i class="fal fa-credit-card"></i>
-          <input type="text" [(ngModel)]="cardForm.rawCardNumber" placeholder="1234 5678 9101 1121" maxlength="19">
-        </div>
-      </div>
-
-      <div class="rainbow-form-row mb-3">
-        <div class="rainbow-form-field">
-          <label>Expiry Date</label>
-          <div class="rainbow-input-wrap">
-            <i class="fal fa-calendar-alt"></i>
-            <input type="text" [(ngModel)]="cardForm.expiryDate" placeholder="MM/YY">
-          </div>
-        </div>
-
-        <div class="rainbow-form-field">
-          <label>Card Network</label>
-          <div class="rainbow-input-wrap rainbow-select-wrap">
-            <select [(ngModel)]="cardForm.brand">
-              <option value="visa">Visa</option>
-              <option value="mastercard">Mastercard</option>
-              <option value="unionpay">UnionPay</option>
-            </select>
-            <i class="fal fa-chevron-down select-arrow"></i>
-          </div>
-        </div>
-      </div>
-
-      <label class="rainbow-auth-check mt-2">
-        <input type="checkbox" [(ngModel)]="cardForm.isDefault">
-        <span>Set as default card</span>
-      </label>
-    </div>
-
-    <footer class="rh-schedule-footer">
-      <button type="button" class="rh-schedule-btn-secondary" (click)="closeCardModal()">Cancel</button>
-      <button type="button" class="rh-schedule-btn-primary" (click)="submitCard()">Save Card</button>
-    </footer>
-  </div>
-</div>
-<div *ngIf="isReturnModalOpen()" class="rh-schedule-backdrop" (click)="closeReturnModal()">
-  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="return-modal-title" (click)="$event.stopPropagation()">
-    <header class="rh-schedule-header">
-      <div class="rh-schedule-header-icon">
-        <i class="fal fa-undo-alt"></i>
-      </div>
-      <div>
-        <h2 id="return-modal-title">Request Item Return</h2>
-      </div>
-      <button type="button" class="rh-schedule-close" (click)="closeReturnModal()"><i class="fal fa-times"></i></button>
-    </header>
-
-    <div class="rh-schedule-body">
-      <div class="rainbow-form-field mb-3">
-        <label>Order ID</label>
-        <div class="rainbow-input-wrap">
-          <input type="text" [value]="returnForm.orderId" readonly>
-        </div>
-      </div>
-
-      <div class="rainbow-form-field mb-3">
-        <label>Item Name</label>
-        <div class="rainbow-input-wrap">
-          <input type="text" [value]="returnForm.itemTitle" readonly>
-        </div>
-      </div>
-
-      <div class="rainbow-form-field mb-3">
-        <label>Reason for Return</label>
-        <div class="rainbow-input-wrap rainbow-select-wrap">
-          <select [(ngModel)]="returnForm.reason">
-            <option value="Damaged or defective item">Damaged or defective item</option>
-            <option value="Expired or near expiry">Expired or near expiry</option>
-            <option value="Wrong item delivered">Wrong item delivered</option>
-            <option value="Quality not satisfactory">Quality not satisfactory</option>
-          </select>
-          <i class="fal fa-chevron-down select-arrow"></i>
-        </div>
-      </div>
-
-      <div class="rainbow-form-field">
-        <label>Refund Amount</label>
-        <div class="rainbow-input-wrap">
-          <strong>Rs. {{ returnForm.refundAmount | number:'1.0-0' }}</strong>
-        </div>
-      </div>
-    </div>
-
-    <footer class="rh-schedule-footer">
-      <button type="button" class="rh-schedule-btn-secondary" (click)="closeReturnModal()">Cancel</button>
-      <button type="button" class="rh-schedule-btn-primary" (click)="submitReturnRequest()">Submit Request</button>
-    </footer>
-  </div>
-</div>
+  <!-- Request Item Return Modal -->
+  <app-return-modal
+    *ngIf="isReturnModalOpen()"
+    [orderId]="returnForm.orderId"
+    [itemTitle]="returnForm.itemTitle"
+    [refundAmount]="returnForm.refundAmount"
+    (close)="closeReturnModal()"
+    (submitReturn)="submitReturnRequest($event)">
+  </app-return-modal>
