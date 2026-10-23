@@ -6,7 +6,13 @@
     <header class="rh-collection-heading-centered">
       <div class="rh-collection-title-row">
         <div class="gray_line" aria-hidden="true"></div>
-        <h2 [id]="sectionId">{{ title }}</h2>
+        <h2 [id]="sectionId">
+          <ng-container *ngIf="titleLead && titleAccent; else plainTitle">
+            <span class="rh-collection-title-dark">{{ titleLead }}</span>
+            <span class="rh-collection-title-blue">{{ titleAccent }}</span>
+          </ng-container>
+          <ng-template #plainTitle>{{ title }}</ng-template>
+        </h2>
         <div class="gray_line" aria-hidden="true"></div>
       </div>
       <div class="rh-collection-sub-row" *ngIf="subtitle || seeAllLink">

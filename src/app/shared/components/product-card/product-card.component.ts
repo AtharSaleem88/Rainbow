@@ -57,6 +57,11 @@ export class ProductCardComponent implements OnChanges {
     return oldPrice && oldPrice > this.displayPrice ? oldPrice : undefined;
   }
 
+  get displayDiscountPercent(): number | undefined {
+    const oldPrice = this.displayOldPrice;
+    return oldPrice ? Math.round(((oldPrice - this.displayPrice) / oldPrice) * 100) : undefined;
+  }
+
   get cartQuantity(): number {
     return this.cartService.cartItems().find(item => item.product.id === this.product.id && item.variant?.id === this.selectedVariant?.id)?.quantity ?? 0;
   }

@@ -58,7 +58,10 @@
 		<div class="rh-hdr-col rh-hdr-search flex-grow-1 mx-2">
 			<form action="#" (submit)="onSearch(); $event.preventDefault();" class="w-100">
 				<div class="rh-search-wrap w-100 position-relative">
-					<i class="fal fa-search"></i>
+					<svg class="rh-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="10.8" cy="10.8" r="7.2"></circle>
+						<path d="m16.2 16.2 4.3 4.3"></path>
+					</svg>
 					
 					<!-- Animated suggestion overlay -->
 					<div class="rh-animated-placeholder" 
@@ -183,7 +186,10 @@
 		<div class="rh-mobile-row-2 w-100">
 			<form action="#" (submit)="onSearch(); $event.preventDefault();" class="w-100">
 				<div class="rh-search-wrap w-100 position-relative">
-					<i class="fal fa-search"></i>
+					<svg class="rh-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="10.8" cy="10.8" r="7.2"></circle>
+						<path d="m16.2 16.2 4.3 4.3"></path>
+					</svg>
 					<div class="rh-animated-placeholder" 
 					     *ngIf="!searchQuery() && !isInputFocused()"
 					     aria-hidden="true">
@@ -265,8 +271,8 @@
 				        class="rh-loc-detect-btn" 
 				        [disabled]="isDetectingLocation()" 
 				        (click)="detectLocation($event)">
-					<span *ngIf="isDetectingLocation()" class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
-					<i *ngIf="!isDetectingLocation()" class="fal fa-location-arrow me-1"></i>
+					<span *ngIf="isDetectingLocation()" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+					<i *ngIf="!isDetectingLocation()" class="fal fa-location-arrow" aria-hidden="true"></i>
 					<span>{{ isDetectingLocation() ? 'Locating...' : 'Detect my location' }}</span>
 				</button>
 
@@ -280,7 +286,7 @@
 				<!-- Search Delivery Location Input -->
 				<div class="rh-loc-search-box">
 					<input type="search" 
-					       placeholder="search delivery location" 
+					       placeholder="Search delivery location" 
 					       [ngModel]="locationQuery()" 
 					       (ngModelChange)="locationQuery.set($event)"
 					       aria-label="search delivery location">
@@ -302,7 +308,10 @@
 					        [class.is-selected]="selectedLocation().id === location.id"
 					        (click)="selectLocation(location)">
 						<div class="rh-loc-item-icon">
-							<i class="fal fa-map-marker-alt"></i>
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+								<circle cx="12" cy="10" r="2.5"></circle>
+							</svg>
 						</div>
 						<div class="rh-loc-item-details">
 							<strong class="rh-loc-item-name">{{ location.name }}</strong>

@@ -32,7 +32,7 @@ export class HeroSliderComponent implements OnInit, OnDestroy {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     this.heroInterval = setInterval(() => {
       this.nextHeroSlide();
-    }, 5000);
+    }, 4500);
   }
 
   stopHeroSlider() {

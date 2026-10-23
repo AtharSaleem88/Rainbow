@@ -16,7 +16,7 @@ export class CartService {
         price: 180,
         rating: 4.8,
         reviewCount: 34,
-        image: 'assets/images/ultra_fresh/gwa.jpg',
+        image: 'assets/images/ultra_fresh/fresh-organic-guava.png',
         inStock: true
       },
       quantity: 2

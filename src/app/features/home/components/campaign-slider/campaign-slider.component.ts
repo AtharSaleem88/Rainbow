@@ -49,11 +49,13 @@ export class CampaignSliderComponent implements OnInit, OnDestroy {
   nextCampaignBanner(): void {
     if (!this.banners.length) return;
     this.activeCampaignIndex.update(idx => (idx + 1) % this.banners.length);
+    this.startCampaignSlider();
   }
 
   prevCampaignBanner(): void {
     if (!this.banners.length) return;
     this.activeCampaignIndex.update(idx => (idx - 1 + this.banners.length) % this.banners.length);
+    this.startCampaignSlider();
   }
 
   selectCampaignBanner(index: number): void {

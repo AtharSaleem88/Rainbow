@@ -13,6 +13,8 @@ import { ProductCardComponent } from '../../../../shared/components/product-card
 })
 export class ProductCollectionRailComponent {
   @Input({ required: true }) title!: string;
+  @Input() titleLead?: string;
+  @Input() titleAccent?: string;
   @Input() subtitle?: string;
   @Input({ required: true }) products: Product[] = [];
   @Input() sectionLabel: string = '';

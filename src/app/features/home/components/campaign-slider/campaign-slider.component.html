@@ -7,7 +7,7 @@
     </div>
     <div class="rh-campaign-heading-row">
       <div>
-        <span class="rh-campaign-eyebrow">A LITTLE MORE TO DISCOVER</span>
+        <span class="rh-campaign-eyebrow"><span class="rh-campaign-eyebrow-dark">A LITTLE MORE TO</span> <span class="rh-campaign-eyebrow-blue"> DISCOVER</span></span>
       </div>
       <div class="rh-campaign-controls">
         <button type="button" aria-label="Previous banner" (click)="prevCampaignBanner()">
@@ -27,6 +27,7 @@
           [queryParams]="{ category: banner.category }"
           [attr.aria-label]="banner.title">
           <img class="rh-campaign-image" [src]="banner.image" [alt]="banner.title" loading="lazy" decoding="async">
+          <span *ngIf="banner.badge" class="rh-campaign-badge">{{ banner.badge }}</span>
         </a>
       </div>
     </div>
@@ -38,6 +39,7 @@
         [attr.aria-label]="'Show ' + banner.title"
         [attr.aria-current]="activeCampaignIndex() === i ? 'true' : null"
         (click)="selectCampaignBanner(i)">
+        <span class="rh-campaign-progress" aria-hidden="true"></span>
       </button>
     </div>
   </div>

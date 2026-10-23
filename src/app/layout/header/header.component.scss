@@ -108,7 +108,7 @@
   background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  animation: rhScheduleFadeIn 150ms ease-out;
+  animation: rhScheduleFadeIn 220ms ease-out both;
 }
 
 /* Location Popover Card (Blinkit style anchored below Delivering To) */
@@ -122,17 +122,18 @@
   box-shadow: 0 20px 48px rgba(15, 23, 42, 0.22), 0 4px 16px rgba(15, 23, 42, 0.08);
   z-index: 1410;
   overflow: hidden;
-  animation: rhPopoverIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top left;
+  animation: rhPopoverIn 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes rhPopoverIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-12px) scale(0.985);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -148,9 +149,9 @@
 
 /* Top Area (Off-white / subtle cool bg) */
 .rh-loc-popover-top-bar {
-  background: #f7f9fd;
-  border-bottom: 1px solid #edf0f5;
-  padding: 16px 20px 18px 20px;
+  background: linear-gradient(145deg, #f8faff 0%, #f2f5fc 100%);
+  border-bottom: 1px solid #e7ebf4;
+  padding: 16px 20px 18px;
 }
 
 .rh-loc-popover-title-row {
@@ -162,9 +163,10 @@
 .rh-loc-popover-title {
   margin: 0;
   font-family: "Jost", sans-serif;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
-  color: #1e293b;
+  letter-spacing: -0.02em;
+  color: #172033;
 }
 
 .rh-loc-close-btn {
@@ -191,8 +193,8 @@
 .rh-loc-controls-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 14px;
+  gap: 10px;
+  margin-top: 16px;
 }
 
 .rh-loc-detect-btn {
@@ -200,13 +202,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 18px;
-  background: #0c831f;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 16px;
+  background: linear-gradient(135deg, #138a35 0%, #08752c 100%);
   color: #ffffff;
   font-size: 13.5px;
   font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
+  box-shadow: 0 5px 12px rgba(12, 131, 31, 0.16);
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -226,11 +231,11 @@
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  gap: 4px;
+  gap: 6px;
 }
 
 .rh-loc-or-line {
-  width: 8px;
+  width: 7px;
   height: 1px;
   background: #d1d5db;
 }
@@ -239,8 +244,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
   border-radius: 50%;
   border: 1px solid #d1d5db;
   background: #ffffff;
@@ -256,12 +262,13 @@
 
   input {
     width: 100%;
-    padding: 10px 14px;
+    height: 44px;
+    padding: 0 15px;
     font-size: 13.5px;
     color: #1e293b;
     background: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
+    border: 1px solid #d8deea;
+    border-radius: 10px;
     outline: none;
     transition: all 0.15s ease;
 
@@ -280,13 +287,13 @@
 /* Body Area */
 .rh-loc-popover-body {
   background: #ffffff;
-  padding: 16px 20px 20px;
-  max-height: 350px;
+  padding: 14px 20px 18px;
+  max-height: min(350px, calc(100vh - 190px));
   overflow-y: auto;
 }
 
 .rh-loc-list-heading {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   padding: 0 2px;
 
   span {
@@ -300,30 +307,56 @@
 .rh-loc-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .rh-loc-item {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
+  min-height: 64px;
+  gap: 11px;
+  padding: 9px 13px;
   background: #ffffff;
-  border: 1px solid #edf0f5;
-  border-radius: 10px;
+  border: 1px solid #e8ecf4;
+  border-radius: 12px;
   text-align: left;
   cursor: pointer;
-  transition: all 0.15s ease;
+  animation: rhLocationItemIn 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  @for $i from 1 through 8 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{70ms + ($i - 1) * 45ms};
+    }
+  }
 
   &:hover {
-    background: #f8faff;
-    border-color: rgba(45, 44, 146, 0.2);
+    background: #f7f8ff;
+    border-color: rgba(45, 44, 146, 0.28);
+    box-shadow: 0 8px 20px rgba(33, 48, 92, 0.09);
+    transform: translateY(-2px);
   }
 
   &.is-selected {
     background: #f0f7ff;
     border-color: rgba(45, 44, 146, 0.3);
+    box-shadow: inset 3px 0 0 var(--rh-primary);
+  }
+
+  &:active {
+    transform: scale(0.992);
+  }
+}
+
+@keyframes rhLocationItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -333,10 +366,19 @@
   height: 36px;
   flex: 0 0 auto;
   place-items: center;
-  border-radius: 8px;
-  background: rgba(45, 44, 146, 0.08);
+  border-radius: 9px;
+  background: linear-gradient(145deg, #f0f2ff, #e8ebfb);
   color: var(--rh-primary);
-  font-size: 15px;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
 }
 
 .rh-loc-item-details {
@@ -387,13 +429,28 @@
     color: #475569;
     font-size: 11.5px;
     font-weight: 600;
-    transition: all 0.15s ease;
+    transition: color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
   }
 
   &:hover .action-deliver {
     background: var(--rh-primary);
     border-color: var(--rh-primary);
     color: #ffffff;
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-loc-popover-backdrop,
+  .rh-location-popover-card,
+  .rh-loc-item {
+    animation: none !important;
+  }
+
+  .rh-location-popover-card,
+  .rh-loc-item,
+  .rh-loc-item-action .action-deliver {
+    transition: none !important;
   }
 }
 
@@ -437,7 +494,7 @@
 
 @media (max-width: 575px) {
   .rh-loc-popover-top-bar {
-    padding: 12px 14px 14px;
+    padding: 14px 16px 16px;
   }
 
   .rh-loc-controls-row {
@@ -467,6 +524,27 @@
   }
 
   .rh-loc-popover-body {
-    padding: 12px 14px 16px;
+    padding: 12px 16px 16px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .rh-loc-controls-row {
+    gap: 8px;
+  }
+
+  .rh-loc-detect-btn {
+    padding-inline: 12px;
+    font-size: 12px;
+  }
+
+  .rh-loc-or-divider {
+    gap: 3px;
+  }
+
+  .rh-loc-or-circle {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
   }
 }

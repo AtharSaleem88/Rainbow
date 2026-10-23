@@ -92,6 +92,7 @@
 }
 
 .rh-shared-product-image {
+  position: relative;
   display: flex;
   height: 180px;
   flex: 0 0 auto;
@@ -101,6 +102,24 @@
   padding: 46px 14px 12px;
   background: linear-gradient(180deg, #f7f9ff 0%, #fff 100%);
   touch-action: manipulation;
+}
+
+.rh-shared-discount-badge {
+  position: absolute;
+  top: 48px;
+  right: 12px;
+  z-index: 1;
+  padding: 5px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 7px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #e5485d, #c92e47);
+  box-shadow: 0 3px 9px rgba(145, 30, 52, 0.2);
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .rh-no-section-label .rh-shared-product-image {
@@ -182,9 +201,11 @@
 
 .rh-shared-price-row {
   display: flex;
-  align-items: baseline;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 8px;
   margin: 4px 0 8px;
+  white-space: nowrap;
 }
 
 .rh-shared-price-row strong {
@@ -405,10 +426,11 @@
   }
 
   .rh-shared-price-row {
-    flex-wrap: wrap;
-    align-items: baseline;
+    flex-wrap: nowrap;
+    align-items: center;
     gap: 4px 6px;
     margin: 2px 0 6px;
+    white-space: nowrap;
 
     strong {
       font-size: 0.92rem;

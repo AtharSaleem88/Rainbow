@@ -24,7 +24,7 @@
   opacity: 0;
   visibility: hidden;
   transform: translateX(22px);
-  transition: opacity 600ms ease, transform 600ms ease, visibility 600ms;
+  transition: opacity 500ms ease-in-out, transform 500ms ease-in-out, visibility 500ms ease-in-out;
 }
 
 .rh-hero-slide.rh-hero-active {
@@ -80,10 +80,10 @@
 }
 
 .rh-hero-health {
-  background-color: #f7f6f2;
+  background-color: #fcebed;
 
   .rh-hero-banner-shade {
-    background: linear-gradient(90deg, rgba(255, 253, 249, .98) 0%, rgba(255, 253, 249, .92) 42%, rgba(255, 253, 249, .42) 75%, rgba(255, 253, 249, 0) 100%);
+    background: linear-gradient(90deg, rgba(255, 244, 245, .98) 0%, rgba(255, 244, 245, .92) 42%, rgba(255, 244, 245, .42) 75%, rgba(255, 244, 245, 0) 100%);
   }
 
   .rh-hero-eyebrow {
@@ -340,6 +340,9 @@
   width: 23px;
   background: var(--rh-secondary);
 }
+
+.rh-hero-frame.rh-hero-electronics .rh-hero-dot-active { background: #65c7ff; }
+.rh-hero-frame.rh-hero-health .rh-hero-dot-active { background: #f29aaa; }
 
 @keyframes rh-hero-image-in {
   from { opacity: 0.65; transform: scale(0.96); }

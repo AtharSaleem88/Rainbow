@@ -9,7 +9,10 @@
   margin-bottom: 8px;
 
   .rh-brands-title {
+    display: flex;
     flex: 0 0 auto;
+    align-items: baseline;
+    gap: 0.28em;
     margin: 0;
     color: var(--rh-primary);
     font-family: "Jost", sans-serif;
@@ -21,6 +24,11 @@
     flex: 1 1 auto;
   }
 }
+
+.rh-brands-title-dark,
+.rh-brands-title-blue { font-weight: 800; }
+.rh-brands-title-dark { color: var(--rh-primary); }
+.rh-brands-title-blue { color: var(--rh-primary); }
 
 .rh-brands-subtitle {
   margin: 0 0 16px;

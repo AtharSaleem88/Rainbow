@@ -194,13 +194,14 @@
   cursor: zoom-in;
   transform: perspective(1000px) rotate(-3.5deg) rotateY(5deg) rotateX(2deg) scale(0.98);
   transform-origin: center center;
-  transition: box-shadow 350ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+  transition: box-shadow 420ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .rh-monthly-flyer-preview:hover,
 .rh-monthly-flyer-preview:focus-visible {
-  box-shadow: 0 24px 52px rgba(45, 44, 146, 0.26);
-  transform: perspective(1000px) rotate(0deg) rotateY(0deg) rotateX(0deg) scale(1.03) translateY(-4px);
+  box-shadow: 0 30px 58px rgba(35, 39, 103, 0.3), 0 8px 18px rgba(45, 44, 146, 0.12);
+  transform: perspective(1000px) rotate(-1deg) rotateY(-5deg) rotateX(3deg) scale(1.035) translateY(-6px);
 }
 
 .rh-monthly-flyer-preview:focus-visible {
@@ -324,6 +325,9 @@
   scroll-margin-top: 112px;
 }
 
+.rh-monthly-deal-title-dark { color: var(--rh-primary); }
+.rh-monthly-deal-title-blue { color: var(--rh-primary); }
+
 .rh-monthly-subheading > span {
   color: var(--rh-text-dark);
   font-size: 0.88rem;
@@ -370,6 +374,30 @@
   gap: 14px;
 }
 
+.rh-monthly-offer-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #5f6677;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rh-monthly-offer-count-number {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid #e6e8ed;
+  border-radius: 50%;
+  color: #343a46;
+  background: #f3f4f6;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .rh-monthly-rail-controls {
   display: flex;
   gap: 7px;
@@ -414,6 +442,36 @@
   flex: 0 0 clamp(220px, 23vw, 270px);
   height: 100%;
   scroll-snap-align: start;
+}
+
+.rh-monthly-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  margin: 2px auto 0;
+}
+
+.rh-monthly-pagination button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #d3d7e2;
+  cursor: pointer;
+  transition: width 200ms ease, background-color 200ms ease, opacity 200ms ease;
+}
+
+.rh-monthly-pagination button.active {
+  width: 20px;
+  background: rgba(45, 49, 146, 0.72);
+}
+
+.rh-monthly-pagination button:focus-visible {
+  outline: 2px solid var(--rh-primary);
+  outline-offset: 3px;
 }
 
 .rh-monthly-product {
@@ -618,7 +676,10 @@
   .rh-monthly-flyer-preview,
   .rh-monthly-flyer-preview-label,
   .rh-monthly-flyer-modal,
-  .rh-monthly-flyer-modal-panel {
+  .rh-monthly-flyer-modal-panel,
+  .rh-monthly-rainbow,
+  .rh-monthly-flyer-highlights span,
+  .rh-monthly-flyer-highlights i {
     animation: none;
     transition-duration: 0.01ms;
   }
@@ -630,7 +691,7 @@
 }
 
 .rh-monthly-heading h2 {
-  color: #17213b;
+  color: var(--rh-primary);
   font-size: clamp(2rem, 3vw, 2.65rem);
   letter-spacing: -.035em;
 }
@@ -676,8 +737,18 @@
   opacity: 0.36;
   image-rendering: -webkit-optimize-contrast;
   filter: drop-shadow(0 8px 24px rgba(45, 44, 146, 0.14));
+  animation: rh-monthly-swirl-float 13s ease-in-out infinite;
   pointer-events: none;
   user-select: none;
+}
+
+@keyframes rh-monthly-swirl-float {
+  0%, 100% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(calc(-50% - 7px)) scale(1.018);
+  }
 }
 
 .rh-monthly-flyer-intro {
@@ -706,16 +777,23 @@
 }
 
 .rh-monthly-flyer-intro h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.22em;
   max-width: 660px;
   margin: 10px 0 14px;
-  color: #161b36;
+  color: var(--rh-primary);
   font-family: "Jost", sans-serif;
-  font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+  font-size: clamp(1.9rem, 4.2vw, 3.7rem);
   font-weight: 800;
   letter-spacing: -.045em;
   line-height: .98;
-  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+  text-shadow: none;
 }
+
+.rh-monthly-title-dark { color: var(--rh-primary); }
+.rh-monthly-title-blue { color: var(--rh-primary); }
 
 .rh-monthly-flyer-intro p {
   max-width: 530px;
@@ -734,19 +812,29 @@
 }
 
 .rh-monthly-flyer-highlights span {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  border: 1px solid rgba(135, 206, 235, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 999px;
   color: #1e2640;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.68);
   font-size: .82rem;
   font-weight: 650;
-  box-shadow: 0 2px 8px rgba(45, 44, 146, 0.06);
+  box-shadow: 0 4px 12px rgba(35, 49, 89, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+}
+
+.rh-monthly-flyer-highlights span:hover {
+  z-index: 1;
+  border-color: rgba(45, 49, 146, 0.24);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 8px 18px rgba(35, 49, 89, 0.13), inset 0 1px 0 #ffffff;
+  transform: scale(1.04);
 }
 
 .rh-monthly-flyer-highlights i {
@@ -758,6 +846,13 @@
   color: #fff;
   background: var(--rh-primary);
   font-size: 0.76rem;
+  transition: color 200ms ease, background-color 200ms ease, transform 200ms ease;
+}
+
+.rh-monthly-flyer-highlights span:hover i {
+  color: var(--rh-primary);
+  background: #ffffff;
+  transform: scale(1.06);
 }
 
 .rh-monthly-flyer-actions {

@@ -10,7 +10,7 @@
       <!-- Single Embossed Rainbow Cloud Watermark -->
       <img src="assets/images/logo/rainbow-cloud-icon.png" alt="" class="rh-monthly-rainbow rh-monthly-embossed-cloud" aria-hidden="true">
       <div class="rh-monthly-flyer-intro">
-        <h3>Monthly Ad</h3>
+        <h3><span class="rh-monthly-title-dark">MONTHLY</span> <span class="rh-monthly-title-blue">SAVINGS</span></h3>
         <div class="rh-monthly-flyer-highlights" aria-label="Monthly ad highlights">
           <span><i class="fal fa-leaf" aria-hidden="true"></i> Fresh picks</span>
           <span><i class="fal fa-shopping-basket" aria-hidden="true"></i> Everyday favourites</span>
@@ -35,9 +35,12 @@
 
     <div class="rh-monthly-deal-content">
       <div class="rh-monthly-subheading">
-        <div><h3 id="rh-monthly-deal-list-title">Monthly Special Deals</h3></div>
+        <div><h3 id="rh-monthly-deal-list-title"><span class="rh-monthly-deal-title-dark">MONTHLY SPECIAL </span> <span class="rh-monthly-deal-title-blue">DEALS</span></h3></div>
         <div class="rh-monthly-rail-meta">
-          <span>{{ monthlyDeals.length }} offers</span>
+          <span class="rh-monthly-offer-count" [attr.aria-label]="monthlyDeals.length + ' offers'">
+            <span class="rh-monthly-offer-count-number">{{ monthlyDeals.length }}</span>
+            <span>Offers</span>
+          </span>
           <div class="rh-monthly-rail-controls" *ngIf="monthlyDeals.length > 3" aria-label="Browse monthly offers">
             <button type="button" (click)="scrollMonthlyOffers(-1)" aria-label="Scroll to previous monthly offers">
               <i class="fal fa-arrow-left" aria-hidden="true"></i>
@@ -73,8 +76,19 @@
         #monthlyProducts
         tabindex="0"
         aria-label="Monthly offers carousel"
+        (scroll)="onMonthlyOffersScroll()"
         *ngIf="monthlyDeals.length; else noMonthlyDeals">
         <app-product-card *ngFor="let deal of monthlyDeals" [product]="deal" [sectionLabel]="'Monthly Deals'"></app-product-card>
+      </div>
+      <div *ngIf="monthlyDeals.length > 3" class="rh-monthly-pagination" role="group" aria-label="Monthly offers pages">
+        <button
+          *ngFor="let page of [0, 1, 2]"
+          type="button"
+          [class.active]="monthlyOfferPage() === page"
+          [attr.aria-current]="monthlyOfferPage() === page ? 'page' : null"
+          [attr.aria-label]="'Go to offers page ' + (page + 1)"
+          (click)="scrollToMonthlyPage(page)">
+        </button>
       </div>
       <ng-template #noMonthlyDeals>
         <p class="rh-monthly-empty">There are no deals in this category right now.</p>

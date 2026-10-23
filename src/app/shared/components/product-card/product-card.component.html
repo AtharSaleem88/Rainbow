@@ -5,6 +5,7 @@
   </div>
 
   <a [routerLink]="['/products', product.id]" class="rh-shared-product-image" [attr.aria-label]="'View ' + product.title">
+    <span *ngIf="sectionLabel === 'Monthly Deals' && displayDiscountPercent as discount" class="rh-shared-discount-badge">{{ discount }}% OFF</span>
     <img [src]="product.image" [alt]="product.title" loading="lazy" decoding="async">
   </a>
 

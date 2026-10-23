@@ -25,6 +25,7 @@ export class MonthlyDealsComponent {
   @Input({ required: true }) products: Product[] = [];
 
   activeMonthlyDealCategory = signal<string>('all');
+  monthlyOfferPage = signal(0);
   monthlyFlyerOpen = signal(false);
   @ViewChild('monthlyProducts') monthlyProducts?: ElementRef<HTMLElement>;
   private monthlyFlyerTrigger: HTMLElement | null = null;
@@ -40,9 +41,27 @@ export class MonthlyDealsComponent {
   scrollMonthlyOffers(direction: number): void {
     if (!this.monthlyProducts?.nativeElement) return;
     const container = this.monthlyProducts.nativeElement;
-    const scrollAmount = Math.max(container.clientWidth * 0.75, 260);
+    const page = Math.max(0, Math.min(2, this.monthlyOfferPage() + Math.sign(direction)));
+    this.monthlyOfferPage.set(page);
     const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-    container.scrollBy({ left: direction * scrollAmount, behavior });
+    container.scrollTo({ left: (container.scrollWidth - container.clientWidth) * (page / 2), behavior });
+  }
+
+  scrollToMonthlyPage(page: number): void {
+    if (!this.monthlyProducts?.nativeElement) return;
+    const container = this.monthlyProducts.nativeElement;
+    const targetPage = Math.max(0, Math.min(2, page));
+    this.monthlyOfferPage.set(targetPage);
+    const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    container.scrollTo({ left: (container.scrollWidth - container.clientWidth) * (targetPage / 2), behavior });
+  }
+
+  onMonthlyOffersScroll(): void {
+    const container = this.monthlyProducts?.nativeElement;
+    if (!container) return;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    const page = maxScroll > 0 ? Math.round((container.scrollLeft / maxScroll) * 2) : 0;
+    this.monthlyOfferPage.set(Math.max(0, Math.min(2, page)));
   }
 
   openMonthlyFlyer(event?: MouseEvent): void {

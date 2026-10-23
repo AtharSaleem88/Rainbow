@@ -66,19 +66,6 @@ export class HomeComponent implements OnInit {
 
   readonly heroSlides: HeroSlide[] = [
     {
-      id: 'health-beauty',
-      theme: 'rh-hero-health',
-      eyebrow: 'YOUR EVERYDAY RITUAL',
-      hasSparkle: true,
-      title: 'Health & Beauty',
-      description: 'Little care, lasting confidence.',
-      ctaText: 'Explore the collection',
-      image: 'assets/images/rainbow-health-beauty-banner.png',
-      imageAlt: 'Premium skincare and personal care products',
-      link: '/shop',
-      queryParams: { category: 'personal-care' }
-    },
-    {
       id: 'electronics',
       theme: 'rh-hero-electronics',
       eyebrow: 'SMARTER EVERYDAY',
@@ -90,6 +77,19 @@ export class HomeComponent implements OnInit {
       imageAlt: 'Modern everyday electronics including headphones, a phone, and a smartwatch',
       link: '/shop',
       queryParams: { category: 'home-office' }
+    },
+    {
+      id: 'health-beauty',
+      theme: 'rh-hero-health',
+      eyebrow: 'YOUR EVERYDAY RITUAL',
+      hasSparkle: true,
+      title: 'Health & Beauty',
+      description: 'Little care, lasting confidence.',
+      ctaText: 'Explore the collection',
+      image: 'assets/images/rainbow-health-beauty-banner.png',
+      imageAlt: 'Premium skincare and personal care products',
+      link: '/shop',
+      queryParams: { category: 'personal-care' }
     }
   ];
 
@@ -101,22 +101,22 @@ export class HomeComponent implements OnInit {
   ];
 
   readonly brands: BrandItem[] = [
-    { name: 'Nestlé', logo: 'https://i.pinimg.com/736x/57/4a/49/574a49d329cf76971d33493ae4090d2e.jpg' },
-    { name: 'Pepsi', logo: 'https://i.pinimg.com/736x/45/bc/50/45bc50a0149c34ca894c028550fbef1d.jpg' },
-    { name: 'Coca-Cola', logo: 'https://i.pinimg.com/736x/b2/96/84/b29684a0f29820b780120f4ea2ce8051.jpg' },
-    { name: 'Nivea', logo: 'https://i.pinimg.com/736x/55/a0/92/55a0924f479e4ded191cf8cf667f2446.jpg' },
-    { name: 'Dove', logo: 'https://i.pinimg.com/736x/da/53/b0/da53b08b82674cd5130df7f4c1c93c15.jpg' },
-    { name: 'L\'Oréal', logo: 'https://i.pinimg.com/736x/c8/9b/28/c89b283f9f6f516ec6af70277279e930.jpg' },
-    { name: 'Pampers', logo: 'https://i.pinimg.com/736x/31/27/1d/31271d9c4d399a6ace62914479e0c84f.jpg' },
-    { name: 'Unilever', logo: 'https://i.pinimg.com/736x/4e/8a/9f/4e8a9f7132bcb166350f0b89f5d1ddd2.jpg' },
-    { name: 'Garnier', logo: 'https://i.pinimg.com/236x/3d/d8/7b/3dd87bd02b590b84b2dea0d71b8e5355.jpg' },
-    { name: 'Lipton', logo: 'https://i.pinimg.com/736x/8f/b1/c9/8fb1c97de285b51823710662fe8529ee.jpg' },
-    { name: 'Knorr', logo: 'https://i.pinimg.com/736x/71/84/c2/7184c2344ae3af62e4e216153f3bd38c.jpg' }
+    { name: 'Nestlé', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Nestle_textlogo_red.svg/330px-Nestle_textlogo_red.svg.png' },
+    { name: 'Pepsi', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Pepsi_2023.svg/250px-Pepsi_2023.svg.png' },
+    { name: 'Coca-Cola', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/330px-Coca-Cola_logo.svg.png' },
+    { name: 'Nivea', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/NIVEA_logo_2021.svg/500px-NIVEA_logo_2021.svg.png' },
+    { name: 'Dove', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Dove_dove.svg/330px-Dove_dove.svg.png' },
+    { name: 'L’Oréal', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/L%27Or%C3%A9al_logo.svg/330px-L%27Or%C3%A9al_logo.svg.png' },
+    { name: 'Pampers', logo: 'assets/images/pampers-logo.png' },
+    { name: 'Unilever', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Unilever_text_logo.svg/330px-Unilever_text_logo.svg.png' },
+    { name: 'Garnier', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Garnier_wordmark.svg/330px-Garnier_wordmark.svg.png' },
+    { name: 'Lipton', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Lipton_logo_%282014-2026%29.svg/250px-Lipton_logo_%282014-2026%29.svg.png' },
+    { name: 'Knorr', logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Knorr_Logo_2020.svg/330px-Knorr_Logo_2020.svg.png' }
   ];
 
   readonly campaignBanners: CampaignBanner[] = [
-    { title: 'Back to School — Back to delicious', image: 'assets/images/campaign-back-to-school-v2.png', category: 'grocery' },
-    { title: 'Shan Foods — Bring home the taste of Pakistan', image: 'assets/images/campaign-shan-grocery-v2.png', category: 'grocery' }
+    { title: 'Back to School — Back to delicious', image: 'assets/images/campaign-back-to-school-v2.png', category: 'grocery', badge: 'FEATURED' },
+    { title: 'Shan Foods — Bring home the taste of Pakistan', image: 'assets/images/campaign-shan-grocery-v2.png', category: 'grocery', badge: 'FEATURED' }
   ];
 
   ngOnInit(): void {
