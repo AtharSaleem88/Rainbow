@@ -2,6 +2,7 @@
   <div class="container maxw_1460">
     <div
       class="rh-hero-frame"
+      [ngClass]="slides[currentHeroIndex()]?.theme"
       (mouseenter)="stopHeroSlider()"
       (mouseleave)="startHeroSlider()"
       (focusin)="stopHeroSlider()"

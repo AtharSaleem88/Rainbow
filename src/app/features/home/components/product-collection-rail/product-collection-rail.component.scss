@@ -21,7 +21,10 @@
   margin-bottom: 8px;
 
   h2 {
+    display: flex;
     flex: 0 0 auto;
+    align-items: baseline;
+    gap: 0.28em;
     margin: 0;
     color: var(--rh-primary);
     font-family: "Jost", sans-serif;
@@ -35,6 +38,9 @@
     flex: 1 1 auto;
   }
 }
+
+.rh-collection-title-dark { color: var(--rh-primary); font-weight: 800; }
+.rh-collection-title-blue { color: var(--rh-primary); font-weight: 800; }
 
 .rh-collection-sub-row {
   display: flex;

@@ -126,7 +126,7 @@ export class AuthService {
       status: 'Delivered',
       paymentMethod: 'Rainbow Wallet',
       items: [
-        { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/gwa.jpg', quantity: 2, price: 180 },
+        { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 2, price: 180 },
         { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.jpg', quantity: 1, price: 150 },
         { title: 'Olpers Milk 1L', image: 'assets/images/grocery/olpers.jpg', quantity: 3, price: 440 }
       ]

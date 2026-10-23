@@ -300,10 +300,17 @@ app-root {
     box-shadow: 0 0 0 3px rgba(61,168,224,0.12);
   }
 
-  i {
-    color: rgba(45,44,146,0.38);
-    font-size: 14px;
+  .rh-search-icon {
+    width: 18px;
+    height: 18px;
     margin-right: 8px;
+    flex: 0 0 auto;
+    color: rgba(45,44,146,0.45);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   input {
@@ -467,11 +474,14 @@ app-root {
   }
 
   img {
-    max-width: 160px;
-    max-height: 100px;
-    width: auto;
-    height: auto;
+    display: block;
+    width: 160px;
+    height: 90px;
+    max-width: calc(100% - 24px);
+    max-height: 90px;
     object-fit: contain;
+    object-position: center;
+    background: transparent;
     transition: transform 0.35s ease;
     margin-top: 8px;
   }
@@ -621,19 +631,13 @@ app-root {
    ============================================== */
 .rh-footer {
   position: relative;
-  background: var(--rh-primary) !important;
+  isolation: isolate;
+  background: linear-gradient(125deg, #252873 0%, var(--rh-primary) 48%, #242a78 100%) !important;
   color: #fff !important;
   font-family: "Open Sans", sans-serif;
   overflow: hidden;
   contain: paint;
   transform: translateZ(0);
-}
-.rh-footer::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background: linear-gradient(90deg, #35a9df, #8dd8f2 48%, #35a9df);
 }
 .rh-footer-watermark {
   position: absolute;
@@ -670,8 +674,9 @@ app-root {
   gap: 28px;
 }
 .rh-footer-col {
-  opacity: 1 !important;
-  transform: none !important;
+  min-width: 0;
+  opacity: 1;
+  transform: none;
 }
 .rh-footer-col-title {
   font-size: 14px;

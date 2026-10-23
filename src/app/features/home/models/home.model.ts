@@ -31,4 +31,5 @@ export interface CampaignBanner {
   title: string;
   image: string;
   category: string;
+  badge?: string;
 }

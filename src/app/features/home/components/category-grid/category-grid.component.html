@@ -2,7 +2,7 @@
   <div class="container maxw_1460">
     <div class="rh-category-heading">
       <div class="gray_line" aria-hidden="true"></div>
-      <h2 id="home-category-title">Shop by Category</h2>
+      <h2 id="home-category-title"><span class="rh-category-heading-blue">Shop</span> <span class="rh-category-heading-by">By</span> <span class="rh-category-heading-blue">Category</span></h2>
       <div class="gray_line" aria-hidden="true"></div>
     </div>
     <div
@@ -10,18 +10,18 @@
       id="home-category-grid"
       #categoryGrid
       role="group"
-      aria-label="Shop by category"
+      aria-label="Shop By Category"
       [attr.tabindex]="categoryHasOverflow() ? 0 : null"
       (scroll)="onCategoryScroll($event)"
       (keydown)="onCategoryGridKeydown($event)">
       <a
         *ngFor="let cat of categories; trackBy: trackCategory"
-        class="rh-category-item bg-white rounded-lg shadow-sm py-2 p-md-2 h-100"
+        class="rh-category-item py-2 p-md-2 h-100"
         [routerLink]="['/shop']"
         [queryParams]="{ category: cat.slug }"
         [attr.title]="cat.name"
         [attr.aria-label]="'Shop ' + cat.name">
-        <span class="rh-category-image rounded-circle bg-white border">
+        <span class="rh-category-image">
           <img *ngIf="cat.image" [src]="cat.image" [alt]="cat.name" loading="lazy" decoding="async">
           <i *ngIf="!cat.image && cat.icon" class="fas" [ngClass]="cat.icon" aria-hidden="true"></i>
         </span>

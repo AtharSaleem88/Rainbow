@@ -29,7 +29,9 @@ export class ProductService {
     { id: 20, name: 'Frozen Food', slug: 'frozen-food', itemCount: 11 },
   ].map(category => ({
     ...category,
-    image: `assets/images/slider/supermarket/${category.name}.jpg`
+    image: category.slug === 'organic-veggies'
+      ? 'assets/images/slider/supermarket/Organic & Healthy Living-cutout.png'
+      : `assets/images/slider/supermarket/${category.name}.jpg`
   }))
 );
 
@@ -47,8 +49,8 @@ export class ProductService {
       discountPercent: 18,
       rating: 4.8,
       reviewCount: 34,
-      image: 'assets/images/ultra_fresh/gwa.jpg',
-      galleryImages: ['assets/images/ultra_fresh/gwa.jpg', 'assets/images/ultra_fresh/carrot.webp'],
+      image: 'assets/images/ultra_fresh/fresh-organic-guava.png',
+      galleryImages: ['assets/images/ultra_fresh/fresh-organic-guava.png'],
       description: 'Hand-harvested fresh guavas packed with vitamin C and natural sweetness. Grown without harmful synthetic pesticides.',
       additionalInfo: { 'Weight': '1 kg', 'Origin': 'Local Farms', 'Storage': 'Keep in cool dry place' },
       badge: 'SALE',
