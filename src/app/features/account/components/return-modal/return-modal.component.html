@@ -1,54 +1,82 @@
 <div class="rh-schedule-backdrop" (click)="onClose()">
-  <div class="rh-schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="return-modal-title" (click)="$event.stopPropagation()">
-    <header class="rh-schedule-header">
+  <div class="rh-schedule-dialog rainbow-return-dialog" role="dialog" aria-modal="true" aria-labelledby="return-modal-title" (click)="$event.stopPropagation()">
+    <header class="rh-schedule-header rainbow-return-header">
       <div class="rh-schedule-header-icon">
-        <i class="fal fa-undo-alt"></i>
+        <i class="fal fa-exchange-alt" aria-hidden="true"></i>
       </div>
-      <div>
-        <h2 id="return-modal-title">Request Item Return</h2>
+      <div class="rainbow-return-heading">
+        <h2 id="return-modal-title">Request Refund</h2>
+        <p>Order #{{ orderId }}</p>
       </div>
-      <button type="button" class="rh-schedule-close" (click)="onClose()"><i class="fal fa-times"></i></button>
+      <button type="button" class="rh-schedule-close" aria-label="Close return request" (click)="onClose()"><i class="fal fa-times" aria-hidden="true"></i></button>
     </header>
 
-    <div class="rh-schedule-body">
-      <div class="rainbow-form-field mb-3">
-        <label>Order ID</label>
-        <div class="rainbow-input-wrap">
-          <input type="text" [value]="orderId" readonly>
+    <div class="rh-schedule-body rainbow-return-body">
+      <section class="rainbow-return-selection" aria-labelledby="return-items-heading">
+        <div class="rainbow-return-selection-heading">
+          <h3 id="return-items-heading">Select Items to Return</h3>
+          <button type="button" class="rainbow-return-select-all" [disabled]="availableItemIndices.length === 0" (click)="toggleSelectAll()">
+            {{ allAvailableItemsSelected ? 'Clear Selection' : 'Select All' }}
+          </button>
         </div>
-      </div>
+        <p class="rainbow-return-help">Choose available items and specify a reason for each.</p>
+        <div class="rainbow-return-item-list" role="group" aria-label="Items in this order">
+          <div *ngFor="let item of items; let i = index" class="rainbow-return-item-entry" [class.has-selection]="selectedItemIndices.includes(i)">
+            <label class="rainbow-return-item-option" [class.is-selected]="selectedItemIndices.includes(i)" [class.is-unavailable]="!canSelectItem(item)">
+              <input type="checkbox" [checked]="selectedItemIndices.includes(i)" [disabled]="!canSelectItem(item)" (change)="toggleItem(i)">
+              <img [src]="item.image" [alt]="item.title">
+              <span class="rainbow-return-item-copy">
+                <strong>{{ item.title }}</strong>
+                <small>{{ item.quantity }}x · Rs. {{ item.price | number:'1.0-0' }} each</small>
+              </span>
+              <strong *ngIf="canSelectItem(item)" class="rainbow-return-item-total">Rs. {{ item.price * item.quantity | number:'1.0-0' }}</strong>
+              <span *ngIf="!canSelectItem(item)" class="rainbow-return-item-status" [class.is-already-requested]="isAlreadyRequested(item)">{{ isAlreadyRequested(item) ? 'Already Requested' : (returnWindowHours(item) === 24 ? '24h Window Closed' : '3-Day Window Closed') }}</span>
+            </label>
+            <div *ngIf="selectedItemIndices.includes(i)" class="rainbow-return-item-reason" [attr.data-index]="i">
+              <span class="rainbow-return-reason-label">Reason for this item:</span>
+              <div class="rainbow-reason-control" [attr.data-index]="i">
+                <button
+                  type="button"
+                  class="rainbow-input-wrap rainbow-reason-trigger"
+                  [attr.aria-expanded]="openReasonIndex === i"
+                  [attr.aria-label]="'Return reason for ' + item.title + ': ' + (itemReasons[i] || 'Select a reason')"
+                  [attr.aria-controls]="'return-reason-options-' + i"
+                  aria-haspopup="true"
+                  (click)="toggleReasonMenu(i)">
+                  <i class="fal fa-exclamation-circle" aria-hidden="true"></i>
+                  <span>{{ itemReasons[i] || 'Select a reason' }}</span>
+                  <i class="fal fa-chevron-down rainbow-reason-arrow" aria-hidden="true"></i>
+                </button>
+                <div *ngIf="openReasonIndex === i" [id]="'return-reason-options-' + i" class="rainbow-reason-menu" role="group" [attr.aria-label]="'Choose return reason for ' + item.title">
+                  <button
+                    *ngFor="let option of reasonOptions"
+                    type="button"
+                    class="rainbow-reason-option"
+                    [class.is-selected]="itemReasons[i] === option"
+                    [attr.aria-pressed]="itemReasons[i] === option"
+                    (click)="selectReason(i, option)">
+                    <span>{{ option }}</span>
+                    <i *ngIf="itemReasons[i] === option" class="fal fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div class="rainbow-form-field mb-3">
-        <label>Item Name</label>
-        <div class="rainbow-input-wrap">
-          <input type="text" [value]="itemTitle" readonly>
+      <section class="rainbow-return-total" aria-live="polite" aria-label="Total refund amount">
+        <div>
+          <strong>Total Refund Amount:</strong>
+          <small>Refund is confirmed after the returned items are reviewed.</small>
         </div>
-      </div>
-
-      <div class="rainbow-form-field mb-3">
-        <label>Reason for Return</label>
-        <div class="rainbow-input-wrap rainbow-select-wrap">
-          <select [(ngModel)]="reason">
-            <option value="Damaged or defective item">Damaged or defective item</option>
-            <option value="Expired or near expiry">Expired or near expiry</option>
-            <option value="Wrong item delivered">Wrong item delivered</option>
-            <option value="Quality not satisfactory">Quality not satisfactory</option>
-          </select>
-          <i class="fal fa-chevron-down select-arrow"></i>
-        </div>
-      </div>
-
-      <div class="rainbow-form-field">
-        <label>Refund Amount</label>
-        <div class="rainbow-input-wrap">
-          <strong>Rs. {{ refundAmount | number:'1.0-0' }}</strong>
-        </div>
-      </div>
+        <strong class="rainbow-return-total-amount">Rs. {{ refundAmount | number:'1.0-0' }}</strong>
+      </section>
     </div>
 
-    <footer class="rh-schedule-footer">
+    <footer class="rh-schedule-footer rainbow-return-footer">
       <button type="button" class="rh-schedule-btn-secondary" (click)="onClose()">Cancel</button>
-      <button type="button" class="rh-schedule-btn-primary" (click)="onSubmit()">Submit Request</button>
+      <button type="button" class="rh-schedule-btn-primary rainbow-return-submit" [disabled]="!canSubmitReturn" (click)="onSubmit()"><i class="fal fa-exchange-alt" aria-hidden="true"></i> Submit Request</button>
     </footer>
   </div>
 </div>

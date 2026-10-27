@@ -1,61 +1,102 @@
-<!-- breadcrumb_section - start -->
-<section class="breadcrumb_section text-white text-center text-uppercase d-flex align-items-end clearfix"
-  style="background-image: url('assets/images/about/Rainbow_About.jpg'); background-size: cover; padding: 60px 0; position: relative;">
-  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #2e3192; opacity: 0.85; z-index: 1;"></div>
-  <div class="container" style="position: relative; z-index: 2;">
-    <h1 class="page_title text-white">About Us</h1>
-    <ul class="breadcrumb_nav ul_li_center clearfix text-white">
-      <li><a routerLink="/" class="text-white">Home</a></li>
-      <li>About Us</li>
-    </ul>
-  </div>
-</section>
-<!-- breadcrumb_section - end -->
+<main #page class="about-page">
+  <section class="about-hero" aria-labelledby="about-title">
+    <div class="about-hero-photo" aria-hidden="true"></div>
+    <div class="about-hero-overlay" aria-hidden="true"></div>
+    <div class="about-wrap about-hero-content">
+      <nav class="about-breadcrumb" aria-label="Breadcrumb"><a routerLink="/">Home</a><span>/</span><span>About us</span></nav>
+      <div class="about-hero-copy">
+        <p class="about-kicker about-kicker-light"><span></span> RAINBOW CASH &amp; CARRY · EST. 2008</p>
+        <h1 id="about-title" class="about-hero-title"><span><span>More than</span></span><span><span>a place to <em>shop.</em></span></span></h1>
+        <p class="about-hero-intro">A story of ambition, everyday value and the people who have made Rainbow a part of life across Punjab.</p>
+      </div>
+      <div class="about-hero-index" aria-hidden="true"><span>LAHORE, PAKISTAN</span></div>
+    </div>
+  </section>
 
-<!-- main_contact_section - start -->
-<section class="main_contact_section sec_ptb_100 clearfix pg-visible" id="pg-content">
-  <div class="container">
-    <div class="row justify-content-lg-between">
-      <div class="col-lg-12">
-        <div class="main_contact_content">
-          <h3 class="title_text mb_15">About Us</h3>
-          <p class="mb_50">
-            <strong>Welcome to Rainbow Cash &amp; Carry &ndash; Your One Stop Online Super Market</strong><br><br>
-            At <strong>Rainbow Cash &amp; Carry</strong>, we believe shopping should be an experience to cherish. Since 2008, we&rsquo;ve been more than just a store but we&rsquo;re a community hub where quality, variety, and exceptional service come together under one roof.
-            <br><br>
-            Founded in 2008 by <strong>Imran Saleemi</strong> with a vision to bring world-class retail to Wapda Town Lahore, <strong>Rainbow Cash &amp; Carry</strong> started as a modest showroom and has grown into multiple cities a premier departmental store.
-            <br><br>From humble beginnings serving local families, we&rsquo;ve evolved into a trusted name synonymous with:
-            <br>
-            1. Quality Products<br>
-            2. Competitive Prices<br>
-            3. Exceptional Customer Service<br>
-            4. Innovative Shopping Experiences
-          </p>
-          <ul class="main_contact_info ul_li_block clearfix">
-            <li>
-              <span class="icon">
-                <i class="fal fa-map-marked-alt"></i>
-              </span>
-              <p class="mb-0">
-                Bahria Town, CC-Block, Sector D, Bahria Town, Lahore
-              </p>
-            </li>
-            <li>
-              <span class="icon">
-                <i class="fal fa-phone-volume"></i>
-              </span>
-              <p class="mb-0">+92 310 7779651</p>
-            </li>
-            <li>
-              <span class="icon">
-                <i class="fal fa-paper-plane"></i>
-              </span>
-              <p class="mb-0">online&#64;rainbowcc.com.pk</p>
-            </li>
-          </ul>
+  <section class="about-ceo-section" aria-labelledby="ceo-message-title">
+    <div class="about-wrap">
+      <div class="about-ceo-panel">
+        <figure class="about-ceo-photo" data-image-reveal>
+          <img src="assets/images/about/ceo-imran-saleemi.jpg" alt="M. Imran Saleemi, Rainbow Cash & Carry founder and CEO" width="782" height="590" loading="lazy">
+          <figcaption><span>OUR FOUNDER &amp; CEO</span><strong>M. Imran Saleemi</strong></figcaption>
+        </figure>
+        <div class="about-ceo-content">
+          <p class="about-kicker about-kicker-light"><span></span> A MESSAGE FROM OUR CEO</p>
+          <h2 id="ceo-message-title">CEO Message</h2>
+          <p>At Rainbow Hypermarket, we have always believed in the power of innovation to shape the future. From our humble beginnings in 2008, we have steadily expanded across Punjab, Pakistan, introducing all products under one roof while offering unmatched customer experiences.</p>
+          <p>Our mission is simple yet profound: to be the most trusted and innovative retail destination that brings convenience and quality to every corner of the nation. We are not just a hypermarket; we are a symbol of growth, community, and trust. Our journey is one of continuous learning and improvement, and we are excited about the future as we continue to explore new frontiers in retail.</p>
+          <div class="about-ceo-signature"><span>With gratitude,</span><strong>M. Imran Saleemi</strong></div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- main_contact_section - end -->
+  </section>
+
+  <section class="about-intro" aria-label="Rainbow at a glance">
+    <div class="about-wrap about-intro-grid">
+      <p class="about-intro-statement" data-reveal>From a single idea to a name families <em>trust every day.</em></p>
+      <div class="about-stats">
+        <div class="about-stat" data-reveal><strong>2008</strong><span>The first store opened in Wapda Town, Lahore</span></div>
+        <div class="about-stat" data-reveal><strong><span data-count="10">10</span></strong><span>Stores across Punjab</span></div>
+        <div class="about-stat" data-reveal><strong><span data-count="2000">2,000</span><sup>+</sup></strong><span>People working together</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="our-story" class="about-story about-section" aria-labelledby="story-title">
+    <div class="about-wrap">
+      <div class="about-section-heading about-story-heading" data-reveal><div><p class="about-kicker"><span></span> 01 / OUR STORY</p><h2 id="story-title">The dream began<br>on the <em>shop floor.</em></h2></div></div>
+      <div class="about-story-chapters">
+        <article class="about-story-row" data-reveal>
+          <figure class="about-story-photo" data-image-reveal><img src="assets/images/about/team-story.jpg" alt="Rainbow Cash & Carry team" width="2048" height="747" loading="lazy"><figcaption>THE PEOPLE BEHIND RAINBOW</figcaption></figure>
+          <div class="about-story-chapter"><span>01 / THE BEGINNING</span><h3>Big dreams, humble beginnings.</h3><p>Born into a humble family in a village, founder Imran Saleemi began working as a rack boy in a departmental store. That experience shaped his ambition to make modern shopping accessible to more people.</p></div>
+        </article>
+        <article class="about-story-row" data-reveal>
+          <figure class="about-story-photo" data-image-reveal><img src="assets/images/about/rainbow-wapda.jpg" alt="Rainbow Cash & Carry community ribbon-cutting event" width="1600" height="1066" loading="lazy"><figcaption>A COMMUNITY CELEBRATION</figcaption></figure>
+          <div class="about-story-chapter"><span>02 / THE FIRST STORE</span><h3>A promise made in Lahore.</h3><p>In 2008, Imran opened Rainbow in Wapda Town, Lahore. The goal was clear: give everyday shoppers the best value for their money without compromising on quality or service.</p></div>
+        </article>
+        <article class="about-story-row" data-reveal>
+          <figure class="about-story-photo" data-image-reveal><img src="assets/images/about/rainbow-defence.jpg" alt="Rainbow Cash & Carry storefront with team members" width="1280" height="853" loading="lazy"><figcaption>AT THE RAINBOW STOREFRONT</figcaption></figure>
+          <div class="about-story-chapter"><span>03 / TODAY</span><h3>Growing with the community.</h3><p>Rainbow now serves communities through 10 stores across Punjab, with more than 2,000 people carrying its original commitment to integrity and care forward.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-journey about-section" aria-labelledby="journey-title">
+    <div class="about-wrap">
+      <div class="about-section-heading about-section-heading-light" data-reveal><div><p class="about-kicker about-kicker-light"><span></span> 02 / MILESTONES</p><h2 id="journey-title">A journey built<br>on <em>trust.</em></h2></div><p>What began with one store continues to grow through the people and communities Rainbow serves.</p></div>
+      <div class="about-milestones">
+        <div class="about-milestone-line" aria-hidden="true"><span></span></div>
+        <article class="about-milestone"><span class="about-milestone-dot"></span><span class="about-milestone-no">01 / BEGINNINGS</span><h3>On the shop floor</h3><p>A first retail job inspires a vision for quality products at prices within reach.</p></article>
+        <article class="about-milestone"><span class="about-milestone-dot"></span><span class="about-milestone-no">02 / 2008</span><h3>One store opens</h3><p>Rainbow opens in Wapda Town, Lahore with a promise of value and service.</p></article>
+        <article class="about-milestone"><span class="about-milestone-dot"></span><span class="about-milestone-no">03 / GROWTH</span><h3>A trusted name</h3><p>Families come to Rainbow for groceries, pharmacy essentials and more.</p></article>
+        <article class="about-milestone"><span class="about-milestone-dot"></span><span class="about-milestone-no">04 / TODAY</span><h3>Across Punjab</h3><p>Ten stores and over 2,000 people keep that original promise alive.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-purpose about-section" aria-labelledby="purpose-title">
+    <div class="about-wrap">
+      <div class="about-purpose-intro" data-reveal><p class="about-kicker"><span></span> 03 / OUR PURPOSE</p><h2 id="purpose-title">Good choices make<br>a <em>better everyday.</em></h2></div>
+      <div class="about-purpose-grid">
+        <article class="about-purpose-feature" data-purpose><span class="about-purpose-number">01</span><i class="fal fa-heart" aria-hidden="true"></i><div><p>OUR MISSION</p><h3>Better choices, value and life every day.</h3><span>We put customers first, offering quality, innovative and affordable products with integrity, while working toward a vibrant, healthy community and responsible growth.</span></div></article>
+        <article class="about-purpose-feature about-purpose-vision" data-purpose><span class="about-purpose-number">02</span><i class="fal fa-eye" aria-hidden="true"></i><div><p>OUR VISION</p><h3>Modern shopping within reach of everyone.</h3><span>We believe people from all walks of life should be able to experience the convenience, choice and affordability of a modern hypermarket.</span></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="our-people" class="about-people about-section" aria-labelledby="people-title">
+    <div class="about-wrap">
+      <div class="about-section-heading" data-reveal><div><p class="about-kicker"><span></span> 04 / CORE TEAM</p><h2 id="people-title">People behind<br>the <em>promise.</em></h2></div><p>Experienced leaders help turn Rainbow's founding vision into a better shopping experience every day.</p></div>
+      <div class="about-core-grid"><article class="about-person" *ngFor="let person of coreTeam; let index = index"><div class="about-person-image"><img [src]="person.image" [alt]="person.name" loading="lazy" width="640" height="640"></div><div class="about-person-caption"><span>0{{ index + 1 }}</span><div><h3>{{ person.name }}</h3><p>{{ person.role }}</p></div></div></article></div>
+    </div>
+  </section>
+
+  <section class="about-leadership about-section" aria-labelledby="leadership-title">
+    <div class="about-wrap">
+      <div class="about-leadership-heading" data-reveal><p class="about-kicker"><span></span> 05 / OUR LEADERSHIP</p><h2 id="leadership-title">Many strengths.<br><em>One direction.</em></h2><p>Meet the people guiding Rainbow across finance, operations, creative, pharmacy and food.</p></div>
+      <div class="about-leadership-grid"><article class="about-leader" *ngFor="let person of leadership" data-reveal><div class="about-leader-image"><img [src]="person.image" [alt]="person.name" loading="lazy" width="640" height="640"></div><div class="about-leader-caption"><h3>{{ person.name }}</h3><p>{{ person.role }}</p></div></article></div>
+    </div>
+  </section>
+
+</main>

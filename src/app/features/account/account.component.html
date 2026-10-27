@@ -100,35 +100,59 @@
             </div>
           </header>
 
+          <div class="rainbow-order-status-filters" role="group" aria-label="Filter orders by status">
+            <button *ngFor="let status of orderStatusOptions" type="button" [class.is-active]="orderStatusFilter() === status" [attr.aria-pressed]="orderStatusFilter() === status" (click)="orderStatusFilter.set(status)">{{ status }}</button>
+          </div>
+
           <div class="rainbow-orders-list">
-            <article *ngFor="let order of authService.orders()" class="rainbow-order-card">
-              <header class="rainbow-order-header">
-                <div>
-                  <span class="rainbow-order-id">{{ order.id }}</span>
-                  <span class="rainbow-order-date"><i class="fal fa-calendar-alt"></i> {{ order.date }}</span>
+            <article *ngFor="let order of filteredOrders()" class="rainbow-order-card">
+              <header class="rainbow-order-header rainbow-order-compact-header">
+                <div class="rainbow-order-meta">
+                  <span class="rainbow-order-id">#{{ order.id }}</span>
+                  <span class="rainbow-order-date">{{ order.date }}</span>
                 </div>
-                <span class="rainbow-order-status" [ngClass]="'status-' + order.status.toLowerCase().replace(' ', '-')">
-                  <i class="fal fa-circle"></i> {{ order.status }}
-                </span>
+                <div class="rainbow-order-header-actions">
+                  <span class="rainbow-order-status" [ngClass]="'status-' + order.status.toLowerCase().replace(' ', '-')">
+                    <i class="fal fa-circle" aria-hidden="true"></i> {{ order.status }}
+                  </span>
+                </div>
               </header>
 
-              <div class="rainbow-order-items">
-                <div *ngFor="let item of order.items" class="rainbow-order-item-row">
-                  <img [src]="item.image" [alt]="item.title">
-                  <div class="rainbow-order-item-copy">
-                    <strong>{{ item.title }}</strong>
-                    <small>Qty: {{ item.quantity }} × Rs. {{ item.price }}</small>
-                  </div>
-                  <button type="button" class="rainbow-btn-return-link" (click)="openReturnModal(order.id, item.title, item.price * item.quantity)">
-                    <i class="fal fa-undo-alt"></i> Request Return
-                  </button>
+              <div class="rainbow-order-items rainbow-order-compact-items">
+                <div *ngFor="let item of order.items" class="rainbow-order-compact-item" [class.is-returned]="!!getOrderItemReturn(order.id, item.title)">
+                  <span class="rainbow-order-item-quantity">{{ item.quantity }}x</span>
+                  <strong class="rainbow-order-item-name">{{ item.title }}</strong>
+                  <span *ngIf="getOrderItemReturn(order.id, item.title) as itemReturn" class="rainbow-order-item-return-badge" [class.is-pending]="itemReturn.status === 'Pending'" [class.is-rejected]="itemReturn.status === 'Rejected'">
+                    <i class="fal fa-check" aria-hidden="true"></i> {{ itemReturn.status === 'Approved' ? 'Refunded' : itemReturn.status === 'Pending' ? 'Return Pending' : 'Return Rejected' }}
+                  </span>
+                  <strong class="rainbow-order-item-price">Rs. {{ item.price * item.quantity | number:'1.0-0' }}</strong>
                 </div>
               </div>
 
-              <footer class="rainbow-order-footer">
-                <span>Payment Method: <strong>{{ order.paymentMethod }}</strong></span>
-                <span class="rainbow-order-total">Total Amount: <strong>Rs. {{ order.totalAmount | number:'1.0-0' }}</strong></span>
+              <footer class="rainbow-order-footer rainbow-order-compact-footer">
+                <div class="rainbow-order-total-block">
+                  <small>Total Amount</small>
+                  <strong>Rs. {{ order.totalAmount | number:'1.0-0' }}</strong>
+                </div>
+                <div class="rainbow-order-footer-actions">
+                  <button type="button" class="rainbow-order-action rainbow-order-action-details" (click)="showOrderDetails(order)">Details</button>
+                  <button *ngIf="order.status === 'In Transit' || order.status === 'Processing'" type="button" class="rainbow-order-action rainbow-order-action-primary" (click)="toggleOrderPanel(order.id, 'track')"><i class="fal fa-location-arrow" aria-hidden="true"></i> Track</button>
+                  <button *ngIf="order.status === 'Delivered'" type="button" class="rainbow-order-action rainbow-order-action-review" [disabled]="!!authService.getOrderReview(order.id)" (click)="openReviewModal(order)"><i class="fal fa-star" aria-hidden="true"></i> {{ authService.getOrderReview(order.id) ? 'Reviewed' : 'Review' }}</button>
+                  <button *ngIf="order.status === 'Delivered'" type="button" class="rainbow-order-action rainbow-order-action-refund" [disabled]="!canRequestReturn(order)" (click)="openReturnModal(order)"><i class="fal fa-exchange-alt" aria-hidden="true"></i> Refund Remaining</button>
+                  <button *ngIf="order.status === 'Delivered'" type="button" class="rainbow-order-action rainbow-order-action-primary" (click)="reorder(order)"><i class="fal fa-redo" aria-hidden="true"></i> Reorder</button>
+                </div>
               </footer>
+              <div *ngIf="expandedOrder()?.id === order.id" class="rainbow-order-detail-panel">
+                <ng-container *ngIf="expandedOrder()?.view === 'details'; else trackingPanel">
+                  <div><span>Payment method</span><strong>{{ order.paymentMethod }}</strong></div>
+                  <div><span>Order status</span><strong>{{ order.status }}</strong></div>
+                  <div><span>Placed on</span><strong>{{ order.date }}</strong></div>
+                </ng-container>
+                <ng-template #trackingPanel>
+                  <div><span>Current status</span><strong>{{ order.status }}</strong></div>
+                  <p>This is the latest status available for this order.</p>
+                </ng-template>
+              </div>
             </article>
 
             <div *ngIf="authService.orders().length === 0" class="rainbow-account-empty">
@@ -136,6 +160,11 @@
               <h3>No Orders Yet</h3>
               <p>You haven't placed any orders yet.</p>
               <a routerLink="/shop" class="rainbow-btn-primary">Start Shopping</a>
+            </div>
+            <div *ngIf="authService.orders().length > 0 && filteredOrders().length === 0" class="rainbow-account-empty">
+              <i class="fal fa-box-open" aria-hidden="true"></i>
+              <h3>No {{ orderStatusFilter() }} Orders</h3>
+              <p>Orders with this status will appear here.</p>
             </div>
           </div>
         </div>
@@ -319,12 +348,22 @@
                   <strong>Return ID: {{ ret.id }}</strong>
                   <small>Order Ref: {{ ret.orderId }} · Requested on {{ ret.date }}</small>
                 </div>
-                <span class="rainbow-return-badge" [ngClass]="'status-' + ret.status.toLowerCase()">{{ ret.status }}</span>
+                <div class="rainbow-return-card-actions">
+                  <span class="rainbow-return-badge" [ngClass]="'status-' + ret.status.toLowerCase()">{{ ret.status }}</span>
+                  <button type="button" class="rainbow-return-details-button" (click)="selectedReturnDetails.set(ret)">Details</button>
+                </div>
               </header>
               <div class="rainbow-return-body">
-                <strong>Item: {{ ret.itemTitle }}</strong>
-                <p>Reason: {{ ret.reason }}</p>
-                <span class="rainbow-refund-amount">Refund Amount: <strong>Rs. {{ ret.refundAmount | number:'1.0-0' }}</strong></span>
+                <div class="rainbow-return-lines">
+                  <div *ngFor="let item of ret.items" class="rainbow-return-line">
+                    <div>
+                      <strong>{{ item.itemTitle }}</strong>
+                      <p>Reason: {{ item.reason }}</p>
+                    </div>
+                    <span>Rs. {{ item.refundAmount | number:'1.0-0' }}</span>
+                  </div>
+                </div>
+                <span class="rainbow-refund-amount">Total refund: <strong>Rs. {{ ret.refundAmount | number:'1.0-0' }}</strong></span>
               </div>
             </article>
 
@@ -418,8 +457,74 @@
   <app-return-modal
     *ngIf="isReturnModalOpen()"
     [orderId]="returnForm.orderId"
-    [itemTitle]="returnForm.itemTitle"
-    [refundAmount]="returnForm.refundAmount"
+    [orderDate]="returnForm.orderDate"
+    [items]="returnForm.items"
+    [returnedItemTitles]="returnForm.returnedItemTitles"
     (close)="closeReturnModal()"
     (submitReturn)="submitReturnRequest($event)">
   </app-return-modal>
+
+  <app-review-modal
+    *ngIf="selectedReviewOrder() as order"
+    [orderId]="order.id"
+    (close)="closeReviewModal()"
+    (submitReview)="submitOrderReview($event)">
+  </app-review-modal>
+
+  <div *ngIf="reviewToast() as message" class="rainbow-review-toast" role="status" aria-live="polite">
+    <span class="rainbow-review-toast-icon"><i class="fal fa-check" aria-hidden="true"></i></span>
+    <span>{{ message }}</span>
+    <button type="button" aria-label="Dismiss notification" (click)="dismissReviewToast()"><i class="fal fa-times" aria-hidden="true"></i></button>
+  </div>
+
+<div *ngIf="selectedReturnDetails() as request" class="rainbow-return-details-backdrop" (click)="closeReturnDetails()">
+  <section class="rainbow-return-details-dialog" role="dialog" aria-modal="true" aria-labelledby="return-details-title" (click)="$event.stopPropagation()">
+    <header class="rainbow-return-details-header">
+      <div>
+        <h2 id="return-details-title">Request #{{ request.id }}</h2>
+        <p>From Order #{{ request.orderId }} · {{ request.date }}</p>
+      </div>
+      <button type="button" class="rainbow-return-details-close" aria-label="Close return details" (click)="closeReturnDetails()"><i class="fal fa-times" aria-hidden="true"></i></button>
+    </header>
+
+    <div class="rainbow-return-details-content">
+      <span class="rainbow-return-details-status" [ngClass]="'status-' + request.status.toLowerCase()">
+        <i class="fal" [ngClass]="request.status === 'Approved' ? 'fa-check-circle' : request.status === 'Rejected' ? 'fa-times-circle' : 'fa-hourglass-half'" aria-hidden="true"></i>
+        {{ request.status === 'Pending' ? 'Under Review' : request.status === 'Approved' ? 'Refunded' : 'Rejected' }}
+      </span>
+
+      <div class="rainbow-return-details-items">
+        <div *ngFor="let item of request.items" class="rainbow-return-details-item">
+          <span class="rainbow-return-details-item-icon"><i class="fal fa-cube" aria-hidden="true"></i></span>
+          <div>
+            <strong>{{ item.itemTitle }}</strong>
+            <small>Reason: {{ item.reason }}</small>
+          </div>
+          <strong class="rainbow-return-details-item-price">Rs. {{ item.refundAmount | number:'1.0-0' }}</strong>
+        </div>
+      </div>
+
+      <div class="rainbow-return-details-total"><span>Total refund</span><strong>Rs. {{ request.refundAmount | number:'1.0-0' }}</strong></div>
+
+      <h3 class="rainbow-return-progress-heading">Resolution Progress</h3>
+      <ol class="rainbow-return-progress">
+        <li class="is-complete">
+          <span class="rainbow-return-progress-marker"><i class="fal fa-check" aria-hidden="true"></i></span>
+          <div><strong>Request Submitted</strong><small>{{ request.date }}</small></div>
+        </li>
+        <li [class.is-complete]="request.status === 'Approved'" [class.is-current]="request.status !== 'Approved'" [class.is-rejected]="request.status === 'Rejected'">
+          <span class="rainbow-return-progress-marker"><i class="fal" [ngClass]="request.status === 'Approved' ? 'fa-check' : request.status === 'Rejected' ? 'fa-times' : 'fa-circle'" aria-hidden="true"></i></span>
+          <div><strong>Support Review</strong><small>{{ request.status === 'Rejected' ? 'This request was declined' : request.status === 'Approved' ? 'Your request was approved' : 'Our team is reviewing your return request' }}</small></div>
+        </li>
+        <li [class.is-complete]="request.status === 'Approved'">
+          <span class="rainbow-return-progress-marker"><i class="fal" [ngClass]="request.status === 'Approved' ? 'fa-check' : 'fa-circle'" aria-hidden="true"></i></span>
+          <div><strong>Pickup Scheduled</strong><small>{{ request.status === 'Approved' ? 'Return pickup completed' : 'Waiting for support review' }}</small></div>
+        </li>
+        <li [class.is-complete]="request.status === 'Approved'">
+          <span class="rainbow-return-progress-marker"><i class="fal" [ngClass]="request.status === 'Approved' ? 'fa-check' : 'fa-circle'" aria-hidden="true"></i></span>
+          <div><strong>Refund Disbursed</strong><small>{{ request.status === 'Approved' ? 'Credited to your Rainbow Wallet' : 'Refund follows pickup verification' }}</small></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+</div>

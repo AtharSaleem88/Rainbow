@@ -420,6 +420,11 @@ app-root {
   will-change: transform;
   padding: 0 20px;
 }
+@media (max-width: 767px) {
+  .rh-brands-track {
+    animation-duration: 18s;
+  }
+}
 @keyframes rhBrandScroll {
   0%   { transform: translateX(-50%); }
   100% { transform: translateX(0); }

@@ -47,6 +47,16 @@ export const routes: Routes = [
     title: 'Contact Us — Rainbow Cash & Carry'
   },
   {
+    path: 'terms-and-conditions',
+    loadComponent: () => import('./features/legal/terms-and-conditions.component').then(m => m.TermsAndConditionsComponent),
+    title: 'Terms & Conditions - Rainbow Cash & Carry'
+  },
+  {
+    path: 'privacy-policy',
+    loadComponent: () => import('./features/legal/privacy-policy.component').then(m => m.PrivacyPolicyComponent),
+    title: 'Privacy Policy - Rainbow Cash & Carry'
+  },
+  {
     path: '**',
     loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent),
     title: 'Page Not Found — Rainbow'

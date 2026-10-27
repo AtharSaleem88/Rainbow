@@ -1,21 +1,34 @@
 <div class="rh-shop-header-filters">
   <div class="rh-filter-controls-row">
     <!-- Brand Dropdown -->
-    <div class="rh-filter-field">
+    <div class="rh-filter-field rh-brand-filter" #brandFilter>
       <span class="rh-filter-label">Brand</span>
-      <select
-        id="rh-shop-brand-select"
-        class="rh-filter-select"
-        [value]="selectedBrand"
-        (change)="onBrandChange($event)"
-        aria-label="Filter by brand">
-        <option value="">All brands</option>
-        <option value="Rainbow Farm">Rainbow Farm</option>
-        <option value="Rainbow Organic">Rainbow Organic</option>
-        <option value="Rainbow Select">Rainbow Select</option>
-        <option value="Rainbow Frozen">Rainbow Frozen</option>
-        <option value="Shan">Shan</option>
-      </select>
+      <div class="rh-filter-dropdown">
+        <button
+          id="rh-shop-brand-select"
+          type="button"
+          class="rh-filter-select rh-filter-dropdown-trigger"
+          [attr.aria-expanded]="brandMenuOpen"
+          [attr.aria-label]="'Filter by brand, ' + (selectedBrand || 'All brands')"
+          aria-controls="rh-shop-brand-options"
+          aria-haspopup="true"
+          (click)="toggleBrandMenu()">
+          <span>{{ selectedBrand || 'All brands' }}</span>
+          <i class="fal fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div *ngIf="brandMenuOpen" id="rh-shop-brand-options" class="rh-filter-dropdown-menu" role="group" aria-label="Choose a brand">
+          <button
+            *ngFor="let brand of brandOptions"
+            type="button"
+            class="rh-filter-dropdown-option"
+            [class.is-selected]="selectedBrand === brand.value"
+            [attr.aria-pressed]="selectedBrand === brand.value"
+            (click)="selectBrand(brand.value)">
+            <span>{{ brand.label }}</span>
+            <i *ngIf="selectedBrand === brand.value" class="fal fa-check" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Price Filter (Min & Max Price inputs) -->
@@ -43,19 +56,34 @@
     </div>
 
     <!-- Sort By Dropdown -->
-    <div class="rh-filter-field ms-auto">
+    <div class="rh-filter-field ms-auto" #sortFilter>
       <span class="rh-filter-label">Sort By</span>
-      <select
-        id="rh-shop-sort-select"
-        class="rh-filter-select"
-        [value]="selectedSort"
-        (change)="onSortChange($event)"
-        aria-label="Sort products">
-        <option value="featured">Recommended</option>
-        <option value="price-low">Price: Low to High</option>
-        <option value="price-high">Price: High to Low</option>
-        <option value="rating">Top Rated</option>
-      </select>
+      <div class="rh-filter-dropdown rh-sort-dropdown">
+        <button
+          id="rh-shop-sort-select"
+          type="button"
+          class="rh-filter-select rh-filter-dropdown-trigger"
+          [attr.aria-expanded]="sortMenuOpen"
+          [attr.aria-label]="'Sort products, ' + selectedSortLabel"
+          aria-controls="rh-shop-sort-options"
+          aria-haspopup="true"
+          (click)="toggleSortMenu()">
+          <span>{{ selectedSortLabel }}</span>
+          <i class="fal fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div *ngIf="sortMenuOpen" id="rh-shop-sort-options" class="rh-filter-dropdown-menu" role="group" aria-label="Choose sort order">
+          <button
+            *ngFor="let sort of sortOptions"
+            type="button"
+            class="rh-filter-dropdown-option"
+            [class.is-selected]="selectedSort === sort.value"
+            [attr.aria-pressed]="selectedSort === sort.value"
+            (click)="selectSort(sort.value)">
+            <span>{{ sort.label }}</span>
+            <i *ngIf="selectedSort === sort.value" class="fal fa-check" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 

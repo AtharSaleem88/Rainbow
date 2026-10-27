@@ -202,6 +202,82 @@
   color: #80869a;
 }
 
+.rainbow-branch-control {
+  position: relative;
+  min-width: 0;
+}
+
+.rainbow-branch-trigger {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.rainbow-branch-trigger span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: #22243a;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rainbow-branch-trigger > .rainbow-branch-arrow {
+  color: #80869a;
+  font-size: 0.8rem;
+  transition: transform 160ms ease;
+}
+
+.rainbow-branch-trigger[aria-expanded="true"] > .rainbow-branch-arrow {
+  transform: rotate(180deg);
+}
+
+.rainbow-branch-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #e0e4ef;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(33, 42, 90, 0.14);
+}
+
+.rainbow-branch-option {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 11px;
+  border: 0;
+  border-radius: 8px;
+  color: #293247;
+  background: transparent;
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible,
+  &.is-selected {
+    color: var(--rh-primary);
+    background: #f3f1fa;
+    outline: none;
+  }
+
+  &.is-selected {
+    font-weight: 650;
+  }
+}
+
 .rainbow-textarea-wrap {
   align-items: flex-start;
   padding: 12px 14px;
@@ -227,6 +303,46 @@
   background: #fff;
   cursor: pointer;
   transition: all 160ms ease;
+}
+
+.rainbow-payment-choice {
+  min-height: 68px;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.rainbow-payment-entry {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  margin-top: -7px;
+  padding: 16px;
+  border: 1px solid #dcdff0;
+  border-radius: 12px;
+  background: #f9faff;
+}
+
+.rainbow-payment-entry-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.rainbow-payment-error {
+  margin: 12px 0 0;
+  color: #bb3040;
+  font-size: 0.83rem;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .rainbow-payment-entry {
+    padding: 12px;
+  }
+
+  .rainbow-payment-entry-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .rainbow-payment-card:hover {
@@ -255,6 +371,10 @@
 
 .rainbow-payment-card.is-selected .rainbow-payment-radio {
   border: 6px solid var(--rh-primary);
+}
+
+.rainbow-payment-choice .rainbow-payment-radio {
+  margin-top: 0;
 }
 
 .rainbow-payment-info {
@@ -333,16 +453,118 @@
   background: #fbfcfe;
 }
 
+/* Rider tip selector */
+.rainbow-rider-tip {
+  gap: 0;
+  padding: 20px;
+}
+
+.rainbow-rider-tip-heading {
+  color: #17192e;
+  font-size: 1.05rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.rainbow-rider-tip-description {
+  margin: 6px 0 18px;
+  color: #64748b;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.rainbow-tip-options {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.rainbow-tip-option-col {
+  min-width: 0;
+}
+
+.rainbow-tip-option {
+  display: flex;
+  width: 100%;
+  min-height: 66px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px;
+  border: 1px solid #dce2ec;
+  border-radius: 10px;
+  color: #293247;
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+
+  &:hover {
+    border-color: var(--rh-primary);
+    background: #f6f3fa;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--rh-primary);
+    outline-offset: 2px;
+  }
+
+  &.is-selected {
+    border-color: var(--rh-primary);
+    color: var(--rh-primary);
+    background: #f3edf8;
+    box-shadow: inset 0 0 0 1px var(--rh-primary);
+  }
+}
+
+.rainbow-tip-common {
+  color: #768094;
+  font-size: 0.65rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.rainbow-tip-option.is-selected .rainbow-tip-common {
+  color: var(--rh-primary);
+}
+
+.rainbow-rider-tip-save {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #e8ecf3;
+  font-size: 0.86rem;
+}
+
+.rainbow-rider-tip-save .custom-control-label {
+  cursor: pointer;
+}
+
+@media (max-width: 575px) {
+  .rainbow-rider-tip {
+    padding: 16px;
+  }
+
+  .rainbow-tip-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+}
+
 /* Delivery Method Cards Grid */
 .rainbow-delivery-cards-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
 .rainbow-delivery-method-card {
   position: relative;
   display: flex;
+  min-width: 0;
   align-items: flex-start;
   gap: 14px;
   padding: 16px;
@@ -399,21 +621,34 @@
   }
 
   p {
-    margin: 4px 0 0;
+    margin: 9px 0 0;
     font-size: 0.8rem;
     color: #64748b;
     line-height: 1.35;
   }
 }
 
+.rainbow-delivery-method-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.rainbow-delivery-method-heading strong {
+  min-height: 2.6em;
+  line-height: 1.3;
+}
+
 .rainbow-delivery-pill-badge {
+  max-width: 100%;
   font-size: 0.72rem;
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 6px;
   background: #eef2ff;
   color: var(--rh-primary);
-  white-space: nowrap;
+  white-space: normal;
 
   &.badge-active {
     background: var(--rh-primary);
@@ -427,7 +662,7 @@
   margin-top: 2px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .rainbow-delivery-cards-grid {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -690,11 +925,98 @@
   color: var(--rh-primary);
 }
 
+.rainbow-payment-receipt {
+  gap: 8px;
+  padding: 20px;
+}
+
+.rainbow-payment-receipt-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: #17192e;
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.rainbow-payment-receipt-items {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 5px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e9f1;
+}
+
+.rainbow-payment-receipt-item {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 8px;
+  color: #42495a;
+  font-size: 0.83rem;
+  line-height: 1.35;
+
+  strong {
+    color: #20263a;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}
+
+.rainbow-payment-receipt-quantity {
+  color: var(--rh-primary);
+  font-weight: 750;
+}
+
+.rainbow-payment-receipt-item-name {
+  min-width: 0;
+
+  small {
+    display: block;
+    color: #858b9a;
+    font-size: 0.74rem;
+  }
+}
+
+.rainbow-payment-receipt-row,
+.rainbow-payment-receipt-total {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 16px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.rainbow-payment-receipt-row {
+  color: #4f566b;
+}
+
+.rainbow-payment-receipt-row strong,
+.rainbow-payment-receipt-total strong:last-child {
+  color: #17192e;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.rainbow-payment-receipt-row strong.text-success {
+  color: #28a745;
+}
+
+.rainbow-payment-receipt-total {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid #e8ecf3;
+  color: #17192e;
+  font-weight: 750;
+}
+
 .rainbow-success-details {
   display: grid;
   width: 100%;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
   margin-bottom: 30px;
   padding: 20px;
   border: 1px solid #edf0f6;
@@ -706,6 +1028,15 @@
 .rainbow-success-col {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  gap: 18px;
+}
+
+.rainbow-success-detail-group {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .rainbow-success-col .lbl {
@@ -726,6 +1057,11 @@
 .rainbow-success-col strong {
   color: #17192e;
   font-size: 0.94rem;
+  line-height: 1.4;
+}
+
+.rainbow-success-method strong {
+  color: var(--rh-primary);
 }
 
 .rainbow-success-col p {
