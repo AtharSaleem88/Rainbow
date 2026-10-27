@@ -77,7 +77,7 @@
                     <i class="fal fa-bolt"></i>
                   </div>
                   <div class="rainbow-delivery-method-content">
-                    <div class="d-flex align-items-center justify-content-between mb-1">
+                    <div class="rainbow-delivery-method-heading">
                       <strong>Instant Express Delivery</strong>
                       <span class="rainbow-delivery-pill-badge" [class.badge-active]="cartService.deliveryType() === 'instant'">In 40 Mins</span>
                     </div>
@@ -97,7 +97,7 @@
                     <i class="fal fa-clock"></i>
                   </div>
                   <div class="rainbow-delivery-method-content">
-                    <div class="d-flex align-items-center justify-content-between mb-1">
+                    <div class="rainbow-delivery-method-heading">
                       <strong>Scheduled Delivery</strong>
                       <span class="rainbow-delivery-pill-badge" [class.badge-active]="cartService.deliveryType() === 'scheduled'">
                         {{ cartService.selectedDeliveryDate() }}, {{ cartService.selectedDeliveryTimeSlot() }}
@@ -179,14 +179,32 @@
 
                 <div class="rainbow-form-field">
                   <label for="branch">Fulfilling Rainbow Branch <sup>*</sup></label>
-                  <div class="rainbow-input-wrap rainbow-select-wrap">
-                    <i class="fal fa-store"></i>
-                    <select id="branch" name="branch" [(ngModel)]="billingData.branch">
-                      <option value="Bahria Town Branch (Lahore)">Bahria Town Branch (Lahore)</option>
-                      <option value="Gulberg Branch (Lahore)">Gulberg Branch (Lahore)</option>
-                      <option value="DHA Phase 5 Branch (Lahore)">DHA Phase 5 Branch (Lahore)</option>
-                    </select>
-                    <i class="fal fa-chevron-down select-arrow"></i>
+                  <div class="rainbow-branch-control" #branchControl>
+                    <button
+                      id="branch"
+                      type="button"
+                      class="rainbow-input-wrap rainbow-branch-trigger"
+                      [attr.aria-expanded]="branchMenuOpen"
+                      [attr.aria-label]="'Fulfilling Rainbow Branch, ' + billingData.branch"
+                      aria-controls="rainbow-branch-options"
+                      aria-haspopup="true"
+                      (click)="branchMenuOpen = !branchMenuOpen">
+                      <i class="fal fa-store" aria-hidden="true"></i>
+                      <span>{{ billingData.branch }}</span>
+                      <i class="fal fa-chevron-down rainbow-branch-arrow" aria-hidden="true"></i>
+                    </button>
+                    <div *ngIf="branchMenuOpen" id="rainbow-branch-options" class="rainbow-branch-menu" role="group" aria-label="Choose fulfilling branch">
+                      <button
+                        *ngFor="let branch of branches"
+                        type="button"
+                        class="rainbow-branch-option"
+                        [class.is-selected]="billingData.branch === branch"
+                        [attr.aria-pressed]="billingData.branch === branch"
+                        (click)="selectBranch(branch)">
+                        <span>{{ branch }}</span>
+                        <i *ngIf="billingData.branch === branch" class="fal fa-check" aria-hidden="true"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -249,8 +267,8 @@
 
             <div class="rainbow-payment-options" *ngIf="payment().payable > 0">
               <!-- Cash on Delivery Option -->
-              <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'cod'">
-                <input type="radio" name="paymentMethod" value="cod" [(ngModel)]="selectedPaymentMethod">
+              <label class="rainbow-payment-card rainbow-payment-choice" [class.is-selected]="selectedPaymentMethod === 'cod'">
+                <input type="radio" name="paymentMethod" value="cod" [ngModel]="selectedPaymentMethod" (ngModelChange)="selectPaymentMethod($event)">
                 <span class="rainbow-payment-radio"></span>
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
@@ -260,8 +278,8 @@
               </label>
 
               <!-- JazzCash Option -->
-              <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'jazzcash'">
-                <input type="radio" name="paymentMethod" value="jazzcash" [(ngModel)]="selectedPaymentMethod">
+              <label class="rainbow-payment-card rainbow-payment-choice" [class.is-selected]="selectedPaymentMethod === 'jazzcash'">
+                <input type="radio" name="paymentMethod" value="jazzcash" [ngModel]="selectedPaymentMethod" (ngModelChange)="selectPaymentMethod($event)">
                 <span class="rainbow-payment-radio"></span>
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
@@ -269,10 +287,19 @@
                   </div>
                 </div>
               </label>
+              <div *ngIf="selectedPaymentMethod === 'jazzcash'" class="rainbow-payment-entry">
+                <div class="rainbow-form-field">
+                  <label for="jazzcash-phone">JazzCash mobile number <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-mobile-alt" aria-hidden="true"></i>
+                    <input id="jazzcash-phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="16" [(ngModel)]="jazzCashPhone" (ngModelChange)="paymentError.set('')" placeholder="03XX XXXXXXX">
+                  </div>
+                </div>
+              </div>
 
               <!-- Easypaisa Option -->
-              <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'easypaisa'">
-                <input type="radio" name="paymentMethod" value="easypaisa" [(ngModel)]="selectedPaymentMethod">
+              <label class="rainbow-payment-card rainbow-payment-choice" [class.is-selected]="selectedPaymentMethod === 'easypaisa'">
+                <input type="radio" name="paymentMethod" value="easypaisa" [ngModel]="selectedPaymentMethod" (ngModelChange)="selectPaymentMethod($event)">
                 <span class="rainbow-payment-radio"></span>
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
@@ -280,10 +307,19 @@
                   </div>
                 </div>
               </label>
+              <div *ngIf="selectedPaymentMethod === 'easypaisa'" class="rainbow-payment-entry">
+                <div class="rainbow-form-field">
+                  <label for="easypaisa-phone">Easypaisa mobile number <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-mobile-alt" aria-hidden="true"></i>
+                    <input id="easypaisa-phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="16" [(ngModel)]="easypaisaPhone" (ngModelChange)="paymentError.set('')" placeholder="03XX XXXXXXX">
+                  </div>
+                </div>
+              </div>
 
               <!-- Credit/Debit Card Option -->
-              <label class="rainbow-payment-card" [class.is-selected]="selectedPaymentMethod === 'card'">
-                <input type="radio" name="paymentMethod" value="card" [(ngModel)]="selectedPaymentMethod">
+              <label class="rainbow-payment-card rainbow-payment-choice" [class.is-selected]="selectedPaymentMethod === 'card'">
+                <input type="radio" name="paymentMethod" value="card" [ngModel]="selectedPaymentMethod" (ngModelChange)="selectPaymentMethod($event)">
                 <span class="rainbow-payment-radio"></span>
                 <div class="rainbow-payment-info">
                   <div class="rainbow-payment-title">
@@ -291,27 +327,61 @@
                   </div>
                 </div>
               </label>
+              <div *ngIf="selectedPaymentMethod === 'card'" class="rainbow-payment-entry">
+                <div class="rainbow-form-field">
+                  <label for="checkout-card-holder">Cardholder name <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-user" aria-hidden="true"></i>
+                    <input id="checkout-card-holder" type="text" autocomplete="cc-name" [(ngModel)]="cardDetails.holder" (ngModelChange)="paymentError.set('')" placeholder="Name on card">
+                  </div>
+                </div>
+                <div class="rainbow-form-field">
+                  <label for="checkout-card-number">Card number <sup>*</sup></label>
+                  <div class="rainbow-input-wrap">
+                    <i class="fal fa-credit-card" aria-hidden="true"></i>
+                    <input id="checkout-card-number" type="text" inputmode="numeric" autocomplete="cc-number" maxlength="23" [(ngModel)]="cardDetails.number" (ngModelChange)="paymentError.set('')" placeholder="1234 5678 9012 3456">
+                  </div>
+                </div>
+                <div class="rainbow-payment-entry-row">
+                  <div class="rainbow-form-field">
+                    <label for="checkout-card-expiry">Expiry date <sup>*</sup></label>
+                    <div class="rainbow-input-wrap">
+                      <i class="fal fa-calendar-alt" aria-hidden="true"></i>
+                      <input id="checkout-card-expiry" type="text" inputmode="numeric" autocomplete="cc-exp" maxlength="7" [(ngModel)]="cardDetails.expiry" (ngModelChange)="paymentError.set('')" placeholder="MM/YY">
+                    </div>
+                  </div>
+                  <div class="rainbow-form-field">
+                    <label for="checkout-card-cvv">Security code <sup>*</sup></label>
+                    <div class="rainbow-input-wrap">
+                      <i class="fal fa-lock" aria-hidden="true"></i>
+                      <input id="checkout-card-cvv" type="password" inputmode="numeric" autocomplete="cc-csc" maxlength="4" [(ngModel)]="cardDetails.cvv" (ngModelChange)="paymentError.set('')" placeholder="CVV">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
+            <p *ngIf="paymentError()" class="rainbow-payment-error" role="alert">{{ paymentError() }}</p>
+
             <!-- Rider Tip Section -->
-            <section class="rainbow-card-details-box mt-4 mb-3" aria-labelledby="rider-tip-heading">
-              <div id="rider-tip-heading" class="h6 mb-2 font-weight-bold" role="heading" aria-level="3">Tip your delivery rider</div>
-              <p class="small text-muted mb-3">100% of the tip goes directly to the delivery rider who brings your groceries.</p>
-              <div class="rainbow-tip-options mb-3" role="group" aria-label="Rider tip options">
-                <div *ngFor="let amount of tipOptions" class="rainbow-tip-option-col text-center">
+            <section class="rainbow-card-details-box rainbow-rider-tip mt-4 mb-3" aria-labelledby="rider-tip-heading">
+              <div id="rider-tip-heading" class="rainbow-rider-tip-heading" role="heading" aria-level="3">Tip your delivery rider</div>
+              <p class="rainbow-rider-tip-description"></p>
+              <div class="rainbow-tip-options" role="group" aria-label="Rider tip options">
+                <div *ngFor="let amount of tipOptions" class="rainbow-tip-option-col">
                   <button
                     type="button"
-                    class="btn btn-outline-primary btn-sm w-100"
-                    [class.active]="tipAmount() === amount"
+                    class="rainbow-tip-option"
+                    [class.is-selected]="tipAmount() === amount"
                     [attr.aria-pressed]="tipAmount() === amount"
                     [attr.aria-describedby]="amount === 100 ? 'rider-tip-common' : null"
                     (click)="selectTip(amount)">
-                    {{ amount === 0 ? 'Not now' : ('Rs. ' + amount) }}
+                    <span>{{ amount === 0 ? 'Not now' : ('Rs. ' + amount) }}</span>
+                    <small *ngIf="amount === 100" id="rider-tip-common" class="rainbow-tip-common">Most common</small>
                   </button>
-                  <small *ngIf="amount === 100" id="rider-tip-common" class="d-block text-muted mt-1">Most common</small>
                 </div>
               </div>
-              <div class="custom-control custom-checkbox">
+              <div class="custom-control custom-checkbox rainbow-rider-tip-save">
                 <input type="checkbox" id="save-rider-tip" class="custom-control-input" [ngModel]="saveTipPreference()" (ngModelChange)="setSaveTipPreference($event)">
                 <label class="custom-control-label" for="save-rider-tip">Save it for the next order</label>
               </div>
@@ -321,7 +391,6 @@
               <button type="button" class="rainbow-btn-secondary" (click)="prevStep()"><i class="fal fa-arrow-left"></i> Back to Shipping</button>
               <button type="button" class="rainbow-checkout-primary" (click)="placeOrder()">Place Order Now <i class="fal fa-check-circle"></i></button>
             </div>
-            <p *ngIf="paymentError()" class="text-danger small mt-3" role="alert">{{ paymentError() }}</p>
           </div>
 
         </main>
@@ -359,28 +428,44 @@
 
           <div class="rainbow-success-details">
             <div class="rainbow-success-col">
-              <span class="lbl"><i class="fal fa-map-marker-alt"></i> Delivery Address</span>
-              <strong>{{ billingData.firstName }} {{ billingData.lastName }}</strong>
-              <p>{{ billingData.address }}, {{ billingData.city }}</p>
-              <p class="phone"><i class="fal fa-phone"></i> {{ billingData.phone }}</p>
+              <div class="rainbow-success-detail-group">
+                <span class="lbl"><i class="fal fa-map-marker-alt"></i> Delivery Address</span>
+                <strong>{{ billingData.firstName }} {{ billingData.lastName }}</strong>
+                <p>{{ billingData.address }}, {{ billingData.city }}</p>
+                <p class="phone"><i class="fal fa-phone"></i> {{ billingData.phone }}</p>
+              </div>
             </div>
             <div class="rainbow-success-col">
-              <span class="lbl"><i class="fal fa-truck"></i> Delivery Method</span>
-              <strong class="text-primary">{{ cartService.deliveryType() === 'instant' ? '⚡ Instant Express Delivery (In 40 Mins)' : '🕒 Scheduled Delivery (' + cartService.selectedDeliveryDate() + ', ' + cartService.selectedDeliveryTimeSlot() + ')' }}</strong>
-              <span class="lbl mt-3"><i class="fal fa-store"></i> Dispatching Branch</span>
-              <strong>{{ billingData.branch }}</strong>
-              <span class="lbl mt-3"><i class="fal fa-credit-card"></i> Payment Method</span>
-              <strong>{{ payment().payable === 0 ? (payment().walletApplied > 0 ? 'Rainbow Wallet' : 'Loyalty Points') : selectedPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : selectedPaymentMethod === 'jazzcash' ? 'JazzCash Mobile Wallet' : selectedPaymentMethod === 'easypaisa' ? 'Easypaisa Wallet' : 'Credit / Debit Card' }}</strong>
+              <div class="rainbow-success-detail-group rainbow-success-method">
+                <span class="lbl"><i class="fal fa-truck"></i> Delivery Method</span>
+                <strong>{{ cartService.deliveryType() === 'instant' ? 'Instant Express Delivery' : 'Scheduled Delivery' }}</strong>
+                <p>{{ cartService.deliveryType() === 'instant' ? 'In 40 minutes' : cartService.selectedDeliveryDate() + ', ' + cartService.selectedDeliveryTimeSlot() }}</p>
+              </div>
+              <div class="rainbow-success-detail-group">
+                <span class="lbl"><i class="fal fa-store"></i> Dispatching Branch</span>
+                <strong>{{ billingData.branch }}</strong>
+              </div>
+              <div class="rainbow-success-detail-group">
+                <span class="lbl"><i class="fal fa-credit-card"></i> Payment Method</span>
+                <strong>{{ payment().payable === 0 ? (payment().walletApplied > 0 ? 'Rainbow Wallet' : 'Loyalty Points') : selectedPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : selectedPaymentMethod === 'jazzcash' ? 'JazzCash Mobile Wallet' : selectedPaymentMethod === 'easypaisa' ? 'Easypaisa Wallet' : 'Credit / Debit Card' }}</strong>
+              </div>
             </div>
           </div>
 
-          <section class="rainbow-card-details-box w-100 text-left d-block mt-0 mb-4" *ngIf="completedPayment() as paid" aria-labelledby="payment-summary-title">
-            <div id="payment-summary-title" class="h6 mb-3 font-weight-bold" role="heading" aria-level="3"><i class="fal fa-receipt rainbow-order-num mr-2" aria-hidden="true"></i>Payment Summary</div>
-            <div class="rainbow-summary-row"><span class="mr-3">Items total</span><strong class="text-nowrap flex-shrink-0">Rs. {{ checkoutTotal() | number:'1.0-2' }}</strong></div>
-            <div class="rainbow-summary-row" *ngIf="paid.tipAmount > 0"><span class="mr-3">Rider tip</span><strong class="text-nowrap flex-shrink-0">Rs. {{ paid.tipAmount | number:'1.0-2' }}</strong></div>
-            <div class="rainbow-summary-row" *ngIf="paid.pointsUsed > 0"><span class="mr-3">Loyalty points used: {{ paid.pointsUsed }}</span><strong class="text-success text-nowrap flex-shrink-0">- Rs. {{ paid.loyaltyDiscount | number:'1.0-2' }}</strong></div>
-            <div class="rainbow-summary-row" *ngIf="paid.walletApplied > 0"><span class="mr-3">Paid from wallet</span><strong class="text-nowrap flex-shrink-0">- Rs. {{ paid.walletApplied | number:'1.0-2' }}</strong></div>
-            <div class="rainbow-summary-total"><strong class="mr-3">{{ paid.payable > 0 ? 'Remaining payment' : 'Remaining payable' }}</strong><strong class="text-nowrap flex-shrink-0">Rs. {{ paid.payable | number:'1.0-2' }}</strong></div>
+          <section class="rainbow-card-details-box rainbow-payment-receipt w-100 text-left mt-0 mb-4" *ngIf="completedPayment() as paid" aria-labelledby="payment-summary-title">
+            <div id="payment-summary-title" class="rainbow-payment-receipt-title" role="heading" aria-level="3"><i class="fal fa-receipt rainbow-order-num" aria-hidden="true"></i>Payment Summary</div>
+            <div class="rainbow-payment-receipt-items" aria-label="Ordered items">
+              <div *ngFor="let item of checkoutItems(); trackBy: trackByCartItem" class="rainbow-payment-receipt-item">
+                <span class="rainbow-payment-receipt-quantity">{{ item.quantity }}x</span>
+                <span class="rainbow-payment-receipt-item-name">{{ item.product.title }}<small *ngIf="item.variant?.label">{{ item.variant.label }}</small></span>
+                <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-2' }}</strong>
+              </div>
+            </div>
+            <div class="rainbow-payment-receipt-row"><span>Items total</span><strong>Rs. {{ checkoutTotal() | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-payment-receipt-row" *ngIf="paid.tipAmount > 0"><span>Rider tip</span><strong>Rs. {{ paid.tipAmount | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-payment-receipt-row" *ngIf="paid.pointsUsed > 0"><span>Loyalty points used: {{ paid.pointsUsed }}</span><strong class="text-success">- Rs. {{ paid.loyaltyDiscount | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-payment-receipt-row" *ngIf="paid.walletApplied > 0"><span>Paid from wallet</span><strong>- Rs. {{ paid.walletApplied | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-payment-receipt-total"><strong>{{ paid.payable > 0 ? 'Remaining payment' : 'Remaining payable' }}</strong><strong>Rs. {{ paid.payable | number:'1.0-2' }}</strong></div>
           </section>
           <div class="rainbow-success-actions">
             <a routerLink="/shop" class="rainbow-checkout-primary">Continue Shopping <i class="fal fa-arrow-right"></i></a>

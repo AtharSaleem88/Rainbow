@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, signal, OnInit, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,7 @@ import { LoyaltyService } from '../../core/services/loyalty.service';
 import { CheckoutPaymentService, PaymentBreakdown } from '../../core/services/checkout-payment.service';
 import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.service';
 import { SeoService } from '../../core/services/seo.service';
+import { APP_CONFIG } from '../../core/core.config';
 import { CheckoutStepperComponent } from './components/checkout-stepper/checkout-stepper.component';
 import { CheckoutSummaryComponent } from './components/checkout-summary/checkout-summary.component';
 
@@ -18,6 +19,11 @@ import { CheckoutSummaryComponent } from './components/checkout-summary/checkout
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
+  @ViewChild('branchControl') branchControl?: ElementRef<HTMLElement>;
+
+  readonly branches = APP_CONFIG.branches;
+  branchMenuOpen = false;
+
   readonly cartService = inject(CartService);
   readonly loyaltyService = inject(LoyaltyService);
   readonly authService = inject(AuthService);
@@ -95,7 +101,9 @@ export class CheckoutComponent implements OnInit {
   selectedSavedCardId = signal<string | null>(null);
 
   selectedPaymentMethod = 'cod';
-  walletAccountPhone = '';
+  jazzCashPhone = '';
+  easypaisaPhone = '';
+  cardDetails = { holder: '', number: '', expiry: '', cvv: '' };
   readonly isOrderPlaced = signal<boolean>(false);
   readonly isMobileSummaryOpen = signal<boolean>(false);
   readonly generatedOrderNumber = signal<string>('RH-' + Math.floor(100000 + Math.random() * 900000));
@@ -149,6 +157,27 @@ export class CheckoutComponent implements OnInit {
     this.billingData.city = addr.city;
   }
 
+  selectBranch(branch: string) {
+    this.billingData.branch = branch;
+    this.branchMenuOpen = false;
+    this.branchControl?.nativeElement.querySelector('button')?.focus();
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeBranchMenuOnOutsideClick(event: MouseEvent) {
+    if (this.branchMenuOpen && !this.branchControl?.nativeElement.contains(event.target as Node)) {
+      this.branchMenuOpen = false;
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  closeBranchMenuOnEscape() {
+    if (this.branchMenuOpen) {
+      this.branchMenuOpen = false;
+      this.branchControl?.nativeElement.querySelector('button')?.focus();
+    }
+  }
+
   syncCartSnapshot() {
     const items = this.cartService.cartItems();
     this.checkoutItems.set([...items]);
@@ -192,6 +221,38 @@ export class CheckoutComponent implements OnInit {
     this.persistTipPreference();
   }
 
+  selectPaymentMethod(method: string): void {
+    this.selectedPaymentMethod = method;
+    this.paymentError.set('');
+  }
+
+  private validatePaymentDetails(): string {
+    if (this.payment().payable <= 0 || this.selectedPaymentMethod === 'cod') return '';
+
+    if (this.selectedPaymentMethod === 'jazzcash' || this.selectedPaymentMethod === 'easypaisa') {
+      const number = (this.selectedPaymentMethod === 'jazzcash' ? this.jazzCashPhone : this.easypaisaPhone).replace(/\D/g, '');
+      return /^(03\d{9}|923\d{9})$/.test(number) ? '' : 'Enter a valid 11-digit Pakistani mobile number for your selected wallet.';
+    }
+
+    if (this.selectedPaymentMethod === 'card') {
+      const cardNumber = this.cardDetails.number.replace(/\D/g, '');
+      if (!this.cardDetails.holder.trim()) return 'Enter the cardholder name.';
+      if (!/^\d{13,19}$/.test(cardNumber)) return 'Enter a valid card number.';
+
+      const expiry = /^(0[1-9]|1[0-2])\s*\/\s*(\d{2})$/.exec(this.cardDetails.expiry.trim());
+      if (!expiry) return 'Enter the card expiry as MM/YY.';
+      const now = new Date();
+      const expiryYear = 2000 + Number(expiry[2]);
+      const expiryMonth = Number(expiry[1]);
+      if (expiryYear < now.getFullYear() || (expiryYear === now.getFullYear() && expiryMonth < now.getMonth() + 1)) {
+        return 'Enter a card expiry date that has not passed.';
+      }
+      if (!/^\d{3,4}$/.test(this.cardDetails.cvv.trim())) return 'Enter a valid 3 or 4 digit security code.';
+    }
+
+    return '';
+  }
+
   setSaveTipPreference(save: boolean) {
     this.saveTipPreference.set(save);
     this.persistTipPreference();
@@ -214,6 +275,11 @@ export class CheckoutComponent implements OnInit {
 
   placeOrder() {
     if (this.isOrderPlaced() || this.currentStep() !== 2 || this.cartService.cartItems().length === 0) return;
+    const detailsError = this.validatePaymentDetails();
+    if (detailsError) {
+      this.paymentError.set(detailsError);
+      return;
+    }
     this.syncCartSnapshot();
     const payment = this.paymentService.settle(this.generatedOrderNumber(), this.checkoutTotal(), this.useWallet(), this.useLoyaltyPoints(), this.tipAmount());
     if (!payment) {
@@ -222,6 +288,7 @@ export class CheckoutComponent implements OnInit {
     }
     this.completedPayment.set(payment);
     this.paymentError.set('');
+    this.cardDetails = { holder: '', number: '', expiry: '', cvv: '' };
     this.earnedLoyaltyPoints.set(this.loyaltyService.creditOrder(this.generatedOrderNumber(), payment.earningAmount));
     this.isOrderPlaced.set(true);
     this.currentStep.set(3);

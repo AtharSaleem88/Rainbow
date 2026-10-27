@@ -1,0 +1,134 @@
+<div class="terms-reading-progress" role="progressbar" aria-label="Reading progress" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+  <span [style.width.%]="progress"></span>
+</div>
+
+<header class="terms-hero" id="terms-top">
+  <div class="terms-hero-orbit terms-hero-orbit-one" aria-hidden="true"></div>
+  <div class="terms-hero-orbit terms-hero-orbit-two" aria-hidden="true"></div>
+  <div class="terms-hero-inner">
+    <nav class="terms-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Terms &amp; Conditions</span>
+    </nav>
+    <div class="terms-hero-copy">
+      <span class="terms-hero-eyebrow">Rainbow Cash &amp; Carry</span>
+      <h1>Shop smart.<br><em>Know the terms.</em></h1>
+      <p class="terms-hero-description">The terms that guide your experience with Rainbow online and in our app.</p>
+    </div>
+    <div class="terms-hero-foot"><span>TERMS &amp; CONDITIONS</span><span>PLEASE READ BEFORE SHOPPING</span></div>
+  </div>
+</header>
+
+<main class="terms-page" #termsPage>
+  <div class="terms-layout">
+    <aside class="terms-sidebar" [class.is-docked]="sidebarDocked" [style.--mobile-header-height]="mobileNavTop !== null ? mobileNavTop + 'px' : null" aria-label="Terms navigation">
+      <div class="terms-toc">
+        <span class="terms-toc-label">ON THIS PAGE</span>
+        <nav aria-label="Table of contents">
+          <a *ngFor="let item of contents; let i = index"
+            [href]="'#' + item.id"
+            [class.is-active]="activeId === item.id"
+            [attr.aria-current]="activeId === item.id ? 'location' : null"
+            (click)="scrollToSection($event, item.id)">
+            <span>{{ (i + 1).toString().padStart(2, '0') }}</span>{{ item.title }}
+          </a>
+        </nav>
+        <div class="terms-sidebar-note"><span class="terms-note-mark" aria-hidden="true">i</span><p>Policies shown here are based on the terms supplied by Rainbow Cash &amp; Carry.</p></div>
+      </div>
+    </aside>
+
+    <article class="terms-document" aria-label="Rainbow Cash &amp; Carry Terms and Conditions">
+      <div class="terms-document-heading">
+        <span class="terms-document-kicker">SHOP SMART AT RAINBOW CASH &amp; CARRY</span>
+        <h2>Terms &amp; Conditions</h2>
+        <p>By accessing or using our website and mobile application, you agree to the following Terms of Use. The terms “we”, “us”, and “our” refer to Rainbow Cash &amp; Carry.</p>
+      </div>
+
+      <section class="terms-content-section" id="introduction" data-terms-section>
+        <h3><span>01</span> Introduction &amp; acceptance</h3>
+        <p>By accessing or using our website and mobile application, you agree to these Terms of Use. Rainbow Cash &amp; Carry may update or modify these terms at any time without prior notice. We encourage you to review them regularly.</p>
+      </section>
+
+      <section class="terms-content-section" id="products-pricing" data-terms-section>
+        <h3><span>02</span> Products, pricing &amp; availability</h3>
+        <p>We endeavor to maintain accurate pricing and content information, but occasional errors may occur. We reserve the right to refuse or cancel orders for items listed at incorrect prices or with inaccurate content descriptions. In such cases, we will contact the customer for further instructions and may cancel the order at our discretion.</p>
+        <p class="terms-review-note"><strong>Availability details:</strong> The supplied terms do not specify product availability or substitution rules. These details require company review.</p>
+      </section>
+
+      <section class="terms-content-section" id="orders" data-terms-section>
+        <h3><span>03</span> Orders &amp; order confirmation</h3>
+        <p>We reserve the right to refuse or cancel orders for various reasons, including quantity limitations, inaccurate product or pricing information, or issues identified by our credit and fraud avoidance department. We may require additional verification before accepting an order. If an order is cancelled, we will notify you.</p>
+        <p>For orders of Rs. 25,000 or above, whether paid in cash or by card-on-machine, customers are required to provide a valid CNIC copy to the rider for record-keeping purposes.</p>
+      </section>
+
+      <section class="terms-content-section" id="payments" data-terms-section>
+        <h3><span>04</span> Payments &amp; billing</h3>
+        <p>If you pay by debit or credit card and receive a payment SMS, but a payment slip is not generated from Rainbow Cash &amp; Carry’s machine, please contact your bank immediately and register a complaint.</p>
+        <p>Rainbow Cash &amp; Carry does not receive payment in such cases and cannot be held responsible for this error. If payment is not successfully received at the time, our rider is not authorized to hand over the items. The rider will provide a detailed receipt or list generated through the Rainbow Cash &amp; Carry POS machine at delivery.</p>
+      </section>
+
+      <section class="terms-content-section" id="delivery" data-terms-section>
+        <h3><span>05</span> Delivery &amp; shipping</h3>
+        <p>Rainbow Cash &amp; Carry Online aims to dispatch your order within the selected timeframe. Deliveries are made only to regions specified on the website and mobile application. The exact delivery time will be confirmed when you place your order.</p>
+        <p>Timelines may be affected by factors beyond our control, including internet disruptions, weather, traffic, or other unforeseen circumstances. Delays may occur despite our best efforts.</p>
+        <div class="terms-delivery-fees">
+          <span class="terms-delivery-label">DELIVERY CHARGES <small>Subject to change as per company policy</small></span>
+          <ul>
+            <li><span>Minimum order</span><strong>PKR 500</strong></li>
+            <li><span>Delivery fee</span><strong>PKR 150</strong></li>
+            <li><span>Free delivery threshold</span><strong>PKR 3,500+</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="terms-content-section" id="returns" data-terms-section>
+        <h3><span>06</span> Cancellations, returns &amp; refunds</h3>
+        <p>If you receive a defective or damaged product, please notify us on the same day of delivery. Our team will guide you through the return process to our address. Any customs charges are the customer’s responsibility.</p>
+        <p>Once the returned product is received, we will inspect it. If the issue is verified, we may offer a cash voucher or replacement at our sole discretion.</p>
+        <p class="terms-review-note"><strong>Refund and cancellation details:</strong> The supplied terms do not define a general refund method, processing timeline, or customer-initiated order cancellation process. These details require company review.</p>
+      </section>
+
+      <section class="terms-content-section" id="accounts" data-terms-section>
+        <h3><span>07</span> User accounts &amp; contributions</h3>
+        <p>Users may share comments, feedback, suggestions, questions, reviews, and other forms of content through our website and mobile application. Personal information provided through these services will be handled in accordance with the <a routerLink="/privacy-policy">Rainbow Cash &amp; Carry Online Privacy Policy</a>.</p>
+        <p class="terms-review-note"><strong>Account responsibilities:</strong> The supplied terms do not describe account security, password responsibilities, or account suspension rules. These details require company review.</p>
+      </section>
+
+      <section class="terms-content-section" id="promotions" data-terms-section>
+        <h3><span>08</span> Promotions, discounts &amp; offers</h3>
+        <p class="terms-review-note"><strong>Company review required:</strong> The supplied terms do not specify promotion eligibility, offer duration, discount limits, or how offers combine. No additional promotional rules are stated here.</p>
+      </section>
+
+      <section class="terms-content-section" id="intellectual-property" data-terms-section>
+        <h3><span>09</span> Intellectual property</h3>
+        <p class="terms-review-note"><strong>Company review required:</strong> The supplied terms do not describe ownership or permitted use of website and application content. This section needs approved wording.</p>
+      </section>
+
+      <section class="terms-content-section" id="liability" data-terms-section>
+        <h3><span>10</span> Limitation of liability</h3>
+        <p>The supplied Terms of Use state that Rainbow Cash &amp; Carry is not liable for loss, damage, or inconvenience that may occur through use of this website, mobile application, or any external links.</p>
+      </section>
+
+      <section class="terms-content-section" id="changes" data-terms-section>
+        <h3><span>11</span> Changes to these terms</h3>
+        <p>Rainbow Cash &amp; Carry may update or modify these Terms of Use at any time without prior notice. As these terms apply to you, we encourage you to review them regularly.</p>
+      </section>
+
+      <section class="terms-content-section terms-contact-section" id="contact" data-terms-section>
+        <h3><span>12</span> Contact information</h3>
+        <p>For questions, concerns, or complaints, contact Rainbow Cash &amp; Carry:</p>
+        <ul class="terms-contact-list">
+          <li><span>Email</span><a href="mailto:Online@rainbowcc.com.pk">Online&#64;rainbowcc.com.pk</a></li>
+          <li><span>Phone</span><a href="tel:+923107779470">+92 310-7779470</a></li>
+          <li><span>Address</span><span>Rainbow Cash &amp; Carry Head Office, Usmania Tower, Rehmat Chowk, K-1 Block, WAPDA Town Phase 1, Lahore</span></li>
+        </ul>
+        <p class="terms-response">We aim to respond to all complaints and inquiries within 2 or 3 business days.</p>
+      </section>
+
+      <div class="terms-endnote"><span aria-hidden="true">✦</span> Thank you for shopping with Rainbow.</div>
+    </article>
+  </div>
+</main>
+
+<button class="terms-back-top" type="button" (click)="backToTop()" [class.is-visible]="showBackToTop" [attr.aria-hidden]="!showBackToTop" [attr.tabindex]="showBackToTop ? 0 : -1" aria-label="Back to top">
+  <i class="fal fa-arrow-up" aria-hidden="true"></i>
+</button>

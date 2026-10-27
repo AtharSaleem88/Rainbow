@@ -55,7 +55,7 @@
               <span class="rainbow-cart-instructions-label">Item instructions</span>
               <button type="button" class="rainbow-cart-instruction-link" (click)="openInstructions(item)">
                 <i class="fal fa-sync-alt" aria-hidden="true"></i>
-                <span><strong>If out of stock:</strong> {{ item.outOfStockChoice === 'refund' ? 'Refund this item' : item.outOfStockChoice === 'specific' ? 'Replacement chosen' : 'Replace with best match' }}<small *ngIf="item.outOfStockChoice === 'specific'">{{ item.replacementProductIds?.length || 0 }} selected · Modify</small><small *ngIf="item.outOfStockChoice !== 'specific'">Modify</small></span>
+                <span><strong>If out of stock:</strong> {{ item.outOfStockChoice === 'notify' ? 'Notify me' : item.outOfStockChoice === 'specific' ? 'Replacement chosen' : 'Replace with best match' }}<small *ngIf="item.outOfStockChoice === 'specific'">{{ item.replacementProductIds?.length || 0 }} selected · Modify</small><small *ngIf="item.outOfStockChoice !== 'specific'">Modify</small></span>
                 <i class="fal fa-chevron-right" aria-hidden="true"></i>
               </button>
             </div>

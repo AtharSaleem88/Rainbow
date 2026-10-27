@@ -43,7 +43,7 @@ export interface CartItem {
   product: Product;
   quantity: number;
   variant?: ProductVariant;
-  outOfStockChoice?: 'best-match' | 'specific' | 'refund';
+  outOfStockChoice?: 'best-match' | 'specific' | 'notify';
   replacementProductIds?: number[];
 }
 

@@ -1,0 +1,39 @@
+<div class="rainbow-review-backdrop" (click)="close.emit()">
+  <section #dialog class="rainbow-review-dialog" role="dialog" aria-modal="true" aria-labelledby="rainbow-review-title" tabindex="-1" (click)="$event.stopPropagation()">
+    <header class="rainbow-review-header">
+      <button type="button" class="rainbow-review-close" aria-label="Close order review" (click)="close.emit()"><i class="fal fa-times" aria-hidden="true"></i></button>
+      <span class="rainbow-review-medallion" [class.is-rated]="rating > 0" aria-hidden="true">
+        <i *ngIf="!rating" class="fas fa-star"></i>
+        <span *ngIf="rating" class="rainbow-review-emoji">{{ ratingEmojis[rating] }}</span>
+      </span>
+      <h2 id="rainbow-review-title">How was your order?</h2>
+      <span class="rainbow-review-order"><i class="fal fa-receipt" aria-hidden="true"></i> Order #{{ orderId }}</span>
+    </header>
+
+    <div class="rainbow-review-body">
+      <div class="rainbow-review-rating" role="group" aria-label="Rate this order from one to five stars">
+        <span class="rainbow-review-rating-label">TAP A STAR TO RATE</span>
+        <div class="rainbow-review-stars">
+          <button *ngFor="let star of stars" type="button" class="rainbow-review-star"
+            [class.is-selected]="star <= (hoverRating || rating)"
+            [attr.aria-label]="'Rate ' + star + (star === 1 ? ' star' : ' stars')"
+            [attr.aria-pressed]="rating === star"
+            (mouseenter)="hoverRating = star" (mouseleave)="hoverRating = 0"
+            (focus)="hoverRating = star" (blur)="hoverRating = 0"
+            (click)="rating = star"><span aria-hidden="true">★</span></button>
+        </div>
+        <span *ngIf="rating" class="rainbow-review-rating-result" aria-live="polite">{{ ratingLabels[rating] }}</span>
+      </div>
+
+      <label class="rainbow-review-feedback-label" for="rainbow-review-feedback">Write your feedback <span>(optional)</span></label>
+      <textarea id="rainbow-review-feedback" [(ngModel)]="feedback" name="feedback" maxlength="300" rows="4"
+        placeholder="Tell us about item quality, freshness, packing, or rider service..."></textarea>
+      <span class="rainbow-review-character-count">{{ feedback.length }} / 300</span>
+    </div>
+
+    <footer class="rainbow-review-footer">
+      <button type="button" class="rainbow-review-cancel" (click)="close.emit()">Cancel</button>
+      <button type="button" class="rainbow-review-submit" [disabled]="rating === 0" (click)="onSubmit()"><i class="fas fa-check-circle" aria-hidden="true"></i> Submit Review</button>
+    </footer>
+  </section>
+</div>

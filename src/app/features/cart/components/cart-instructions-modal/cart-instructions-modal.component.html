@@ -30,9 +30,9 @@
           <span class="rainbow-choice-radio" [class.is-checked]="choice === 'best-match'"></span>
           <span><strong>Replace with best match</strong><small>Your shopper will look for the most similar item.</small></span>
         </button>
-        <button type="button" class="rainbow-replacement-choice" [class.is-selected]="choice === 'refund'" (click)="onChoiceChange('refund')">
-          <span class="rainbow-choice-radio" [class.is-checked]="choice === 'refund'"></span>
-          <span><strong>Refund this item</strong><small>Item will be refunded, not replaced.</small></span>
+        <button type="button" class="rainbow-replacement-choice" [class.is-selected]="choice === 'notify'" (click)="onChoiceChange('notify')">
+          <span class="rainbow-choice-radio" [class.is-checked]="choice === 'notify'"></span>
+          <span><strong>Notify me</strong><small>Please notify me if this item is out of stock.</small></span>
         </button>
       </div>
       <footer class="rainbow-replacement-footer">

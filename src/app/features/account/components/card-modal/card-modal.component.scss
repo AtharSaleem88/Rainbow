@@ -1,3 +1,175 @@
 :host {
   display: contents;
 }
+
+.rainbow-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.rainbow-form-field {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.rainbow-form-field label {
+  color: #3e4157;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.rainbow-input-wrap {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid #e0e4ef;
+  border-radius: 12px;
+  color: #80869a;
+  background: #fbfcff;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+
+  &:focus-within {
+    border-color: var(--rh-primary);
+    box-shadow: 0 0 0 3px rgba(45, 44, 146, 0.1);
+  }
+
+  > i {
+    flex: 0 0 auto;
+    color: var(--rh-primary);
+    font-size: 0.94rem;
+  }
+
+  input,
+  select {
+    width: 100%;
+    min-width: 0;
+    height: 46px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    color: #22243a;
+    background: transparent;
+    font: inherit;
+    font-size: 0.9rem;
+  }
+
+  select {
+    appearance: none;
+    cursor: pointer;
+  }
+}
+
+.rainbow-select-wrap .select-arrow {
+  position: absolute;
+  right: 14px;
+  pointer-events: none;
+  color: #80869a;
+  font-size: 0.8rem;
+}
+
+.rainbow-card-network-control {
+  position: relative;
+  min-width: 0;
+}
+
+.rainbow-card-network-trigger {
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+
+  span {
+    flex: 1;
+    min-width: 0;
+    color: #22243a;
+  }
+
+  > .rainbow-card-network-arrow {
+    flex: 0 0 auto;
+    color: #80869a;
+    font-size: 0.8rem;
+    transition: transform 160ms ease;
+  }
+
+  &[aria-expanded="true"] > .rainbow-card-network-arrow {
+    transform: rotate(180deg);
+  }
+}
+
+.rainbow-card-network-menu {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #e0e4ef;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(33, 42, 90, 0.16);
+}
+
+.rainbow-card-network-option {
+  display: flex;
+  width: 100%;
+  min-height: 38px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  color: #333b50;
+  background: transparent;
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible,
+  &.is-selected {
+    color: var(--rh-primary);
+    background: #f3f1fa;
+    outline: none;
+  }
+
+  &.is-selected {
+    font-weight: 650;
+  }
+
+  i {
+    flex: 0 0 auto;
+    font-size: 0.75rem;
+  }
+}
+
+.rainbow-auth-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #4f566b;
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  input {
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    accent-color: var(--rh-primary);
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 480px) {
+  .rainbow-form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

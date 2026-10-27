@@ -38,13 +38,30 @@
 
         <div class="rainbow-form-field">
           <label>Card Network</label>
-          <div class="rainbow-input-wrap rainbow-select-wrap">
-            <select [(ngModel)]="form.brand">
-              <option value="visa">Visa</option>
-              <option value="mastercard">Mastercard</option>
-              <option value="unionpay">UnionPay</option>
-            </select>
-            <i class="fal fa-chevron-down select-arrow"></i>
+          <div class="rainbow-card-network-control" #networkControl>
+            <button
+              type="button"
+              class="rainbow-input-wrap rainbow-card-network-trigger"
+              [attr.aria-expanded]="networkMenuOpen"
+              [attr.aria-label]="'Card Network, ' + selectedNetworkLabel"
+              aria-controls="card-network-options"
+              aria-haspopup="true"
+              (click)="toggleNetworkMenu()">
+              <span>{{ selectedNetworkLabel }}</span>
+              <i class="fal fa-chevron-down rainbow-card-network-arrow" aria-hidden="true"></i>
+            </button>
+            <div *ngIf="networkMenuOpen" id="card-network-options" class="rainbow-card-network-menu" role="group" aria-label="Choose card network">
+              <button
+                *ngFor="let network of cardNetworks"
+                type="button"
+                class="rainbow-card-network-option"
+                [class.is-selected]="form.brand === network.value"
+                [attr.aria-pressed]="form.brand === network.value"
+                (click)="selectNetwork(network.value)">
+                <span>{{ network.label }}</span>
+                <i *ngIf="form.brand === network.value" class="fal fa-check" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>

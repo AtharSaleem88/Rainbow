@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet, Scroll } from '@angular/router';
 import { filter } from 'rxjs';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
@@ -20,6 +20,12 @@ export class AppComponent {
   constructor() {
     this.updateChromeVisibility();
     this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(() => this.updateChromeVisibility());
+    this.router.events.pipe(filter((event): event is Scroll => event instanceof Scroll)).subscribe(() => {
+      const path = this.router.url.split(/[?#]/, 1)[0].replace(/\/$/, '');
+      if (path === '/about' || path === '/privacy-policy' || path === '/terms-and-conditions') {
+        queueMicrotask(() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' }));
+      }
+    });
   }
 
   private updateChromeVisibility() {

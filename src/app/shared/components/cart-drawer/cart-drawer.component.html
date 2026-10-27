@@ -41,7 +41,7 @@
         <small>Item instructions</small>
         <button type="button" (click)="openInstructions(item)">
           <i class="fal fa-sync-alt" aria-hidden="true"></i>
-          <span><strong>If out of stock:</strong> {{ item.outOfStockChoice === 'refund' ? 'Refund this item' : item.outOfStockChoice === 'specific' ? 'Replacement chosen' : 'Replace with best match' }}<small *ngIf="item.outOfStockChoice === 'specific'">{{ item.replacementProductIds?.length || 0 }} selected · Modify</small><small *ngIf="item.outOfStockChoice !== 'specific'">Modify</small></span>
+          <span><strong>If out of stock:</strong> {{ item.outOfStockChoice === 'notify' ? 'Notify me' : item.outOfStockChoice === 'specific' ? 'Replacement chosen' : 'Replace with best match' }}<small *ngIf="item.outOfStockChoice === 'specific'">{{ item.replacementProductIds?.length || 0 }} selected · Modify</small><small *ngIf="item.outOfStockChoice !== 'specific'">Modify</small></span>
           <i class="fal fa-chevron-right" aria-hidden="true"></i>
         </button>
       </div>
@@ -86,7 +86,7 @@
           <small class="rh-replacement-count" *ngIf="instructionChoice() === 'specific'">{{ replacementIds().length }} of 3 selected</small>
         </div>
         <button type="button" class="rh-replacement-choice" [class.is-selected]="instructionChoice() === 'best-match'" (click)="setInstructionChoice('best-match')"><span class="rh-choice-radio" [class.is-checked]="instructionChoice() === 'best-match'"></span><span><strong>Replace with best match</strong><small>Your shopper will look for the most similar item.</small></span></button>
-        <button type="button" class="rh-replacement-choice" [class.is-selected]="instructionChoice() === 'refund'" (click)="setInstructionChoice('refund')"><span class="rh-choice-radio" [class.is-checked]="instructionChoice() === 'refund'"></span><span><strong>Refund this item</strong><small>Item will be refunded, not replaced.</small></span></button>
+        <button type="button" class="rh-replacement-choice" [class.is-selected]="instructionChoice() === 'notify'" (click)="setInstructionChoice('notify')"><span class="rh-choice-radio" [class.is-checked]="instructionChoice() === 'notify'"></span><span><strong>Notify me</strong><small>Please notify me if this item is out of stock.</small></span></button>
       </div>
       <footer class="rh-replacement-footer"><button type="button" class="rh-replacement-cancel" (click)="closeInstructions()">Cancel</button><button type="button" class="rh-replacement-save" [disabled]="instructionChoice() === 'specific' && replacementIds().length === 0" (click)="saveInstructions()">Save instructions</button></footer>
     </ng-container>

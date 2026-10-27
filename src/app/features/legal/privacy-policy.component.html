@@ -1,0 +1,125 @@
+<div class="privacy-reading-progress" role="progressbar" aria-label="Reading progress" [attr.aria-valuenow]="progress" aria-valuemin="0" aria-valuemax="100">
+  <span [style.width.%]="progress"></span>
+</div>
+
+<header class="privacy-hero" id="privacy-top">
+  <div class="privacy-hero-orbit privacy-hero-orbit-one" aria-hidden="true"></div>
+  <div class="privacy-hero-orbit privacy-hero-orbit-two" aria-hidden="true"></div>
+  <div class="privacy-hero-inner">
+    <nav class="privacy-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Privacy Policy</span>
+    </nav>
+    <div class="privacy-hero-copy">
+      <span class="privacy-hero-eyebrow">Rainbow Cash &amp; Carry</span>
+      <h1>Your trust.<br><em>Your privacy.</em></h1>
+      <p class="privacy-hero-description">How Rainbow describes the handling of personal information across its website and mobile application.</p>
+    </div>
+    <div class="privacy-hero-foot"><span>PRIVACY POLICY</span><span>YOUR INFORMATION MATTERS</span></div>
+  </div>
+</header>
+
+<main class="privacy-page" #privacyPage>
+  <div class="privacy-layout">
+    <aside class="privacy-sidebar" [class.is-docked]="sidebarDocked" [style.--mobile-header-height]="mobileNavTop !== null ? mobileNavTop + 'px' : null" aria-label="Privacy policy navigation">
+      <div class="privacy-toc">
+        <span class="privacy-toc-label">ON THIS PAGE</span>
+        <nav aria-label="Table of contents">
+          <a *ngFor="let item of contents; let i = index"
+            [href]="'#' + item.id"
+            [class.is-active]="activeId === item.id"
+            [attr.aria-current]="activeId === item.id ? 'location' : null"
+            (click)="scrollToSection($event, item.id)">
+            <span>{{ (i + 1).toString().padStart(2, '0') }}</span>{{ item.title }}
+          </a>
+        </nav>
+        <div class="privacy-sidebar-note"><span class="privacy-note-mark" aria-hidden="true">i</span><p>Only information stated in Rainbow’s available policy wording is presented as policy here.</p></div>
+      </div>
+    </aside>
+
+    <article class="privacy-document" aria-label="Rainbow Cash &amp; Carry Privacy Policy">
+      <div class="privacy-document-heading">
+        <span class="privacy-document-kicker">RAINBOW CASH &amp; CARRY ONLINE</span>
+        <h2>Privacy Policy</h2>
+        <p class="privacy-lead">Your privacy is very important to us.</p>
+        <p>The available Rainbow Cash &amp; Carry terms state that personal information provided through the website or mobile application will be handled in accordance with the Rainbow Cash &amp; Carry Online Privacy Policy.</p>
+      </div>
+
+      <div class="privacy-review-banner" role="note">
+        <span class="privacy-review-icon" aria-hidden="true">i</span>
+        <p><strong>Policy detail review:</strong> The published wording available for this page does not explain the specific privacy practices below. Rainbow should confirm and approve those details before this page is treated as complete.</p>
+      </div>
+
+      <section class="privacy-content-section" id="overview" data-privacy-section>
+        <h3><span>01</span> Overview</h3>
+        <p>Rainbow’s available statement applies to personal information provided through its website and mobile application and refers readers to the Rainbow Cash &amp; Carry Online Privacy Policy.</p>
+      </section>
+
+      <section class="privacy-content-section" id="information" data-privacy-section>
+        <h3><span>02</span> Information we handle</h3>
+        <p>The available statement refers generally to personal information provided through the website or mobile application.</p>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> The policy wording available to us does not list the categories of personal information collected or explain whether information is received from other sources.</p>
+      </section>
+
+      <section class="privacy-content-section" id="use" data-privacy-section>
+        <h3><span>03</span> How information is used</h3>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> The available policy wording does not specify the purposes or legal basis for processing personal information. Add Rainbow-approved details before publication.</p>
+      </section>
+
+      <section class="privacy-content-section" id="sharing" data-privacy-section>
+        <h3><span>04</span> Sharing information</h3>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> The available policy wording does not explain whether or when personal information is shared with service providers, business partners, or other parties.</p>
+      </section>
+
+      <section class="privacy-content-section" id="retention" data-privacy-section>
+        <h3><span>05</span> Retention &amp; security</h3>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> The available policy wording does not describe data retention periods, storage locations, or security measures.</p>
+      </section>
+
+      <section class="privacy-content-section" id="cookies" data-privacy-section>
+        <h3><span>06</span> Cookies &amp; tracking technologies</h3>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> The available policy wording does not state whether cookies, analytics, advertising technologies, or similar tools are used.</p>
+      </section>
+
+      <section class="privacy-content-section" id="choices" data-privacy-section>
+        <h3><span>07</span> Your privacy choices</h3>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> The available policy wording does not describe how people can access, correct, or request deletion of their information, or how to exercise other privacy choices.</p>
+      </section>
+
+      <section class="privacy-content-section" id="children" data-privacy-section>
+        <h3><span>08</span> Children’s privacy</h3>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> The available policy wording does not address privacy for children or age-related use of the website and mobile application.</p>
+      </section>
+
+      <section class="privacy-content-section" id="external" data-privacy-section>
+        <h3><span>09</span> External services &amp; links</h3>
+        <p>Rainbow’s Terms &amp; Conditions refer to use of external links. The available privacy statement does not explain how third-party services or external websites handle personal information.</p>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> Confirm what third-party services are used and how their privacy notices should be presented.</p>
+      </section>
+
+      <section class="privacy-content-section" id="updates" data-privacy-section>
+        <h3><span>10</span> Updates to this policy</h3>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> The available privacy statement does not specify how policy updates are made or how users will be notified.</p>
+      </section>
+
+      <section class="privacy-content-section privacy-contact-section" id="contact" data-privacy-section>
+        <h3><span>11</span> Contact Rainbow</h3>
+        <p>For questions or concerns about this Privacy Policy, contact Rainbow Cash &amp; Carry:</p>
+        <ul class="privacy-contact-list">
+          <li><span>Email</span><a href="mailto:Online@rainbowcc.com.pk">Online&#64;rainbowcc.com.pk</a></li>
+          <li><span>Phone</span><a href="tel:+923107779470">+92 310-7779470</a></li>
+          <li><span>Address</span><span>Rainbow Cash &amp; Carry Head Office, Usmania Tower, Rehmat Chowk, K-1 Block, WAPDA Town Phase 1, Lahore</span></li>
+        </ul>
+        <p class="privacy-review-note"><strong>Rainbow review needed:</strong> Confirm the correct contact channel and process for privacy requests before publication.</p>
+      </section>
+
+      <div class="privacy-end-links">
+        <span class="privacy-end-mark" aria-hidden="true">✦</span>
+        <p>For shopping terms, please also review our <a routerLink="/terms-and-conditions">Terms &amp; Conditions</a>.</p>
+      </div>
+    </article>
+  </div>
+</main>
+
+<button class="privacy-back-top" type="button" (click)="backToTop()" [class.is-visible]="showBackToTop" [attr.aria-hidden]="!showBackToTop" [attr.tabindex]="showBackToTop ? 0 : -1" aria-label="Back to top">
+  <i class="fal fa-arrow-up" aria-hidden="true"></i>
+</button>
