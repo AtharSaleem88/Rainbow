@@ -216,6 +216,45 @@
   min-width: 0;
 }
 
+.rh-drawer-cat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.rh-drawer-stock-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.rh-drawer-out-of-stock-pill {
+  display: inline-block;
+  padding: 2px 7px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+  font-size: 0.67rem;
+  font-weight: 700;
+  border-radius: 5px;
+  line-height: 1.25;
+}
+
+.rh-drawer-best-match-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(46, 49, 146, 0.08);
+  border: 1px solid rgba(46, 49, 146, 0.2);
+  color: var(--rh-primary);
+  font-size: 0.67rem;
+  font-weight: 750;
+  border-radius: 5px;
+  line-height: 1.25;
+}
+
 .rh-drawer-item-copy small {
   color: #858b9a;
   font-size: 0.72rem;

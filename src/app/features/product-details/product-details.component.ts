@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
+import { AlternateModalService } from '../../core/services/alternate-modal.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { Product, ProductVariant } from '../../core/models/product.model';
@@ -17,9 +18,17 @@ import { Product, ProductVariant } from '../../core/models/product.model';
 export class ProductDetailsComponent implements OnInit {
   productService = inject(ProductService);
   cartService = inject(CartService);
+  alternateModalService = inject(AlternateModalService);
   seoService = inject(SeoService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+
+  openAlternateModal() {
+    const prod = this.product();
+    if (prod) {
+      this.alternateModalService.open(prod);
+    }
+  }
 
   product = signal<Product | null>(null);
   selectedImage = signal<string>('');

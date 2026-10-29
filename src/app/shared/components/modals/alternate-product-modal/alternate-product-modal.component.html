@@ -1,0 +1,125 @@
+<div class="rh-alt-backdrop" *ngIf="modalService.isOpen()" (click)="modalService.close()">
+  <div class="rh-alt-dialog" role="dialog" aria-modal="true" aria-labelledby="rh-alt-title" (click)="$event.stopPropagation()">
+    
+    <!-- Modal Header -->
+    <header class="rh-alt-header">
+      <div class="rh-alt-header-left">
+        <div class="rh-alt-icon-wrap">
+          <i class="fal fa-exchange-alt"></i>
+        </div>
+        <div>
+          <h2 id="rh-alt-title" class="rh-alt-title">Alternate Preference</h2>
+          <p class="rh-alt-sub">Choose your replacement option for when this item is unavailable:</p>
+        </div>
+      </div>
+      <button type="button" class="rh-alt-close-btn" aria-label="Close" (click)="modalService.close()">
+        <i class="fal fa-times"></i>
+      </button>
+    </header>
+
+    <!-- Out of Stock Item Banner -->
+    <div class="rh-alt-original-card" *ngIf="modalService.selectedProduct() as orig">
+      <div class="rh-alt-orig-media">
+        <img [src]="orig.image" [alt]="orig.title" (error)="$any($event.target).style.display='none'">
+        <span class="rh-alt-badge-oos">Out of stock</span>
+      </div>
+      <div class="rh-alt-orig-details">
+        <span class="rh-alt-orig-cat">{{ orig.category }}<ng-container *ngIf="orig.subCategory"> &bull; {{ orig.subCategory }}</ng-container></span>
+        <h3 class="rh-alt-orig-name">{{ orig.title }}</h3>
+        <div class="rh-alt-orig-price">Rs. {{ orig.price | number:'1.0-0' }}</div>
+      </div>
+    </div>
+
+    <!-- Choices Body -->
+    <div class="rh-alt-body">
+      
+      <!-- Option 1: Alternate Item -->
+      <div class="rh-alt-choice-group" [class.is-active]="modalService.currentChoice() === 'alternate'">
+        <button type="button" 
+                class="rh-alt-choice-row" 
+                (click)="modalService.setChoice('alternate')" 
+                [attr.aria-pressed]="modalService.currentChoice() === 'alternate'">
+          <span class="rh-alt-radio-circle" [class.is-checked]="modalService.currentChoice() === 'alternate'">
+            <span class="rh-alt-radio-dot"></span>
+          </span>
+          <div class="rh-alt-choice-text">
+            <span class="rh-alt-choice-title">Option 1: Alternate Item</span>
+            <small class="rh-alt-choice-desc">Select 1 in-stock product from the 6 recommendations below to add to your cart:</small>
+          </div>
+          <span class="rh-alt-badge-count" *ngIf="modalService.alternateProducts().length > 0">
+            {{ modalService.alternateProducts().length }} available
+          </span>
+        </button>
+
+        <!-- 6 Alternate Products Grid (Visible under Option 1) -->
+        <div class="rh-alt-products-collapse" *ngIf="modalService.currentChoice() === 'alternate'">
+          <div class="rh-alt-grid" *ngIf="modalService.alternateProducts().length > 0; else noAlternates">
+            <div class="rh-alt-product-card" 
+                 *ngFor="let alt of modalService.alternateProducts()"
+                 [class.is-selected]="modalService.selectedAlternateProductId() === alt.id"
+                 (click)="modalService.selectAlternateProduct(alt)">
+              
+              <!-- Selected Checkmark Badge -->
+              <span class="rh-alt-product-check" *ngIf="modalService.selectedAlternateProductId() === alt.id">
+                <i class="fal fa-check"></i>
+              </span>
+
+              <div class="rh-alt-card-media">
+                <img [src]="alt.image" [alt]="alt.title" loading="lazy">
+                <span class="rh-alt-discount" *ngIf="alt.discountPercent">-{{ alt.discountPercent }}%</span>
+              </div>
+              <div class="rh-alt-card-info">
+                <span class="rh-alt-card-cat">{{ alt.category }}</span>
+                <h5 class="rh-alt-card-title">{{ alt.title }}</h5>
+                <div class="rh-alt-card-pricing">
+                  <span class="rh-alt-card-price">Rs. {{ alt.price | number:'1.0-0' }}</span>
+                  <del *ngIf="alt.oldPrice && alt.oldPrice > alt.price" class="rh-alt-card-old">Rs. {{ alt.oldPrice | number:'1.0-0' }}</del>
+                </div>
+                
+                <button type="button" 
+                        class="rh-alt-select-btn" 
+                        [class.is-active]="modalService.selectedAlternateProductId() === alt.id">
+                  <i class="fal" [class.fa-check-circle]="modalService.selectedAlternateProductId() === alt.id" [class.fa-circle]="modalService.selectedAlternateProductId() !== alt.id"></i>
+                  {{ modalService.selectedAlternateProductId() === alt.id ? 'Selected' : 'Select' }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noAlternates>
+            <div class="rh-alt-empty">
+              <i class="fal fa-box-open"></i>
+              <p>No similar in-stock products found for replacement right now.</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Option 2: Best Match Item -->
+      <div class="rh-alt-choice-group" [class.is-active]="modalService.currentChoice() === 'best-match'">
+        <button type="button" 
+                class="rh-alt-choice-row" 
+                (click)="modalService.setChoice('best-match')" 
+                [attr.aria-pressed]="modalService.currentChoice() === 'best-match'">
+          <span class="rh-alt-radio-circle" [class.is-checked]="modalService.currentChoice() === 'best-match'">
+            <span class="rh-alt-radio-dot"></span>
+          </span>
+          <div class="rh-alt-choice-text">
+            <span class="rh-alt-choice-title">Option 2: Best Match Item</span>
+            <small class="rh-alt-choice-desc">Our expert shopper will select the best available in-stock substitute when packing your order.</small>
+          </div>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <footer class="rh-alt-footer">
+      <button type="button" class="rh-alt-btn-cancel" (click)="modalService.close()">Cancel</button>
+      <button type="button" class="rh-alt-btn-confirm" (click)="modalService.confirmSelection()">
+        <span>{{ modalService.currentChoice() === 'alternate' ? 'Confirm Alternate & Add to Cart' : 'Confirm Best Match & Add to Cart' }}</span>
+      </button>
+    </footer>
+
+  </div>
+</div>

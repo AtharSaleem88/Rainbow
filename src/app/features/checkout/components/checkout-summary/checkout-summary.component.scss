@@ -167,3 +167,35 @@
     padding: 16px;
   }
 }
+
+.rainbow-summary-stock-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.rainbow-summary-oos-pill {
+  display: inline-block;
+  font-size: 0.67rem;
+  font-weight: 700;
+  color: #e11d48;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  padding: 1px 6px;
+  border-radius: 4px;
+  line-height: 1.2;
+}
+
+.rainbow-summary-best-match {
+  display: inline-block;
+  font-size: 0.67rem;
+  font-weight: 750;
+  color: var(--rh-primary);
+  background: rgba(46, 49, 146, 0.08);
+  border: 1px solid rgba(46, 49, 146, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  line-height: 1.2;
+}

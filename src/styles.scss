@@ -8,10 +8,7 @@ html, body, a, button, input, select, textarea, [role="button"] {
 .btn-primary,
 .rainbow-btn-primary,
 .rainbow-checkout-primary,
-.rh-details-btn-cart,
 .rh-schedule-btn-primary,
-.rh-shared-add-button,
-.rh-shared-quantity,
 .rh-auth-submit {
   border: 1px solid var(--rh-primary) !important;
   color: #ffffff !important;
@@ -36,6 +33,37 @@ html, body, a, button, input, select, textarea, [role="button"] {
 
   &:active {
     opacity: 0.9 !important;
+    transform: scale(0.98);
+  }
+}
+
+/* Add to Cart Buttons - Same Primary Color on Both Normal & Hover */
+.rh-shared-add-button,
+.rh-details-btn-cart {
+  border: 1px solid var(--rh-primary) !important;
+  color: #ffffff !important;
+  background: var(--rh-primary) !important;
+  box-shadow: none !important;
+  transition: all 180ms ease !important;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(.rh-btn-out-of-stock):not(.is-out-of-stock) {
+      border-color: var(--rh-primary) !important;
+      color: #ffffff !important;
+      background: var(--rh-primary) !important;
+      box-shadow: 0 4px 14px rgba(46, 49, 146, 0.28) !important;
+      opacity: 0.94;
+    }
+  }
+
+  &:focus-visible {
+    border-color: var(--rh-primary) !important;
+    color: #ffffff !important;
+    background: var(--rh-primary) !important;
+  }
+
+  &:active {
+    opacity: 0.88 !important;
     transform: scale(0.98);
   }
 }
@@ -1072,6 +1100,268 @@ app-root {
 @keyframes rhCaretBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* Clear 'x' Button in Search Bar */
+.rh-search-clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(46, 49, 146, 0.09);
+  color: var(--rh-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+  z-index: 4;
+  padding: 0;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: var(--rh-primary);
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.08);
+  }
+}
+
+.rh-search-wrap input {
+  padding-right: 36px !important;
+}
+
+/* Dynamic Search Dropdown (Theme-styled Blinkit style) */
+.rh-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(46, 49, 146, 0.12);
+  box-shadow: 0 16px 42px rgba(46, 49, 146, 0.14), 0 4px 12px rgba(0, 0, 0, 0.04);
+  z-index: 1050;
+  max-height: min(480px, calc(100vh - 170px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: rhSearchDropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes rhSearchDropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rh-search-section-header {
+  padding: 11px 16px 7px;
+  background: #fafbfe;
+  border-bottom: 1px solid #edf1f8;
+}
+
+.rh-search-header-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rh-search-suggestions-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.rh-search-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #f1f4f9;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: #f4f8fd;
+
+    .rh-search-arrow-box {
+      background: var(--rh-primary);
+      color: #ffffff;
+      transform: scale(1.08);
+    }
+
+    .rh-search-product-action {
+      background: var(--rh-primary);
+      color: #ffffff;
+    }
+  }
+}
+
+.rh-search-item-media {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 10px;
+  background: #f1f4f9;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  border: 1px solid #e5e9f2;
+
+  .rh-search-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  i {
+    font-size: 16px;
+    color: var(--rh-primary);
+  }
+}
+
+.rh-search-item-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.rh-search-intent-text {
+  font-size: 13.5px;
+  color: #1e293b;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.rh-search-keyword {
+  font-weight: 700;
+  color: var(--rh-primary);
+}
+
+.rh-search-in {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.rh-search-target {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.rh-search-parent-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #0284c7;
+  background: rgba(37, 170, 225, 0.10);
+  padding: 1px 7px;
+  border-radius: 4px;
+  margin-top: 2px;
+}
+
+.rh-search-arrow-box {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  border-radius: 50%;
+  background: rgba(46, 49, 146, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 11px;
+  margin-left: 10px;
+  transition: all 0.15s ease;
+}
+
+/* Matching Products Section */
+.rh-search-divider {
+  height: 1px;
+  background: #e9ecf2;
+  margin: 0;
+}
+
+.rh-search-product-media {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #eef1f6;
+  padding: 2px;
+}
+
+.rh-search-product-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rh-search-product-sub {
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.rh-search-product-action {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--rh-primary);
+  background: rgba(46, 49, 146, 0.07);
+  padding: 4px 10px;
+  border-radius: 14px;
+  white-space: nowrap;
+  margin-left: 10px;
+  transition: all 0.15s ease;
+}
+
+/* Footer: See all results */
+.rh-search-dropdown-footer {
+  padding: 10px 16px;
+  background: #fafbfe;
+  border-top: 1px solid #edf1f8;
+}
+
+.rh-search-footer-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rh-primary);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(37, 170, 225, 0.09);
+    color: var(--rh-secondary);
+  }
 }
 
 /* Responsive navigation adjustments */

@@ -32,8 +32,9 @@ export class CartService {
         rating: 4.9,
         reviewCount: 52,
         image: 'assets/images/ultra_fresh/Yogurt.jpg',
-        inStock: true
+        inStock: false
       },
+      outOfStockChoice: 'best-match',
       quantity: 1,
       variant: { id: '500g', label: '500 g', price: 150 }
     }
@@ -70,7 +71,7 @@ export class CartService {
     return Number(item.product.id) === Number(productId) && itemVarId === targetVarId;
   }
 
-  addToCart(product: Product, quantity: number = 1, variant?: ProductVariant) {
+  addToCart(product: Product, quantity: number = 1, variant?: ProductVariant, outOfStockChoice?: 'best-match' | 'specific' | 'notify') {
     const current = this.cartItems();
     const targetVarId = variant?.id ?? null;
     const existingIndex = current.findIndex(item => this.isSameItem(item, product.id, targetVarId));
@@ -79,11 +80,12 @@ export class CartService {
       const updated = [...current];
       updated[existingIndex] = {
         ...updated[existingIndex],
-        quantity: updated[existingIndex].quantity + quantity
+        quantity: updated[existingIndex].quantity + quantity,
+        ...(outOfStockChoice ? { outOfStockChoice } : {})
       };
       this.cartItems.set(updated);
     } else {
-      this.cartItems.set([...current, { product, quantity, ...(variant ? { variant } : {}) }]);
+      this.cartItems.set([...current, { product, quantity, ...(variant ? { variant } : {}), ...(outOfStockChoice ? { outOfStockChoice } : {}) }]);
     }
   }
 

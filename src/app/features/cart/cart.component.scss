@@ -203,6 +203,39 @@
   font-size: 0.78rem;
 }
 
+.rainbow-cart-stock-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
+
+.rainbow-cart-out-of-stock-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+  font-size: 0.70rem;
+  font-weight: 700;
+  border-radius: 5px;
+  line-height: 1.25;
+}
+
+.rainbow-cart-best-match-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(46, 49, 146, 0.08);
+  border: 1px solid rgba(46, 49, 146, 0.2);
+  color: var(--rh-primary);
+  font-size: 0.70rem;
+  font-weight: 750;
+  border-radius: 5px;
+  line-height: 1.25;
+}
+
 .rainbow-cart-product-details h3 {
   margin: 3px 0 4px;
   font-size: 1rem;

@@ -35,9 +35,13 @@
               <img [src]="item.product.image" [alt]="item.product.title" loading="lazy" decoding="async">
             </a>
             <div class="rainbow-cart-product-details">
-              <span class="rainbow-cart-product-category">{{ item.product.category }}</span>
+              <span class="rainbow-cart-product-category mb-1">{{ item.product.category }}</span>
               <h3><a [routerLink]="['/products', item.product.id]">{{ item.product.title }}</a></h3>
               <span class="rainbow-cart-product-unit" *ngIf="item.variant?.label || item.product.additionalInfo?.['Weight'] || item.product.additionalInfo?.['Volume'] || item.product.additionalInfo?.['Quantity']">{{ item.variant?.label || item.product.additionalInfo?.['Weight'] || item.product.additionalInfo?.['Volume'] || item.product.additionalInfo?.['Quantity'] }}</span>
+              <div class="rainbow-cart-stock-badges" *ngIf="!item.product.inStock">
+                <span class="rainbow-cart-out-of-stock-pill">Out of stock</span>
+                <span class="rainbow-cart-best-match-pill" *ngIf="!item.product.inStock || item.outOfStockChoice === 'best-match'">Best Match Selected</span>
+              </div>
               <button type="button" class="rainbow-cart-remove" (click)="removeItem(item.product.id, item.variant?.id)"><i class="fal fa-trash-alt" aria-hidden="true"></i> Remove</button>
             </div>
             <div class="rainbow-cart-item-actions">
@@ -50,14 +54,6 @@
                 <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-0' }}</strong>
                 <del *ngIf="((item.variant?.oldPrice ?? item.product.oldPrice) || 0) > (item.variant?.price ?? item.product.price)">Rs. {{ ((item.variant?.oldPrice ?? item.product.oldPrice) ?? 0) * item.quantity | number:'1.0-0' }}</del>
               </div>
-            </div>
-            <div class="rainbow-cart-instructions">
-              <span class="rainbow-cart-instructions-label">Item instructions</span>
-              <button type="button" class="rainbow-cart-instruction-link" (click)="openInstructions(item)">
-                <i class="fal fa-sync-alt" aria-hidden="true"></i>
-                <span><strong>If out of stock:</strong> {{ item.outOfStockChoice === 'notify' ? 'Notify me' : item.outOfStockChoice === 'specific' ? 'Replacement chosen' : 'Replace with best match' }}<small *ngIf="item.outOfStockChoice === 'specific'">{{ item.replacementProductIds?.length || 0 }} selected · Modify</small><small *ngIf="item.outOfStockChoice !== 'specific'">Modify</small></span>
-                <i class="fal fa-chevron-right" aria-hidden="true"></i>
-              </button>
             </div>
           </article>
         </section>
@@ -97,17 +93,4 @@
       </aside>
     </div>
   </div>
-
-  <!-- Out of Stock Item Instructions Modal -->
-  <app-cart-instructions-modal
-    *ngIf="instructionProductId() !== null"
-    [selectedItem]="selectedInstructionItem()"
-    [replacementOptions]="selectedInstructionItem() ? replacementOptions(selectedInstructionItem()!) : []"
-    [choice]="instructionChoice()"
-    [replacementIds]="replacementIds()"
-    (close)="closeInstructions()"
-    (choiceChange)="setInstructionChoice($event)"
-    (toggleReplacement)="toggleReplacement($event)"
-    (save)="saveInstructions()">
-  </app-cart-instructions-modal>
 </section>

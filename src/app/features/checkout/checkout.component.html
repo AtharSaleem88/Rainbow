@@ -457,7 +457,10 @@
             <div class="rainbow-payment-receipt-items" aria-label="Ordered items">
               <div *ngFor="let item of checkoutItems(); trackBy: trackByCartItem" class="rainbow-payment-receipt-item">
                 <span class="rainbow-payment-receipt-quantity">{{ item.quantity }}x</span>
-                <span class="rainbow-payment-receipt-item-name">{{ item.product.title }}<small *ngIf="item.variant?.label">{{ item.variant.label }}</small></span>
+                <span class="rainbow-payment-receipt-item-name">{{ item.product.title }}<small *ngIf="item.variant?.label">{{ item.variant.label }}</small><div class="d-flex align-items-center gap-1 mt-1" *ngIf="!item.product.inStock || item.outOfStockChoice === 'best-match'">
+                    <span class="badge badge-light text-danger border border-danger font-weight-normal py-0 px-1" style="font-size: 10px;">Out of stock</span>
+                    <span class="badge badge-light text-primary border border-primary font-weight-normal py-0 px-1" style="font-size: 10px;">Best Match Selected</span>
+                  </div></span>
                 <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-2' }}</strong>
               </div>
             </div>

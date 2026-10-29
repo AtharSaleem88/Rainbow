@@ -70,13 +70,15 @@ export class HomeComponent implements OnInit {
       theme: 'rh-hero-electronics',
       eyebrow: 'SMARTER EVERYDAY',
       hasSparkle: false,
-      title: 'Electronics & Gadgets',
-      description: 'Smart accessories and everyday tech essentials.',
-      ctaText: 'Explore Collection',
-      image: 'assets/images/rainbow-electronics-banner.png',
-      imageAlt: 'Modern everyday electronics including headphones, a phone, and a smartwatch',
+      title: 'Smart Solutions Have Arrived',
+      description: 'Massagers | Health Robot | Cleaning Robot',
+      ctaText: 'Buy Now',
+      image: 'assets/images/1430x340px.png',
+      mobileImage: 'assets/images/402x275px.png',
+      imageAlt: 'Smart Solutions Have Arrived — Massagers, Health Robot, Cleaning Robot',
       link: '/shop',
-      queryParams: { category: 'home-office' }
+      queryParams: { category: 'home-office' },
+      hideCopy: true
     },
     {
       id: 'health-beauty',

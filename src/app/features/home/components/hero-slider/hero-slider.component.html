@@ -1,8 +1,8 @@
 <section class="rh-hero-section" aria-label="Featured category showcases">
-  <div class="container maxw_1460">
+  <div class="container maxw_1430">
     <div
       class="rh-hero-frame"
-      [ngClass]="slides[currentHeroIndex()]?.theme"
+      [ngClass]="slides[currentHeroIndex()].theme"
       (mouseenter)="stopHeroSlider()"
       (mouseleave)="startHeroSlider()"
       (focusin)="stopHeroSlider()"
@@ -13,27 +13,39 @@
         *ngFor="let slide of slides; let i = index"
         class="rh-hero-slide rh-hero-banner-slide"
         [class.rh-hero-active]="currentHeroIndex() === i"
+        [class.rh-hero-standalone]="slide.hideCopy"
         [ngClass]="slide.theme"
         [attr.aria-hidden]="currentHeroIndex() !== i"
         role="group"
         aria-roledescription="slide"
         [attr.aria-label]="(i + 1) + ' of ' + slides.length">
-        <img
-          class="rh-hero-banner-image"
-          [src]="slide.image"
-          [alt]="slide.imageAlt"
-          [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
-          [attr.loading]="i === 0 ? 'eager' : 'lazy'"
-          decoding="async">
-        <span class="rh-hero-banner-shade" aria-hidden="true"></span>
+        <picture class="rh-hero-banner-picture">
+          <source *ngIf="slide.mobileImage" media="(max-width: 767px)" [srcset]="slide.mobileImage">
+          <img
+            class="rh-hero-banner-image"
+            [src]="slide.image"
+            [alt]="slide.imageAlt"
+            [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
+            [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+            decoding="async">
+        </picture>
+        <span *ngIf="!slide.hideCopy" class="rh-hero-banner-shade" aria-hidden="true"></span>
 
-        <div class="rh-hero-copy">
+        <div class="rh-hero-copy" *ngIf="!slide.hideCopy">
           <h2 class="rh-hero-heading">{{ slide.title }}</h2>
           <p class="rh-hero-sub" *ngIf="slide.description">{{ slide.description }}</p>
           <a [routerLink]="slide.link" [queryParams]="slide.queryParams" class="rh-hero-cta">
             {{ slide.ctaText }} <i class="fal fa-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
+
+        <a
+          *ngIf="slide.hideCopy"
+          [routerLink]="slide.link"
+          [queryParams]="slide.queryParams"
+          class="rh-hero-full-link"
+          [attr.aria-label]="slide.imageAlt">
+        </a>
       </article>
 
       <div class="rh-hero-controls" aria-label="Hero slider controls">

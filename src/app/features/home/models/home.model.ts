@@ -9,9 +9,11 @@ export interface HeroSlide {
   description: string;
   ctaText: string;
   image: string;
+  mobileImage?: string;
   imageAlt: string;
   link: string;
   queryParams?: Params;
+  hideCopy?: boolean;
 }
 
 export interface SpotlightCategory {

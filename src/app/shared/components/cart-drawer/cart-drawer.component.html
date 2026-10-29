@@ -25,9 +25,15 @@
         <img [src]="item.product.image" [alt]="item.product.title" loading="lazy">
       </a>
       <div class="rh-drawer-item-copy">
-        <small>{{ item.product.category }}</small>
+        <div class="rh-drawer-cat-row">
+          <small>{{ item.product.category }}</small>
+        </div>
         <h3>{{ item.product.title }}</h3>
         <span class="rh-drawer-price">Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-0' }} <del *ngIf="((item.variant?.oldPrice ?? item.product.oldPrice) || 0) > (item.variant?.price ?? item.product.price)">Rs. {{ ((item.variant?.oldPrice ?? item.product.oldPrice) ?? 0) * item.quantity | number:'1.0-0' }}</del><small *ngIf="item.variant?.label">{{ item.variant?.label }}</small></span>
+        <div class="rh-drawer-stock-badges" *ngIf="!item.product.inStock">
+          <span class="rh-drawer-out-of-stock-pill">Out of stock</span>
+          <span class="rh-drawer-best-match-pill" *ngIf="!item.product.inStock || item.outOfStockChoice === 'best-match'">Best Match Selected</span>
+        </div>
       </div>
       <div class="rh-drawer-item-controls">
         <div class="rh-drawer-quantity" [attr.aria-label]="'Quantity for ' + item.product.title">
@@ -36,14 +42,6 @@
           <button type="button" (click)="updateQty(item.product.id, item.quantity + 1, item.variant?.id)" [attr.aria-label]="'Add one ' + item.product.title">+</button>
         </div>
         <button type="button" class="rh-drawer-remove" (click)="removeItem(item.product.id, item.variant?.id)" [attr.aria-label]="'Remove ' + item.product.title"><i class="fal fa-trash-alt" aria-hidden="true"></i></button>
-      </div>
-      <div class="rh-drawer-instructions">
-        <small>Item instructions</small>
-        <button type="button" (click)="openInstructions(item)">
-          <i class="fal fa-sync-alt" aria-hidden="true"></i>
-          <span><strong>If out of stock:</strong> {{ item.outOfStockChoice === 'notify' ? 'Notify me' : item.outOfStockChoice === 'specific' ? 'Replacement chosen' : 'Replace with best match' }}<small *ngIf="item.outOfStockChoice === 'specific'">{{ item.replacementProductIds?.length || 0 }} selected · Modify</small><small *ngIf="item.outOfStockChoice !== 'specific'">Modify</small></span>
-          <i class="fal fa-chevron-right" aria-hidden="true"></i>
-        </button>
       </div>
     </article>
   </div>
@@ -62,33 +60,3 @@
     <a routerLink="/checkout" class="rh-drawer-checkout" (click)="onClose()">Proceed to checkout <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
   </footer>
 </aside>
-
-<div class="rh-replacement-backdrop" *ngIf="instructionProductId() !== null" (click)="closeInstructions()">
-  <section class="rh-replacement-dialog" role="dialog" aria-modal="true" aria-labelledby="rh-replacement-title" (click)="$event.stopPropagation()">
-    <ng-container *ngIf="selectedInstructionItem() as selectedItem">
-      <header class="rh-replacement-product">
-        <img [src]="selectedItem.product.image" [alt]="selectedItem.product.title">
-        <div><strong>{{ selectedItem.product.title }}</strong><span>{{ selectedItem.quantity }} {{ selectedItem.quantity === 1 ? 'item' : 'items' }}<ng-container *ngIf="selectedItem.variant?.label"> · {{ selectedItem.variant?.label }}</ng-container> · Rs. {{ selectedItem.variant?.price ?? selectedItem.product.price | number:'1.0-0' }} each</span></div>
-        <button type="button" class="rh-replacement-close" aria-label="Close" (click)="closeInstructions()"><i class="fal fa-times" aria-hidden="true"></i></button>
-      </header>
-      <h2 id="rh-replacement-title">If out of stock…</h2>
-      <div class="rh-replacement-choices">
-        <div class="rh-replacement-choice rh-replacement-choice-specific" [class.is-selected]="instructionChoice() === 'specific'">
-          <button type="button" class="rh-replacement-choice-button" (click)="setInstructionChoice('specific')"><span class="rh-choice-radio" [class.is-checked]="instructionChoice() === 'specific'"></span><span><strong>Replace with specific item</strong><small>Choose up to 3 replacement options</small></span></button>
-          <div class="rh-replacement-products" *ngIf="instructionChoice() === 'specific'">
-            <button type="button" class="rh-replacement-option" *ngFor="let product of replacementOptions(selectedItem)" [class.is-selected]="replacementIds().includes(product.id)" [attr.aria-pressed]="replacementIds().includes(product.id)" (click)="toggleReplacement(product.id)">
-              <span class="rh-replacement-check"><i class="fal fa-check" aria-hidden="true"></i></span>
-              <span class="rh-replacement-option-image"><img [src]="product.image" [alt]="product.title" loading="lazy"></span>
-              <strong>{{ product.title }}</strong><span>Rs. {{ product.price | number:'1.0-0' }}</span>
-            </button>
-            <p class="rh-replacement-empty" *ngIf="replacementOptions(selectedItem).length === 0">No in-stock alternatives are available right now. Choose another option below.</p>
-          </div>
-          <small class="rh-replacement-count" *ngIf="instructionChoice() === 'specific'">{{ replacementIds().length }} of 3 selected</small>
-        </div>
-        <button type="button" class="rh-replacement-choice" [class.is-selected]="instructionChoice() === 'best-match'" (click)="setInstructionChoice('best-match')"><span class="rh-choice-radio" [class.is-checked]="instructionChoice() === 'best-match'"></span><span><strong>Replace with best match</strong><small>Your shopper will look for the most similar item.</small></span></button>
-        <button type="button" class="rh-replacement-choice" [class.is-selected]="instructionChoice() === 'notify'" (click)="setInstructionChoice('notify')"><span class="rh-choice-radio" [class.is-checked]="instructionChoice() === 'notify'"></span><span><strong>Notify me</strong><small>Please notify me if this item is out of stock.</small></span></button>
-      </div>
-      <footer class="rh-replacement-footer"><button type="button" class="rh-replacement-cancel" (click)="closeInstructions()">Cancel</button><button type="button" class="rh-replacement-save" [disabled]="instructionChoice() === 'specific' && replacementIds().length === 0" (click)="saveInstructions()">Save instructions</button></footer>
-    </ng-container>
-  </section>
-</div>

@@ -1,17 +1,16 @@
-import { Component, computed, effect, inject, signal, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { LoyaltyService } from '../../core/services/loyalty.service';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
-import { CartItem, Product } from '../../core/models/product.model';
-import { CartInstructionsModalComponent } from './components/cart-instructions-modal/cart-instructions-modal.component';
+import { CartItem } from '../../core/models/product.model';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule, CartInstructionsModalComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
@@ -20,22 +19,6 @@ export class CartComponent implements OnInit {
   readonly loyaltyService = inject(LoyaltyService);
   private readonly productService = inject(ProductService);
   private readonly seoService = inject(SeoService);
-  readonly instructionProductId = signal<number | null>(null);
-  readonly instructionVariantId = signal<string | null>(null);
-  readonly instructionChoice = signal<NonNullable<CartItem['outOfStockChoice']>>('best-match');
-  readonly replacementIds = signal<number[]>([]);
-  readonly hasUnavailableItems = computed(() => this.cartService.cartItems().some(item => !item.product.inStock));
-  private readonly promptedUnavailable = new Set<string>();
-
-  constructor() {
-    effect(() => {
-      const unavailable = this.cartService.cartItems().find(item => !item.product.inStock && !item.outOfStockChoice && !this.promptedUnavailable.has(this.itemKey(item)));
-      if (unavailable) {
-        this.promptedUnavailable.add(this.itemKey(unavailable));
-        queueMicrotask(() => this.openInstructions(unavailable));
-      }
-    });
-  }
 
   ngOnInit(): void {
     this.seoService.setPageTitle('Shopping Cart');
@@ -60,50 +43,6 @@ export class CartComponent implements OnInit {
 
   clearAll() {
     this.cartService.clearCart();
-  }
-
-  replacementOptions(item: CartItem): Product[] {
-    const available = this.productService.getProducts().filter(product => product.inStock && product.id !== item.product.id);
-    const sameCategory = available.filter(product => product.categorySlug === item.product.categorySlug);
-    const recommendations = [...sameCategory, ...available.filter(product => product.categorySlug !== item.product.categorySlug)];
-    return recommendations.slice(0, 3);
-  }
-
-  openInstructions(item: CartItem) {
-    this.instructionChoice.set(item.outOfStockChoice ?? 'best-match');
-    this.replacementIds.set(item.replacementProductIds ?? []);
-    this.instructionVariantId.set(item.variant?.id ?? null);
-    this.instructionProductId.set(item.product.id);
-  }
-
-  closeInstructions() {
-    this.instructionProductId.set(null);
-  }
-
-  setInstructionChoice(choice: NonNullable<CartItem['outOfStockChoice']>) {
-    this.instructionChoice.set(choice);
-  }
-
-  toggleReplacement(productId: number) {
-    const current = this.replacementIds();
-    if (current.includes(productId)) {
-      this.replacementIds.set(current.filter(id => id !== productId));
-    } else if (current.length < 3) {
-      this.replacementIds.set([...current, productId]);
-    }
-  }
-
-  saveInstructions() {
-    const productId = this.instructionProductId();
-    if (productId === null) return;
-    if (this.instructionChoice() === 'specific' && this.replacementIds().length === 0) return;
-    this.cartService.saveOutOfStockInstruction(productId, this.instructionChoice(), this.replacementIds(), this.instructionVariantId() ?? undefined);
-    this.closeInstructions();
-  }
-
-  selectedInstructionItem(): CartItem | undefined {
-    const id = this.instructionProductId();
-    return this.cartService.cartItems().find(item => item.product.id === id && (item.variant?.id ?? null) === this.instructionVariantId());
   }
 
   trackByCartItem = (_index: number, item: CartItem): string => this.itemKey(item);

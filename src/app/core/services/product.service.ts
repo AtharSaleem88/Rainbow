@@ -119,7 +119,7 @@ export class ProductService {
       image: 'assets/images/ultra_fresh/Palak.jpg',
       description: 'Washed and ready-to-cook leafy spinach packed with essential minerals and vitamins.',
       additionalInfo: { 'Weight': '250g Bunch', 'Organic': 'Yes' },
-      inStock: true
+      inStock: false
     },
     {
       id: 105,
@@ -191,7 +191,7 @@ export class ProductService {
       image: 'assets/images/ultra_fresh/shaljum.webp',
       description: 'Tender white turnips sourced directly from local agricultural yields.',
       additionalInfo: { 'Weight': '500g' },
-      inStock: true
+      inStock: false
     },
     {
       id: 109,

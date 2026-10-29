@@ -1,11 +1,15 @@
-<article class="rh-shared-product-card" [class.rh-shared-product-list]="viewMode === 'list'" [class.rh-no-section-label]="!showSectionLabel">
+<article class="rh-shared-product-card" [class.rh-shared-product-list]="viewMode === 'list'" [class.rh-no-section-label]="!showSectionLabel" [class.is-out-of-stock]="!product.inStock">
   <div class="rh-shared-card-top">
     <span *ngIf="showSectionLabel" class="rh-shared-section-tag">{{ sectionTag }}</span>
+    <span *ngIf="!product.inStock" class="rh-shared-stock-tag"><i class="fal fa-ban"></i> Out of stock</span>
     <button type="button" class="rh-shared-favorite" [class.active]="favorite()" [attr.aria-pressed]="favorite()" [attr.aria-label]="(favorite() ? 'Remove ' : 'Add ') + product.title + ' from favorites'" (click)="toggleFavorite($event)"><i class="fal fa-heart" aria-hidden="true"></i></button>
   </div>
 
   <a [routerLink]="['/products', product.id]" class="rh-shared-product-image" [attr.aria-label]="'View ' + product.title">
     <span *ngIf="sectionLabel === 'Monthly Deals' && displayDiscountPercent as discount" class="rh-shared-discount-badge">{{ discount }}% OFF</span>
+    <div *ngIf="!product.inStock" class="rh-shared-image-stock-badge" (click)="openAlternateModal($event)" title="Select replacement option">
+      <span>OUT OF STOCK</span>
+    </div>
     <img [src]="product.image" [alt]="product.title" loading="lazy" decoding="async">
   </a>
 
@@ -17,9 +21,23 @@
     </div>
     <div class="rh-shared-price-row"><strong>Rs. {{ displayPrice | number:'1.0-0' }}</strong><del *ngIf="displayOldPrice">Rs. {{ displayOldPrice | number:'1.0-0' }}</del></div>
 
-    <button *ngIf="cartQuantity === 0; else cartQuantityControl" type="button" class="rh-shared-add-button" (click)="addToCart($event)"><i class="fal fa-shopping-bag" aria-hidden="true"></i> ADD</button>
+    <button *ngIf="!product.inStock" 
+            type="button" 
+            class="rh-shared-add-button rh-btn-alternate" 
+            (click)="openAlternateModal($event)" 
+            title="Select replacement option">
+      <ng-container *ngIf="alternateModalService.getSelection(product.id) as sel; else noSelection">
+        <i class="fal fa-check me-1" aria-hidden="true"></i>
+        <span class="rh-alt-btn-text">{{ sel.type === 'alternate' ? 'Alternate Selected' : 'Best Match Selected' }}</span>
+        <small class="rh-alt-btn-change ms-1">(Change)</small>
+      </ng-container>
+      <ng-template #noSelection>
+        <i class="fal fa-exchange-alt me-1" aria-hidden="true"></i> ALTERNATE
+      </ng-template>
+    </button>
+    <button *ngIf="product.inStock && cartQuantity === 0; else cartQuantityControl" type="button" class="rh-shared-add-button" (click)="addToCart($event)"><i class="fal fa-shopping-bag" aria-hidden="true"></i> ADD</button>
     <ng-template #cartQuantityControl>
-      <div class="rh-shared-quantity" [attr.aria-label]="'Quantity of ' + product.title + ' in cart'">
+      <div *ngIf="product.inStock" class="rh-shared-quantity" [attr.aria-label]="'Quantity of ' + product.title + ' in cart'">
         <button type="button" (click)="changeQuantity($event, -1)" [attr.aria-label]="'Remove one ' + product.title">−</button>
         <span aria-live="polite">{{ cartQuantity }}</span>
         <button type="button" (click)="changeQuantity($event, 1)" [attr.aria-label]="'Add one ' + product.title">+</button>

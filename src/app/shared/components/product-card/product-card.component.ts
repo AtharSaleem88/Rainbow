@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Product, ProductVariant } from '../../../core/models/product.model';
 import { CartService } from '../../../core/services/cart.service';
+import { AlternateModalService } from '../../../core/services/alternate-modal.service';
 
 @Component({
   selector: 'app-product-card',
@@ -19,8 +20,17 @@ export class ProductCardComponent implements OnChanges {
   @Output() quickView = new EventEmitter<Product>();
 
   cartService = inject(CartService);
+  alternateModalService = inject(AlternateModalService);
   favorite = signal(false);
   selectedVariantId = signal<string | null>(null);
+
+  openAlternateModal(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    this.alternateModalService.open(this.product);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['product']) this.selectedVariantId.set(this.product.variants?.[0]?.id ?? null);

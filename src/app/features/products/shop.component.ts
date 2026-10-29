@@ -98,7 +98,11 @@ export class ShopComponent implements OnInit {
       } else {
         this.selectedBrand.set('');
       }
-      this.selectedSubCategory.set('');
+      if (params['subCategory']) {
+        this.selectedSubCategory.set(params['subCategory']);
+      } else {
+        this.selectedSubCategory.set('');
+      }
       this.selectedSubSubCategory.set('');
       if (params['q']) {
         this.searchQuery.set(params['q']);

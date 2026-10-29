@@ -1,10 +1,11 @@
-import { Component, signal, HostListener, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, computed, HostListener, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { ProductService } from '../../core/services/product.service';
 import { AuthService } from '../../core/services/auth.service';
+import { Product } from '../../core/models/product.model';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isScrolled = signal<boolean>(false);
   isDeptOpen = signal<boolean>(false);
   searchQuery = signal<string>('');
+  isSearchDropdownOpen = signal<boolean>(false);
   readonly availableLocations = [
     { id: 'lahore', name: 'Lahore', address: 'Lahore Main', city: 'Lahore' },
     { id: 'islamabad', name: 'Islamabad', address: 'Blue Area', city: 'Islamabad' },
@@ -109,6 +111,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.startSuggestionAnimation();
+    if (typeof window !== 'undefined') {
+      this.isScrolled.set(window.scrollY > 25);
+    }
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (typeof window !== 'undefined') {
+      this.isScrolled.set(window.scrollY > 25);
+    }
   }
 
   ngOnDestroy() {
@@ -135,26 +147,176 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  readonly searchSuggestionsData = computed(() => {
+    const rawQuery = this.searchQuery().trim();
+    const query = rawQuery.toLowerCase();
+    const allProducts = this.productService.getProducts();
+    const allCategories = this.categories;
+
+    if (!query) {
+      return {
+        hasQuery: false,
+        categorySuggestions: allCategories.slice(0, 8).map(cat => ({
+          term: cat.name,
+          targetName: cat.name,
+          categoryName: cat.name,
+          categorySlug: cat.slug,
+          subCategory: undefined as string | undefined,
+          icon: cat.icon || 'fa-th-large',
+          image: cat.image
+        })),
+        productSuggestions: [] as Product[]
+      };
+    }
+
+    // 1. Categories & Subcategories suggestions (Asks which category or subcategory you wanna go)
+    // Dynamic matching like Blinkit: "milk in Flavoured & Cold Milk", "milk in Dairy, Bread & Eggs", etc.
+    const categoryMatches: {
+      term: string;
+      targetName: string;
+      categoryName: string;
+      categorySlug: string;
+      subCategory?: string;
+      icon?: string;
+      image?: string;
+    }[] = [];
+
+    const seenKeys = new Set<string>();
+
+    // A. Specific Subcategory matches
+    for (const p of allProducts) {
+      if (p.subCategory) {
+        const subLower = p.subCategory.toLowerCase();
+        const titleLower = p.title.toLowerCase();
+        if (subLower.includes(query) || titleLower.includes(query)) {
+          const key = `sub:${p.subCategory.toLowerCase()}`;
+          if (!seenKeys.has(key)) {
+            const cat = allCategories.find(c => c.slug === p.categorySlug);
+            categoryMatches.push({
+              term: rawQuery,
+              targetName: p.subCategory,
+              categoryName: cat?.name || p.category,
+              categorySlug: p.categorySlug,
+              subCategory: p.subCategory,
+              icon: cat?.icon,
+              image: p.image || cat?.image
+            });
+            seenKeys.add(key);
+          }
+        }
+      }
+    }
+
+    // B. Direct Category name matches
+    for (const cat of allCategories) {
+      if (cat.name.toLowerCase().includes(query)) {
+        const key = `cat:${cat.slug}`;
+        if (!seenKeys.has(key)) {
+          categoryMatches.push({
+            term: rawQuery,
+            targetName: cat.name,
+            categoryName: cat.name,
+            categorySlug: cat.slug,
+            icon: cat.icon,
+            image: cat.image
+          });
+          seenKeys.add(key);
+        }
+      }
+    }
+
+    // C. Categories containing matching products -> "Query in Category"
+    for (const product of allProducts) {
+      const titleMatch = product.title.toLowerCase().includes(query);
+      const brandMatch = product.brand?.toLowerCase().includes(query);
+
+      if (titleMatch || brandMatch) {
+        const key = `cat:${product.categorySlug}`;
+        if (!seenKeys.has(key)) {
+          const cat = allCategories.find(c => c.slug === product.categorySlug);
+          categoryMatches.push({
+            term: rawQuery,
+            targetName: cat?.name || product.category,
+            categoryName: cat?.name || product.category,
+            categorySlug: product.categorySlug,
+            icon: cat?.icon,
+            image: cat?.image || product.image
+          });
+          seenKeys.add(key);
+        }
+      }
+    }
+
+    // Fallback if no specific category matched
+    if (categoryMatches.length === 0 && allCategories.length > 0) {
+      const first = allCategories[0];
+      categoryMatches.push({
+        term: rawQuery,
+        targetName: first.name,
+        categoryName: first.name,
+        categorySlug: first.slug,
+        icon: first.icon,
+        image: first.image
+      });
+    }
+
+    // 2. Direct Matching Products (thumbnails & titles)
+    const productMatches = allProducts.filter(p =>
+      p.title.toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query) ||
+      (p.subCategory && p.subCategory.toLowerCase().includes(query)) ||
+      (p.brand && p.brand.toLowerCase().includes(query))
+    ).slice(0, 5);
+
+    return {
+      hasQuery: true,
+      categorySuggestions: categoryMatches.slice(0, 5),
+      productSuggestions: productMatches
+    };
+  });
+
   onInputFocus() {
     this.isInputFocused.set(true);
+    this.isSearchDropdownOpen.set(true);
   }
 
   onInputBlur() {
     this.isInputFocused.set(false);
   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isScrolled.set(window.scrollY > 100);
+  onSearchInputChange(val: string) {
+    this.searchQuery.set(val);
+    if (!this.isSearchDropdownOpen()) {
+      this.isSearchDropdownOpen.set(true);
+    }
   }
 
-  toggleDept() {
-    this.isDeptOpen.set(!this.isDeptOpen());
+  clearSearch(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    this.searchQuery.set('');
+  }
+
+  selectCategorySuggestion(catSlug: string, query?: string, subCategory?: string) {
+    this.isSearchDropdownOpen.set(false);
+    const queryParams: any = {};
+    if (catSlug) queryParams.category = catSlug;
+    if (subCategory) queryParams.subCategory = subCategory;
+    if (query) queryParams.q = query;
+    this.router.navigate(['/shop'], { queryParams });
+  }
+
+  selectProductSuggestion(productId: number) {
+    this.isSearchDropdownOpen.set(false);
+    this.router.navigate(['/products', productId]);
   }
 
   onSearch() {
     if (this.searchQuery().trim()) {
-      this.router.navigate(['/shop'], { queryParams: { q: this.searchQuery() } });
+      this.isSearchDropdownOpen.set(false);
+      this.router.navigate(['/shop'], { queryParams: { q: this.searchQuery().trim() } });
     }
   }
 
@@ -187,10 +349,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isDetectingLocation.set(false);
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement | null;
+    if (target && !target.closest('.rh-search-wrap')) {
+      this.isSearchDropdownOpen.set(false);
+    }
+  }
+
   @HostListener('document:keydown.escape')
   onEscape() {
     if (this.isLocationDropdownOpen()) this.closeLocationDropdown();
     if (this.isScheduleModalOpen()) this.closeScheduleModal();
+    if (this.isSearchDropdownOpen()) this.isSearchDropdownOpen.set(false);
   }
 
   detectLocation(event?: Event) {

@@ -11,6 +11,10 @@
       <div class="rainbow-summary-info">
         <strong>{{ item.product.title }}</strong>
         <span class="rainbow-summary-variant" *ngIf="item.variant?.label">{{ item.variant?.label }}</span>
+        <div class="rainbow-summary-stock-badges" *ngIf="!item.product.inStock">
+          <span class="rainbow-summary-oos-pill">Out of stock</span>
+          <span class="rainbow-summary-best-match" *ngIf="!item.product.inStock || item.outOfStockChoice === 'best-match'">Best Match Selected</span>
+        </div>
       </div>
       <div class="rainbow-summary-price">
         <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-0' }}</strong>

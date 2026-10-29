@@ -39,6 +39,8 @@
         <!-- Brand & Stock Row -->
         <div class="rh-details-meta">
           <span class="rh-details-brand"><i class="fal fa-store"></i> Brand: <strong>{{ p.brand }}</strong></span>
+          <span class="rh-details-stock-badge is-out-of-stock" *ngIf="!p.inStock"><i class="fal fa-ban"></i> Out of stock</span>
+          <span class="rh-details-stock-badge is-in-stock" *ngIf="p.inStock"><i class="fal fa-check-circle"></i> In stock</span>
         </div>
         <!-- Vertical Feature Badges/Tags -->
         <div class="rh-details-tags">
@@ -72,19 +74,37 @@
         <!-- Description Snippet -->
         <!-- Quantity & CTA Actions -->
         <div class="rh-details-actions">
-          <button *ngIf="cartQuantity === 0; else cartQuantityControl" 
-                  type="button" 
-                  class="rh-details-btn-cart" 
-                  (click)="addToCart()">
-            <i class="fal fa-shopping-bag" aria-hidden="true"></i> ADD
-          </button>
+          <ng-container *ngIf="p.inStock; else outOfStockDetailsBtn">
+            <button *ngIf="cartQuantity === 0; else cartQuantityControl" 
+                    type="button" 
+                    class="rh-details-btn-cart"
+                    (click)="addToCart()">
+              <i class="fal fa-shopping-bag" aria-hidden="true"></i> ADD
+            </button>
 
-          <ng-template #cartQuantityControl>
-            <div class="rh-details-qty" [attr.aria-label]="'Quantity in cart'">
-              <button type="button" (click)="changeQuantity(-1)" aria-label="Decrease quantity">−</button>
-              <span class="rh-qty-num">{{ cartQuantity }}</span>
-              <button type="button" (click)="changeQuantity(1)" aria-label="Increase quantity">+</button>
-            </div>
+            <ng-template #cartQuantityControl>
+              <div class="rh-details-qty" [attr.aria-label]="'Quantity in cart'">
+                <button type="button" (click)="changeQuantity(-1)" aria-label="Decrease quantity">−</button>
+                <span class="rh-qty-num">{{ cartQuantity }}</span>
+                <button type="button" (click)="changeQuantity(1)" aria-label="Increase quantity">+</button>
+              </div>
+            </ng-template>
+          </ng-container>
+
+          <ng-template #outOfStockDetailsBtn>
+            <button type="button" 
+                    class="rh-details-btn-cart rh-details-btn-alternate" 
+                    (click)="openAlternateModal()" 
+                    title="Choose replacement or change selection">
+              <ng-container *ngIf="alternateModalService.getSelection(p.id) as sel; else noDetailSelection">
+                <i class="fal fa-check me-2" aria-hidden="true"></i>
+                <span class="rh-alt-btn-text">{{ sel.type === 'alternate' ? 'Alternate Selected' : 'Best Match Selected' }}</span>
+                <small class="rh-alt-btn-change ms-2">(Change)</small>
+              </ng-container>
+              <ng-template #noDetailSelection>
+                <i class="fal fa-exchange-alt me-2" aria-hidden="true"></i> ALTERNATE
+              </ng-template>
+            </button>
           </ng-template>
         </div>
 

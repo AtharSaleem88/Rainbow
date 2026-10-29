@@ -187,6 +187,38 @@
   }
 }
 
+.rh-details-stock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 750;
+
+  &.is-out-of-stock {
+      background: #fff1f2;
+      border-color: #fecdd3;
+      color: #e11d48;
+    }
+
+    &.is-alternate {
+      background: rgba(46, 49, 146, 0.08);
+      border-color: rgba(46, 49, 146, 0.2);
+      color: var(--rh-primary);
+    }
+
+  &.is-in-stock {
+    background: #eaf8ee;
+    border: 1px solid #bbf0c8;
+    color: #1e8737;
+  }
+
+  i {
+    font-size: 0.74rem;
+  }
+}
+
 .rh-details-stock {
   display: inline-flex;
   align-items: center;
@@ -355,23 +387,64 @@
     font-size: 1.05rem;
   }
 
-  @media (hover: hover) and (pointer: fine) {
+  &.rh-details-btn-alternate {
+    background: var(--rh-primary) !important;
+    border-color: var(--rh-primary) !important;
+    color: #ffffff !important;
+    font-size: 0.95rem;
+    font-weight: 750;
+
+    i {
+      font-size: 1rem;
+    }
+
+    .rh-alt-btn-change {
+      font-size: 0.8rem;
+      opacity: 0.88;
+      text-decoration: underline;
+      font-weight: 400;
+    }
+
     &:hover {
-      border-color: var(--rh-secondary) !important;
-      color: var(--rh-primary) !important;
-      background: var(--rh-secondary) !important;
-      box-shadow: 0 4px 14px rgba(135, 206, 235, 0.4) !important;
+      background: var(--rh-primary) !important;
+      border-color: var(--rh-primary) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(46, 49, 146, 0.28) !important;
+      opacity: 0.94;
+    }
+  }
+
+  &.is-out-of-stock {
+    background: #64748b !important;
+    border-color: #64748b !important;
+    color: #ffffff !important;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(.is-out-of-stock):not(.rh-details-btn-alternate) {
+      border-color: var(--rh-primary) !important;
+      color: #ffffff !important;
+      background: var(--rh-primary) !important;
+      box-shadow: 0 4px 14px rgba(46, 49, 146, 0.28) !important;
+      opacity: 0.94;
+    }
+
+    &.is-out-of-stock:hover {
+      background: #475569 !important;
+      border-color: #475569 !important;
+      color: #ffffff !important;
+      opacity: 0.95;
     }
   }
 
   &:focus-visible {
-    border-color: var(--rh-secondary) !important;
-    color: var(--rh-primary) !important;
-    background: var(--rh-secondary) !important;
+    border-color: var(--rh-primary) !important;
+    color: #ffffff !important;
+    background: var(--rh-primary) !important;
   }
 
   &:active {
-    opacity: 0.9 !important;
+    opacity: 0.88 !important;
     transform: scale(0.98);
   }
 }

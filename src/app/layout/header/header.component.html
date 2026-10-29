@@ -54,7 +54,7 @@
 			</button>
 		</div>
 
-		<!-- 3. SEARCH (Desktop Flexible Width + Animated Placeholder) -->
+		<!-- 3. SEARCH (Desktop Flexible Width + Animated Placeholder + Dynamic Category Intent Suggestions) -->
 		<div class="rh-hdr-col rh-hdr-search flex-grow-1 mx-2">
 			<form action="#" (submit)="onSearch(); $event.preventDefault();" class="w-100">
 				<div class="rh-search-wrap w-100 position-relative">
@@ -76,13 +76,120 @@
 						</span>
 					</div>
 
-					<input type="search" 
+					<input type="text" 
 					       name="search" 
+					       autocomplete="off"
 					       aria-label="Search your products"
 					       [ngModel]="searchQuery()" 
-					       (ngModelChange)="searchQuery.set($event)"
+					       (ngModelChange)="onSearchInputChange($event)"
 					       (focus)="onInputFocus()"
 					       (blur)="onInputBlur()">
+
+					<!-- Clear 'x' Button -->
+					<button *ngIf="searchQuery()" 
+					        type="button" 
+					        class="rh-search-clear-btn" 
+					        (mousedown)="$event.preventDefault()"
+					        (click)="clearSearch($event)" 
+					        aria-label="Clear search text">
+						<i class="fal fa-times"></i>
+					</button>
+
+					<!-- Dynamic Search Suggestions Dropdown (Blinkit style with Rainbow Theme) -->
+					<div class="rh-search-dropdown" 
+					     *ngIf="isSearchDropdownOpen() && (searchSuggestionsData().categorySuggestions.length > 0 || searchSuggestionsData().productSuggestions.length > 0 || searchSuggestionsData().hasQuery)"
+					     (mousedown)="$event.preventDefault()">
+						
+						<!-- Active Search: Category / Subcategory Intent Routing -->
+						<ng-container *ngIf="searchSuggestionsData().hasQuery">
+							<div class="rh-search-section-header">
+								<span class="rh-search-header-title">Which category or subcategory are you looking for?</span>
+							</div>
+
+							<div class="rh-search-suggestions-list">
+								<button type="button" 
+								        *ngFor="let item of searchSuggestionsData().categorySuggestions" 
+								        class="rh-search-item rh-search-category-item"
+								        (click)="selectCategorySuggestion(item.categorySlug, item.term, item.subCategory)">
+									<div class="rh-search-item-media">
+										<img *ngIf="item.image" [src]="item.image" [alt]="item.targetName" class="rh-search-thumb" (error)="$any($event.target).style.display='none'">
+										<i *ngIf="!item.image" class="fal" [ngClass]="item.icon || 'fa-tag'"></i>
+									</div>
+									<div class="rh-search-item-info">
+										<div class="rh-search-intent-text">
+											<span class="rh-search-keyword">{{ item.term }}</span>
+											<span class="rh-search-in"> in </span>
+											<strong class="rh-search-target">{{ item.targetName }}</strong>
+										</div>
+										<span *ngIf="item.subCategory && item.subCategory !== item.categoryName" class="rh-search-parent-tag">
+											{{ item.categoryName }}
+										</span>
+									</div>
+									<div class="rh-search-arrow-box" aria-hidden="true">
+										<i class="fal fa-arrow-up-left"></i>
+									</div>
+								</button>
+							</div>
+
+							<!-- Matching Products (if any) -->
+							<div *ngIf="searchSuggestionsData().productSuggestions.length > 0" class="rh-search-products-section">
+								<div class="rh-search-divider"></div>
+								<div class="rh-search-section-header">
+									<span class="rh-search-header-title">Matching Products</span>
+								</div>
+								<div class="rh-search-products-list">
+									<button type="button" 
+									        *ngFor="let prod of searchSuggestionsData().productSuggestions" 
+									        class="rh-search-item rh-search-product-item"
+									        (click)="selectProductSuggestion(prod.id)">
+										<div class="rh-search-item-media rh-search-product-media">
+											<img [src]="prod.image" [alt]="prod.title" class="rh-search-thumb" (error)="$any($event.target).style.display='none'">
+										</div>
+										<div class="rh-search-item-info">
+											<div class="rh-search-product-title">{{ prod.title }}</div>
+											<div class="rh-search-product-sub">{{ prod.category }} &bull; Rs. {{ prod.price }}</div>
+										</div>
+										<span class="rh-search-product-action">
+											View <i class="fal fa-angle-right ms-1"></i>
+										</span>
+									</button>
+								</div>
+							</div>
+
+							<!-- Dropdown Footer: See all results -->
+							<div class="rh-search-dropdown-footer">
+								<button type="button" class="rh-search-footer-btn" (click)="onSearch()">
+									<span>See all results for "<strong>{{ searchQuery() }}</strong>"</span>
+									<i class="fal fa-arrow-right ms-2"></i>
+								</button>
+							</div>
+						</ng-container>
+
+						<!-- Empty Query & Focused: Explore Categories -->
+						<ng-container *ngIf="!searchSuggestionsData().hasQuery">
+							<div class="rh-search-section-header">
+								<span class="rh-search-header-title">Explore Categories</span>
+							</div>
+							<div class="rh-search-suggestions-list rh-search-categories-grid">
+								<button type="button" 
+								        *ngFor="let item of searchSuggestionsData().categorySuggestions" 
+								        class="rh-search-item rh-search-category-item"
+								        (click)="selectCategorySuggestion(item.categorySlug)">
+									<div class="rh-search-item-media">
+										<img *ngIf="item.image" [src]="item.image" [alt]="item.targetName" class="rh-search-thumb" (error)="$any($event.target).style.display='none'">
+										<i *ngIf="!item.image" class="fal" [ngClass]="item.icon || 'fa-tag'"></i>
+									</div>
+									<div class="rh-search-item-info">
+										<span class="rh-search-target">{{ item.targetName }}</span>
+									</div>
+									<div class="rh-search-arrow-box" aria-hidden="true">
+										<i class="fal fa-angle-right"></i>
+									</div>
+								</button>
+							</div>
+						</ng-container>
+
+					</div>
 				</div>
 			</form>
 		</div>
@@ -182,7 +289,7 @@
 			</div>
 		</div>
 
-		<!-- Mobile Row 2: Search Bar with Animated Placeholder -->
+		<!-- Mobile Row 2: Search Bar with Animated Placeholder + Dynamic Category Intent Suggestions -->
 		<div class="rh-mobile-row-2 w-100">
 			<form action="#" (submit)="onSearch(); $event.preventDefault();" class="w-100">
 				<div class="rh-search-wrap w-100 position-relative">
@@ -201,13 +308,120 @@
 							<span class="rh-blinking-caret">|</span>
 						</span>
 					</div>
-					<input type="search" 
+					<input type="text" 
 					       name="search" 
+					       autocomplete="off"
 					       aria-label="Search your products"
 					       [ngModel]="searchQuery()" 
-					       (ngModelChange)="searchQuery.set($event)"
+					       (ngModelChange)="onSearchInputChange($event)"
 					       (focus)="onInputFocus()"
 					       (blur)="onInputBlur()">
+
+					<!-- Clear 'x' Button -->
+					<button *ngIf="searchQuery()" 
+					        type="button" 
+					        class="rh-search-clear-btn" 
+					        (mousedown)="$event.preventDefault()"
+					        (click)="clearSearch($event)" 
+					        aria-label="Clear search text">
+						<i class="fal fa-times"></i>
+					</button>
+
+					<!-- Dynamic Search Suggestions Dropdown (Mobile) -->
+					<div class="rh-search-dropdown" 
+					     *ngIf="isSearchDropdownOpen() && (searchSuggestionsData().categorySuggestions.length > 0 || searchSuggestionsData().productSuggestions.length > 0 || searchSuggestionsData().hasQuery)"
+					     (mousedown)="$event.preventDefault()">
+						
+						<!-- Active Search: Category / Subcategory Intent Routing -->
+						<ng-container *ngIf="searchSuggestionsData().hasQuery">
+							<div class="rh-search-section-header">
+								<span class="rh-search-header-title">Which category or subcategory are you looking for?</span>
+							</div>
+
+							<div class="rh-search-suggestions-list">
+								<button type="button" 
+								        *ngFor="let item of searchSuggestionsData().categorySuggestions" 
+								        class="rh-search-item rh-search-category-item"
+								        (click)="selectCategorySuggestion(item.categorySlug, item.term, item.subCategory)">
+									<div class="rh-search-item-media">
+										<img *ngIf="item.image" [src]="item.image" [alt]="item.targetName" class="rh-search-thumb" (error)="$any($event.target).style.display='none'">
+										<i *ngIf="!item.image" class="fal" [ngClass]="item.icon || 'fa-tag'"></i>
+									</div>
+									<div class="rh-search-item-info">
+										<div class="rh-search-intent-text">
+											<span class="rh-search-keyword">{{ item.term }}</span>
+											<span class="rh-search-in"> in </span>
+											<strong class="rh-search-target">{{ item.targetName }}</strong>
+										</div>
+										<span *ngIf="item.subCategory && item.subCategory !== item.categoryName" class="rh-search-parent-tag">
+											{{ item.categoryName }}
+										</span>
+									</div>
+									<div class="rh-search-arrow-box" aria-hidden="true">
+										<i class="fal fa-arrow-up-left"></i>
+									</div>
+								</button>
+							</div>
+
+							<!-- Matching Products (if any) -->
+							<div *ngIf="searchSuggestionsData().productSuggestions.length > 0" class="rh-search-products-section">
+								<div class="rh-search-divider"></div>
+								<div class="rh-search-section-header">
+									<span class="rh-search-header-title">Matching Products</span>
+								</div>
+								<div class="rh-search-products-list">
+									<button type="button" 
+									        *ngFor="let prod of searchSuggestionsData().productSuggestions" 
+									        class="rh-search-item rh-search-product-item"
+									        (click)="selectProductSuggestion(prod.id)">
+										<div class="rh-search-item-media rh-search-product-media">
+											<img [src]="prod.image" [alt]="prod.title" class="rh-search-thumb" (error)="$any($event.target).style.display='none'">
+										</div>
+										<div class="rh-search-item-info">
+											<div class="rh-search-product-title">{{ prod.title }}</div>
+											<div class="rh-search-product-sub">{{ prod.category }} &bull; Rs. {{ prod.price }}</div>
+										</div>
+										<span class="rh-search-product-action">
+											View <i class="fal fa-angle-right ms-1"></i>
+										</span>
+									</button>
+								</div>
+							</div>
+
+							<!-- Dropdown Footer: See all results -->
+							<div class="rh-search-dropdown-footer">
+								<button type="button" class="rh-search-footer-btn" (click)="onSearch()">
+									<span>See all results for "<strong>{{ searchQuery() }}</strong>"</span>
+									<i class="fal fa-arrow-right ms-2"></i>
+								</button>
+							</div>
+						</ng-container>
+
+						<!-- Empty Query & Focused: Explore Categories -->
+						<ng-container *ngIf="!searchSuggestionsData().hasQuery">
+							<div class="rh-search-section-header">
+								<span class="rh-search-header-title">Explore Categories</span>
+							</div>
+							<div class="rh-search-suggestions-list rh-search-categories-grid">
+								<button type="button" 
+								        *ngFor="let item of searchSuggestionsData().categorySuggestions" 
+								        class="rh-search-item rh-search-category-item"
+								        (click)="selectCategorySuggestion(item.categorySlug)">
+									<div class="rh-search-item-media">
+										<img *ngIf="item.image" [src]="item.image" [alt]="item.targetName" class="rh-search-thumb" (error)="$any($event.target).style.display='none'">
+										<i *ngIf="!item.image" class="fal" [ngClass]="item.icon || 'fa-tag'"></i>
+									</div>
+									<div class="rh-search-item-info">
+										<span class="rh-search-target">{{ item.targetName }}</span>
+									</div>
+									<div class="rh-search-arrow-box" aria-hidden="true">
+										<i class="fal fa-angle-right"></i>
+									</div>
+								</button>
+							</div>
+						</ng-container>
+
+					</div>
 				</div>
 			</form>
 		</div>
