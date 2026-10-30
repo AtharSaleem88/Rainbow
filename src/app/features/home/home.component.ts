@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
 
   readonly farmProducts = this.allProducts.filter(p => ['ultra-fresh', 'organic-veggies'].includes(p.categorySlug));
   readonly priceDropProducts = this.allProducts.filter(p => p.oldPrice && p.oldPrice > p.price);
-  readonly rainbowFinds = this.allProducts.filter(p => !['ultra-fresh', 'organic-veggies', 'frozen-food'].includes(p.categorySlug));
+  readonly rainbowFinds = this.allProducts.filter(p => p.brand === 'Rainbow');
   readonly frozenProducts = this.allProducts.filter(p => p.categorySlug === 'frozen-food');
 
   readonly monthlyDeal = {
@@ -66,6 +66,35 @@ export class HomeComponent implements OnInit {
 
   readonly heroSlides: HeroSlide[] = [
     {
+      id: 'shaadi',
+      theme: 'rh-hero-shaadi',
+      eyebrow: 'WEDDING SPECIAL',
+      hasSparkle: false,
+      title: 'Shaadi Khana Abadi',
+      description: 'Naye Bandhan, Shopping Bhi Nayi — Offer valid till 11th November 2026',
+      ctaText: 'Shop Now',
+      image: 'assets/images/shadi_web.png',
+      mobileImage: 'assets/images/shadi_mobile.png',
+      imageAlt: 'Shaadi Khana Abadi — Naye Bandhan, Shopping Bhi Nayi',
+      link: '/shop',
+      hideCopy: true
+    },
+    {
+      id: 'health-beauty',
+      theme: 'rh-hero-health',
+      eyebrow: 'YOUR EVERYDAY RITUAL',
+      hasSparkle: false,
+      title: 'Health & Beauty',
+      description: 'Little care, lasting confidence.',
+      ctaText: 'Explore Collection',
+      image: 'assets/images/health_beauty_web.png',
+      mobileImage: 'assets/images/health_beauty_Mobile.png',
+      imageAlt: 'Health & Beauty — Premium personal care and cosmetics',
+      link: '/shop',
+      queryParams: { category: 'personal-care' },
+      hideCopy: true
+    },
+    {
       id: 'electronics',
       theme: 'rh-hero-electronics',
       eyebrow: 'SMARTER EVERYDAY',
@@ -79,19 +108,6 @@ export class HomeComponent implements OnInit {
       link: '/shop',
       queryParams: { category: 'home-office' },
       hideCopy: true
-    },
-    {
-      id: 'health-beauty',
-      theme: 'rh-hero-health',
-      eyebrow: 'YOUR EVERYDAY RITUAL',
-      hasSparkle: true,
-      title: 'Health & Beauty',
-      description: 'Little care, lasting confidence.',
-      ctaText: 'Explore the collection',
-      image: 'assets/images/rainbow-health-beauty-banner.png',
-      imageAlt: 'Premium skincare and personal care products',
-      link: '/shop',
-      queryParams: { category: 'personal-care' }
     }
   ];
 

@@ -91,7 +91,7 @@
 
 .rh-promo-banner-title {
   color: #202239;
-  font: 750 clamp(1.45rem, 2.2vw, 2rem)/1.08 "Jost", sans-serif;
+  font: 750 clamp(1.45rem, 2.2vw, 2rem)/1.08 'Poppins', sans-serif;
   letter-spacing: -.035em;
 }
 
@@ -130,7 +130,7 @@
 }
 
 .rh-promo-banner:hover .rh-promo-banner-cta { gap: 13px; }
-.rh-promo-banner-mark { position: absolute; top: 16px; right: 17px; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid rgba(255,255,255,.56); border-radius: 50%; color: #fff; background: linear-gradient(135deg, #34339d, #35a9df 58%, #e45d9b); font: 750 .8rem "Jost", sans-serif; box-shadow: 0 4px 13px rgba(20,25,60,.18); }
+.rh-promo-banner-mark { position: absolute; top: 16px; right: 17px; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid rgba(255,255,255,.56); border-radius: 50%; color: #fff; background: linear-gradient(135deg, #34339d, #35a9df 58%, #e45d9b); font: 750 .8rem 'Poppins', sans-serif; box-shadow: 0 4px 13px rgba(20,25,60,.18); }
 
 @media (max-width: 767px) {
   .rh-promo-banners { padding: 10px 0 16px; }

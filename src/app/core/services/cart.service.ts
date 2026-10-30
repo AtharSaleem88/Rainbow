@@ -31,7 +31,7 @@ export class CartService {
         price: 150,
         rating: 4.9,
         reviewCount: 52,
-        image: 'assets/images/ultra_fresh/Yogurt.jpg',
+        image: 'assets/images/ultra_fresh/Yogurt.png',
         inStock: false
       },
       outOfStockChoice: 'best-match',

@@ -140,7 +140,7 @@ export class AuthService {
       paymentMethod: 'Cash on Delivery',
       items: [
         { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 1, price: 180, categorySlug: 'ultra-fresh' },
-        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.jpg', quantity: 1, price: 150, categorySlug: 'dairy-eggs' },
+        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, categorySlug: 'dairy-eggs' },
         { title: 'Farm Fresh Eggs', image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg', quantity: 1, price: 420, categorySlug: 'dairy-eggs' }
       ]
     },
@@ -153,7 +153,7 @@ export class AuthService {
       paymentMethod: 'Rainbow Wallet',
       items: [
         { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 2, price: 180, categorySlug: 'ultra-fresh' },
-        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.jpg', quantity: 1, price: 150, categorySlug: 'dairy-eggs' },
+        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, categorySlug: 'dairy-eggs' },
         { title: 'Olpers Milk 1L', image: 'assets/images/grocery/olpers.jpg', quantity: 3, price: 440, categorySlug: 'dairy-eggs' }
       ]
     },
@@ -178,7 +178,7 @@ export class AuthService {
       paymentMethod: 'Cash on Delivery',
       items: [
         { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 2, price: 180, categorySlug: 'ultra-fresh' },
-        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.jpg', quantity: 2, price: 150, categorySlug: 'dairy-eggs' }
+        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 2, price: 150, categorySlug: 'dairy-eggs' }
       ]
     },
     {
@@ -190,7 +190,7 @@ export class AuthService {
       paymentMethod: 'Cash on Delivery',
       items: [
         { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 1, price: 180, categorySlug: 'ultra-fresh' },
-        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.jpg', quantity: 1, price: 150, categorySlug: 'dairy-eggs' }
+        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, categorySlug: 'dairy-eggs' }
       ]
     },
     {

@@ -19,7 +19,6 @@
         class="rh-category-item py-2 p-md-2 h-100"
         [routerLink]="['/shop']"
         [queryParams]="{ category: cat.slug }"
-        [attr.title]="cat.name"
         [attr.aria-label]="'Shop ' + cat.name">
         <span class="rh-category-image">
           <img *ngIf="cat.image" [src]="cat.image" [alt]="cat.name" loading="lazy" decoding="async">

@@ -3,7 +3,7 @@
   min-height: 100%;
   color: var(--rh-text-dark);
   background: #f4f6fc;
-  font-family: "Jost", "Open Sans", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .rainbow-checkout-page {
@@ -29,7 +29,7 @@
 .rainbow-checkout-header h1 {
   margin: 0;
   color: #17192e;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: clamp(1.35rem, 2.5vw, 1.75rem);
   font-weight: 750;
   letter-spacing: -0.035em;
@@ -97,7 +97,7 @@
   gap: 10px;
   margin: 0 0 4px;
   color: #17192c;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1.25rem;
   font-weight: 750;
 }
@@ -785,7 +785,7 @@
   border-radius: 13px;
   color: #fff;
   background: var(--rh-primary);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 750;
   text-decoration: none;
   cursor: pointer;
@@ -815,7 +815,7 @@
   border-radius: 12px;
   color: var(--rh-primary);
   background: #fff;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.88rem;
   font-weight: 750;
   text-decoration: none;
@@ -856,7 +856,7 @@
 
 .rainbow-checkout-empty h2 {
   margin: 0 0 8px;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1.45rem;
   font-weight: 750;
 }
@@ -910,7 +910,7 @@
 .rainbow-success-card h2 {
   margin: 6px 0 12px;
   color: #17192e;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1.65rem;
   font-weight: 750;
 }
@@ -1212,7 +1212,7 @@
   border: none;
   background: transparent;
   color: var(--rh-primary);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.92rem;
   font-weight: 700;
   cursor: pointer;

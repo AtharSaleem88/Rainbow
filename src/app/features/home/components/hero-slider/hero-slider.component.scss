@@ -211,7 +211,7 @@
   max-width: 520px;
   margin: 0 0 0.85rem;
   color: var(--rh-white);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: clamp(1.65rem, 3.2vw, 2.6rem);
   font-weight: 750;
   letter-spacing: -0.03em;
@@ -385,6 +385,7 @@
 
 .rh-hero-frame.rh-hero-electronics .rh-hero-dot-active { background: #65c7ff; }
 .rh-hero-frame.rh-hero-health .rh-hero-dot-active { background: #f29aaa; }
+.rh-hero-frame.rh-hero-shaadi .rh-hero-dot-active { background: #e45d9b; }
 
 @keyframes rh-hero-image-in {
   from { opacity: 0.65; transform: scale(0.96); }

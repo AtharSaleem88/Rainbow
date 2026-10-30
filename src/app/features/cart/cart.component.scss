@@ -339,7 +339,7 @@
   background: #edf5ff;
   color: var(--rh-primary);
   border: 1px solid rgba(46, 49, 146, 0.12);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.86rem;
   font-weight: 600;
   text-decoration: none;
@@ -370,7 +370,7 @@
   background: #fff1f2;
   color: #dc3545;
   border: 1px solid rgba(220, 53, 69, 0.16);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
@@ -716,7 +716,7 @@
 .rainbow-cart-page {
   color: var(--rh-text-dark);
   background: #f6f7fb;
-  font-family: "Jost", "Open Sans", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .rainbow-cart-header h1,
@@ -725,7 +725,7 @@
 .rainbow-cart-delivery h2,
 .rainbow-cart-product-details h3,
 .rainbow-cart-empty h2 {
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .rainbow-cart-savings {
@@ -797,4 +797,4 @@
 .rainbow-cart-instruction-link > span small { display: block; margin-top: 2px; color: #777d8d; font-size: .76rem; }
 .rainbow-cart-instruction-link > i:first-child { color: var(--rh-primary); }
 .rainbow-cart-instruction-link > i:last-child { font-size: .78rem; }
-
+

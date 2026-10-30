@@ -19,7 +19,7 @@
     flex: 0 0 auto;
     margin: 0;
     color: var(--rh-primary);
-    font-family: "Jost", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: clamp(1.45rem, 2.4vw, 2rem);
     font-weight: 700;
   }
@@ -38,7 +38,7 @@
   h3 {
     margin: 0;
     color: var(--rh-text-dark);
-    font-family: "Jost", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
   }
 }
@@ -119,7 +119,7 @@
   z-index: 1;
   margin: 0.7rem 0 0.5rem;
   color: var(--rh-white);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: clamp(1.8rem, 3vw, 2.75rem);
   font-weight: 700;
   line-height: 1.08;
@@ -528,7 +528,7 @@
 
 .rh-monthly-product-copy h4 {
   margin: 0.35rem 0;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.98rem;
   line-height: 1.25;
 }
@@ -784,7 +784,7 @@
   max-width: 660px;
   margin: 10px 0 14px;
   color: var(--rh-primary);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: clamp(1.9rem, 4.2vw, 3.7rem);
   font-weight: 800;
   letter-spacing: -.045em;
@@ -872,7 +872,7 @@
   color: #fff;
   background: linear-gradient(105deg, #302f98, #3d3bb7);
   box-shadow: 0 9px 22px rgba(48,47,152,.22);
-  font: 700 .9rem/1 "Jost", sans-serif;
+  font: 700 .9rem/1 'Poppins', sans-serif;
   cursor: pointer;
   transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }

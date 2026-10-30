@@ -17,8 +17,8 @@
       </div>
       <div class="rh-collection-sub-row" *ngIf="subtitle || seeAllLink">
         <p *ngIf="subtitle" class="rh-collection-subtitle mb-0">{{ subtitle }}</p>
-        <a *ngIf="seeAllLink" [routerLink]="seeAllLink" [queryParams]="seeAllQueryParams" class="rh-collection-see-all ms-auto">
-          See all <i class="fal fa-arrow-right" aria-hidden="true"></i>
+        <a *ngIf="seeAllLink" [routerLink]="seeAllLink" [queryParams]="seeAllQueryParams" class="rh-collection-see-all ml-auto">
+          {{ seeAllText }} <i class="fal fa-arrow-right" aria-hidden="true"></i>
         </a>
       </div>
     </header>

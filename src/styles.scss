@@ -82,13 +82,39 @@ html, body, a, button, input, select, textarea, [role="button"] {
   --rh-text-dark: #333333;
 }
 
-body.home_supermarket {
-  font-family: 'Jost', 'Open Sans', sans-serif;
+/* Global Typography - Poppins */
+:root {
+  --font-family-base: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, "Helvetica Neue", Arial, sans-serif;
+  --bs-font-sans-serif: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, "Helvetica Neue", Arial, sans-serif;
+}
+
+html,
+body,
+body.home_supermarket,
+.home_supermarket,
+app-root {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, "Helvetica Neue", Arial, sans-serif !important;
   color: var(--rh-text-dark);
   background-color: #ffffff;
   margin: 0;
   padding: 0;
   overflow-x: clip;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.home_supermarket h1, .home_supermarket h2, .home_supermarket h3,
+.home_supermarket h4, .home_supermarket h5, .home_supermarket h6 {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+button, input, optgroup, select, textarea {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-Poppins,
+.font-jost {
+  font-family: 'Poppins', sans-serif !important;
 }
 
 /* Fix router-outlet positioning */
@@ -113,7 +139,7 @@ app-root {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(46, 49, 146, 0.08);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   user-select: none;
   cursor: default;
 
@@ -268,7 +294,7 @@ app-root {
     border-radius: 8px;
     transition: background 0.25s ease, color 0.25s ease;
     position: relative;
-    font-family: "Jost", sans-serif;
+    font-family: 'Poppins', sans-serif;
     white-space: nowrap;
 
     &:hover, &.active {
@@ -349,7 +375,7 @@ app-root {
     font-size: 13px;
     color: #2e3192;
     width: 240px;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 }
 
@@ -417,20 +443,20 @@ app-root {
   color: #25aae1;
   text-transform: uppercase;
   margin-bottom: 6px;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .rh-brands-title {
   font-size: 28px;
   font-weight: 800;
   color: #2e3192;
   margin: 0 0 6px;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .rh-brands-subtitle {
   font-size: 15px;
   color: #4a4a7a;
   margin: 0 0 8px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .rh-brands-accent {
   width: 60px;
@@ -520,7 +546,7 @@ app-root {
   }
 
   span {
-    font-family: "Jost", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     font-weight: 600;
     color: #2e3192;
@@ -639,7 +665,7 @@ app-root {
 .rh-brand-hero-copy { max-width: 610px; }
 .rh-brand-kicker { color: #6aaddb; font-size: 11px; font-weight: 800; letter-spacing: .16em; }
 .rh-brand-hero .rh-brand-kicker { color: #b9e7ff; }
-.rh-brand-hero h2 { margin: 10px 0 7px; color: #fff; font: 700 clamp(32px, 5vw, 54px)/1.05 "Jost", sans-serif; }
+.rh-brand-hero h2 { margin: 10px 0 7px; color: #fff; font: 700 clamp(32px, 5vw, 54px)/1.05 'Poppins', sans-serif; }
 .rh-brand-hero p { max-width: 480px; margin: 0 0 18px; color: rgba(255,255,255,.84); font-size: 16px; }
 .rh-brand-official { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; }
 .rh-brand-hero-logo { display: grid; width: 190px; height: 150px; flex: 0 0 190px; place-items: center; border: 1px solid rgba(255,255,255,.45); border-radius: 22px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(15,17,70,.24); transform: rotate(2deg); }
@@ -649,12 +675,12 @@ app-root {
 .rh-brand-hero-orb-two { right: -130px; bottom: -230px; width: 430px; height: 430px; }
 .rh-brand-store-content { padding: 26px clamp(18px, 3vw, 34px) 34px; }
 .rh-brand-store-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.rh-brand-store-heading h3 { margin: 3px 0 0; color: #24235e; font: 700 24px "Jost", sans-serif; }
+.rh-brand-store-heading h3 { margin: 3px 0 0; color: #24235e; font: 700 24px 'Poppins', sans-serif; }
 .rh-brand-products { display: flex; align-items: stretch; gap: 14px; overflow-x: auto; padding: 3px 3px 16px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: rgba(45,44,146,.3) transparent; }
 .rh-brand-products > app-product-card { flex: 0 0 clamp(220px, 23vw, 270px); scroll-snap-align: start; }
 .rh-brand-coming-soon { display: flex; align-items: center; gap: 16px; min-height: 140px; padding: 24px; border: 1px solid #e2e5f2; border-radius: 18px; background: white; }
 .rh-brand-coming-icon { display: grid; width: 54px; height: 54px; flex: 0 0 54px; place-items: center; border-radius: 16px; color: #302e98; background: #eeefff; font-size: 23px; }
-.rh-brand-coming-soon strong { color: #24235e; font: 700 18px "Jost", sans-serif; }
+.rh-brand-coming-soon strong { color: #24235e; font: 700 18px 'Poppins', sans-serif; }
 .rh-brand-coming-soon p { margin: 4px 0 0; color: #72758b; }
 @keyframes rhBrandFadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes rhBrandRise { from { opacity: 0; transform: translateY(12px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -667,7 +693,7 @@ app-root {
   isolation: isolate;
   background: linear-gradient(125deg, #252873 0%, var(--rh-primary) 48%, #242a78 100%) !important;
   color: #fff !important;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Poppins', sans-serif;
   overflow: hidden;
   contain: paint;
   transform: translateZ(0);
@@ -718,7 +744,7 @@ app-root {
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 11px;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .rh-footer-col ul { list-style: none; padding: 0; margin: 0; }
 .rh-footer-col ul li { margin-bottom: 6px; }
@@ -765,7 +791,7 @@ app-root {
   font-weight: 700;
   margin: 0 0 4px;
   color: #fff;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .rh-footer-newsletter-text p {
   font-size: 13px;
@@ -788,7 +814,7 @@ app-root {
   padding: 10px 16px;
   color: #fff;
   font-size: 14px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .rh-footer-newsletter-form input::placeholder { color: rgba(255,255,255,0.4); }
 .rh-footer-newsletter-form button {
@@ -813,7 +839,7 @@ app-root {
 }
 .rh-footer-social-row > span {
   color: rgba(255,255,255,.7);
-  font: 600 12px/1 "Jost", sans-serif;
+  font: 600 12px/1 'Poppins', sans-serif;
   letter-spacing: 1.1px;
   text-transform: uppercase;
 }
@@ -823,7 +849,7 @@ app-root {
   color: rgba(255,255,255,0.5);
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   white-space: nowrap;
 }
 .rh-footer-social-icons { display: flex; gap: 8px; }
@@ -948,7 +974,7 @@ app-root {
   padding: 6px 14px;
   cursor: pointer;
   transition: background 0.25s ease;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: var(--rh-primary);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -1057,7 +1083,7 @@ app-root {
   pointer-events: none;
   z-index: 1;
   font-size: 13px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: rgba(45, 44, 146, 0.45);
   white-space: nowrap;
   overflow: hidden;
@@ -1525,7 +1551,7 @@ body.rh-monthly-flyer-modal-open {
   padding: clamp(20px, 4vh, 36px) 20px 24px;
   color: #202239;
   background: radial-gradient(circle at 50% 30%, rgba(75, 0, 130, 0.05) 0%, #f4f6fc 70%);
-  font-family: "Jost", "Open Sans", sans-serif;
+  font-family: 'Poppins', sans-serif;
   position: relative;
 }
 
@@ -1569,7 +1595,7 @@ body.rh-monthly-flyer-modal-open {
   h2 {
     margin: 0 0 6px;
     color: #1a1d2e;
-    font: 800 clamp(1.65rem, 3.5vw, 1.95rem)/1.2 "Jost", sans-serif;
+    font: 800 clamp(1.65rem, 3.5vw, 1.95rem)/1.2 'Poppins', sans-serif;
     letter-spacing: -0.03em;
   }
 }
@@ -1598,7 +1624,7 @@ body.rh-monthly-flyer-modal-open {
   border-radius: 11px;
   background: transparent;
   color: #5a6072;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.92rem;
   font-weight: 750;
   cursor: pointer;
@@ -1656,7 +1682,7 @@ body.rh-monthly-flyer-modal-open {
     outline: 0;
     color: #1a1d2e;
     background: transparent;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.92rem;
     font-weight: 500;
 
@@ -1760,7 +1786,7 @@ body.rh-monthly-flyer-modal-open {
   color: #ffffff;
   background: var(--rh-primary);
   box-shadow: 0 8px 20px rgba(75, 0, 130, 0.24);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.96rem;
   font-weight: 750;
   cursor: pointer;
@@ -1892,7 +1918,7 @@ body.rh-monthly-flyer-modal-open {
   background: #fff;
   box-shadow: 0 24px 70px rgba(10, 14, 50, 0.26);
   animation: rhScheduleRise 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  font-family: "Jost", "Open Sans", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .rh-schedule-header {
@@ -1930,7 +1956,7 @@ body.rh-monthly-flyer-modal-open {
 .rh-schedule-header h2 {
   margin: 0 0 2px;
   color: #fff;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1.25rem;
   font-weight: 750;
   letter-spacing: -0.02em;
@@ -2138,7 +2164,7 @@ body.rh-monthly-flyer-modal-open {
   color: #fff;
   background: linear-gradient(135deg, var(--rh-primary), #3b3aa6);
   box-shadow: 0 6px 14px rgba(45, 44, 146, 0.18);
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.88rem;
   font-weight: 750;
   cursor: pointer;
@@ -2160,7 +2186,7 @@ body.rh-monthly-flyer-modal-open {
   border-radius: 11px;
   color: #4f5366;
   background: #fff;
-  font-family: "Jost", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;

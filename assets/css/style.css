@@ -22,7 +22,7 @@ Author 			:  jthemes (https://themeforest.net/user/jthemes)
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
@@ -1685,7 +1685,7 @@ button {
   color: #b28266;
   font-size: 18px;
   display: inline-block;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .furniture_section_title .title_text {
   color: #272727;
@@ -7411,7 +7411,7 @@ button {
   font-family: "Oswald", sans-serif;
 }
 .home_fashion p {
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .home_fashion h1, .home_fashion h2, .home_fashion h3, .home_fashion h4, .home_fashion h5, .home_fashion h6 {
   color: #040404;
@@ -8158,7 +8158,7 @@ button {
   color: #666666;
   font-size: 15px;
   line-height: 1.55;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .furniture_masonry {
@@ -8603,7 +8603,7 @@ button {
 }
 .furniture_deals_container .countdown_timer strong, .furniture_deals_container .countdown_timer span {
   color: #232323;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .furniture_deals_container .countdown_timer.primary_counter li:not(:last-child) {
   margin-right: 35px;
@@ -8632,7 +8632,7 @@ button {
 .home_gadget {
   color: #362f2f;
   font-size: 18px;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .home_gadget h1, .home_gadget h2, .home_gadget h3, .home_gadget h4, .home_gadget h5, .home_gadget h6 {
   color: #0e0e0e;
@@ -9217,7 +9217,7 @@ button {
 ==================================================================================================== */
 .home_creative_onelook {
   color: #5d5f66;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .home_creative_onelook h1, .home_creative_onelook h2, .home_creative_onelook h3, .home_creative_onelook h4, .home_creative_onelook h5, .home_creative_onelook h6 {
   color: #ffffff;
@@ -10197,7 +10197,7 @@ button {
   color: #9c8787;
   font-size: 14px;
   margin-bottom: 30px;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .consumer_content_wrap .wrap_label {
   top: 30px;
@@ -12584,7 +12584,7 @@ button {
   color: #262626;
   font-size: 18px;
   font-style: italic;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* motorcycle testimonial - end */

@@ -20,6 +20,7 @@ export class ProductCollectionRailComponent {
   @Input() sectionLabel: string = '';
   @Input() seeAllLink = '/shop';
   @Input() seeAllQueryParams?: Params;
+  @Input() seeAllText = 'VIEW ALL';
   @Input() isTinted = false;
   @Input() sectionId = 'rh-collection-' + Math.floor(1000 + Math.random() * 9000);
 }
