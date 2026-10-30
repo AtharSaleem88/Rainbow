@@ -2332,3 +2332,32 @@ body.rh-monthly-flyer-modal-open {
 .gap-3 { gap: 1rem !important; }
 .gap-4 { gap: 1.5rem !important; }
 
+/* Global Category Hover Keyframes - Placed in global styles to prevent Angular component-scoping name mangling */
+@keyframes rhCatImgHover {
+  0%, 100% {
+    transform: scale(1.16) translateY(-4%);
+  }
+  50% {
+    transform: scale(1.25) translateY(-10%);
+  }
+}
+
+@keyframes rhCatCutoutHover {
+  0%, 100% {
+    transform: scale(1.0) translateY(0);
+  }
+  50% {
+    transform: scale(1.10) translateY(-6px);
+  }
+}
+
+@keyframes rhCatIconHover {
+  0%, 100% {
+    transform: scale(1.0) translateY(0);
+  }
+  50% {
+    transform: scale(1.16) translateY(-6px);
+  }
+}
+
+

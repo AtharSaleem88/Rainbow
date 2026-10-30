@@ -110,79 +110,35 @@
   pointer-events: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .rh-category-item:hover,
-  .rh-category-item:focus-visible {
-    z-index: 2;
-    color: var(--rh-primary);
-    transform: perspective(700px) translateY(-9px) rotateX(4deg) scale(1.045);
-  }
+.rh-category-item:hover,
+.rh-category-item:focus-visible {
+  z-index: 2;
+  color: var(--rh-primary);
+  transform: perspective(700px) translateY(-9px) rotateX(4deg) scale(1.045);
 
-  .rh-category-item:hover .rh-category-image,
-  .rh-category-item:focus-visible .rh-category-image {
+  .rh-category-image {
     background: transparent !important;
     box-shadow: none !important;
   }
 
-  .rh-category-item:hover .rh-category-image img,
-  .rh-category-item:focus-visible .rh-category-image img {
+  .rh-category-image img {
     animation: rhCatImgHover 1.8s ease-in-out infinite;
     mix-blend-mode: multiply !important;
     background: transparent !important;
   }
 
-  .rh-category-item:hover .rh-category-image img[src$="cutout.png"],
-  .rh-category-item:focus-visible .rh-category-image img[src$="cutout.png"] {
+  .rh-category-image img[src$="cutout.png"] {
     animation: rhCatCutoutHover 1.8s ease-in-out infinite;
     mix-blend-mode: normal !important;
   }
 
-  .rh-category-item:hover .rh-category-image i,
-  .rh-category-item:focus-visible .rh-category-image i {
+  .rh-category-image i {
     animation: rhCatIconHover 1.6s ease-in-out infinite;
   }
 
-  .rh-category-item:hover .rh-category-name,
-  .rh-category-item:focus-visible .rh-category-name {
+  .rh-category-name {
     color: var(--rh-primary);
     transform: translateY(1px);
-  }
-}
-
-/* Category Image Hover Keyframes - Pure 2D floating float with transparent background */
-@keyframes rhCatImgHover {
-  0%, 100% {
-    transform: scale(1.16) translateY(-4%);
-  }
-  50% {
-    transform: scale(1.25) translateY(-10%);
-  }
-}
-
-@keyframes rhCatCutoutHover {
-  0%, 100% {
-    transform: scale(1.0) translateY(0);
-  }
-  50% {
-    transform: scale(1.10) translateY(-6px);
-  }
-}
-
-@keyframes rhCatIconHover {
-  0%, 100% {
-    transform: scale(1.0) translateY(0);
-  }
-  50% {
-    transform: scale(1.16) translateY(-6px);
-  }
-}
-
-@keyframes rhCatShineSweep {
-  0% {
-    left: -120%;
-  }
-  45%, 100% {
-    left: 170%;
   }
 }
 
