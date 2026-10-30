@@ -22,7 +22,7 @@ export class CheckoutSummaryComponent {
   @Input({ required: true }) isMember: boolean = false;
   @Input({ required: true }) spendPerPoint: number = 100;
   @Input({ required: true }) fulfillingBranch: string = '';
-  @Input() deliveryType: 'instant' | 'scheduled' = 'instant';
+  @Input() deliveryType: 'instant' | 'scheduled' | null = 'instant';
   @Input() deliveryDate: string = 'Today';
   @Input() deliveryTimeSlot: string = '2:00pm - 4:00pm';
 

@@ -2068,17 +2068,30 @@ body.rh-monthly-flyer-modal-open {
   }
 
   &.is-selected {
-    border-color: var(--rh-primary);
-    background: rgba(75, 0, 130, 0.04);
-    box-shadow: 0 0 0 3px rgba(75, 0, 130, 0.08);
+    border-color: var(--rh-primary) !important;
+    background: var(--rh-primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(46, 49, 146, 0.28) !important;
 
     .rh-date-pill {
-      color: var(--rh-primary);
+      color: #ffffff !important;
+    }
+
+    .rh-date-sub {
+      color: rgba(255, 255, 255, 0.88) !important;
     }
 
     .rh-date-check {
       opacity: 1;
       transform: scale(1);
+      background: #ffffff !important;
+      color: var(--rh-primary) !important;
+    }
+
+    &:hover {
+      border-color: var(--rh-primary) !important;
+      background: var(--rh-primary) !important;
+      opacity: 0.95;
     }
   }
 }
@@ -2132,12 +2145,30 @@ body.rh-monthly-flyer-modal-open {
   }
 
   &.is-selected {
-    border-color: var(--rh-primary);
-    background: rgba(75, 0, 130, 0.04);
-    box-shadow: 0 0 0 3px rgba(75, 0, 130, 0.08);
+    border-color: var(--rh-primary) !important;
+    background: var(--rh-primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(46, 49, 146, 0.28) !important;
+
+    .rh-slot-left {
+      i {
+        color: #ffffff !important;
+      }
+
+      strong {
+        color: #ffffff !important;
+      }
+    }
 
     .rh-slot-radio {
-      border: 5px solid var(--rh-primary);
+      border: 5px solid #ffffff !important;
+      background: var(--rh-primary) !important;
+    }
+
+    &:hover {
+      border-color: var(--rh-primary) !important;
+      background: var(--rh-primary) !important;
+      opacity: 0.95;
     }
   }
 }

@@ -63,7 +63,7 @@
     color: var(--rh-primary);
   }
 
-  &:hover {
+  &:hover:not(.rh-delivery-active) {
     border-color: rgba(45, 44, 146, 0.25);
     background: #edf0fa;
   }
@@ -72,15 +72,16 @@
     background: var(--rh-primary) !important;
     border-color: var(--rh-primary) !important;
     color: #ffffff !important;
-    box-shadow: 0 4px 12px rgba(45, 44, 146, 0.22);
+    box-shadow: 0 4px 14px rgba(45, 44, 146, 0.24);
 
     .rh-hdr-lbl {
-      color: #9fe646 !important;
+      color: rgba(255, 255, 255, 0.9) !important;
       font-weight: 600;
     }
 
     .rh-hdr-val {
       color: #ffffff !important;
+      font-weight: 700;
     }
 
     .rh-icon-bolt {
@@ -88,12 +89,19 @@
     }
 
     .rh-icon-lime {
-      color: #9fe646 !important;
+      color: #ffd043 !important;
+    }
+
+    i.fa-angle-down {
+      color: #ffffff !important;
+      opacity: 0.85;
     }
 
     &:hover {
-      background: var(--rh-secondary) !important;
-      border-color: var(--rh-secondary) !important;
+      background: var(--rh-primary) !important;
+      border-color: var(--rh-primary) !important;
+      opacity: 0.94;
+      box-shadow: 0 6px 16px rgba(45, 44, 146, 0.3);
     }
   }
 }

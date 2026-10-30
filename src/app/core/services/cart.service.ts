@@ -43,7 +43,7 @@ export class CartService {
   isCartOpen = signal<boolean>(false);
 
   // Delivery Mode State (Instant vs Scheduled - mutually exclusive)
-  readonly deliveryType = signal<'instant' | 'scheduled'>('instant');
+  readonly deliveryType = signal<'instant' | 'scheduled' | null>(null);
   readonly selectedDeliveryDate = signal<string>('Today');
   readonly selectedDeliveryTimeSlot = signal<string>('2:00pm - 4:00pm');
 

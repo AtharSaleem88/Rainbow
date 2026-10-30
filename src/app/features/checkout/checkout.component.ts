@@ -145,6 +145,9 @@ export class CheckoutComponent implements OnInit {
     this.seoService.setPageTitle('Checkout');
     this.seoService.setMetaDescription('Secure checkout for your Rainbow Cash & Carry order.');
     this.scrollToTop();
+    if (!this.cartService.deliveryType()) {
+      this.cartService.setDeliveryType('instant');
+    }
   }
 
   selectSavedAddress(addr: SavedAddress) {
