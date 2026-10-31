@@ -610,7 +610,8 @@ app-root {
 }
 
 /* Paid brand placements */
-.rh-brand-modal-open { overflow: hidden; }
+.rh-brand-modal-open,
+.rh-filter-modal-open { overflow: hidden; }
 .rh-brand-overlay {
   position: fixed;
   z-index: 1600;

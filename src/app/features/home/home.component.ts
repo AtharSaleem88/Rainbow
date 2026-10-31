@@ -80,22 +80,32 @@ export class HomeComponent implements OnInit {
       hideCopy: true
     },
     {
+      id: 'electronics',
+      theme: 'rh-hero-electronics',
+      eyebrow: 'SMARTER EVERYDAY',
+      hasSparkle: false,
+      title: 'Electronics & Gadgets',
+      description: 'Smart accessories and everyday tech essentials.',
+      ctaText: 'Explore Collection',
+      image: 'assets/images/rainbow-electronics-banner.png',
+      imageAlt: 'Modern everyday electronics including headphones, a phone, and a smartwatch',
+      link: '/shop',
+      queryParams: { category: 'home-office' }
+    },
+    {
       id: 'health-beauty',
       theme: 'rh-hero-health',
       eyebrow: 'YOUR EVERYDAY RITUAL',
-      hasSparkle: false,
+      hasSparkle: true,
       title: 'Health & Beauty',
       description: 'Little care, lasting confidence.',
-      ctaText: 'Explore Collection',
-      image: 'assets/images/health_beauty_web.png',
-      mobileImage: 'assets/images/health_beauty_Mobile.png',
-      imageAlt: 'Health & Beauty — Premium personal care and cosmetics',
+      ctaText: 'Explore the collection',
+      image: 'assets/images/rainbow-health-beauty-banner.png',
+      imageAlt: 'Premium skincare and personal care products',
       link: '/shop',
-      queryParams: { category: 'personal-care' },
-      hideCopy: true
-    },
-    {
-      id: 'electronics',
+      queryParams: { category: 'personal-care' }
+    },{
+      id: 'smart-solutions',
       theme: 'rh-hero-electronics',
       eyebrow: 'SMARTER EVERYDAY',
       hasSparkle: false,

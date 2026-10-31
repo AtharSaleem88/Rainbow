@@ -29,6 +29,12 @@ export class ShopFiltersComponent {
   ];
   brandMenuOpen = false;
   sortMenuOpen = false;
+  mobileFilterModalOpen = false;
+
+  tempMinPrice = 0;
+  tempMaxPrice = 1000;
+  tempSelectedSort = 'featured';
+  tempSelectedSubSubCategory = '';
 
   @Input() selectedBrand = '';
   @Input() minPrice = 0;
@@ -45,6 +51,14 @@ export class ShopFiltersComponent {
 
   get selectedSortLabel(): string {
     return this.sortOptions.find(option => option.value === this.selectedSort)?.label ?? 'Recommended';
+  }
+
+  get activeMobileFilterCount(): number {
+    let count = 0;
+    if (this.selectedSort && this.selectedSort !== 'featured') count++;
+    if (this.minPrice > 0 || (this.maxPrice && this.maxPrice < 1000)) count++;
+    if (this.selectedSubSubCategory) count++;
+    return count;
   }
 
   toggleBrandMenu(): void {
@@ -69,6 +83,52 @@ export class ShopFiltersComponent {
     this.sortFilter.nativeElement.querySelector('button')?.focus();
   }
 
+  openMobileFilterModal(): void {
+    this.tempMinPrice = this.minPrice;
+    this.tempMaxPrice = this.maxPrice;
+    this.tempSelectedSort = this.selectedSort;
+    this.tempSelectedSubSubCategory = this.selectedSubSubCategory;
+    this.mobileFilterModalOpen = true;
+    if (typeof document !== 'undefined') {
+      document.body.classList.add('rh-filter-modal-open');
+    }
+  }
+
+  closeMobileFilterModal(): void {
+    this.mobileFilterModalOpen = false;
+    if (typeof document !== 'undefined') {
+      document.body.classList.remove('rh-filter-modal-open');
+    }
+  }
+
+  setQuickPrice(min: number, max: number): void {
+    this.tempMinPrice = min;
+    this.tempMaxPrice = max;
+  }
+
+  applyMobileFilters(): void {
+    if (this.tempMinPrice !== this.minPrice) {
+      this.minPriceChanged.emit(this.tempMinPrice);
+    }
+    if (this.tempMaxPrice !== this.maxPrice) {
+      this.maxPriceChanged.emit(this.tempMaxPrice);
+    }
+    if (this.tempSelectedSort !== this.selectedSort) {
+      this.sortChanged.emit(this.tempSelectedSort);
+    }
+    if (this.tempSelectedSubSubCategory !== this.selectedSubSubCategory) {
+      this.subSubCategoryChanged.emit(this.tempSelectedSubSubCategory);
+    }
+    this.closeMobileFilterModal();
+  }
+
+  resetTempFilters(): void {
+    this.tempMinPrice = 0;
+    this.tempMaxPrice = 1000;
+    this.tempSelectedSort = 'featured';
+    this.tempSelectedSubSubCategory = '';
+  }
+
   @HostListener('document:click', ['$event'])
   closeMenusOnOutsideClick(event: MouseEvent): void {
     if (this.brandMenuOpen && !this.brandFilter.nativeElement.contains(event.target as Node)) {
@@ -81,6 +141,10 @@ export class ShopFiltersComponent {
 
   @HostListener('document:keydown.escape')
   closeMenusOnEscape(): void {
+    if (this.mobileFilterModalOpen) {
+      this.closeMobileFilterModal();
+      return;
+    }
     if (this.brandMenuOpen) {
       this.brandMenuOpen = false;
       this.brandFilter.nativeElement.querySelector('button')?.focus();

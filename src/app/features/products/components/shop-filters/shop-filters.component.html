@@ -1,6 +1,6 @@
 <div class="rh-shop-header-filters">
   <div class="rh-filter-controls-row">
-    <!-- Brand Dropdown -->
+    <!-- Brand Dropdown (Always visible on mobile & desktop) -->
     <div class="rh-filter-field rh-brand-filter" #brandFilter>
       <span class="rh-filter-label">Brand</span>
       <div class="rh-filter-dropdown">
@@ -31,8 +31,21 @@
       </div>
     </div>
 
-    <!-- Price Filter (Min & Max Price inputs) -->
-    <div class="rh-filter-field">
+    <!-- Mobile Filter Trigger Button (Visible only on mobile screens < 768px) -->
+    <button
+      type="button"
+      class="rh-mobile-filter-trigger d-inline-flex d-md-none"
+      (click)="openMobileFilterModal()"
+      aria-label="Open filter and sort options">
+      <i class="fal fa-sliders-h" aria-hidden="true"></i>
+      <span>Filter</span>
+      <span *ngIf="activeMobileFilterCount > 0" class="rh-mobile-filter-badge">
+        {{ activeMobileFilterCount }}
+      </span>
+    </button>
+
+    <!-- Price Filter (Desktop only: d-none d-md-inline-flex) -->
+    <div class="rh-filter-field rh-desktop-filter d-none d-md-inline-flex">
       <span class="rh-filter-label">Price (Rs.)</span>
       <div class="rh-price-range-group">
         <input
@@ -55,8 +68,8 @@
       </div>
     </div>
 
-    <!-- Sort By Dropdown -->
-    <div class="rh-filter-field ms-auto" #sortFilter>
+    <!-- Sort By Dropdown (Desktop only: d-none d-md-inline-flex) -->
+    <div class="rh-filter-field ms-auto rh-desktop-filter d-none d-md-inline-flex" #sortFilter>
       <span class="rh-filter-label">Sort By</span>
       <div class="rh-filter-dropdown rh-sort-dropdown">
         <button
@@ -87,10 +100,10 @@
     </div>
   </div>
 
-  <div class="rh-filter-divider"></div>
+  <div class="rh-filter-divider d-none d-md-block"></div>
 
-  <!-- Sub Sub Categories Horizontal Filter Chips -->
-  <div class="rh-subsub-row">
+  <!-- Sub Sub Categories Horizontal Filter Chips (Desktop only: hidden on mobile) -->
+  <div class="rh-subsub-row d-none d-md-flex">
     <div class="rh-subsub-chips-container" role="group" aria-label="Subcategory filters">
       <button
         type="button"
@@ -106,6 +119,173 @@
         [class.active]="selectedSubSubCategory === subSubCat"
         (click)="selectSubSubCategory(subSubCat)">
         {{ subSubCat }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Filter Bottom Sheet Modal -->
+<div *ngIf="mobileFilterModalOpen" class="rh-mobile-filter-backdrop" (click)="closeMobileFilterModal()">
+  <div class="rh-mobile-filter-sheet" role="dialog" aria-modal="true" aria-labelledby="rh-mobile-filter-title" (click)="$event.stopPropagation()">
+    <!-- Sheet Drag Handle -->
+    <div class="rh-sheet-handle-bar">
+      <span class="rh-sheet-handle"></span>
+    </div>
+
+    <!-- Sheet Header -->
+    <div class="rh-sheet-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fal fa-sliders-h text-primary"></i>
+        <h3 id="rh-mobile-filter-title" class="rh-sheet-title">Filter &amp; Sort</h3>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button
+          type="button"
+          class="rh-sheet-reset-btn"
+          *ngIf="tempSelectedSort !== 'featured' || tempMinPrice > 0 || (tempMaxPrice && tempMaxPrice < 1000) || tempSelectedSubSubCategory"
+          (click)="resetTempFilters()">
+          Clear All
+        </button>
+        <button
+          type="button"
+          class="rh-sheet-close-btn"
+          (click)="closeMobileFilterModal()"
+          aria-label="Close filters">
+          <i class="fal fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sheet Body -->
+    <div class="rh-sheet-body">
+      <!-- 1. Sort By Section -->
+      <section class="rh-sheet-section">
+        <h4 class="rh-sheet-section-title">
+          <i class="fal fa-sort-amount-down-alt"></i>
+          <span>Sort By</span>
+        </h4>
+        <div class="rh-sheet-sort-grid">
+          <button
+            *ngFor="let sort of sortOptions"
+            type="button"
+            class="rh-sheet-sort-chip"
+            [class.active]="tempSelectedSort === sort.value"
+            (click)="tempSelectedSort = sort.value">
+            <span>{{ sort.label }}</span>
+            <i *ngIf="tempSelectedSort === sort.value" class="fal fa-check"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. Price Range Section -->
+      <section class="rh-sheet-section">
+        <h4 class="rh-sheet-section-title">
+          <i class="fal fa-tag"></i>
+          <span>Price Range (Rs.)</span>
+        </h4>
+        <div class="rh-sheet-price-inputs">
+          <div class="rh-sheet-price-field">
+            <label for="rh-mob-min-price">Min Price</label>
+            <div class="rh-sheet-input-wrap">
+              <span>Rs.</span>
+              <input
+                id="rh-mob-min-price"
+                type="number"
+                min="0"
+                placeholder="0"
+                [(ngModel)]="tempMinPrice">
+            </div>
+          </div>
+          <span class="rh-sheet-price-divider">-</span>
+          <div class="rh-sheet-price-field">
+            <label for="rh-mob-max-price">Max Price</label>
+            <div class="rh-sheet-input-wrap">
+              <span>Rs.</span>
+              <input
+                id="rh-mob-max-price"
+                type="number"
+                min="0"
+                placeholder="1000"
+                [(ngModel)]="tempMaxPrice">
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Price Range Chips -->
+        <div class="rh-sheet-quick-prices">
+          <button
+            type="button"
+            class="rh-sheet-quick-chip"
+            [class.active]="tempMinPrice === 0 && tempMaxPrice === 500"
+            (click)="setQuickPrice(0, 500)">
+            Under Rs. 500
+          </button>
+          <button
+            type="button"
+            class="rh-sheet-quick-chip"
+            [class.active]="tempMinPrice === 500 && tempMaxPrice === 1000"
+            (click)="setQuickPrice(500, 1000)">
+            Rs. 500 - 1000
+          </button>
+          <button
+            type="button"
+            class="rh-sheet-quick-chip"
+            [class.active]="tempMinPrice === 1000 && tempMaxPrice === 5000"
+            (click)="setQuickPrice(1000, 5000)">
+            Rs. 1000+
+          </button>
+          <button
+            type="button"
+            class="rh-sheet-quick-chip"
+            [class.active]="tempMinPrice === 0 && tempMaxPrice === 1000"
+            (click)="setQuickPrice(0, 1000)">
+            All Prices
+          </button>
+        </div>
+      </section>
+
+      <!-- 3. Sub-Sub Categories Section in Modal (Below with filters) -->
+      <section class="rh-sheet-section" *ngIf="subSubCategories && subSubCategories.length">
+        <h4 class="rh-sheet-section-title">
+          <i class="fal fa-layer-group"></i>
+          <span>Sub-Categories</span>
+        </h4>
+        <div class="rh-sheet-subsub-chips">
+          <button
+            type="button"
+            class="rh-sheet-subsub-chip"
+            [class.active]="!tempSelectedSubSubCategory"
+            (click)="tempSelectedSubSubCategory = ''">
+            <span>All</span>
+            <i *ngIf="!tempSelectedSubSubCategory" class="fal fa-check"></i>
+          </button>
+          <button
+            *ngFor="let subSubCat of subSubCategories"
+            type="button"
+            class="rh-sheet-subsub-chip"
+            [class.active]="tempSelectedSubSubCategory === subSubCat"
+            (click)="tempSelectedSubSubCategory = subSubCat">
+            <span>{{ subSubCat }}</span>
+            <i *ngIf="tempSelectedSubSubCategory === subSubCat" class="fal fa-check"></i>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sheet Footer Actions -->
+    <div class="rh-sheet-footer">
+      <button
+        type="button"
+        class="rh-sheet-btn-secondary"
+        (click)="closeMobileFilterModal()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="rh-sheet-btn-primary"
+        (click)="applyMobileFilters()">
+        <span>Apply Filters</span>
+        <i class="fal fa-arrow-right"></i>
       </button>
     </div>
   </div>
