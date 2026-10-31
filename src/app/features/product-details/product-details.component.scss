@@ -347,6 +347,97 @@
   }
 }
 
+/* Special Instructions Card (Customer custom requests) */
+.rh-details-instructions-card {
+  margin: 18px 0 20px;
+  border: 1px solid #e5e9f0;
+  border-radius: 12px;
+  background: #f8f9fa;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(35, 42, 92, 0.03);
+  transition: border-color 160ms ease;
+
+  &:focus-within {
+    border-color: #cbd5e1;
+  }
+}
+
+.rh-instructions-header {
+  padding: 11px 18px;
+  background: #e9ecef;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.rh-instructions-title {
+  margin: 0;
+  color: #212529;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.rh-instructions-body {
+  padding: 14px 16px 10px;
+}
+
+.rh-instructions-textarea {
+  width: 100%;
+  min-height: 78px;
+  padding: 12px 14px;
+  border: 1px solid #d0d7de;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #212529;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  resize: none;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+
+  &::placeholder {
+    color: #9aa3b2;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+  }
+
+  &:focus {
+    border-color: var(--rh-primary);
+    box-shadow: 0 0 0 3px rgba(46, 49, 146, 0.12);
+  }
+}
+
+.rh-instructions-counter {
+  display: block;
+  text-align: right;
+  margin-top: 4px;
+  color: #6c757d;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+@media (max-width: 575px) {
+  .rh-instructions-header {
+    padding: 10px 14px;
+  }
+
+  .rh-instructions-title {
+    font-size: 0.9rem;
+  }
+
+  .rh-instructions-body {
+    padding: 12px 12px 8px;
+  }
+
+  .rh-instructions-textarea {
+    min-height: 72px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+  }
+}
+
 .rh-details-desc-snippet {
   margin: 0 0 20px;
   color: #656b7e;

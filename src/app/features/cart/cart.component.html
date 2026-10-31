@@ -42,6 +42,9 @@
                 <span class="rainbow-cart-out-of-stock-pill">Out of stock</span>
                 <span class="rainbow-cart-best-match-pill" *ngIf="!item.product.inStock || item.outOfStockChoice === 'best-match'">Best Match Selected</span>
               </div>
+              <div class="rainbow-cart-item-instruction" *ngIf="item.instruction">
+                <span>{{ item.instruction }}</span>
+              </div>
               <button type="button" class="rainbow-cart-remove" (click)="removeItem(item.product.id, item.variant?.id)"><i class="fal fa-trash-alt" aria-hidden="true"></i> Remove</button>
             </div>
             <div class="rainbow-cart-item-actions">

@@ -71,22 +71,39 @@ export class CartService {
     return Number(item.product.id) === Number(productId) && itemVarId === targetVarId;
   }
 
-  addToCart(product: Product, quantity: number = 1, variant?: ProductVariant, outOfStockChoice?: 'best-match' | 'specific' | 'notify') {
+  addToCart(product: Product, quantity: number = 1, variant?: ProductVariant, outOfStockChoice?: 'best-match' | 'specific' | 'notify', instruction?: string) {
     const current = this.cartItems();
     const targetVarId = variant?.id ?? null;
     const existingIndex = current.findIndex(item => this.isSameItem(item, product.id, targetVarId));
+    const trimmedInstruction = instruction?.trim();
 
     if (existingIndex > -1) {
       const updated = [...current];
       updated[existingIndex] = {
         ...updated[existingIndex],
         quantity: updated[existingIndex].quantity + quantity,
-        ...(outOfStockChoice ? { outOfStockChoice } : {})
+        ...(outOfStockChoice ? { outOfStockChoice } : {}),
+        ...(trimmedInstruction !== undefined ? { instruction: trimmedInstruction || undefined } : {})
       };
       this.cartItems.set(updated);
     } else {
-      this.cartItems.set([...current, { product, quantity, ...(variant ? { variant } : {}), ...(outOfStockChoice ? { outOfStockChoice } : {}) }]);
+      this.cartItems.set([...current, {
+        product,
+        quantity,
+        ...(variant ? { variant } : {}),
+        ...(outOfStockChoice ? { outOfStockChoice } : {}),
+        ...(trimmedInstruction ? { instruction: trimmedInstruction } : {})
+      }]);
     }
+  }
+
+  updateInstruction(productId: number, instruction: string, variantId?: string | null) {
+    const trimmed = instruction.trim();
+    this.cartItems.update(items => items.map(item =>
+      this.isSameItem(item, productId, variantId)
+        ? { ...item, instruction: trimmed ? trimmed : undefined }
+        : item
+    ));
   }
 
   removeFromCart(productId: number, variantId?: string | null) {

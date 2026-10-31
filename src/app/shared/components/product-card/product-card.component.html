@@ -19,7 +19,21 @@
     <div class="rh-shared-tags-column">
       <span *ngFor="let tag of displayTags" class="rh-shared-feature-tag"><i class="fal fa-check-circle"></i> {{ tag }}</span>
     </div>
-    <div class="rh-shared-price-row"><strong>Rs. {{ displayPrice | number:'1.0-0' }}</strong><del *ngIf="displayOldPrice">Rs. {{ displayOldPrice | number:'1.0-0' }}</del></div>
+    <div class="rh-shared-price-row">
+      <div class="rh-shared-price-wrap">
+        <strong>Rs. {{ displayPrice | number:'1.0-0' }}</strong>
+        <del *ngIf="displayOldPrice">Rs. {{ displayOldPrice | number:'1.0-0' }}</del>
+      </div>
+
+      <div class="rh-shared-variant-select" *ngIf="product.variants && product.variants.length > 1" (click)="$event.stopPropagation()">
+        <select [value]="selectedVariantId()" (change)="onVariantChange($event)" aria-label="Select package size">
+          <option *ngFor="let variant of product.variants" [value]="variant.id">
+            {{ variant.label }}
+          </option>
+        </select>
+        <i class="fal fa-chevron-down" aria-hidden="true"></i>
+      </div>
+    </div>
 
     <button *ngIf="!product.inStock" 
             type="button" 

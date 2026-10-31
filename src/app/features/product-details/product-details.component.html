@@ -71,6 +71,24 @@
           </div>
         </div>
 
+        <!-- Special Instructions Box (Custom Customer Request) -->
+        <div class="rh-details-instructions-card">
+          <div class="rh-instructions-header">
+            <h3 class="rh-instructions-title">Instructions</h3>
+          </div>
+          <div class="rh-instructions-body">
+            <textarea
+              class="rh-instructions-textarea"
+              [value]="specialInstructions()"
+              (input)="onInstructionInput($event)"
+              placeholder="Any special requests?"
+              [maxLength]="maxInstructionLength"
+              rows="2"
+              aria-label="Special instructions for this product"></textarea>
+            <span class="rh-instructions-counter">{{ specialInstructions().length }}/{{ maxInstructionLength }}</span>
+          </div>
+        </div>
+
         <!-- Description Snippet -->
         <!-- Quantity & CTA Actions -->
         <div class="rh-details-actions">

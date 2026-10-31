@@ -45,6 +45,7 @@ export interface CartItem {
   variant?: ProductVariant;
   outOfStockChoice?: 'best-match' | 'specific' | 'notify';
   replacementProductIds?: number[];
+  instruction?: string;
 }
 
 export interface ProductFilter {

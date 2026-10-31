@@ -15,6 +15,9 @@
           <span class="rainbow-summary-oos-pill">Out of stock</span>
           <span class="rainbow-summary-best-match" *ngIf="!item.product.inStock || item.outOfStockChoice === 'best-match'">Best Match Selected</span>
         </div>
+        <div class="rainbow-summary-instruction text-muted small" *ngIf="item.instruction">
+          <i class="fal fa-comment-alt-lines me-1"></i>Note: {{ item.instruction }}
+        </div>
       </div>
       <div class="rainbow-summary-price">
         <strong>Rs. {{ (item.variant?.price ?? item.product.price) * item.quantity | number:'1.0-0' }}</strong>

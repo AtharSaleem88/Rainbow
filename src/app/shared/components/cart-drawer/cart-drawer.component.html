@@ -34,6 +34,9 @@
           <span class="rh-drawer-out-of-stock-pill">Out of stock</span>
           <span class="rh-drawer-best-match-pill" *ngIf="!item.product.inStock || item.outOfStockChoice === 'best-match'">Best Match Selected</span>
         </div>
+        <div class="rh-drawer-instruction" *ngIf="item.instruction">
+          <span>{{ item.instruction }}</span>
+        </div>
       </div>
       <div class="rh-drawer-item-controls">
         <div class="rh-drawer-quantity" [attr.aria-label]="'Quantity for ' + item.product.title">

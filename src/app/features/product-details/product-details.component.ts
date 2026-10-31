@@ -6,7 +6,7 @@ import { CartService } from '../../core/services/cart.service';
 import { AlternateModalService } from '../../core/services/alternate-modal.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
-import { Product, ProductVariant } from '../../core/models/product.model';
+import { CartItem, Product, ProductVariant } from '../../core/models/product.model';
 
 @Component({
   selector: 'app-product-details',
@@ -36,6 +36,8 @@ export class ProductDetailsComponent implements OnInit {
   quantity = signal<number>(1);
   activeTab = signal<'desc' | 'info'>('desc');
   relatedProducts = signal<Product[]>([]);
+  specialInstructions = signal<string>('');
+  readonly maxInstructionLength = 150;
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -48,6 +50,8 @@ export class ProductDetailsComponent implements OnInit {
         this.relatedProducts.set(
           this.productService.getProducts({ category: found.categorySlug }).filter(p => p.id !== found.id)
         );
+        const inCart = this.currentCartItem;
+        this.specialInstructions.set(inCart?.instruction ?? '');
         this.seoService.setPageTitle(`${found.title} — Online Grocery`);
         if (found.description) {
           this.seoService.setMetaDescription(found.description);
@@ -86,23 +90,41 @@ export class ProductDetailsComponent implements OnInit {
     this.selectedImage.set(img);
   }
 
-  selectVariant(variantId: string) {
-    this.selectedVariantId.set(variantId);
-  }
-
-  get cartQuantity(): number {
+  get currentCartItem(): CartItem | undefined {
     const prod = this.product();
-    if (!prod) return 0;
+    if (!prod) return undefined;
     const targetVarId = this.selectedVariant?.id ?? null;
     return this.cartService.cartItems().find(item =>
       Number(item.product.id) === Number(prod.id) && (item.variant?.id ?? null) === targetVarId
-    )?.quantity ?? 0;
+    );
+  }
+
+  selectVariant(variantId: string) {
+    this.selectedVariantId.set(variantId);
+    const inCart = this.currentCartItem;
+    if (inCart?.instruction !== undefined) {
+      this.specialInstructions.set(inCart.instruction);
+    }
+  }
+
+  onInstructionInput(event: Event) {
+    const input = event.target as HTMLTextAreaElement;
+    const val = input.value.slice(0, this.maxInstructionLength);
+    this.specialInstructions.set(val);
+    const prod = this.product();
+    if (prod && this.cartQuantity > 0) {
+      this.cartService.updateInstruction(prod.id, val, this.selectedVariant?.id);
+    }
+  }
+
+  get cartQuantity(): number {
+    return this.currentCartItem?.quantity ?? 0;
   }
 
   addToCart() {
     const prod = this.product();
     if (prod) {
-      this.cartService.addToCart(prod, 1, this.selectedVariant);
+      this.cartService.addToCart(prod, 1, this.selectedVariant, undefined, this.specialInstructions());
     }
   }
 
@@ -117,7 +139,9 @@ export class ProductDetailsComponent implements OnInit {
     const prod = this.product();
     if (prod) {
       if (this.cartQuantity === 0) {
-        this.cartService.addToCart(prod, 1, this.selectedVariant);
+        this.cartService.addToCart(prod, 1, this.selectedVariant, undefined, this.specialInstructions());
+      } else if (this.specialInstructions()) {
+        this.cartService.updateInstruction(prod.id, this.specialInstructions(), this.selectedVariant?.id);
       }
       this.router.navigate(['/checkout']);
     }

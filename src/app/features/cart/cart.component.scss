@@ -798,3 +798,21 @@
 .rainbow-cart-instruction-link > i:first-child { color: var(--rh-primary); }
 .rainbow-cart-instruction-link > i:last-child { font-size: .78rem; }
 
+
+.rainbow-cart-item-instruction {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #f1f4fa;
+  color: #4b5268;
+  font-size: 0.76rem;
+  line-height: 1.35;
+
+  i {
+    color: var(--rh-primary);
+    font-size: 0.74rem;
+  }
+}

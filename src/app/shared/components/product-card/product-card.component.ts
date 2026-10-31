@@ -76,6 +76,15 @@ export class ProductCardComponent implements OnChanges {
     return this.cartService.cartItems().find(item => item.product.id === this.product.id && item.variant?.id === this.selectedVariant?.id)?.quantity ?? 0;
   }
 
+  onVariantChange(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const target = event.target as HTMLSelectElement;
+    if (target && target.value) {
+      this.selectedVariantId.set(target.value);
+    }
+  }
+
   selectVariant(event: Event, variantId: string) {
     event.preventDefault();
     event.stopPropagation();

@@ -52,7 +52,11 @@ export class ProductService {
       image: 'assets/images/ultra_fresh/fresh-organic-guava.png',
       galleryImages: ['assets/images/ultra_fresh/fresh-organic-guava.png'],
       description: 'Hand-harvested fresh guavas packed with vitamin C and natural sweetness. Grown without harmful synthetic pesticides.',
-      additionalInfo: { 'Weight': '1 kg', 'Origin': 'Local Farms', 'Storage': 'Keep in cool dry place' },
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg', 'Origin': 'Local Farms', 'Storage': 'Keep in cool dry place' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 95, oldPrice: 115 },
+        { id: '1kg', label: '1 kg', price: 180, oldPrice: 220 }
+      ],
       badge: 'SALE',
       inStock: true,
       isDeal: true,
@@ -111,14 +115,18 @@ export class ProductService {
       category: 'Ultra Fresh & Produce',
       categorySlug: 'ultra-fresh',
       brand: 'Rainbow Organic',
-      price: 60,
-      oldPrice: 80,
-      discountPercent: 25,
+      price: 110,
+      oldPrice: 150,
+      discountPercent: 27,
       rating: 4.6,
       reviewCount: 29,
       image: 'assets/images/ultra_fresh/Palak.jpg',
       description: 'Washed and ready-to-cook leafy spinach packed with essential minerals and vitamins.',
-      additionalInfo: { 'Weight': '250g Bunch', 'Organic': 'Yes' },
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg', 'Organic': 'Yes' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 60, oldPrice: 80 },
+        { id: '1kg', label: '1 kg', price: 110, oldPrice: 150 }
+      ],
       inStock: false
     },
     {
@@ -129,14 +137,18 @@ export class ProductService {
       category: 'Ultra Fresh & Produce',
       categorySlug: 'ultra-fresh',
       brand: 'Rainbow Fresh',
-      price: 210,
-      oldPrice: 250,
-      discountPercent: 16,
+      price: 390,
+      oldPrice: 470,
+      discountPercent: 17,
       rating: 4.5,
       reviewCount: 19,
       image: 'assets/images/ultra_fresh/mashroom.jpg',
       description: 'Carefully harvested button mushrooms ideal for soups, stir-fries, and gourmet pasta dishes.',
-      additionalInfo: { 'Weight': '200g Tray' },
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 210, oldPrice: 250 },
+        { id: '1kg', label: '1 kg', price: 390, oldPrice: 470 }
+      ],
       inStock: true
     },
     {
@@ -154,7 +166,11 @@ export class ProductService {
       reviewCount: 41,
       image: 'assets/images/ultra_fresh/carrot.webp',
       description: 'Crisp and juicy sweet carrots packed with beta-carotene.',
-      additionalInfo: { 'Weight': '1 kg' },
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 48, oldPrice: 60 },
+        { id: '1kg', label: '1 kg', price: 90, oldPrice: 110 }
+      ],
       inStock: true
     },
     {
@@ -172,7 +188,11 @@ export class ProductService {
       reviewCount: 15,
       image: 'assets/images/ultra_fresh/Curly-Kale.webp',
       description: 'Fresh curly kale leaves perfect for healthy smoothies, salads, and kale chips.',
-      additionalInfo: { 'Weight': '200g' },
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 85, oldPrice: 100 },
+        { id: '1kg', label: '1 kg', price: 160, oldPrice: 190 }
+      ],
       inStock: true
     },
     {
@@ -190,7 +210,11 @@ export class ProductService {
       reviewCount: 12,
       image: 'assets/images/ultra_fresh/shaljum.webp',
       description: 'Tender white turnips sourced directly from local agricultural yields.',
-      additionalInfo: { 'Weight': '500g' },
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 40, oldPrice: 50 },
+        { id: '1kg', label: '1 kg', price: 75, oldPrice: 95 }
+      ],
       inStock: false
     },
     {
@@ -247,9 +271,9 @@ export class ProductService {
       rating: 4.6,
       reviewCount: 32,
       image: 'assets/images/Classic_ecom/daal channa.webp',
-      additionalInfo: { 'Weight': '1 kg' },
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg' },
       variants: [
-        { id: '500g', label: '500 g', price: 135, oldPrice: 150 },
+        { id: 'half-kg', label: '1/2 kg', price: 135, oldPrice: 150 },
         { id: '1kg', label: '1 kg', price: 260, oldPrice: 290 }
       ],
       inStock: true,
@@ -890,6 +914,79 @@ export class ProductService {
       tags: ['Whole Grain', 'Choco Rings', 'Kids Favourite'],
       badge: 'RAINBOW EXCLUSIVE',
       inStock: true
+    },
+    {
+      id: 150,
+      title: 'Masoor Daal (Red Lentils)',
+      subCategory: 'Pulses',
+      subtitle: 'Premium unpolished split red lentils',
+      category: 'Rice, Daal & Staples',
+      categorySlug: 'grocery',
+      brand: 'Rainbow Select',
+      price: 280,
+      oldPrice: 310,
+      discountPercent: 10,
+      rating: 4.8,
+      reviewCount: 39,
+      image: 'assets/images/Classic_ecom/masoor-dal-red-lentils.png',
+      galleryImages: ['assets/images/Classic_ecom/masoor-dal-red-lentils.png'],
+      description: 'Naturally nutritious and unpolished Masoor Daal (Split Red Lentils). Rich in dietary fiber, high-quality plant protein, and cooks quickly into a smooth, comforting Pakistani daal.',
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg', 'Type': 'Red Split Lentils', 'Origin': 'Punjab, Pakistan', 'Storage': 'Store in a cool dry place' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 145, oldPrice: 165 },
+        { id: '1kg', label: '1 kg', price: 280, oldPrice: 310 }
+      ],
+      tags: ['High Protein', 'Unpolished', 'Quick Cooking'],
+      badge: 'POPULAR',
+      inStock: true
+    },
+    {
+      id: 151,
+      title: 'White Chickpeas (Kabuli Chana)',
+      subCategory: 'Pulses',
+      subtitle: 'Grade-A bold white chickpeas',
+      category: 'Rice, Daal & Staples',
+      categorySlug: 'grocery',
+      brand: 'Rainbow Select',
+      price: 360,
+      oldPrice: 400,
+      discountPercent: 10,
+      rating: 4.7,
+      reviewCount: 44,
+      image: 'assets/images/Classic_ecom/InstantPotChana3.webp',
+      galleryImages: ['assets/images/Classic_ecom/InstantPotChana3.webp'],
+      description: 'Extra-large, uniform Grade-A Kabuli Chana (White Chickpeas). Naturally sun-dried, cleaned, and sorted. Excellent for hearty Lahori Murgh Chana, traditional Chana Masala, and zesty salads.',
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg', 'Grade': 'Grade-A Bold', 'Origin': 'Punjab, Pakistan', 'Storage': 'Store in a cool dry place' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 185, oldPrice: 210 },
+        { id: '1kg', label: '1 kg', price: 360, oldPrice: 400 }
+      ],
+      tags: ['Grade-A Bold', 'High Fiber', 'Pantry Essential'],
+      inStock: true
+    },
+    {
+      id: 152,
+      title: 'Red Kidney Beans (Lobia / Rajma)',
+      subCategory: 'Pulses',
+      subtitle: 'Nutrient-rich red kidney beans',
+      category: 'Rice, Daal & Staples',
+      categorySlug: 'grocery',
+      brand: 'Rainbow Select',
+      price: 320,
+      oldPrice: 360,
+      discountPercent: 11,
+      rating: 4.8,
+      reviewCount: 28,
+      image: 'assets/images/Classic_ecom/red_beans.webp',
+      galleryImages: ['assets/images/Classic_ecom/red_beans.webp'],
+      description: 'Selected premium Red Kidney Beans (Lobia / Rajma) packed with natural minerals, iron, and slow-burning carbohydrates. Holds shape wonderfully during slow-cooking in rich spiced gravies.',
+      additionalInfo: { 'Weight': '1 kg / 1/2 kg', 'Type': 'Red Kidney Beans', 'Origin': 'Local Harvest', 'Storage': 'Keep in airtight container' },
+      variants: [
+        { id: 'half-kg', label: '1/2 kg', price: 165, oldPrice: 185 },
+        { id: '1kg', label: '1 kg', price: 320, oldPrice: 360 }
+      ],
+      tags: ['High Iron', 'Rich Protein', 'Premium Select'],
+      inStock: true
     }
   ]);
 
@@ -903,7 +1000,9 @@ export class ProductService {
     if (!filter) return result;
 
     if (filter.category) {
-      result = result.filter(p => p.categorySlug === filter.category || p.category === filter.category);
+      const cat = filter.category;
+      const isPulses = cat.toLowerCase() === 'pulses';
+      result = result.filter(p => p.categorySlug === cat || p.category === cat || (isPulses && p.subCategory?.toLowerCase() === 'pulses'));
     }
     if (filter.subCategory) {
       result = result.filter(p => p.subCategory === filter.subCategory);
