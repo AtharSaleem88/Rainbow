@@ -6,68 +6,55 @@
       <div class="gray_line" aria-hidden="true"></div>
     </div>
     <div
-      class="rh-category-grid py-2"
-      id="home-category-grid"
-      #categoryGrid
-      role="group"
-      aria-label="Shop By Category"
-      [attr.tabindex]="categoryHasOverflow() ? 0 : null"
-      (scroll)="onCategoryScroll($event)"
-      (keydown)="onCategoryGridKeydown($event)">
-      <a
-        *ngFor="let cat of categories; trackBy: trackCategory"
-        class="rh-category-item py-2 p-md-2 h-100"
-        [routerLink]="['/shop']"
-        [queryParams]="{ category: cat.slug }"
-        [attr.aria-label]="'Shop ' + cat.name">
-        <span class="rh-category-image">
-          <img *ngIf="cat.image" [src]="cat.image" [alt]="cat.name" loading="lazy" decoding="async">
-          <i *ngIf="!cat.image && cat.icon" class="fas" [ngClass]="cat.icon" aria-hidden="true"></i>
-        </span>
-        <span class="rh-category-name px-1">{{ cat.name }}</span>
-      </a>
-    </div>
-
-    <!-- Mobile Category Scroll Indicator -->
-    <p *ngIf="categoryHasOverflow()" class="d-md-none small text-muted text-center mt-3 mb-2">Swipe to explore more categories</p>
-    <div
-      *ngIf="categoryHasOverflow()"
-      class="rh-category-indicator-wrap d-flex d-md-none align-items-center justify-content-center"
-      aria-label="Browse categories">
-      <div class="rh-monthly-rail-controls mr-3">
-        <button
-          type="button"
-          aria-label="Previous category page"
-          aria-controls="home-category-grid"
-          [disabled]="activeCategoryPageIndex() === 0"
-          [class.text-muted]="activeCategoryPageIndex() === 0"
-          (click)="scrollToCategoryPage(activeCategoryPageIndex() - 1)">
-          <i class="fal fa-arrow-left" aria-hidden="true"></i>
-        </button>
+      class="rh-category-carousel"
+      aria-label="Browse shop categories"
+      (mouseenter)="pauseCategoryAutoSlide()"
+      (mouseleave)="resumeCategoryAutoSlide()"
+      (focusin)="pauseCategoryAutoSlide()"
+      (focusout)="resumeCategoryAutoSlide()"
+      (touchstart)="pauseCategoryAutoSlide()">
+      <button
+        *ngIf="categoryHasOverflow()"
+        type="button"
+        class="rh-category-arrow rh-category-arrow-prev"
+        aria-label="Previous categories"
+        aria-controls="home-category-grid"
+        [disabled]="activeCategoryPageIndex() === 0"
+        (click)="scrollToCategoryPage(activeCategoryPageIndex() - 1)">
+        <i class="fal fa-chevron-left" aria-hidden="true"></i>
+      </button>
+      <div
+        class="rh-category-grid py-2"
+        id="home-category-grid"
+        #categoryGrid
+        role="group"
+        aria-label="Shop By Category"
+        [attr.tabindex]="categoryHasOverflow() ? 0 : null"
+        (scroll)="onCategoryScroll($event)"
+        (keydown)="onCategoryGridKeydown($event)">
+        <a
+          *ngFor="let cat of categories; trackBy: trackCategory"
+          class="rh-category-item py-2 p-md-2 h-100"
+          [routerLink]="['/shop']"
+          [queryParams]="{ category: cat.slug }"
+          [attr.aria-label]="'Shop ' + cat.name">
+          <span class="rh-category-image">
+            <img *ngIf="cat.image" [src]="cat.image" [alt]="cat.name" loading="lazy" decoding="async">
+            <i *ngIf="!cat.image && cat.icon" class="fas" [ngClass]="cat.icon" aria-hidden="true"></i>
+          </span>
+          <span class="rh-category-name px-1">{{ cat.name }}</span>
+        </a>
       </div>
-      <div class="rh-category-indicator-pill" role="group" aria-label="Category pages">
-        <button
-          *ngFor="let page of [0, 1, 2]"
-          type="button"
-          class="rh-category-indicator-dot"
-          [class.active]="activeCategoryPageIndex() === page"
-          (click)="scrollToCategoryPage(page)"
-          [attr.aria-pressed]="activeCategoryPageIndex() === page"
-          aria-controls="home-category-grid"
-          [attr.aria-label]="'Go to category page ' + (page + 1)">
-        </button>
-      </div>
-      <div class="rh-monthly-rail-controls ml-3">
-        <button
-          type="button"
-          aria-label="Next category page"
-          aria-controls="home-category-grid"
-          [disabled]="activeCategoryPageIndex() === 2"
-          [class.text-muted]="activeCategoryPageIndex() === 2"
-          (click)="scrollToCategoryPage(activeCategoryPageIndex() + 1)">
-          <i class="fal fa-arrow-right" aria-hidden="true"></i>
-        </button>
-      </div>
+      <button
+        *ngIf="categoryHasOverflow()"
+        type="button"
+        class="rh-category-arrow rh-category-arrow-next"
+        aria-label="Next categories"
+        aria-controls="home-category-grid"
+        [disabled]="activeCategoryPageIndex() === 2"
+        (click)="scrollToCategoryPage(activeCategoryPageIndex() + 1)">
+        <i class="fal fa-chevron-right" aria-hidden="true"></i>
+      </button>
     </div>
   </div>
 </section>

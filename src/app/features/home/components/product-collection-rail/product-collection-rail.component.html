@@ -5,7 +5,6 @@
   <div class="container maxw_1460">
     <header class="rh-collection-heading-centered">
       <div class="rh-collection-title-row">
-        <div class="gray_line" aria-hidden="true"></div>
         <h2 [id]="sectionId">
           <ng-container *ngIf="titleLead && titleAccent; else plainTitle">
             <span class="rh-collection-title-dark">{{ titleLead }}</span>
@@ -14,10 +13,7 @@
           <ng-template #plainTitle>{{ title }}</ng-template>
         </h2>
         <div class="gray_line" aria-hidden="true"></div>
-      </div>
-      <div class="rh-collection-sub-row" *ngIf="subtitle || seeAllLink">
-        <p *ngIf="subtitle" class="rh-collection-subtitle mb-0">{{ subtitle }}</p>
-        <a *ngIf="seeAllLink" [routerLink]="seeAllLink" [queryParams]="seeAllQueryParams" class="rh-collection-see-all ml-auto">
+        <a *ngIf="seeAllLink" [routerLink]="seeAllLink" [queryParams]="seeAllQueryParams" class="rh-collection-see-all">
           {{ seeAllText }} <i class="fal fa-arrow-right" aria-hidden="true"></i>
         </a>
       </div>

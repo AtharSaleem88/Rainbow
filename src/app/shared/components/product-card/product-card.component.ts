@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject, signal, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, HostListener, inject, signal, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Product, ProductVariant } from '../../../core/models/product.model';
@@ -21,8 +21,11 @@ export class ProductCardComponent implements OnChanges {
 
   cartService = inject(CartService);
   alternateModalService = inject(AlternateModalService);
+  private host = inject(ElementRef<HTMLElement>);
   favorite = signal(false);
   selectedVariantId = signal<string | null>(null);
+  variantOptionsOpen = signal(false);
+  variantPopupStyle = signal<Record<string, string>>({});
 
   openAlternateModal(event?: Event) {
     if (event) {
@@ -89,6 +92,36 @@ export class ProductCardComponent implements OnChanges {
     event.preventDefault();
     event.stopPropagation();
     this.selectedVariantId.set(variantId);
+    this.variantOptionsOpen.set(false);
+  }
+
+  toggleVariantOptions(event: MouseEvent) {
+    event.preventDefault();
+    if (this.variantOptionsOpen()) {
+      this.variantOptionsOpen.set(false);
+      return;
+    }
+
+    const trigger = event.currentTarget as HTMLElement;
+    const rect = trigger.getBoundingClientRect();
+    const width = Math.min(250, window.innerWidth - 24);
+    const itemCount = Math.min(this.product.variants?.length ?? 0, 4);
+    const menuHeight = itemCount * 58 + 10;
+    const topBelow = rect.bottom + 8;
+    const top = topBelow + menuHeight <= window.innerHeight - 8
+      ? topBelow
+      : Math.max(8, rect.top - menuHeight - 8);
+    const left = Math.max(12, Math.min(rect.right - width, window.innerWidth - width - 12));
+
+    this.variantPopupStyle.set({ top: `${top}px`, left: `${left}px`, width: `${width}px` });
+    this.variantOptionsOpen.set(true);
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeVariantOptionsOnOutsideClick(event: MouseEvent) {
+    const target = event.target as Node | null;
+    const selector = this.host.nativeElement.querySelector('.rh-shared-variant-select');
+    if (!target || !selector?.contains(target)) this.variantOptionsOpen.set(false);
   }
 
   addToCart(event: Event) {

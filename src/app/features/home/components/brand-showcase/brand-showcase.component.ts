@@ -1,13 +1,13 @@
-import { Component, Input, signal, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Product } from '../../../../core/models/product.model';
-import { ProductCardComponent } from '../../../../shared/components/product-card/product-card.component';
 import { BrandItem } from '../../models/home.model';
 
 @Component({
   selector: 'app-brand-showcase',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent],
+  imports: [CommonModule],
   templateUrl: './brand-showcase.component.html',
   styleUrls: ['./brand-showcase.component.scss']
 })
@@ -15,40 +15,34 @@ export class BrandShowcaseComponent {
   @Input({ required: true }) brands: BrandItem[] = [];
   @Input({ required: true }) products: Product[] = [];
 
-  selectedBrand = signal<BrandItem | null>(null);
-  @ViewChild('brandProductsRail') brandProductsRail?: ElementRef<HTMLElement>;
-
-  get selectedBrandProducts(): Product[] {
-    const brand = this.selectedBrand()?.name;
-    if (!brand) return [];
-    return this.products.filter(product => product.brand.toLowerCase().includes(brand.toLowerCase()));
-  }
+  private router = inject(Router);
 
   openBrand(brand: BrandItem): void {
-    this.selectedBrand.set(brand);
-    document.body.classList.add('rh-brand-modal-open');
-    setTimeout(() => {
-      document.getElementById('rh-brand-close')?.focus();
-    }, 50);
+    const normalizedBrand = this.normalizeBrand(brand.name);
+    const matchingProducts = this.products.filter(product => this.normalizeBrand(product.brand) === normalizedBrand);
+    const departments: Record<string, string> = {
+      nestle: 'dairy-eggs',
+      pepsi: 'beverages',
+      cocacola: 'beverages',
+      nivea: 'personal-care',
+      dove: 'personal-care',
+      loreal: 'personal-care',
+      pampers: 'baby-care',
+      unilever: 'personal-care',
+      garnier: 'personal-care',
+      lipton: 'tea-coffee-milk-drinks',
+      knorr: 'breakfast-instant-food'
+    };
+
+    this.router.navigate(['/shop'], {
+      queryParams: {
+        category: matchingProducts[0]?.categorySlug ?? departments[normalizedBrand] ?? 'grocery',
+        brand: matchingProducts[0]?.brand ?? brand.name
+      }
+    });
   }
 
-  closeBrand(): void {
-    this.selectedBrand.set(null);
-    document.body.classList.remove('rh-brand-modal-open');
-  }
-
-  scrollBrandProducts(direction: number): void {
-    if (!this.brandProductsRail?.nativeElement) return;
-    const container = this.brandProductsRail.nativeElement;
-    const scrollAmount = Math.max(container.clientWidth * 0.75, 260);
-    const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-    container.scrollBy({ left: direction * scrollAmount, behavior });
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  onKeydown(event: KeyboardEvent): void {
-    if (this.selectedBrand() && event.key === 'Escape') {
-      this.closeBrand();
-    }
+  private normalizeBrand(value: string): string {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
   }
 }

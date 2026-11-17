@@ -39,22 +39,22 @@ export const routes: Routes = [
   {
     path: 'about',
     loadComponent: () => import('./features/about/about.component').then(m => m.AboutComponent),
-    title: 'About Us — Rainbow Cash & Carry'
+    title: 'About Us — Rainbow'
   },
   {
     path: 'contact',
     loadComponent: () => import('./features/contact/contact.component').then(m => m.ContactComponent),
-    title: 'Contact Us — Rainbow Cash & Carry'
+    title: 'Contact Us — Rainbow'
   },
   {
     path: 'terms-and-conditions',
     loadComponent: () => import('./features/legal/terms-and-conditions.component').then(m => m.TermsAndConditionsComponent),
-    title: 'Terms & Conditions - Rainbow Cash & Carry'
+    title: 'Terms & Conditions - Rainbow'
   },
   {
     path: 'privacy-policy',
     loadComponent: () => import('./features/legal/privacy-policy.component').then(m => m.PrivacyPolicyComponent),
-    title: 'Privacy Policy - Rainbow Cash & Carry'
+    title: 'Privacy Policy - Rainbow'
   },
   {
     path: '**',

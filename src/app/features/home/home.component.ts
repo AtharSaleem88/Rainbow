@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
@@ -35,9 +35,11 @@ import { FloatingActionsComponent } from '../../shared/components/floating-actio
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private productService = inject(ProductService);
   private seoService = inject(SeoService);
+  private readonly hostElement = inject<ElementRef<HTMLElement>>(ElementRef);
+  private sectionRevealObserver?: IntersectionObserver;
 
   readonly categories = this.productService.getCategories();
   readonly allProducts = this.productService.getProducts();
@@ -148,7 +150,34 @@ export class HomeComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.seoService.setPageTitle('Rainbow Cash & Carry - Online Grocery, Electronics & Everyday Essentials');
-    this.seoService.setMetaDescription('Shop fresh grocery, pantry essentials, electronics, personal care and household items at Rainbow Cash & Carry.');
+    this.seoService.setPageTitle('Rainbow - Online Grocery, Electronics & Everyday Essentials');
+    this.seoService.setMetaDescription('Shop fresh grocery, pantry essentials, electronics, personal care and household items at Rainbow.');
+  }
+
+  ngAfterViewInit(): void {
+    if (typeof window === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const sections = this.hostElement.nativeElement.querySelectorAll<HTMLElement>(
+      'app-hero-slider, app-category-grid, app-monthly-deals, app-category-spotlights, app-product-collection-rail, app-promo-banners, app-brand-showcase, app-campaign-slider, app-store-policy'
+    );
+
+    if (typeof IntersectionObserver === 'undefined') return;
+
+    this.sectionRevealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('rh-home-in-view');
+        this.sectionRevealObserver?.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+
+    sections.forEach(section => {
+      section.classList.add('rh-home-reveal');
+      this.sectionRevealObserver?.observe(section);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sectionRevealObserver?.disconnect();
   }
 }

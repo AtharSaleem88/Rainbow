@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class ShopFiltersComponent {
   @ViewChild('brandFilter') brandFilter!: ElementRef<HTMLElement>;
   @ViewChild('sortFilter') sortFilter!: ElementRef<HTMLElement>;
+  @ViewChild('subSubFilter') subSubFilter?: ElementRef<HTMLElement>;
 
   readonly brandOptions = [
     { value: '', label: 'All brands' },
@@ -19,7 +20,24 @@ export class ShopFiltersComponent {
     { value: 'Rainbow Organic', label: 'Rainbow Organic' },
     { value: 'Rainbow Select', label: 'Rainbow Select' },
     { value: 'Rainbow Frozen', label: 'Rainbow Frozen' },
-    { value: 'Shan', label: 'Shan' }
+    { value: 'Shan', label: 'Shan' },
+    { value: 'Nestlé', label: 'Nestlé' },
+    { value: 'Pepsi', label: 'Pepsi' },
+    { value: 'Coca-Cola', label: 'Coca-Cola' },
+    { value: 'Nivea', label: 'Nivea' },
+    { value: 'Dove', label: 'Dove' },
+    { value: 'L’Oréal', label: 'L’Oréal' },
+    { value: 'Pampers', label: 'Pampers' },
+    { value: 'Unilever', label: 'Unilever' },
+    { value: 'Garnier', label: 'Garnier' },
+    { value: 'Lipton', label: 'Lipton' },
+    { value: 'Knorr', label: 'Knorr' },
+    { value: 'Chanel', label: 'Chanel' },
+    { value: 'Gucci', label: 'Gucci' },
+    { value: 'Hugo Boss', label: 'Hugo Boss' },
+    { value: 'Roberto Cavalli', label: 'Roberto Cavalli' },
+    { value: 'Baminos', label: 'Baminos' },
+    { value: 'VX Nutrition', label: 'VX Nutrition' }
   ];
   readonly sortOptions = [
     { value: 'featured', label: 'Recommended' },
@@ -29,6 +47,7 @@ export class ShopFiltersComponent {
   ];
   brandMenuOpen = false;
   sortMenuOpen = false;
+  subSubMenuOpen = false;
   mobileFilterModalOpen = false;
 
   tempMinPrice = 0;
@@ -64,11 +83,19 @@ export class ShopFiltersComponent {
   toggleBrandMenu(): void {
     this.brandMenuOpen = !this.brandMenuOpen;
     this.sortMenuOpen = false;
+    this.subSubMenuOpen = false;
   }
 
   toggleSortMenu(): void {
     this.sortMenuOpen = !this.sortMenuOpen;
     this.brandMenuOpen = false;
+    this.subSubMenuOpen = false;
+  }
+
+  toggleSubSubMenu(): void {
+    this.subSubMenuOpen = !this.subSubMenuOpen;
+    this.brandMenuOpen = false;
+    this.sortMenuOpen = false;
   }
 
   selectBrand(value: string): void {
@@ -137,6 +164,9 @@ export class ShopFiltersComponent {
     if (this.sortMenuOpen && !this.sortFilter.nativeElement.contains(event.target as Node)) {
       this.sortMenuOpen = false;
     }
+    if (this.subSubMenuOpen && !this.subSubFilter?.nativeElement.contains(event.target as Node)) {
+      this.subSubMenuOpen = false;
+    }
   }
 
   @HostListener('document:keydown.escape')
@@ -153,6 +183,10 @@ export class ShopFiltersComponent {
       this.sortMenuOpen = false;
       this.sortFilter.nativeElement.querySelector('button')?.focus();
     }
+    if (this.subSubMenuOpen) {
+      this.subSubMenuOpen = false;
+      this.subSubFilter?.nativeElement.querySelector('button')?.focus();
+    }
   }
 
   onMinPriceChange(event: Event): void {
@@ -167,5 +201,7 @@ export class ShopFiltersComponent {
 
   selectSubSubCategory(name: string): void {
     this.subSubCategoryChanged.emit(name);
+    this.subSubMenuOpen = false;
+    this.subSubFilter?.nativeElement.querySelector('button')?.focus();
   }
 }

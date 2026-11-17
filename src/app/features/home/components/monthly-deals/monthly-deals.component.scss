@@ -1,986 +1,107 @@
 :host { display: block; }
-.rh-monthly-deals {
-  padding-top: 20px;
-  padding-bottom: 24px;
-  background:
-    radial-gradient(ellipse at 88% 6%, rgba(61, 168, 224, 0.08), transparent 34%),
-    var(--rh-white);
-}
 
-.rh-monthly-heading {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 16px;
-  padding-bottom: 0;
-  border-bottom: none;
+.rh-monthly-deals { padding: 20px 0 28px; background: var(--rh-white); }
 
-  h2 {
-    flex: 0 0 auto;
-    margin: 0;
-    color: var(--rh-primary);
-    font-family: 'Poppins', sans-serif;
-    font-size: clamp(1.45rem, 2.4vw, 2rem);
-    font-weight: 700;
-  }
-
-  .gray_line {
-    flex: 1 1 auto;
-  }
-}
-
-.rh-monthly-subheading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-
-  h3 {
-    margin: 0;
-    color: var(--rh-text-dark);
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-  }
-}
-
-.rh-monthly-heading p {
-  margin: 5px 0 0;
-  color: var(--rh-text-dark);
-  opacity: 0.72;
-}
-
-.rh-monthly-heading-mark {
-  display: grid;
-  width: 46px;
-  height: 46px;
-  flex: 0 0 auto;
-  place-items: center;
-  border-radius: 50%;
-  color: var(--rh-white);
-  background: var(--rh-primary);
-  font-size: 1.1rem;
-  box-shadow: 0 8px 20px rgba(45, 44, 146, 0.2);
-}
-
-.rh-monthly-flyer {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(230px, 320px);
-  align-items: stretch;
-  gap: clamp(16px, 2.5vw, 32px);
-  margin: 0 auto;
-  padding: clamp(14px, 2vw, 22px);
-  border: 1px solid rgba(45, 44, 146, 0.1);
-  border-radius: 26px;
-  background: linear-gradient(135deg, #f7f9ff 0%, #eef5fb 100%);
-  box-shadow: 0 20px 54px rgba(45, 44, 146, 0.1);
-}
-
-.rh-monthly-flyer-intro {
-  position: relative;
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  overflow: hidden;
-  padding: clamp(1.75rem, 4.5vw, 4rem);
-  border-radius: 19px;
-  color: var(--rh-white);
-  background:
-    radial-gradient(circle at 100% 0%, rgba(61, 168, 224, 0.34), transparent 38%),
-    linear-gradient(135deg, #25245f 0%, var(--rh-primary) 62%, #3936aa 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
-}
-
-.rh-monthly-flyer-intro::after {
-  position: absolute;
-  right: -92px;
-  bottom: -155px;
-  width: 280px;
-  aspect-ratio: 1;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 50%;
-  box-shadow: 0 0 0 36px rgba(255, 255, 255, 0.035), 0 0 0 72px rgba(255, 255, 255, 0.025);
-  content: "";
-}
-
-.rh-monthly-flyer-kicker {
-  position: relative;
-  z-index: 1;
-  color: var(--rh-lime);
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.rh-monthly-flyer-intro h3 {
-  position: relative;
-  z-index: 1;
-  margin: 0.7rem 0 0.5rem;
-  color: var(--rh-white);
-  font-family: 'Poppins', sans-serif;
-  font-size: clamp(1.8rem, 3vw, 2.75rem);
-  font-weight: 700;
-  line-height: 1.08;
-}
-
-.rh-monthly-flyer-intro p {
-  position: relative;
-  z-index: 1;
-  max-width: 440px;
-  margin: 0;
-  color: var(--rh-white);
-  line-height: 1.6;
-  opacity: 0.88;
-}
-
-.rh-monthly-flyer-seal {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-top: 1.2rem;
-  padding: 0.5rem 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 20px;
-  color: var(--rh-lime);
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.rh-monthly-flyer-shop {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  min-height: 46px;
-  align-items: center;
-  gap: 0.7rem;
-  margin-top: 1.5rem;
-  padding: 0.7rem 1.15rem;
-  border-radius: 24px;
-  color: var(--rh-primary);
-  background: var(--rh-lime);
-  font-weight: 700;
-  text-decoration: none;
-  transition: transform 180ms ease, color 180ms ease, background-color 180ms ease;
-}
-
-.rh-monthly-flyer-shop:hover,
-.rh-monthly-flyer-shop:focus-visible {
-  color: var(--rh-white);
-  background: var(--rh-secondary);
-  transform: translateY(-2px);
-}
-
-.rh-monthly-flyer-shop:focus-visible {
-  outline: 2px solid var(--rh-white);
-  outline-offset: 3px;
-}
-
-.rh-monthly-flyer-preview {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: auto;
-  min-height: 0;
-  overflow: hidden;
-  padding: 0;
-  border: 1px solid rgba(45, 44, 146, 0.14);
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: -8px 16px 32px rgba(21, 27, 72, 0.18);
-  cursor: zoom-in;
-  transform: perspective(1000px) rotate(-3.5deg) rotateY(5deg) rotateX(2deg) scale(0.98);
-  transform-origin: center center;
-  transform-style: preserve-3d;
-  transition: box-shadow 420ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.rh-monthly-flyer-preview:hover,
-.rh-monthly-flyer-preview:focus-visible {
-  box-shadow: 0 30px 58px rgba(35, 39, 103, 0.3), 0 8px 18px rgba(45, 44, 146, 0.12);
-  transform: perspective(1000px) rotate(-1deg) rotateY(-5deg) rotateX(3deg) scale(1.035) translateY(-6px);
-}
-
-.rh-monthly-flyer-preview:focus-visible {
-  outline: 3px solid var(--rh-secondary);
-  outline-offset: 4px;
-}
-
-.rh-monthly-flyer-preview img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-.rh-monthly-flyer-preview-label {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  left: 10px;
-  display: flex;
-  min-height: 38px;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 22px;
-  color: var(--rh-white);
-  background: rgba(45, 44, 146, 0.92);
-  font-size: 0.82rem;
-  font-weight: 700;
-  opacity: 0;
-  transform: translateY(5px);
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-.rh-monthly-flyer-preview:hover .rh-monthly-flyer-preview-label,
-.rh-monthly-flyer-preview:focus-visible .rh-monthly-flyer-preview-label {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.rh-monthly-flyer-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1100;
-  display: grid;
-  place-items: center;
-  overflow: auto;
-  padding: 24px;
-  background: rgba(20, 20, 50, 0.78);
-  backdrop-filter: blur(5px);
-  animation: rh-flyer-modal-fade-in 180ms ease both;
-}
-
-.rh-monthly-flyer-modal-panel {
-  position: relative;
-  max-width: 100%;
-  max-height: 100%;
-  padding: 8px;
-  border-radius: 14px;
-  background: var(--rh-white);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
-  animation: rh-flyer-modal-pop-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.rh-monthly-flyer-modal-panel > img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: min(90vw, 1100px);
-  max-height: calc(100dvh - 48px);
-  border-radius: 8px;
-  object-fit: contain;
-}
-
-.rh-monthly-flyer-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 1;
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border: 2px solid var(--rh-white);
-  border-radius: 50%;
-  color: var(--rh-white);
-  background: var(--rh-primary);
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.rh-monthly-flyer-close:hover,
-.rh-monthly-flyer-close:focus-visible {
-  color: var(--rh-primary);
-  background: var(--rh-lime);
-  outline: 2px solid var(--rh-white);
-  outline-offset: 2px;
-}
-
-@keyframes rh-flyer-modal-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes rh-flyer-modal-pop-in {
-  from { opacity: 0; transform: scale(0.94) translateY(12px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.rh-monthly-deal-content {
-  margin-top: 38px;
-  scroll-margin-top: 112px;
-}
-
-.rh-monthly-subheading {
-  margin-bottom: 16px;
-}
-
-.rh-monthly-subheading h3 {
-  font-size: 1.35rem;
-  scroll-margin-top: 112px;
-}
-
-.rh-monthly-deal-title-dark { color: var(--rh-primary); }
-.rh-monthly-deal-title-blue { color: var(--rh-primary); }
-
-.rh-monthly-subheading > span {
-  color: var(--rh-text-dark);
-  font-size: 0.88rem;
-  opacity: 0.7;
-}
-
-.rh-monthly-category-nav {
-  display: flex;
-  gap: 0.65rem;
-  overflow-x: auto;
-  padding: 2px 2px 12px;
-  scrollbar-width: thin;
-}
-
-.rh-monthly-category-nav button {
-  min-height: 40px;
-  flex: 0 0 auto;
-  padding: 0.55rem 1rem;
-  border: 1px solid rgba(45, 44, 146, 0.16);
-  border-radius: 24px;
-  color: var(--rh-text-dark);
-  background: var(--rh-white);
-  font: inherit;
-  cursor: pointer;
-  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
-}
-
-.rh-monthly-category-nav button.active,
-.rh-monthly-category-nav button:hover,
-.rh-monthly-category-nav button:focus-visible {
-  border-color: var(--rh-primary);
-  color: var(--rh-white);
-  background: var(--rh-primary);
-}
-
-.rh-monthly-category-nav button:focus-visible {
-  outline: 2px solid var(--rh-secondary);
-  outline-offset: 3px;
-}
-
-.rh-monthly-rail-meta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.rh-monthly-offer-count {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #5f6677;
-  font-size: 0.9rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.rh-monthly-offer-count-number {
-  display: inline-grid;
-  width: 30px;
-  height: 30px;
-  place-items: center;
-  border: 1px solid #e6e8ed;
-  border-radius: 50%;
-  color: #343a46;
-  background: #f3f4f6;
-  font-size: 0.78rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.rh-monthly-rail-controls {
-  display: flex;
-  gap: 7px;
-}
-
-.rh-monthly-rail-controls button {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
-  border: 1px solid rgba(45, 44, 146, 0.16);
-  border-radius: 50%;
-  color: var(--rh-primary);
-  background: #fff;
-  cursor: pointer;
-  transition: color 160ms ease, background-color 160ms ease;
-}
-
-.rh-monthly-rail-controls button:hover,
-.rh-monthly-rail-controls button:focus-visible {
-  color: #fff;
-  background: var(--rh-primary);
-}
-
-.rh-monthly-products {
-  display: flex;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  gap: 14px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 4px 4px 16px;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-inline: contain;
-  scrollbar-color: rgba(45, 44, 146, 0.3) transparent;
-  scrollbar-width: thin;
-}
-
-.rh-monthly-products > app-product-card {
-  min-width: 0;
-  flex: 0 0 clamp(220px, 23vw, 270px);
-  height: 100%;
-  scroll-snap-align: start;
-}
-
-.rh-monthly-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  min-height: 24px;
-  margin: 2px auto 0;
-}
-
-.rh-monthly-pagination button {
-  width: 7px;
-  height: 7px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: #d3d7e2;
-  cursor: pointer;
-  transition: width 200ms ease, background-color 200ms ease, opacity 200ms ease;
-}
-
-.rh-monthly-pagination button.active {
-  width: 20px;
-  background: rgba(45, 49, 146, 0.72);
-}
-
-.rh-monthly-pagination button:focus-visible {
-  outline: 2px solid var(--rh-primary);
-  outline-offset: 3px;
-}
-
-.rh-monthly-product {
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid rgba(45, 44, 146, 0.1);
-  border-radius: 14px;
-  background: var(--rh-white);
-  transition: box-shadow 180ms ease, transform 180ms ease;
-}
-
-.rh-monthly-product:hover {
-  box-shadow: 0 10px 24px rgba(45, 44, 146, 0.1);
-  transform: translateY(-3px);
-}
-
-.rh-monthly-product-image {
-  position: relative;
-  display: grid;
-  height: 150px;
-  place-items: center;
-  padding: 12px;
-  background: var(--rh-gray-bg);
-}
-
-.rh-monthly-product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.rh-monthly-product-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 0.3rem 0.5rem;
-  border-radius: 12px;
-  color: var(--rh-primary);
-  background: var(--rh-lime);
-  font-size: 0.68rem;
-  font-weight: 700;
-}
-
-.rh-monthly-product-copy {
-  padding: 13px;
-}
-
-.rh-monthly-product-category,
-.rh-monthly-product-unit {
-  color: var(--rh-text-dark);
-  font-size: 0.75rem;
-  opacity: 0.68;
-}
-
-.rh-monthly-product-copy h4 {
-  margin: 0.35rem 0;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.98rem;
-  line-height: 1.25;
-}
-
-.rh-monthly-product-copy h4 a {
-  color: var(--rh-text-dark);
-  text-decoration: none;
-}
-
-.rh-monthly-product-copy h4 a:hover {
-  color: var(--rh-primary);
-}
-
-.rh-monthly-product-prices {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.55rem;
-  margin-top: 0.5rem;
-}
-
-.rh-monthly-product-prices strong {
-  color: var(--rh-primary);
-}
-
-.rh-monthly-product-prices del {
-  color: var(--rh-text-dark);
-  font-size: 0.82rem;
-  opacity: 0.58;
-}
-
-.rh-monthly-empty {
-  padding: 1.5rem;
-  border-radius: 12px;
-  color: var(--rh-text-dark);
-  background: var(--rh-gray-bg);
-}
-
-@media (max-width: 767px) {
-  .rh-monthly-deals {
-    padding-top: 14px;
-    padding-bottom: 20px;
-  }
-
-  .rh-monthly-flyer-modal {
-    padding: 16px;
-  }
-
-  .rh-monthly-flyer {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
-    padding: 12px;
-    border-radius: 21px;
-  }
-
-  .rh-monthly-flyer-intro {
-    min-height: 260px;
-    padding: 1.6rem;
-  }
-
-  .rh-monthly-flyer-preview {
-    width: clamp(220px, 72vw, 340px);
-    height: auto;
-    min-height: 0;
-    justify-self: center;
-  }
-
-  .rh-monthly-flyer-preview img {
-    height: auto;
-    object-fit: contain;
-  }
-
-  .rh-monthly-deal-content {
-    margin-top: 28px;
-    scroll-margin-top: 84px;
-  }
-
-  .rh-monthly-subheading h3 {
-    scroll-margin-top: 84px;
-  }
-
-  .rh-monthly-flyer-preview-label {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .rh-monthly-flyer-modal-panel > img {
-    max-width: calc(100vw - 64px);
-    max-height: calc(100dvh - 32px);
-  }
-
-  .rh-monthly-products {
-    gap: 12px;
-    margin-right: -12px;
-    padding-right: 12px;
-  }
-
-  .rh-monthly-products > app-product-card {
-    flex-basis: min(78vw, 252px);
-  }
-
-  .rh-monthly-rail-meta {
-    gap: 8px;
-  }
-
-  .rh-monthly-rail-controls {
-    gap: 4px;
-  }
-
-  .rh-monthly-rail-controls button {
-    width: 32px;
-    height: 32px;
-  }
-
-  .rh-monthly-product-image {
-    height: 130px;
-  }
-}
-
-@media (max-width: 390px) {
-  .rh-category-section {
-    padding-bottom: 12px;
-  }
-
-  .rh-monthly-heading {
-    margin-bottom: 12px;
-  }
-
-  .rh-monthly-flyer-intro {
-    min-height: 230px;
-    padding: 1.35rem;
-  }
-
-  .rh-monthly-heading-mark {
-    width: 40px;
-    height: 40px;
-  }
-
-  .rh-monthly-product-copy {
-    padding: 10px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rh-monthly-flyer-preview,
-  .rh-monthly-flyer-preview-label,
-  .rh-monthly-flyer-modal,
-  .rh-monthly-flyer-modal-panel,
-  .rh-monthly-rainbow,
-  .rh-monthly-flyer-highlights span,
-  .rh-monthly-flyer-highlights i {
-    animation: none;
-    transition-duration: 0.01ms;
-  }
-}
-
-.rh-monthly-deals {
-  padding: 20px 0 26px;
-  background: linear-gradient(180deg, #f6f7fc 0%, #fff 78%);
-}
-
-.rh-monthly-heading h2 {
-  color: var(--rh-primary);
-  font-size: clamp(2rem, 3vw, 2.65rem);
-  letter-spacing: -.035em;
-}
-
-.rh-monthly-heading p { color: #747b91; }
-
-.rh-monthly-heading-note {
-  color: #29288d;
-  border-color: rgba(45,44,146,.15);
-  background: rgba(255,255,255,.9);
-  box-shadow: 0 5px 16px rgba(31,39,90,.05);
-}
-
-.rh-monthly-flyer {
+.rh-monthly-banner {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  width: 100%;
-  height: 382px;
-  grid-template-columns: minmax(0, 1fr) 310px;
+  display: grid;
+  min-height: 310px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(330px, .9fr);
   align-items: center;
   gap: 24px;
-  padding: 25px clamp(24px, 4vw, 64px);
-  border: 1px solid rgba(135, 206, 235, 0.35);
-  border-radius: 30px;
-  background:
-    linear-gradient(135deg, rgba(135, 206, 235, 0.42) 0%, rgba(135, 206, 235, 0.14) 40%, rgba(255, 255, 255, 0.98) 75%),
-    linear-gradient(180deg, #f8fcff 0%, #edf6fd 100%);
-  box-shadow: 0 24px 70px rgba(30, 35, 86, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-.rh-monthly-rainbow,
-.rh-monthly-embossed-cloud {
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  right: -2%;
-  transform: translateY(-50%);
-  width: clamp(420px, 52vw, 680px);
-  max-width: 65%;
-  height: auto;
-  object-fit: contain;
-  opacity: 0.36;
-  image-rendering: -webkit-optimize-contrast;
-  filter: drop-shadow(0 8px 24px rgba(45, 44, 146, 0.14));
-  animation: rh-monthly-swirl-float 13s ease-in-out infinite;
-  pointer-events: none;
-  user-select: none;
-}
-
-@keyframes rh-monthly-swirl-float {
-  0%, 100% {
-    transform: translateY(-50%) scale(1);
-  }
-  50% {
-    transform: translateY(calc(-50% - 7px)) scale(1.018);
-  }
-}
-
-.rh-monthly-flyer-intro {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  min-width: 0;
-  min-height: 0;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 10px 0;
-  border-radius: 0;
-  color: #161b36;
-  background: transparent;
-}
-
-.rh-monthly-flyer-kicker {
-  padding: 0;
-  border: 0;
-  color: #302f98;
-  background: transparent;
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .14em;
-}
-
-.rh-monthly-flyer-intro h3 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 0.22em;
-  max-width: 660px;
-  margin: 10px 0 14px;
-  color: var(--rh-primary);
-  font-family: 'Poppins', sans-serif;
-  font-size: clamp(1.9rem, 4.2vw, 3.7rem);
-  font-weight: 800;
-  letter-spacing: -.045em;
-  line-height: .98;
-  text-shadow: none;
-}
-
-.rh-monthly-title-dark { color: var(--rh-primary); }
-.rh-monthly-title-blue { color: var(--rh-primary); }
-
-.rh-monthly-flyer-intro p {
-  max-width: 530px;
-  margin: 0;
-  color: #697188;
-  font-size: 1rem;
-  line-height: 1.55;
-}
-
-.rh-monthly-flyer-highlights {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 14px;
-  margin-top: 18px;
-}
-
-.rh-monthly-flyer-highlights span {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 999px;
-  color: #1e2640;
-  background: rgba(255, 255, 255, 0.68);
-  font-size: .82rem;
-  font-weight: 650;
-  box-shadow: 0 4px 12px rgba(35, 49, 89, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
-}
-
-.rh-monthly-flyer-highlights span:hover {
-  z-index: 1;
-  border-color: rgba(45, 49, 146, 0.24);
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 8px 18px rgba(35, 49, 89, 0.13), inset 0 1px 0 #ffffff;
-  transform: scale(1.04);
-}
-
-.rh-monthly-flyer-highlights i {
-  display: grid;
-  width: 26px;
-  height: 26px;
-  place-items: center;
-  border-radius: 50%;
+  padding: 28px clamp(28px, 5vw, 72px);
+  overflow: hidden;
+  border-radius: 25px;
   color: #fff;
   background: var(--rh-primary);
-  font-size: 0.76rem;
-  transition: color 200ms ease, background-color 200ms ease, transform 200ms ease;
+  box-shadow: 0 18px 46px rgba(46, 49, 146, .18);
 }
-
-.rh-monthly-flyer-highlights span:hover i {
-  color: var(--rh-primary);
-  background: #ffffff;
-  transform: scale(1.06);
+.rh-monthly-banner::before {
+  position: absolute;
+  z-index: -1;
+  top: -180px;
+  left: 42%;
+  width: 420px;
+  height: 420px;
+  border: 1px solid rgba(200, 239, 251, .16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 35px rgba(200,239,251,.035), 0 0 0 70px rgba(200,239,251,.025);
+  content: '';
 }
+.rh-monthly-banner-copy { position: relative; z-index: 2; max-width: 610px; }
+.rh-monthly-banner-kicker { display: inline-flex; align-items: center; gap: 9px; color: #c8effb; font: 700 11px/1.4 'Poppins', sans-serif; letter-spacing: .16em; }
+.rh-monthly-banner-kicker > span { width: 24px; height: 3px; border-radius: 3px; background: #25aae1; }
+.rh-monthly-banner-copy h2 { margin: 15px 0 11px; color: #fff; font: 650 clamp(32px, 4vw, 48px)/1.08 'Poppins', sans-serif; letter-spacing: -.045em; }
+.rh-monthly-banner-copy h2 em { color: #c8effb; font-style: normal; }
+.rh-monthly-banner-copy p { max-width: 470px; margin: 0; color: rgba(255,255,255,.82); font: 400 14px/1.65 'Poppins', sans-serif; }
+.rh-monthly-banner-cta { display: inline-flex; min-height: 47px; align-items: center; justify-content: center; gap: 12px; margin-top: 22px; padding: 0 18px; border: 1px solid #fff; border-radius: 9px; color: var(--rh-primary); background: #fff; font: 650 12px/1 'Poppins', sans-serif; text-decoration: none; transition: transform 180ms ease, background-color 180ms ease, color 180ms ease; }
+.rh-monthly-banner-cta:hover { transform: translateY(-2px); border-color: #c8effb; color: var(--rh-primary); background: #c8effb; }
+.rh-monthly-banner-cta:focus-visible { outline: 3px solid #c8effb; outline-offset: 3px; }
 
-.rh-monthly-flyer-actions {
-  gap: 15px;
-  margin-top: 22px;
-}
+.rh-monthly-banner-visual { position: relative; display: grid; min-width: 0; min-height: 250px; place-items: center; isolation: isolate; }
+.rh-monthly-feature-card { position: relative; z-index: 1; display: flex; width: min(248px, 76%); min-height: 220px; flex-direction: column; align-items: flex-start; justify-content: center; padding: 22px 23px; border: 1px solid rgba(255,255,255,.85); border-radius: 18px; color: #17234a; background: #fff; box-shadow: 0 18px 34px rgba(13,18,65,.25); transform: rotate(3deg); transition: transform 240ms ease, box-shadow 240ms ease; }
+.rh-monthly-banner:hover .rh-monthly-feature-card { box-shadow: 0 23px 42px rgba(13,18,65,.3); transform: rotate(1deg) translateY(-3px); }
+.rh-monthly-feature-mark { display: grid; width: 39px; height: 39px; place-items: center; margin-bottom: 15px; border-radius: 12px; color: #fff; background: var(--rh-primary); font-size: 16px; }
+.rh-monthly-feature-kicker { color: #5e6682; font: 700 9px/1.4 'Poppins', sans-serif; letter-spacing: .12em; }
+.rh-monthly-feature-card strong { margin-top: 7px; color: #17234a; font: 650 23px/1.15 'Poppins', sans-serif; letter-spacing: -.025em; }
+.rh-monthly-feature-footer { display: flex; align-items: center; gap: 7px; margin-top: 16px; color: var(--rh-primary); font: 600 10px/1.3 'Poppins', sans-serif; }
 
-.rh-monthly-flyer-shop {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 11px 21px;
-  border: 0;
-  border-radius: 28px;
-  color: #fff;
-  background: linear-gradient(105deg, #302f98, #3d3bb7);
-  box-shadow: 0 9px 22px rgba(48,47,152,.22);
-  font: 700 .9rem/1 'Poppins', sans-serif;
-  cursor: pointer;
-  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-}
+.rh-monthly-deal-content { margin-top: 30px; scroll-margin-top: 112px; }
+.rh-monthly-subheading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 14px; }
+.rh-monthly-subheading h3 { margin: 0; color: #171717; font: 600 1.25rem/1.3 'Poppins', sans-serif; scroll-margin-top: 112px; }
+.rh-monthly-rail-meta { display: flex; align-items: center; gap: 14px; }
+.rh-monthly-offer-count { display: inline-flex; align-items: center; gap: 8px; color: #5f6677; font-size: .85rem; font-weight: 500; white-space: nowrap; }
+.rh-monthly-offer-count-number { display: inline-grid; width: 29px; height: 29px; place-items: center; border: 1px solid #e6e8ed; border-radius: 50%; color: #343a46; background: #f3f4f6; font-size: .76rem; font-weight: 700; line-height: 1; }
+.rh-monthly-rail-controls { display: flex; gap: 7px; }
+.rh-monthly-rail-controls button { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid rgba(45,44,146,.16); border-radius: 50%; color: var(--rh-primary); background: #fff; cursor: pointer; transition: color 160ms ease, background-color 160ms ease; }
+.rh-monthly-rail-controls button:hover, .rh-monthly-rail-controls button:focus-visible { color: #fff; background: var(--rh-primary); }
+.rh-monthly-category-nav { display: flex; gap: .65rem; overflow-x: auto; padding: 2px 2px 12px; scrollbar-width: thin; }
+.rh-monthly-category-nav button { min-height: 40px; flex: 0 0 auto; padding: .55rem 1rem; border: 1px solid rgba(45,44,146,.16); border-radius: 24px; color: var(--rh-text-dark); background: var(--rh-white); font: inherit; cursor: pointer; transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease; }
+.rh-monthly-category-nav button.active, .rh-monthly-category-nav button:hover, .rh-monthly-category-nav button:focus-visible { border-color: var(--rh-primary); color: var(--rh-white); background: var(--rh-primary); }
+.rh-monthly-category-nav button:focus-visible { outline: 2px solid var(--rh-secondary); outline-offset: 3px; }
+.rh-monthly-products { display: flex; align-items: stretch; flex-wrap: nowrap; gap: 14px; overflow-x: auto; overflow-y: hidden; padding: 4px 4px 16px; scroll-behavior: smooth; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain; scrollbar-color: rgba(45,44,146,.3) transparent; scrollbar-width: thin; }
+.rh-monthly-products > app-product-card { min-width: 0; flex: 0 0 clamp(220px,23vw,270px); height: 100%; scroll-snap-align: start; }
+.rh-monthly-pagination { display: flex; min-height: 24px; align-items: center; justify-content: center; gap: 8px; margin: 2px auto 0; }
+.rh-monthly-pagination button { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 999px; background: #d3d7e2; cursor: pointer; transition: width 200ms ease, background-color 200ms ease; }
+.rh-monthly-pagination button.active { width: 20px; background: rgba(45,49,146,.72); }
+.rh-monthly-pagination button:focus-visible { outline: 2px solid var(--rh-primary); outline-offset: 3px; }
+.rh-monthly-empty { padding: 1.5rem; border-radius: 12px; color: var(--rh-text-dark); background: var(--rh-gray-bg); }
 
-.rh-monthly-flyer-shop:hover,
-.rh-monthly-flyer-shop:focus-visible {
-  color: #fff;
-  background: #252477;
-  box-shadow: 0 12px 26px rgba(48,47,152,.28);
-  transform: translateY(-2px);
-}
-
-.rh-monthly-flyer-validity { color: #697188; }
-
-.rh-monthly-flyer-preview {
-  position: relative;
-  z-index: 1;
-  align-self: center;
-  justify-self: center;
-  width: 250px;
-  height: 340px;
-  border: 8px solid #fff;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 18px 35px rgba(19,28,64,.22), 0 2px 4px rgba(19,28,64,.1);
-}
-
-.rh-monthly-flyer-preview img {
-  width: 100%;
-  height: 100%;
-  border-radius: 2px;
-  object-fit: contain;
-  object-position: center top;
-}
-
-.rh-monthly-flyer-preview-label {
-  right: 7px;
-  bottom: 7px;
-  left: 7px;
-  min-height: 34px;
-  border-radius: 5px;
-  color: #fff;
-  background: rgba(38,37,119,.92);
-  font-size: .7rem;
-}
-
-.rh-monthly-deal-content {
-  margin-top: 36px;
-  padding-top: 26px;
-}
-
-@media (max-width: 900px) and (min-width: 768px) {
-  .rh-monthly-flyer {
-    height: 340px;
-    grid-template-columns: minmax(0, 1fr) 250px;
-    padding: 22px 28px;
-  }
-  .rh-monthly-flyer-preview { width: 210px; height: 292px; }
-  .rh-monthly-flyer-intro h3 { font-size: clamp(2rem, 4vw, 2.8rem); }
-  .rh-monthly-flyer-highlights { gap: 8px 12px; }
-}
+@media (min-width: 1400px) { .rh-monthly-products { gap: 14px; } .rh-monthly-products > app-product-card { flex-basis: calc((100% - 70px) / 6); } }
+@media (min-width: 1200px) and (max-width: 1399px) { .rh-monthly-products > app-product-card { flex-basis: calc((100% - 70px) / 5); } }
+@media (min-width: 992px) and (max-width: 1199px) { .rh-monthly-products > app-product-card { flex-basis: calc((100% - 42px) / 4); } }
+@media (min-width: 768px) and (max-width: 991px) { .rh-monthly-products > app-product-card { flex-basis: calc((100% - 36px) / 3); } }
 
 @media (max-width: 767px) {
-  .rh-monthly-deals { padding: 16px 0 22px; }
-  .rh-monthly-flyer {
-    height: auto;
-    min-height: 0;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-    padding: 24px 20px 22px;
-    border-radius: 22px;
-  }
-  .rh-monthly-rainbow {
-    top: 175px;
-    right: -70px;
-    width: min(95vw, 430px);
-    max-width: none;
-    opacity: .17;
-  }
-  .rh-monthly-flyer-intro { padding: 0; }
-  .rh-monthly-flyer-intro h3 {
-    margin: 14px 0 9px;
-    font-size: clamp(2rem, 8vw, 2.8rem);
-  }
-  .rh-monthly-flyer-intro p { font-size: .9rem; }
-  .rh-monthly-flyer-highlights { gap: 8px 14px; margin-top: 15px; }
-  .rh-monthly-flyer-highlights span { font-size: .72rem; }
-  .rh-monthly-flyer-actions { gap: 12px; margin-top: 18px; }
-  .rh-monthly-flyer-shop { min-height: 44px; }
-  .rh-monthly-flyer-preview {
-    width: min(68vw, 255px);
-    height: auto;
-    aspect-ratio: 1361 / 1824;
-    border-width: 6px;
-  }
-  .rh-monthly-flyer-preview img { width: 100%; height: 100%; max-height: none; }
-  .rh-monthly-flyer-preview-label { min-height: 32px; }
-  .rh-monthly-deal-content { margin-top: 28px; padding-top: 20px; }
+  .rh-monthly-deals { padding: 14px 0 22px; }
+  .rh-monthly-banner { min-height: 0; grid-template-columns: minmax(0,1fr); gap: 10px; padding: 26px 22px 0; border-radius: 21px; }
+  .rh-monthly-banner-copy h2 { margin-top: 13px; font-size: clamp(29px,8vw,39px); }
+  .rh-monthly-banner-copy p { font-size: 13px; }
+  .rh-monthly-banner-cta { min-height: 43px; margin-top: 18px; }
+  .rh-monthly-banner-visual { min-height: 210px; }
+  .rh-monthly-feature-card { width: 205px; min-height: 180px; padding: 17px; }
+  .rh-monthly-feature-card strong { font-size: 20px; }
+  .rh-monthly-feature-mark { width: 33px; height: 33px; margin-bottom: 10px; }
+  .rh-monthly-feature-footer { margin-top: 11px; }
+  .rh-monthly-deal-content { margin-top: 24px; scroll-margin-top: 84px; }
+  .rh-monthly-subheading h3 { font-size: 1.05rem; scroll-margin-top: 84px; }
+  .rh-monthly-rail-meta { gap: 7px; }
+  .rh-monthly-offer-count { gap: 5px; font-size: .75rem; }
+  .rh-monthly-rail-controls { gap: 4px; }
+  .rh-monthly-rail-controls button { width: 31px; height: 31px; }
+  .rh-monthly-products { gap: 12px; margin-right: -12px; padding-right: 12px; }
+  .rh-monthly-products > app-product-card { flex-basis: min(78vw,252px); }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .rh-monthly-flyer-shop { transition: none; }
+@media (min-width: 768px) and (max-width: 900px) {
+  .rh-monthly-banner { grid-template-columns: minmax(0,1fr) minmax(280px,.8fr); padding-right: 28px; padding-left: 28px; }
+  .rh-monthly-feature-card { width: 220px; }
 }
-
+@media (max-width: 390px) {
+  .rh-monthly-subheading { align-items: flex-start; }
+  .rh-monthly-subheading h3 { max-width: 170px; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .rh-monthly-products,
-  .rh-monthly-rail-controls button {
-    scroll-behavior: auto;
-    transition-duration: 0.01ms;
-  }
+  .rh-monthly-banner-cta, .rh-monthly-feature-card, .rh-monthly-rail-controls button, .rh-monthly-pagination button { transition: none !important; }
+  .rh-monthly-products { scroll-behavior: auto; }
 }

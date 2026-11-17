@@ -14,6 +14,6 @@ export class ContactComponent {
   formData = { name: '', email: '', subject: '', message: '' };
 
   onSubmit() {
-    alert('Thank you for contacting Rainbow Cash & Carry! We will respond shortly.');
+    alert('Thank you for contacting Rainbow! We will respond shortly.');
   }
 }

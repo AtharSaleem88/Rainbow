@@ -46,7 +46,7 @@ export class PrivacyPolicyComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit(): void {
     if (typeof window !== 'undefined') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     this.seo.setPageTitle('Privacy Policy');
-    this.seo.setMetaDescription('Read the Rainbow Cash & Carry Online Privacy Policy and find contact information for privacy questions.');
+    this.seo.setMetaDescription('Read the Rainbow Online Privacy Policy and find contact information for privacy questions.');
   }
 
   ngAfterViewInit(): void {

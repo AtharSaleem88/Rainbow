@@ -5,7 +5,6 @@
 .rh-brands-heading-row {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
   margin-bottom: 8px;
 
   .rh-brands-title {
@@ -14,21 +13,17 @@
     align-items: baseline;
     gap: 0.28em;
     margin: 0;
-    color: var(--rh-primary);
+    color: #171717;
     font-family: 'Poppins', sans-serif;
     font-size: clamp(1.45rem, 2.4vw, 2rem);
     font-weight: 700;
   }
 
-  .gray_line {
-    flex: 1 1 auto;
-  }
+  .gray_line { flex: 1 1 auto; height: 1px; background: #d9dbe2; }
 }
 
 .rh-brands-title-dark,
-.rh-brands-title-blue { font-weight: 800; }
-.rh-brands-title-dark { color: var(--rh-primary); }
-.rh-brands-title-blue { color: var(--rh-primary); }
+.rh-brands-title-blue { color: #171717; font-weight: 700; }
 
 .rh-brands-subtitle {
   margin: 0 0 16px;

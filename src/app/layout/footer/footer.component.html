@@ -1,54 +1,63 @@
 <footer class="rh-footer rh-footer-visible" [class.rh-footer-entered]="hasEntered()" id="rh-footer">
+	<div class="rh-footer-watermark" aria-hidden="true">
+		<img src="assets/images/logo/rainbow-cloud-hd.png" alt="">
+	</div>
 	<!-- Main links area -->
 	<div class="rh-footer-main">
 		<div class="rh-footer-columns">
+			<div class="rh-footer-col rh-footer-brand-col">
+				<a routerLink="/" class="rh-footer-brand-mark" aria-label="Rainbow Cash and Carry home">
+					<img src="assets/images/logo/RainbowLogo.png" alt="Rainbow Cash &amp; Carry">
+				</a>
+				<ul class="rh-footer-contact">
+					<li><i class="fal fa-map-marker-alt" aria-hidden="true"></i><span>Bahria Town, Lahore</span></li>
+					<li><i class="fal fa-phone-alt" aria-hidden="true"></i><a href="tel:+923107779651">+92 310 7779651</a></li>
+					<li><i class="fal fa-headset" aria-hidden="true"></i><a href="tel:+923107779470">Complaints: +92 310 7779470</a></li>
+					<li><i class="fal fa-envelope" aria-hidden="true"></i><a href="mailto:online&#64;rainbowcc.com.pk">online&#64;<wbr>rainbowcc.com.pk</a></li>
+				</ul>
+			</div>
 			<div class="rh-footer-col">
-				<h4 class="rh-footer-col-title">Shop</h4>
+				<h4 class="rh-footer-col-title">Information</h4>
 				<ul>
-					<li><a routerLink="/shop">All Categories</a></li>
-					<li><a routerLink="/shop">Deals &amp; Promotions</a></li>
-					<li><a routerLink="/shop">New Arrivals</a></li>
-					<li><a routerLink="/shop">Best Sellers</a></li>
+					<li><a routerLink="/about">About Rainbow</a></li>
+					<li><a routerLink="/shop">All Departments</a></li>
+					<li><a routerLink="/about">Our Story</a></li>
+					<li><a routerLink="/contact">Contact</a></li>
 				</ul>
 			</div>
 			<div class="rh-footer-col">
 				<h4 class="rh-footer-col-title">Customer Care</h4>
 				<ul>
-					<li><a routerLink="/contact">Contact Us</a></li>
-					<li><a routerLink="/shop">Shipping Policy</a></li>
-					<li><a routerLink="/shop">Return Policy</a></li>
-					<li><a routerLink="/shop">Buyer Protection</a></li>
+					<li><a routerLink="/contact">Help Centre</a></li>
+					<li><a routerLink="/terms-and-conditions">Delivery Information</a></li>
+					<li><a routerLink="/terms-and-conditions">Returns &amp; Refunds</a></li>
+					<li><a routerLink="/terms-and-conditions">Terms of Service</a></li>
 				</ul>
 			</div>
 			<div class="rh-footer-col">
-				<h4 class="rh-footer-col-title">Company</h4>
+				<h4 class="rh-footer-col-title">My Account</h4>
 				<ul>
-					<li><a routerLink="/about">About Us</a></li>
-					<li><a routerLink="/about">Band of Trust</a></li>
-					<li><a routerLink="/about">Market History</a></li>
-					<li><a routerLink="/about">Careers</a></li>
+					<li><a routerLink="/account">My Account</a></li>
+					<li><a routerLink="/cart">Shopping Cart</a></li>
+					<li><a routerLink="/account">Wishlist</a></li>
+					<li><a routerLink="/account">Order History</a></li>
 				</ul>
 			</div>
 			<div class="rh-footer-col">
-				<h4 class="rh-footer-col-title">Contact</h4>
-				<ul class="rh-footer-contact">
-					<li><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Bahria Town, CC-Block Sector D, Bahria Town, Lahore</li>
-					<li><i class="fas fa-phone-alt" aria-hidden="true"></i> <a href="tel:+923107779651">+92 310 7779651</a></li>
-					<li><i class="fas fa-headset" aria-hidden="true"></i> <a href="tel:+923107779470">Complaint: +92 310 7779470</a></li>
-					<li><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:online&#64;rainbowcc.com.pk">online&#64;<wbr>rainbowcc.com.pk</a></li>
+				<h4 class="rh-footer-col-title">Departments</h4>
+				<ul>
+					<li><a [routerLink]="['/shop']" [queryParams]="{category:'dairy-eggs'}">Dairy &amp; Eggs</a></li>
+					<li><a [routerLink]="['/shop']" [queryParams]="{category:'ultra-fresh'}">Fresh Produce</a></li>
+					<li><a [routerLink]="['/shop']" [queryParams]="{category:'frozen-food'}">Frozen Food</a></li>
+					<li><a [routerLink]="['/shop']" [queryParams]="{category:'grocery'}">Pantry Staples</a></li>
 				</ul>
 			</div>
-		</div>
-	</div>
-
-	<div class="rh-footer-social-row" aria-label="Rainbow social media">
-		<span>Follow Rainbow</span>
-		<div class="rh-footer-social-icons">
-			<a href="https://www.facebook.com/rainbowcashandcarry?mibextid=ZbWKwL" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-			<a href="https://www.instagram.com/rainbowcc.storeofficial?igsh=MXBycXI3MGNwN3ptcw%3D%3Ds" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-			<a href="https://www.tiktok.com/@rainbowhypermarket1" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-			<a href="https://api.whatsapp.com/send/?phone=923107779651&amp;text&amp;type=phone_number&amp;app_absent=0" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-			<a href="https://www.linkedin.com/company/rainbow-cash-and-carry/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+			<div class="rh-footer-col rh-footer-shop-card">
+				<h4 class="rh-footer-col-title">Rainbow on the go</h4>
+				<p>Need help with the Rainbow app? Our team can guide you on iOS and Android.</p>
+				<a routerLink="/contact" class="rh-footer-app-link"><i class="fab fa-apple" aria-hidden="true"></i><span><small>iOS app</small><strong>Get IOS App</strong></span><i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+				<a routerLink="/contact" class="rh-footer-app-link"><i class="fab fa-google-play" aria-hidden="true"></i><span><small>Android app</small><strong>Get Android App</strong></span><i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+			</div>
 		</div>
 	</div>
 
@@ -59,6 +68,13 @@
 			<div class="rh-footer-bottom-links">
 				<a routerLink="/privacy-policy">Privacy Policy</a>
 				<a routerLink="/terms-and-conditions">Terms &amp; Conditions</a>
+			</div>
+			<div class="rh-footer-social-icons" aria-label="Rainbow social media">
+				<a href="https://www.facebook.com/rainbowcashandcarry?mibextid=ZbWKwL" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+				<a href="https://www.instagram.com/rainbowcc.storeofficial?igsh=MXBycXI3MGNwN3ptcw%3D%3Ds" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+				<a href="https://www.tiktok.com/@rainbowhypermarket1" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+				<a href="https://api.whatsapp.com/send/?phone=923107779651&amp;text&amp;type=phone_number&amp;app_absent=0" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+				<a href="https://www.linkedin.com/company/rainbow-cash-and-carry/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 		</div>
 	</div>

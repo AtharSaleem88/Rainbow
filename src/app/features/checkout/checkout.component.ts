@@ -143,7 +143,7 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit() {
     this.seoService.setPageTitle('Checkout');
-    this.seoService.setMetaDescription('Secure checkout for your Rainbow Cash & Carry order.');
+    this.seoService.setMetaDescription('Secure checkout for your Rainbow order.');
     this.scrollToTop();
     if (!this.cartService.deliveryType()) {
       this.cartService.setDeliveryType('instant');

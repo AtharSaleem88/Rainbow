@@ -2,7 +2,7 @@
  * Core Application Configuration & Global Constants
  */
 export const APP_CONFIG = {
-  appName: 'Rainbow Cash & Carry',
+  appName: 'Rainbow',
   tagline: 'Fresh Groceries Delivered in 30 Minutes',
   defaultCurrency: 'PKR',
   currencySymbol: 'Rs.',

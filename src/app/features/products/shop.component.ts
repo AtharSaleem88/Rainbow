@@ -118,7 +118,7 @@ export class ShopComponent implements OnInit {
     const catName = this.categoryName;
     const title = catName === 'All Grocery' ? 'Online Supermarket & Grocery Shop' : `${catName} — Online Supermarket`;
     this.seoService.setPageTitle(title);
-    this.seoService.setMetaDescription(`Explore our fresh selection of ${catName.toLowerCase()} and grocery essentials at Rainbow Cash & Carry.`);
+    this.seoService.setMetaDescription(`Explore our fresh selection of ${catName.toLowerCase()} and grocery essentials at Rainbow.`);
   }
 
   applyFilters() {

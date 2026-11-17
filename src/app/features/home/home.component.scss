@@ -1,3 +1,48 @@
 :host {
   display: block;
 }
+
+:host app-hero-slider.rh-home-reveal,
+:host app-category-grid.rh-home-reveal,
+:host app-monthly-deals.rh-home-reveal,
+:host app-category-spotlights.rh-home-reveal,
+:host app-product-collection-rail.rh-home-reveal,
+:host app-promo-banners.rh-home-reveal,
+:host app-brand-showcase.rh-home-reveal,
+:host app-campaign-slider.rh-home-reveal,
+:host app-store-policy.rh-home-reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 680ms cubic-bezier(.2, .7, .25, 1), transform 680ms cubic-bezier(.2, .7, .25, 1);
+  will-change: opacity, transform;
+}
+
+:host app-hero-slider.rh-home-reveal.rh-home-in-view,
+:host app-category-grid.rh-home-reveal.rh-home-in-view,
+:host app-monthly-deals.rh-home-reveal.rh-home-in-view,
+:host app-category-spotlights.rh-home-reveal.rh-home-in-view,
+:host app-product-collection-rail.rh-home-reveal.rh-home-in-view,
+:host app-promo-banners.rh-home-reveal.rh-home-in-view,
+:host app-brand-showcase.rh-home-reveal.rh-home-in-view,
+:host app-campaign-slider.rh-home-reveal.rh-home-in-view,
+:host app-store-policy.rh-home-reveal.rh-home-in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host app-hero-slider,
+  :host app-category-grid,
+  :host app-monthly-deals,
+  :host app-category-spotlights,
+  :host app-product-collection-rail,
+  :host app-promo-banners,
+  :host app-brand-showcase,
+  :host app-campaign-slider,
+  :host app-store-policy {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

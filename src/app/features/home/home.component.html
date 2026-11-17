@@ -4,11 +4,11 @@
 <!-- Shop by Category -->
 <app-category-grid [categories]="categories"></app-category-grid>
 
+<!-- Monthly Deals -->
+<app-monthly-deals [dealData]="monthlyDeal" [products]="allProducts"></app-monthly-deals>
+
 <!-- Category Spotlights -->
 <app-category-spotlights [spotlights]="spotlightCategories"></app-category-spotlights>
-
-<!-- Monthly Deals & Savings Flyer -->
-<app-monthly-deals [dealData]="monthlyDeal" [products]="allProducts"></app-monthly-deals>
 
 <!-- Fresh From Farm Collection -->
 <app-product-collection-rail
@@ -33,6 +33,9 @@
   [seeAllQueryParams]="{ brand: 'Rainbow' }">
 </app-product-collection-rail>
 
+<!-- Promotional Category Banners -->
+<app-promo-banners></app-promo-banners>
+
 <!-- Frozen Food Section -->
 <app-product-collection-rail
   title="Frozen Food Section"
@@ -44,9 +47,6 @@
   [seeAllQueryParams]="{ category: 'frozen-food' }">
 </app-product-collection-rail>
 
-<!-- Promotional Category Banners -->
-<app-promo-banners></app-promo-banners>
-
 <!-- Brands You Trust Infinite Ticker & Brand Store Modal -->
 <app-brand-showcase [brands]="brands" [products]="allProducts"></app-brand-showcase>
 
@@ -55,14 +55,13 @@
   title="Price Drops"
   titleLead="PRICE"
   titleAccent="DROPS"
-  subtitle="EXCLUSIVE DEALS AND PRICE REDUCTIONS ON EVERYDAY ESSENTIALS."
   [products]="priceDropProducts"
   sectionLabel="Price Drop"
   [isTinted]="true"
   seeAllLink="/shop">
 </app-product-collection-rail>
 
-<!-- Campaign Showcase Slider -->
+<!-- Campaign banners without section headings -->
 <app-campaign-slider [banners]="campaignBanners"></app-campaign-slider>
 
 <!-- Store Trust Factors Policy Section -->

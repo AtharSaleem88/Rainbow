@@ -46,7 +46,7 @@
 
     <!-- Price Filter (Desktop only: d-none d-md-inline-flex) -->
     <div class="rh-filter-field rh-desktop-filter d-none d-md-inline-flex">
-      <span class="rh-filter-label">Price (Rs.)</span>
+      <span class="rh-filter-label">Price</span>
       <div class="rh-price-range-group">
         <input
           type="number"
@@ -100,26 +100,47 @@
     </div>
   </div>
 
-  <div class="rh-filter-divider d-none d-md-block"></div>
+  <div class="rh-filter-divider d-none d-md-block" *ngIf="subSubCategories?.length"></div>
 
-  <!-- Sub Sub Categories Horizontal Filter Chips (Desktop only: hidden on mobile) -->
-  <div class="rh-subsub-row d-none d-md-flex">
-    <div class="rh-subsub-chips-container" role="group" aria-label="Subcategory filters">
-      <button
-        type="button"
-        class="rh-subsub-chip"
-        [class.active]="!selectedSubSubCategory"
-        (click)="selectSubSubCategory('')">
-        All
-      </button>
-      <button
-        *ngFor="let subSubCat of subSubCategories"
-        type="button"
-        class="rh-subsub-chip"
-        [class.active]="selectedSubSubCategory === subSubCat"
-        (click)="selectSubSubCategory(subSubCat)">
-        {{ subSubCat }}
-      </button>
+  <!-- Optional department-specific sub-subcategory dropdown -->
+  <div class="rh-subsub-row" *ngIf="subSubCategories?.length">
+    <div class="rh-filter-field rh-subsub-field" #subSubFilter>
+      <span class="rh-filter-label">Sub-category</span>
+      <div class="rh-filter-dropdown rh-subsub-dropdown">
+        <button
+          id="rh-shop-subsubcategory-select"
+          type="button"
+          class="rh-filter-select rh-filter-dropdown-trigger"
+          [attr.aria-expanded]="subSubMenuOpen"
+          [attr.aria-label]="'Filter by sub-category, ' + (selectedSubSubCategory || 'All')"
+          aria-controls="rh-shop-subsubcategory-options"
+          aria-haspopup="true"
+          (click)="toggleSubSubMenu()">
+          <span>{{ selectedSubSubCategory || 'All' }}</span>
+          <i class="fal fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div *ngIf="subSubMenuOpen" id="rh-shop-subsubcategory-options" class="rh-filter-dropdown-menu" role="group" aria-label="Choose a sub-category">
+          <button
+            type="button"
+            class="rh-filter-dropdown-option"
+            [class.is-selected]="!selectedSubSubCategory"
+            [attr.aria-pressed]="!selectedSubSubCategory"
+            (click)="selectSubSubCategory('')">
+            <span>All</span>
+            <i *ngIf="!selectedSubSubCategory" class="fal fa-check" aria-hidden="true"></i>
+          </button>
+          <button
+            *ngFor="let subSubCat of subSubCategories"
+            type="button"
+            class="rh-filter-dropdown-option"
+            [class.is-selected]="selectedSubSubCategory === subSubCat"
+            [attr.aria-pressed]="selectedSubSubCategory === subSubCat"
+            (click)="selectSubSubCategory(subSubCat)">
+            <span>{{ subSubCat }}</span>
+            <i *ngIf="selectedSubSubCategory === subSubCat" class="fal fa-check" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

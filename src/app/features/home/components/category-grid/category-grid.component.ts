@@ -19,16 +19,21 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('categoryGrid') categoryGrid?: ElementRef<HTMLElement>;
   private categoryResizeObserver?: ResizeObserver;
+  private categoryAutoSlideTimer?: ReturnType<typeof setInterval>;
+  private categoryAutoResumeTimer?: ReturnType<typeof setTimeout>;
 
   ngAfterViewInit(): void {
     const grid = this.categoryGrid?.nativeElement;
     if (!grid) return;
     this.categoryResizeObserver = new ResizeObserver(() => this.updateCategoryScrollState(grid));
     this.categoryResizeObserver.observe(grid);
+    this.startCategoryAutoSlide();
   }
 
   ngOnDestroy(): void {
     this.categoryResizeObserver?.disconnect();
+    this.stopCategoryAutoSlide();
+    if (this.categoryAutoResumeTimer) clearTimeout(this.categoryAutoResumeTimer);
   }
 
   onCategoryScroll(event: Event): void {
@@ -58,6 +63,36 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
       const page = Math.min(2, Math.max(0, pageIndex));
       const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
       this.categoryGrid.nativeElement.scrollTo({ left: (page / 2) * maxScroll, behavior });
+    }
+  }
+
+  pauseCategoryAutoSlide(): void {
+    this.stopCategoryAutoSlide();
+    if (this.categoryAutoResumeTimer) clearTimeout(this.categoryAutoResumeTimer);
+    this.categoryAutoResumeTimer = setTimeout(() => this.startCategoryAutoSlide(), 8000);
+  }
+
+  resumeCategoryAutoSlide(): void {
+    if (this.categoryAutoResumeTimer) clearTimeout(this.categoryAutoResumeTimer);
+    this.categoryAutoResumeTimer = setTimeout(() => this.startCategoryAutoSlide(), 1200);
+  }
+
+  private startCategoryAutoSlide(): void {
+    this.stopCategoryAutoSlide();
+    const grid = this.categoryGrid?.nativeElement;
+    if (!grid || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    this.categoryAutoSlideTimer = setInterval(() => {
+      const maxScroll = Math.max(0, grid.scrollWidth - grid.clientWidth);
+      if (maxScroll < 2) return;
+      const currentPage = this.activeCategoryPageIndex();
+      this.scrollToCategoryPage(currentPage >= 2 ? 0 : currentPage + 1);
+    }, 5000);
+  }
+
+  private stopCategoryAutoSlide(): void {
+    if (this.categoryAutoSlideTimer) {
+      clearInterval(this.categoryAutoSlideTimer);
+      this.categoryAutoSlideTimer = undefined;
     }
   }
 }

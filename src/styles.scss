@@ -68,7 +68,7 @@ html, body, a, button, input, select, textarea, [role="button"] {
   }
 }
 
-/* Rainbow Cash & Carry Color Tokens */
+/* Rainbow Color Tokens */
 :root {
   --rh-primary: #2e3192;        /* Primary Navy Blue */
   --rh-secondary: #25aae1;      /* Accent Sky Blue */
@@ -251,7 +251,7 @@ app-root {
   align-items: center;
   justify-content: space-between;
   padding: 0 28px;
-  height: 64px;
+  min-height: 76px;
 }
 
 .rh-hdr-logo-group {
@@ -261,8 +261,8 @@ app-root {
 }
 
 .rh-nav-logo img {
-  height: 48px;
-  max-height: 52px;
+  height: 60px;
+  max-height: 62px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -490,20 +490,21 @@ app-root {
   padding: 0;
 }
 .rh-brand-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  width: 200px;
-  height: 200px;
+  gap: 8px;
+  width: 154px;
+  height: 118px;
   flex-shrink: 0;
   background: rgba(255,255,255,0.78);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.75);
-  border-radius: 20px;
-  box-shadow: 0 12px 35px rgba(45,44,146,0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(45,44,146,0.07);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -534,15 +535,15 @@ app-root {
 
   img {
     display: block;
-    width: 160px;
-    height: 90px;
+    width: 128px;
+    height: 66px;
     max-width: calc(100% - 24px);
-    max-height: 90px;
+    max-height: 66px;
     object-fit: contain;
     object-position: center;
     background: transparent;
     transition: transform 0.35s ease;
-    margin-top: 8px;
+    margin-top: 0;
   }
 
   span {
@@ -692,8 +693,8 @@ app-root {
 .rh-footer {
   position: relative;
   isolation: isolate;
-  background: linear-gradient(125deg, #252873 0%, var(--rh-primary) 48%, #242a78 100%) !important;
-  color: #fff !important;
+  background: #c8effb !important;
+  color: #14234a !important;
   font-family: 'Poppins', sans-serif;
   overflow: hidden;
   contain: paint;
@@ -939,6 +940,7 @@ app-root {
 .main-content,
 .main-content-wrapper {
   min-height: calc(100vh - 300px);
+  // The announcement strip is in flow; this clears the fixed desktop nav.
   padding-top: 110px;
 
   &.auth-layout {
@@ -1476,17 +1478,19 @@ app-root {
 
   .main-content,
   .main-content-wrapper {
-    padding-top: 4px !important;
+    // At tablet/mobile sizes the header returns to document flow, so only a
+    // small separation is needed after it.
+    padding-top: 12px !important;
   }
 
-  .rh-nav-inner { padding: 0 16px; height: 58px; }
+  .rh-nav-inner { padding: 0 16px; min-height: 58px; }
   .rh-search-wrap input { width: 100%; }
   .rh-brands { padding: 16px 0 20px; }
   .rh-brands-title { font-size: 24px; }
   .rh-brands-subtitle { font-size: 14px; }
   .rh-brands-header { margin-bottom: 16px; }
-  .rh-brand-item { width: 155px; height: 190px; border-radius: 16px; }
-  .rh-brand-item img { max-width: 110px; max-height: 75px; }
+  .rh-brand-item { width: 132px; height: 104px; border-radius: 14px; }
+  .rh-brand-item img { max-width: 108px; max-height: 58px; }
   .rh-brand-item span { font-size: 12px; }
   .rh-brands-set { gap: 16px; padding: 0; }
   .rh-brands-track { padding: 0 14px; }
@@ -1499,15 +1503,15 @@ app-root {
 }
 
 @media (max-width: 575px) {
-  .rh-nav-logo img { height: 34px; max-height: 38px; }
+  .rh-nav-logo img { height: 42px; max-height: 44px; }
   .rh-hdr-nav-links { gap: 2px; }
   .rh-hdr-nav-links a { padding: 3px 6px; font-size: 11px; }
   .rh-hdr-actions-group { gap: 4px; }
   .rh-nav-icon { width: 34px; height: 34px; font-size: 15px; }
   .rh-brands { padding: 14px 0 18px; }
   .rh-brands-title { font-size: 22px; }
-  .rh-brand-item { width: 130px; height: 165px; border-radius: 14px; }
-  .rh-brand-item img { max-width: 90px; max-height: 65px; }
+  .rh-brand-item { width: 116px; height: 92px; border-radius: 12px; }
+  .rh-brand-item img { max-width: 94px; max-height: 52px; }
   .rh-brand-item span { font-size: 11px; }
   .rh-brands-set { gap: 12px; padding: 0; }
   .rh-brands-track { padding: 0 10px; }
@@ -2029,7 +2033,7 @@ body.rh-monthly-flyer-modal-open {
   border: 1px solid #e0e4ef;
   border-radius: 12px;
   color: #202239;
-  background: #fff;
+  background: #f1f9ff;
   font: inherit;
   cursor: pointer;
   transition: all 160ms ease;
@@ -2065,7 +2069,7 @@ body.rh-monthly-flyer-modal-open {
 
   &:hover {
     border-color: rgba(75, 0, 130, 0.3);
-    background: #f8f9ff;
+    background: #e5f4ff;
   }
 
   &.is-selected {
@@ -2110,7 +2114,7 @@ body.rh-monthly-flyer-modal-open {
   border: 1px solid #e0e4ef;
   border-radius: 12px;
   color: #202239;
-  background: #fff;
+  background: #f1f9ff;
   font: inherit;
   cursor: pointer;
   transition: all 160ms ease;
@@ -2367,10 +2371,10 @@ body.rh-monthly-flyer-modal-open {
 /* Global Category Hover Keyframes - Placed in global styles to prevent Angular component-scoping name mangling */
 @keyframes rhCatImgHover {
   0%, 100% {
-    transform: scale(1.16) translateY(-4%);
+    transform: scale(1.02) translateY(0);
   }
   50% {
-    transform: scale(1.25) translateY(-10%);
+    transform: scale(1.08) translateY(-3%);
   }
 }
 
@@ -2379,7 +2383,7 @@ body.rh-monthly-flyer-modal-open {
     transform: scale(1.0) translateY(0);
   }
   50% {
-    transform: scale(1.10) translateY(-6px);
+    transform: scale(1.06) translateY(-3px);
   }
 }
 

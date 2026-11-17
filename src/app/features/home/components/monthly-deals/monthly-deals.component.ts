@@ -1,4 +1,4 @@
-import { Component, Input, signal, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, Input, signal, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../../../core/models/product.model';
@@ -26,9 +26,7 @@ export class MonthlyDealsComponent {
 
   activeMonthlyDealCategory = signal<string>('all');
   monthlyOfferPage = signal(0);
-  monthlyFlyerOpen = signal(false);
   @ViewChild('monthlyProducts') monthlyProducts?: ElementRef<HTMLElement>;
-  private monthlyFlyerTrigger: HTMLElement | null = null;
 
   get monthlyDeals(): Product[] {
     const cat = this.activeMonthlyDealCategory();
@@ -64,31 +62,11 @@ export class MonthlyDealsComponent {
     this.monthlyOfferPage.set(Math.max(0, Math.min(2, page)));
   }
 
-  openMonthlyFlyer(event?: MouseEvent): void {
-    this.monthlyFlyerTrigger = (event?.currentTarget as HTMLElement) ?? (document.activeElement as HTMLElement | null);
-    this.monthlyFlyerOpen.set(true);
-    document.body.classList.add('rh-monthly-flyer-modal-open');
-    setTimeout(() => {
-      document.getElementById('rh-monthly-flyer-close')?.focus();
-    }, 50);
-  }
-
-  closeMonthlyFlyer(): void {
-    if (!this.monthlyFlyerOpen()) return;
-    this.monthlyFlyerOpen.set(false);
-    document.body.classList.remove('rh-monthly-flyer-modal-open');
-    this.monthlyFlyerTrigger?.focus();
-    this.monthlyFlyerTrigger = null;
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  onKeydown(event: KeyboardEvent): void {
-    if (!this.monthlyFlyerOpen()) return;
-    if (event.key === 'Escape') {
-      this.closeMonthlyFlyer();
-    } else if (event.key === 'Tab') {
-      event.preventDefault();
-      document.getElementById('rh-monthly-flyer-close')?.focus();
-    }
+  scrollToMonthlyDeals(event: MouseEvent): void {
+    event.preventDefault();
+    const target = document.getElementById('rh-monthly-deal-list-title');
+    if (!target) return;
+    const behavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    target.scrollIntoView({ behavior, block: 'start' });
   }
 }

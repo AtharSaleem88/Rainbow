@@ -1,12 +1,11 @@
-<article class="rh-shared-product-card" [class.rh-shared-product-list]="viewMode === 'list'" [class.rh-no-section-label]="!showSectionLabel" [class.is-out-of-stock]="!product.inStock">
+<article class="rh-shared-product-card rh-no-section-label" [class.rh-shared-product-list]="viewMode === 'list'" [class.is-out-of-stock]="!product.inStock" [class.has-variant-options]="variantOptionsOpen()">
   <div class="rh-shared-card-top">
-    <span *ngIf="showSectionLabel" class="rh-shared-section-tag">{{ sectionTag }}</span>
     <span *ngIf="!product.inStock" class="rh-shared-stock-tag"><i class="fal fa-ban"></i> Out of stock</span>
     <button type="button" class="rh-shared-favorite" [class.active]="favorite()" [attr.aria-pressed]="favorite()" [attr.aria-label]="(favorite() ? 'Remove ' : 'Add ') + product.title + ' from favorites'" (click)="toggleFavorite($event)"><i class="fal fa-heart" aria-hidden="true"></i></button>
+    <span *ngIf="displayDiscountPercent as discount" class="rh-shared-discount-badge">{{ discount }}% OFF</span>
   </div>
 
   <a [routerLink]="['/products', product.id]" class="rh-shared-product-image" [attr.aria-label]="'View ' + product.title">
-    <span *ngIf="sectionLabel === 'Monthly Deals' && displayDiscountPercent as discount" class="rh-shared-discount-badge">{{ discount }}% OFF</span>
     <div *ngIf="!product.inStock" class="rh-shared-image-stock-badge" (click)="openAlternateModal($event)" title="Select replacement option">
       <span>OUT OF STOCK</span>
     </div>
@@ -14,27 +13,26 @@
   </a>
 
   <div class="rh-shared-product-copy">
-    <span class="rh-shared-product-category">{{ product.category }}</span>
     <h3><a [routerLink]="['/products', product.id]">{{ product.title }}</a></h3>
-    <div class="rh-shared-tags-column">
-      <span *ngFor="let tag of displayTags" class="rh-shared-feature-tag"><i class="fal fa-check-circle"></i> {{ tag }}</span>
-    </div>
     <div class="rh-shared-price-row">
       <div class="rh-shared-price-wrap">
         <strong>Rs. {{ displayPrice | number:'1.0-0' }}</strong>
         <del *ngIf="displayOldPrice">Rs. {{ displayOldPrice | number:'1.0-0' }}</del>
       </div>
 
-      <div class="rh-shared-variant-select" *ngIf="product.variants && product.variants.length > 1" (click)="$event.stopPropagation()">
-        <select [value]="selectedVariantId()" (change)="onVariantChange($event)" aria-label="Select package size">
-          <option *ngFor="let variant of product.variants" [value]="variant.id">
-            {{ variant.label }}
-          </option>
-        </select>
-        <i class="fal fa-chevron-down" aria-hidden="true"></i>
+      <div class="rh-shared-variant-select" *ngIf="product.variants && product.variants.length > 1">
+        <button type="button" class="rh-variant-select-trigger" [attr.aria-expanded]="variantOptionsOpen()" [attr.aria-label]="'Choose size for ' + product.title" (click)="toggleVariantOptions($event)">
+          <span>{{ selectedVariant?.label || 'Choose size' }}</span><i class="fal fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div *ngIf="variantOptionsOpen()" class="rh-variant-options-menu" [ngStyle]="variantPopupStyle()" role="listbox" [attr.aria-label]="'Available sizes for ' + product.title">
+          <button *ngFor="let variant of product.variants" type="button" class="rh-variant-option" [class.is-selected]="selectedVariantId() === variant.id" [attr.aria-selected]="selectedVariantId() === variant.id" role="option" (click)="selectVariant($event, variant.id)">
+            <span class="rh-variant-option-copy"><strong>{{ variant.label }}</strong></span>
+            <span class="rh-variant-option-price">Rs. {{ variant.price | number:'1.0-0' }}</span>
+            <i *ngIf="selectedVariantId() === variant.id" class="fal fa-check" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     </div>
-
     <button *ngIf="!product.inStock" 
             type="button" 
             class="rh-shared-add-button rh-btn-alternate" 

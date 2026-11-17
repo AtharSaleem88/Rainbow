@@ -6,6 +6,7 @@ import { CartService } from '../../core/services/cart.service';
 import { ProductService } from '../../core/services/product.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Product } from '../../core/models/product.model';
+import { APP_CONFIG } from '../../core/core.config';
 
 @Component({
   selector: 'app-header',
@@ -32,13 +33,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { id: 'faisalabad', name: 'Faisalabad', address: 'D-Ground', city: 'Faisalabad' }
   ];
   selectedLocation = signal(this.availableLocations[0]);
+  fulfillmentMode = signal<'delivery' | 'pickup'>('delivery');
+  locationDropdownView = signal<'locations' | 'delivery' | 'pickup'>('locations');
+  scheduleOptionsExpanded = signal(false);
+  selectedPickupBranch = signal<string | null>(APP_CONFIG.defaultBranch.replace(' (Lahore)', ''));
+  readonly pickupBranches = APP_CONFIG.branches.map(name => {
+    const branchName = name.replace(' (Lahore)', '');
+    return { name: branchName, address: `${branchName.replace(' Branch', '')}, Lahore`, city: 'Lahore' };
+  });
+  nearbyPickupBranches = computed(() => this.pickupBranches.filter(branch => branch.city === this.selectedLocation().city));
   isLocationDropdownOpen = signal<boolean>(false);
   isDetectingLocation = signal<boolean>(false);
   locationQuery = signal<string>('');
   popoverPosition = signal<{ top: number; left: number }>({ top: 110, left: 200 });
   popoverStyle = () => {
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      return {};
+      return {
+        top: `${this.popoverPosition().top}px`,
+        left: '12px',
+        right: '12px',
+        width: 'auto',
+        maxWidth: 'none'
+      };
     }
     return {
       top: `${this.popoverPosition().top}px`,
@@ -57,11 +73,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   selectedDeliveryTimeSlot = signal<string>('2:00pm - 4:00pm');
   isScheduleModalOpen = signal<boolean>(false);
 
-  availableDates = [
-    { label: 'Today', value: 'Today', dateStr: 'Today, Oct 8' },
-    { label: 'Tomorrow', value: 'Tomorrow', dateStr: 'Tomorrow, Oct 9' },
-    { label: 'Friday', value: 'Friday', dateStr: 'Friday, Oct 10' }
-  ];
+  availableDates = (() => {
+    const today = new Date();
+    const formatter = new Intl.DateTimeFormat('en-PK', { month: 'short', day: 'numeric' });
+    return [0, 1, 2].map(offset => {
+      const date = new Date(today);
+      date.setDate(today.getDate() + offset);
+      const label = offset === 0 ? 'Today' : offset === 1 ? 'Tomorrow' : date.toLocaleDateString('en-PK', { weekday: 'long' });
+      return { label, value: label, dateStr: formatter.format(date) };
+    });
+  })();
 
   availableTimeSlots = [
     '10:00am - 12:00pm',
@@ -83,6 +104,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   selectInstantDelivery() {
     this.cartService.setDeliveryType('instant');
+    this.closeLocationDropdown();
+  }
+
+  openScheduleFromDropdown() {
+    this.fulfillmentMode.set('delivery');
+    this.scheduleOptionsExpanded.update(expanded => !expanded);
+  }
+
+  setFulfillmentMode(mode: 'delivery' | 'pickup') {
+    this.fulfillmentMode.set(mode);
+  }
+
+  selectPickupBranch(branchName: string) {
+    this.selectedPickupBranch.set(branchName);
+    this.closeLocationDropdown();
   }
 
   confirmSchedule(dateVal?: string, slotVal?: string) {
@@ -92,6 +128,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.selectedDeliveryTimeSlot.set(s);
     this.cartService.setScheduledDelivery(d, s);
     this.closeScheduleModal();
+    if (this.locationDropdownView() === 'delivery') this.closeLocationDropdown();
+  }
+
+  selectedDeliveryDateDisplay() {
+    const selected = this.availableDates.find(date => date.value === this.selectedDeliveryDate());
+    return selected ? `${selected.label}, ${selected.dateStr}` : this.selectedDeliveryDate();
   }
 
   searchSuggestions = [
@@ -329,24 +371,54 @@ export class HeaderComponent implements OnInit, OnDestroy {
       event.stopPropagation();
       event.preventDefault();
     }
-    const nextState = !this.isLocationDropdownOpen();
+    const alreadyOpen = this.isLocationDropdownOpen();
+    const switchingFromFulfillment = alreadyOpen && this.locationDropdownView() !== 'locations';
+    if (switchingFromFulfillment) {
+      this.locationDropdownView.set('locations');
+      this.locationQuery.set('');
+      if (event && event.currentTarget instanceof HTMLElement) this.positionLocationPopover(event.currentTarget);
+      return;
+    }
+    const nextState = !alreadyOpen;
     if (nextState) {
+      this.locationDropdownView.set('locations');
       this.locationQuery.set('');
       if (event && event.currentTarget instanceof HTMLElement) {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const top = Math.round(rect.bottom + 8);
-        const cardWidth = 530;
-        const maxLeft = typeof window !== 'undefined' ? Math.max(16, window.innerWidth - cardWidth - 16) : 200;
-        const left = Math.max(16, Math.min(Math.round(rect.left), maxLeft));
-        this.popoverPosition.set({ top, left });
+        this.positionLocationPopover(event.currentTarget);
       }
     }
     this.isLocationDropdownOpen.set(nextState);
   }
 
+  openFulfillmentDropdown(mode: 'delivery' | 'pickup', event?: Event) {
+    if (this.isLocationDropdownOpen() && this.locationDropdownView() === mode) {
+      this.closeLocationDropdown();
+      return;
+    }
+    this.fulfillmentMode.set(mode);
+    this.locationDropdownView.set(mode);
+    this.locationQuery.set('');
+
+    if (event?.currentTarget instanceof HTMLElement) {
+      this.positionLocationPopover(event.currentTarget);
+    }
+    this.isLocationDropdownOpen.set(true);
+  }
+
+  private positionLocationPopover(anchor: HTMLElement) {
+    const rect = anchor.getBoundingClientRect();
+    const cardWidth = 530;
+    const maxLeft = typeof window !== 'undefined' ? Math.max(16, window.innerWidth - cardWidth - 16) : 200;
+    this.popoverPosition.set({
+      top: Math.round(rect.bottom + 8),
+      left: Math.max(16, Math.min(Math.round(rect.left), maxLeft))
+    });
+  }
+
   closeLocationDropdown() {
     this.isLocationDropdownOpen.set(false);
     this.isDetectingLocation.set(false);
+    this.scheduleOptionsExpanded.set(false);
   }
 
   @HostListener('document:click', ['$event'])
@@ -376,6 +448,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   selectLocation(location: typeof this.availableLocations[number]) {
     this.selectedLocation.set(location);
+    this.selectedPickupBranch.set(this.pickupBranches.find(branch => branch.city === location.city)?.name ?? null);
     this.closeLocationDropdown();
   }
 }

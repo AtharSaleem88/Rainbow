@@ -297,14 +297,10 @@
 .rh-subsub-row {
   display: flex;
   align-items: center;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
+
+.rh-subsub-dropdown { min-width: 210px; }
+.rh-subsub-field { max-width: 100%; }
 
 .rh-subsub-chips-container {
   display: flex;

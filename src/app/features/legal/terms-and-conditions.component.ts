@@ -47,7 +47,7 @@ export class TermsAndConditionsComponent implements OnInit, AfterViewInit, OnDes
   ngOnInit(): void {
     if (typeof window !== 'undefined') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     this.seo.setPageTitle('Terms & Conditions');
-    this.seo.setMetaDescription('Review the terms and conditions for shopping with Rainbow Cash & Carry, including order, payment and delivery information.');
+    this.seo.setMetaDescription('Review the terms and conditions for shopping with Rainbow, including order, payment and delivery information.');
   }
 
   ngAfterViewInit(): void {

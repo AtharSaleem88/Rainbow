@@ -21,6 +21,21 @@
   touch-action: manipulation;
 }
 
+.rh-shared-product-card.has-variant-options {
+  overflow: hidden;
+}
+
+.rh-shared-product-card.has-variant-options:hover,
+.rh-shared-product-card.has-variant-options {
+  border-color: rgba(45, 44, 146, 0.12);
+  box-shadow: 0 8px 22px rgba(45, 44, 146, 0.055);
+  transform: none;
+}
+
+.rh-shared-product-card.has-variant-options:hover .rh-shared-product-image img {
+  transform: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .rh-shared-product-card:hover {
     box-shadow: 0 15px 32px rgba(45, 44, 146, 0.13);
@@ -105,9 +120,11 @@
 }
 
 .rh-shared-discount-badge {
-  position: absolute;
-  top: 48px;
-  right: 12px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: 26px;
+  margin-left: auto;
   z-index: 1;
   padding: 5px 8px;
   border: 1px solid rgba(255, 255, 255, 0.72);
@@ -233,44 +250,76 @@
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
+}
 
-  select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    height: 26px;
-    padding: 2px 20px 2px 8px;
-    border: 1px solid rgba(45, 44, 146, 0.22);
-    border-radius: 6px;
-    background: #f7f9fd;
-    color: var(--rh-primary);
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 650;
-    line-height: 1;
-    cursor: pointer;
-    outline: none;
-    transition: all 160ms ease;
+.rh-variant-select-trigger {
+  display: inline-flex;
+  min-height: 32px;
+  max-width: 112px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 4px 9px;
+  border: 1px solid rgba(45, 44, 146, .18);
+  border-radius: 9px;
+  color: var(--rh-primary);
+  background: #f3f8ff;
+  font: 600 .72rem/1.15 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
 
-    &:hover {
-      border-color: var(--rh-primary);
-      background: #ffffff;
-      box-shadow: 0 1px 4px rgba(45, 44, 146, 0.12);
-    }
+  span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  i { flex: 0 0 auto; font-size: .6rem; }
+  &:hover, &[aria-expanded="true"] { border-color: rgba(45,44,146,.42); background: #eaf4ff; }
+  &:focus-visible { outline: 2px solid rgba(45,44,146,.35); outline-offset: 2px; }
+}
 
-    &:focus-visible {
-      border-color: var(--rh-primary);
-      box-shadow: 0 0 0 2px rgba(45, 44, 146, 0.18);
-    }
-  }
+.rh-variant-options-menu {
+  position: fixed;
+  z-index: 2200;
+  overflow: hidden;
+  padding: 5px;
+  border: 1px solid #e5e8f0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 16px 42px rgba(25, 34, 68, .2), 0 3px 10px rgba(25, 34, 68, .08);
+  animation: rh-variant-menu-in 140ms ease-out both;
+}
 
-  i {
-    position: absolute;
-    right: 6px;
-    pointer-events: none;
-    font-size: 0.58rem;
-    color: var(--rh-primary);
-  }
+.rh-variant-option {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 9px;
+  color: #25263a;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+
+  & + & { border-top: 1px solid #f0f1f5; }
+  &:hover, &.is-selected { background: #f2f7ff; }
+  > i { color: var(--rh-primary); font-size: .78rem; }
+}
+
+.rh-variant-option-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  strong { overflow: hidden; font-size: .78rem; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+  small { color: #82889a; font-size: .64rem; }
+}
+
+.rh-variant-option-price { flex: 0 0 auto; color: #2d2c92; font-size: .76rem; font-weight: 700; white-space: nowrap; }
+
+@keyframes rh-variant-menu-in {
+  from { opacity: 0; transform: translateY(4px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .rh-shared-stock-tag {
@@ -491,7 +540,7 @@
 
 @media (max-width: 767px) {
   .rh-shared-product-card {
-    border-radius: 14px;
+  border-radius: 14px;
   }
 
   .rh-shared-card-top {
@@ -572,15 +621,15 @@
     gap: 4px;
   }
 
-  .rh-shared-variant-select select {
-    height: 22px;
-    padding: 1px 16px 1px 5px;
+  .rh-variant-select-trigger {
+    min-height: 28px;
+    max-width: 86px;
+    padding: 3px 6px;
     font-size: 0.65rem;
     border-radius: 5px;
   }
 
-  .rh-shared-variant-select i {
-    right: 4px;
+  .rh-variant-select-trigger i {
     font-size: 0.52rem;
   }
 

@@ -22,7 +22,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.seoService.setPageTitle('Shopping Cart');
-    this.seoService.setMetaDescription('Review items in your Rainbow Cash & Carry cart and proceed to checkout.');
+    this.seoService.setMetaDescription('Review items in your Rainbow cart and proceed to checkout.');
   }
 
   readonly itemsOriginalTotal = computed(() => this.cartService.cartItems().reduce((total, item) => {

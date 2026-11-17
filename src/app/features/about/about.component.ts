@@ -47,7 +47,7 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     if (typeof window !== 'undefined') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     this.seo.setPageTitle('About Us');
-    this.seo.setMetaDescription('Discover Rainbow Cash & Carry’s story, mission, and the people behind its stores across Punjab.');
+    this.seo.setMetaDescription('Discover Rainbow’s story, mission, and the people behind its stores across Punjab.');
   }
 
   ngAfterViewInit(): void {

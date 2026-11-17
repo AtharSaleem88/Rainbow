@@ -66,7 +66,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.seoService.setPageTitle('My Account');
-    this.seoService.setMetaDescription('Manage your Rainbow Cash & Carry account, orders, addresses, loyalty points and wallet.');
+    this.seoService.setMetaDescription('Manage your Rainbow account, orders, addresses, loyalty points and wallet.');
   }
 
   ngOnDestroy(): void {
