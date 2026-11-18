@@ -7,11 +7,11 @@
         [ngClass]="'rh-category-spotlight-' + category.theme"
         [routerLink]="['/shop']"
         [queryParams]="{ category: category.category }">
+        <span class="rh-category-spotlight-title">{{ category.title }}</span>
         <span class="rh-category-spotlight-image">
           <img [src]="category.image" [alt]="category.title + ' essentials'" loading="lazy">
         </span>
         <span class="rh-category-spotlight-content">
-          <span class="rh-category-spotlight-title">{{ category.title }}</span>
           <span class="rh-category-spotlight-description">{{ category.description }}</span>
           <span class="rh-category-spotlight-link">Shop Now <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
         </span>

@@ -44,6 +44,9 @@ export class ShopComponent implements OnInit {
   minPrice = signal<number>(0);
   maxPrice = signal<number>(1000);
   searchQuery = signal<string>('');
+  monthlyDealsOnly = signal(false);
+  get dealBrands(): string[] { return [...new Set(this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined && (!this.selectedCategory() || p.categorySlug === this.selectedCategory()) && (!this.selectedSubCategory() || p.subCategory === this.selectedSubCategory())).map(p => p.brand))].sort(); }
+  get dealSubCategories(): string[] { return [...new Set(this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined && (!this.selectedCategory() || p.categorySlug === this.selectedCategory())).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
 
   selectedQuickViewProduct = signal<Product | null>(null);
 
@@ -88,6 +91,7 @@ export class ShopComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
+      this.monthlyDealsOnly.set(params['deals'] === 'monthly');
       if (params['category']) {
         this.selectedCategory.set(params['category']);
       } else {
@@ -127,11 +131,12 @@ export class ShopComponent implements OnInit {
       subCategory: this.selectedSubCategory(),
       brand: this.selectedBrand(),
       minPrice: this.minPrice(),
-      maxPrice: this.maxPrice(),
+      maxPrice: this.monthlyDealsOnly() ? undefined : this.maxPrice(),
       sortBy: this.selectedSort(),
       searchQuery: this.searchQuery()
     };
     let products = this.productService.getProducts(filter);
+    if (this.monthlyDealsOnly()) products = products.filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined);
 
     // Apply sub-subcategory query filter if selected
     if (this.selectedSubSubCategory()) {
@@ -191,6 +196,7 @@ export class ShopComponent implements OnInit {
   }
 
   get subCategoryDisplayName(): string {
+    if (this.monthlyDealsOnly() && !this.selectedCategory() && !this.selectedSubCategory()) return 'Monthly Deals';
     if (this.selectedSubCategory()) {
       return this.selectedSubCategory();
     }

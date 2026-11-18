@@ -52,3 +52,28 @@
 }
 
 .rh-campaign-section { padding: 14px 0 20px; background: #f7f9fd; }
+
+/* Category cards */
+.rh-category-spotlights { background: #eaf8fd; padding: 24px 0; }
+.rh-category-spotlight { min-height: 0; padding: 14px; border: 1px solid #dceaf3; border-radius: 22px; background: #fff; box-shadow: 0 8px 25px rgba(34,35,104,.08); }
+.rh-category-spotlight-title { display: block; padding: 8px 5px 16px; color: #18204a; text-align: center; font-size: 19px; }
+.rh-category-spotlight-image { height: auto; flex: 0 0 auto; aspect-ratio: 1.65; border-radius: 13px 13px 0 0; background: #c8effb; }
+.rh-category-spotlight-image img { padding: 10px; }
+.rh-category-spotlight-content { min-height: 108px; padding: 14px; border-radius: 0 0 13px 13px; background: #2e3192; }
+.rh-category-spotlight-description { margin: 0 0 12px; color: #fff; font-weight: 500; }
+.rh-category-spotlight-link { align-self: flex-end; min-height: 36px; margin-top: auto; padding: 0 15px; border-radius: 20px; color: #17234a; background: #c8effb; font-size: 12px; }
+.rh-category-spotlight:hover .rh-category-spotlight-link { color: #17234a; background: #fff; }
+@media (max-width: 575px) {
+  .rh-category-spotlight { flex-basis: min(75vw, 300px); min-height: 0; }
+  .rh-category-spotlight-image { height: auto; flex-basis: auto; }
+}
+
+.rh-category-spotlights { background: #fff; }
+.rh-category-spotlight { padding: 18px 18px 0; border-color: #2e3192; color: #fff; background: #2e3192; }
+.rh-category-spotlight:hover { color: #fff; }
+.rh-category-spotlight-title { padding: 4px 4px 14px; color: #fff; text-align: left; font-weight: 700; }
+.rh-category-spotlight-image { border-radius: 16px 16px 0 0; background: #c8effb; }
+.rh-category-spotlight-content { min-height: 108px; margin: 0 -18px; padding: 18px 20px; border-radius: 48% 48% 0 0 / 20px 20px 0 0; color: #17234a; background: #c8effb; }
+.rh-category-spotlight-description { color: #17234a; }
+.rh-category-spotlight-link { color: #fff; background: #2e3192; }
+.rh-category-spotlight:hover .rh-category-spotlight-link { color: #fff; background: #20236f; }

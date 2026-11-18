@@ -5,7 +5,7 @@
   isolation: isolate;
   overflow: hidden;
   color: #14234a;
-  background: var(--rh-secondary);
+  background: #fff;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -28,11 +28,11 @@
 
 .rh-footer-brand-mark {
   position: relative;
-  top: -14px;
+  top: 0;
   display: grid;
   width: 132px;
-  height: 78px;
-  flex: 0 0 78px;
+  height: auto;
+  flex: 0 0 auto;
   place-items: center;
   padding: 0;
   border: 0;
@@ -43,6 +43,7 @@
   transition: opacity 180ms ease;
 }
 .rh-footer-brand-mark img { display: block; width: 100%; height: auto; max-width: 100%; max-height: none; object-fit: contain; object-position: left center; }
+.rh-footer-brand-col .rh-footer-contact { margin-top: 22px; }
 .rh-footer-brand-mark:hover { opacity: .86; }
 .rh-footer-brand-description { max-width: 290px; margin: 14px 0 16px; color: #14234a; font-size: 12px; font-weight: 500; line-height: 1.65; }
 
@@ -68,6 +69,22 @@
 .rh-footer-app-link small { color: rgba(20,35,74,.7); font-size: 9px; line-height: 1.2; }
 .rh-footer-app-link strong { font-size: 11px; font-weight: 650; line-height: 1.25; }
 .rh-footer-app-link:hover { transform: translateY(-1px); border-color: rgba(48,47,152,.35); color: #14234a; background: #fff; }
+.rh-footer-app-pending > small:last-child { margin-left: auto; white-space: nowrap; }
+.rh-footer-extra { display: flex; flex-wrap: wrap; gap: 18px 38px; margin-top: 28px; padding-top: 20px; border-top: 1px solid #e0e4ea; }
+.rh-footer-extra > div { display: flex; flex-direction: column; gap: 6px; color: #53617b; font-size: 11px; line-height: 1.5; }
+.rh-footer-hours { min-width: min(100%, 300px); }
+.rh-footer-extra strong { color: #14234a; font-size: 12px; }
+.rh-payment-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.rh-payment-badges > span { padding: 4px 8px; border: 1px solid #e0e4ea; border-radius: 6px; color: #23315c; background: #fff; font-weight: 650; }
+.rh-payment-badges .rh-payment-visa { color: #1a1f71; font-style: italic; font-weight: 800; }
+.rh-payment-badges > span { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
+.rh-payment-badges > span { justify-content: center; width: 100px; height: 60px; padding: 0; overflow: hidden; border: 0; background: transparent; }
+.rh-payment-badges img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.rh-payment-badges img[alt="Cash on Delivery"] { filter: contrast(1.4); }
+.rh-payment-badges i { font-size: 17px; }
+.rh-payment-badges .rh-payment-jazz { color: #e82222; }
+.rh-payment-badges .rh-payment-easy { color: #00a84f; }
+.rh-payment-badges .rh-payment-visa { font-size: 25px; font-style: normal; }
 
 .rh-footer-bottom { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,.16); background: var(--rh-primary); }
 .rh-footer-bottom-inner { display: flex; width: min(1600px, calc(100% - 64px)); min-height: 62px; align-items: center; justify-content: space-between; gap: 18px; margin: 0 auto; }
@@ -96,6 +113,8 @@
   .rh-footer-brand-description { margin: 0; }
   .rh-footer-brand-col .rh-footer-contact { width: 100%; grid-template-columns: minmax(0,1fr); margin-top: 12px; }
   .rh-footer-shop-card { grid-column: 1 / -1; }
+  .rh-footer-extra { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .rh-footer-payments { grid-column: 1 / -1; }
   .rh-footer-bottom-inner { width: calc(100% - 36px); flex-wrap: wrap; justify-content: space-between; gap: 10px 14px; padding: 12px 0; }
   .rh-footer-social-icons { margin-left: auto; }
 }

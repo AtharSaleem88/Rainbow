@@ -22,5 +22,6 @@ export class ProductCollectionRailComponent {
   @Input() seeAllQueryParams?: Params;
   @Input() seeAllText = 'VIEW ALL';
   @Input() isTinted = false;
+  @Input() showRainbowCard = false;
   @Input() sectionId = 'rh-collection-' + Math.floor(1000 + Math.random() * 9000);
 }

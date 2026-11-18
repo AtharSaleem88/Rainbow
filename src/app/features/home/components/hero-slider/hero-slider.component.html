@@ -31,6 +31,13 @@
         </picture>
         <span *ngIf="!slide.hideCopy" class="rh-hero-banner-shade" aria-hidden="true"></span>
 
+        <div *ngIf="slide.id === 'winter-fest'" class="rh-winter-copy" aria-hidden="true">
+          <span class="rh-winter-title">WINTER FEST</span>
+          <strong><small>UP TO</small> 35% OFF</strong>
+          <span class="rh-winter-subtitle">COZY SEASON, BIGGER JOY</span>
+          <span class="rh-winter-date">STARTING FROM 1ST NOV</span>
+        </div>
+
         <div class="rh-hero-copy" *ngIf="!slide.hideCopy">
           <h2 class="rh-hero-heading">{{ slide.title }}</h2>
           <p class="rh-hero-sub" *ngIf="slide.description">{{ slide.description }}</p>

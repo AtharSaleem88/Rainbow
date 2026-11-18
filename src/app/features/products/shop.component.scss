@@ -41,6 +41,10 @@
   }
 }
 
+.rh-deals-filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; padding: 16px; border: 1px solid #e1e8f1; border-radius: 16px; background: #fff; }
+.rh-deals-filters label { display: flex; min-width: 150px; flex: 1 1 180px; flex-direction: column; gap: 6px; color: #526079; font-size: 12px; font-weight: 600; }
+.rh-deals-filters select { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid #dce5f1; border-radius: 9px; color: #17234a; background: #f8fbfd; font: inherit; }
+
 /* Products Grid */
 .rh-shop-products {
   display: grid;

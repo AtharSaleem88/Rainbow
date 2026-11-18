@@ -201,9 +201,16 @@
 }
 
 .rh-hero-slide.rh-hero-winter .rh-hero-banner-image {
-  object-fit: contain !important;
+  object-fit: cover !important;
   object-position: center !important;
 }
+
+.rh-winter-copy { position: absolute; z-index: 1; left: 5%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-start; color: #102c70; line-height: 1; }
+.rh-winter-title { font: 700 clamp(24px, 4vw, 58px)/.95 Georgia, serif; }
+.rh-winter-copy strong { margin-top: 8px; font: 800 clamp(24px, 4.3vw, 64px)/1 'Poppins', sans-serif; }
+.rh-winter-copy strong small { font-size: .35em; }
+.rh-winter-subtitle { margin-top: 8px; font: 600 clamp(10px, 1.3vw, 18px)/1.2 'Poppins', sans-serif; }
+.rh-winter-date { margin-top: 8px; font: 700 clamp(9px, 1.1vw, 15px)/1.2 'Poppins', sans-serif; }
 
 .rh-hero-slide.rh-hero-meat:hover .rh-hero-banner-image,
 .rh-hero-slide.rh-hero-meat:focus-within .rh-hero-banner-image {

@@ -10,10 +10,14 @@ import { CommonModule } from '@angular/common';
 })
 export class FloatingActionsComponent {
   showScrollTop = signal(false);
+  footerVisible = signal(false);
 
   @HostListener('window:scroll')
+  @HostListener('window:resize')
   onWindowScroll(): void {
     this.showScrollTop.set(window.scrollY > 300);
+    const footer = document.getElementById('rh-footer');
+    this.footerVisible.set(window.innerWidth <= 767 && !!footer && footer.getBoundingClientRect().top < window.innerHeight);
   }
 
   scrollToTop(): void {

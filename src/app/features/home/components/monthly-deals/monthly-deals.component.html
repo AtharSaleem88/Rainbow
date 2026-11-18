@@ -9,50 +9,15 @@
         </a>
       </div>
       <div class="rh-monthly-banner-visual" aria-hidden="true">
-        <div class="rh-monthly-feature-card">
-          <span class="rh-monthly-feature-kicker">A LITTLE MORE VALUE</span>
-          <strong>New offers<br>every month</strong>
-          <span class="rh-monthly-feature-footer"><i class="fal fa-calendar-alt"></i> Shop the latest edit</span>
-        </div>
+        <img class="rh-monthly-rainbow-mark" src="assets/images/logo/rainbow-cloud-hd.png" alt="">
       </div>
     </div>
 
     <div class="rh-monthly-deal-content">
       <div class="rh-monthly-subheading">
         <div><h3 id="rh-monthly-deal-list-title">Explore this month’s offers</h3></div>
-        <div class="rh-monthly-rail-meta">
-          <span class="rh-monthly-offer-count" [attr.aria-label]="monthlyDeals.length + ' offers'">
-            <span class="rh-monthly-offer-count-number">{{ monthlyDeals.length }}</span>
-            <span>Offers</span>
-          </span>
-          <div class="rh-monthly-rail-controls" *ngIf="monthlyDeals.length > 3" aria-label="Browse monthly offers">
-            <button type="button" (click)="scrollMonthlyOffers(-1)" aria-label="Scroll to previous monthly offers">
-              <i class="fal fa-arrow-left" aria-hidden="true"></i>
-            </button>
-            <button type="button" (click)="scrollMonthlyOffers(1)" aria-label="Scroll to more monthly offers">
-              <i class="fal fa-arrow-right" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>
+        <a class="rh-monthly-explore-all" routerLink="/shop" [queryParams]="{ deals: 'monthly' }">Explore all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
       </div>
-
-      <nav class="rh-monthly-category-nav" aria-label="Filter monthly deals by category">
-        <button
-          type="button"
-          [class.active]="activeMonthlyDealCategory() === 'all'"
-          [attr.aria-pressed]="activeMonthlyDealCategory() === 'all'"
-          (click)="activeMonthlyDealCategory.set('all')">
-          All Deals
-        </button>
-        <button
-          *ngFor="let category of dealData.categories"
-          type="button"
-          [class.active]="activeMonthlyDealCategory() === category.id"
-          [attr.aria-pressed]="activeMonthlyDealCategory() === category.id"
-          (click)="activeMonthlyDealCategory.set(category.id)">
-          {{ category.name }}
-        </button>
-      </nav>
 
       <div
         class="rh-monthly-products"
@@ -63,16 +28,6 @@
         (scroll)="onMonthlyOffersScroll()"
         *ngIf="monthlyDeals.length; else noMonthlyDeals">
         <app-product-card *ngFor="let deal of monthlyDeals" [product]="deal" [sectionLabel]="'Monthly Deals'"></app-product-card>
-      </div>
-      <div *ngIf="monthlyDeals.length > 3" class="rh-monthly-pagination" role="group" aria-label="Monthly offers pages">
-        <button
-          *ngFor="let page of [0, 1, 2]"
-          type="button"
-          [class.active]="monthlyOfferPage() === page"
-          [attr.aria-current]="monthlyOfferPage() === page ? 'page' : null"
-          [attr.aria-label]="'Go to offers page ' + (page + 1)"
-          (click)="scrollToMonthlyPage(page)">
-        </button>
       </div>
       <ng-template #noMonthlyDeals>
         <p class="rh-monthly-empty">There are no deals in this category right now.</p>

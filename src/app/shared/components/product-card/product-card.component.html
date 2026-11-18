@@ -1,14 +1,11 @@
 <article class="rh-shared-product-card rh-no-section-label" [class.rh-shared-product-list]="viewMode === 'list'" [class.is-out-of-stock]="!product.inStock" [class.has-variant-options]="variantOptionsOpen()">
   <div class="rh-shared-card-top">
-    <span *ngIf="!product.inStock" class="rh-shared-stock-tag"><i class="fal fa-ban"></i> Out of stock</span>
-    <button type="button" class="rh-shared-favorite" [class.active]="favorite()" [attr.aria-pressed]="favorite()" [attr.aria-label]="(favorite() ? 'Remove ' : 'Add ') + product.title + ' from favorites'" (click)="toggleFavorite($event)"><i class="fal fa-heart" aria-hidden="true"></i></button>
-    <span *ngIf="displayDiscountPercent as discount" class="rh-shared-discount-badge">{{ discount }}% OFF</span>
+    <span *ngIf="!product.inStock" class="rh-shared-stock-tag">Out of stock</span>
+    <button *ngIf="product.inStock" type="button" class="rh-shared-favorite" [class.active]="favorite()" [attr.aria-pressed]="favorite()" [attr.aria-label]="(favorite() ? 'Remove ' : 'Add ') + product.title + ' from favorites'" (click)="toggleFavorite($event)"><i class="fal fa-heart" aria-hidden="true"></i></button>
+    <ng-container *ngIf="product.inStock"><span *ngIf="displayDiscountPercent as discount" class="rh-shared-discount-badge">{{ discount }}% OFF</span></ng-container>
   </div>
 
   <a [routerLink]="['/products', product.id]" class="rh-shared-product-image" [attr.aria-label]="'View ' + product.title">
-    <div *ngIf="!product.inStock" class="rh-shared-image-stock-badge" (click)="openAlternateModal($event)" title="Select replacement option">
-      <span>OUT OF STOCK</span>
-    </div>
     <img [src]="product.image" [alt]="product.title" loading="lazy" decoding="async">
   </a>
 

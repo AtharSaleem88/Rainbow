@@ -222,8 +222,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  margin: 4px 0 8px;
-  min-height: 28px;
+  margin: auto 0 8px;
+  min-height: 32px;
 }
 
 .rh-shared-price-wrap {
@@ -427,9 +427,9 @@
   -webkit-tap-highlight-color: transparent;
 
   &.rh-btn-alternate {
-    background: var(--rh-primary) !important;
-    border-color: var(--rh-primary) !important;
-    color: #ffffff !important;
+    background: #eaf7fc !important;
+    border-color: #b7dfea !important;
+    color: var(--rh-primary) !important;
     font-size: 0.81rem;
     font-weight: 750;
     padding: 0 8px;
@@ -452,10 +452,10 @@
     }
 
     &:hover {
-      background: var(--rh-primary) !important;
+      background: #d6eff9 !important;
       border-color: var(--rh-primary) !important;
-      color: #ffffff !important;
-      box-shadow: 0 4px 14px rgba(46, 49, 146, 0.28) !important;
+      color: var(--rh-primary) !important;
+      box-shadow: 0 4px 14px rgba(46, 49, 146, 0.12) !important;
       opacity: 0.94;
     }
   }
@@ -489,6 +489,8 @@
     color: #ffffff !important;
     background: var(--rh-primary) !important;
   }
+
+  &.rh-btn-alternate:focus-visible { background: #d6eff9 !important; color: var(--rh-primary) !important; }
 
   &:active {
     opacity: 0.88;
@@ -638,7 +640,7 @@
     flex-wrap: nowrap;
     align-items: center;
     gap: 4px 6px;
-    margin: 2px 0 6px;
+    margin: auto 0 6px;
     white-space: nowrap;
 
     strong {
@@ -651,9 +653,9 @@
   }
 
   .rh-shared-price-row {
-    min-height: 24px;
+    min-height: 28px;
     gap: 4px;
-    margin: 2px 0 6px;
+    margin: auto 0 6px;
   }
 
   .rh-shared-price-wrap {

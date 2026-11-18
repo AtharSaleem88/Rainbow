@@ -9,6 +9,7 @@
     <div class="rh-shop-layout">
       <!-- 1. VERTICAL SUBCATEGORIES SIDEBAR -->
       <app-subcat-sidebar
+        *ngIf="!monthlyDealsOnly()"
         [items]="subCategoryItems()"
         [selectedSubCategory]="selectedSubCategory()"
         (subCategorySelected)="onSubCategorySelect($event)">
@@ -18,6 +19,7 @@
       <main class="rh-shop-results flex-grow-1">
         <!-- Header Filters Bar -->
         <app-shop-filters
+          *ngIf="!monthlyDealsOnly()"
           [selectedBrand]="selectedBrand()"
           [minPrice]="minPrice()"
           [maxPrice]="maxPrice()"
@@ -30,6 +32,11 @@
           (sortChanged)="onSortChangeValue($event)"
           (subSubCategoryChanged)="onSubSubCategoryChange($event)">
         </app-shop-filters>
+        <div *ngIf="monthlyDealsOnly()" class="rh-deals-filters" aria-label="Filter monthly deals">
+          <label>Category<select [value]="selectedCategory()" (change)="onCategorySelect($any($event.target).value)"><option value="">All categories</option><option *ngFor="let category of categories" [value]="category.slug">{{ category.name }}</option></select></label>
+          <label>Subcategory<select [value]="selectedSubCategory()" (change)="onSubCategorySelect($any($event.target).value)"><option value="">All subcategories</option><option *ngFor="let category of dealSubCategories" [value]="category">{{ category }}</option></select></label>
+          <label>Brand<select [value]="selectedBrand()" (change)="onBrandChange($any($event.target).value)"><option value="">All brands</option><option *ngFor="let brand of dealBrands" [value]="brand">{{ brand }}</option></select></label>
+        </div>
 
         <!-- Products Count & Title -->
         <div class="d-flex align-items-center justify-content-between mb-2 px-1">

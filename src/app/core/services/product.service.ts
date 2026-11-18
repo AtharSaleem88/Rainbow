@@ -426,7 +426,7 @@ export class ProductService {
       discountPercent: 10,
       rating: 4.8,
       reviewCount: 38,
-      image: 'assets/images/ultra_fresh/Palak.jpg',
+      image: 'assets/images/frozen/green-peas.png',
       additionalInfo: { 'Weight': '500g' },
       inStock: true,
       isDeal: true
