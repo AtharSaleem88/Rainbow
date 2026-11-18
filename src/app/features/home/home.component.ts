@@ -91,6 +91,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       description: 'Cozy season, bigger joy.',
       ctaText: 'Shop Winter Offers',
       image: 'assets/images/home/winter-fest-banner-clean.png',
+      mobileImage: 'assets/images/home/mobile-winter.png',
       imageAlt: 'Winter Fest, up to 35% off. Cozy season, bigger joy. Starting from 1st November.',
       link: '/shop',
       queryParams: { category: 'home-office' },
