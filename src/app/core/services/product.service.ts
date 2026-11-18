@@ -1,6 +1,29 @@
 import { Injectable, signal } from '@angular/core';
 import { Product, Category, ProductFilter } from '../models/product.model';
 
+const homepageCategoryImages: Record<string, string> = {
+  'paan-corner': 'assets/images/home/paan-corner.png',
+  'dairy-eggs': 'assets/images/home/dairy-bread-eggs.png',
+  'ultra-fresh': 'assets/images/home/fruits-vegetables.png',
+  beverages: 'assets/images/home/beverage-products.png',
+  'snacks-bakery': 'assets/images/home/snacks-munchies.png',
+  'breakfast-instant-food': 'assets/images/home/breakfast-instant-food.png',
+  'sweet-tooth': 'assets/images/home/sweet-tooth.png',
+  'bakery-biscuits': 'assets/images/home/bakery-biscuits.png',
+  'tea-coffee-milk-drinks': 'assets/images/home/tea-coffee.png',
+  grocery: 'assets/images/home/atta-rice-dal.png',
+  'masala-oil-more': 'assets/images/home/oil-ghee.png',
+  'sauces-spreads': 'assets/images/home/sauces-spreads.png',
+  'chicken-meat-fish': 'assets/images/home/chicken-meat-fish.png',
+  'organic-veggies': 'assets/images/home/organic-healthy.png',
+  'baby-care': 'assets/images/home/baby-care-products.png',
+  'pharma-wellness': 'assets/images/home/pharmacy-products.png',
+  'cleaning-essentials': 'assets/images/home/cleaning-essentials.png',
+  'home-office': 'assets/images/home/home-office.png',
+  'personal-care': 'assets/images/home/cosmetics-products.png',
+  'frozen-food': 'assets/images/home/frozen-food.png'
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,9 +52,7 @@ export class ProductService {
     { id: 20, name: 'Frozen Food', slug: 'frozen-food', itemCount: 11 },
   ].map(category => ({
     ...category,
-    image: category.slug === 'organic-veggies'
-      ? 'assets/images/slider/supermarket/Organic & Healthy Living-cutout.png'
-      : `assets/images/slider/supermarket/${category.name}.jpg`
+    image: homepageCategoryImages[category.slug]
   }))
 );
 

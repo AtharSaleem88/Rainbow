@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ElementRef, HostListener, inject, signal, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, inject, signal, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Product, ProductVariant } from '../../../core/models/product.model';
@@ -23,11 +23,10 @@ export class ProductCardComponent implements OnChanges {
   cartService = inject(CartService);
   alternateModalService = inject(AlternateModalService);
   private toastService = inject(ToastService);
-  private host = inject(ElementRef<HTMLElement>);
+  private host: ElementRef<HTMLElement> = inject(ElementRef);
   favorite = signal(false);
   selectedVariantId = signal<string | null>(null);
   variantOptionsOpen = signal(false);
-  variantPopupStyle = signal<Record<string, string>>({});
 
   openAlternateModal(event?: Event) {
     if (event) {
@@ -95,7 +94,7 @@ export class ProductCardComponent implements OnChanges {
     event.stopPropagation();
     const changed = this.selectedVariantId() !== variantId;
     this.selectedVariantId.set(variantId);
-    this.variantOptionsOpen.set(false);
+    this.closeVariantDialog();
     if (changed) {
       const variant = this.product.variants?.find(item => item.id === variantId);
       if (variant) this.toastService.show(`${variant.label} selected for ${this.product.title}.`);
@@ -104,42 +103,18 @@ export class ProductCardComponent implements OnChanges {
 
   toggleVariantOptions(event: MouseEvent) {
     event.preventDefault();
-    if (this.variantOptionsOpen()) {
-      this.variantOptionsOpen.set(false);
-      return;
-    }
-
-    const trigger = event.currentTarget as HTMLElement;
-    const rect = trigger.getBoundingClientRect();
-    const width = Math.min(312, window.innerWidth - 24);
-    const itemCount = this.product.variants?.length ?? 0;
-    const maxHeight = Math.max(140, Math.min(360, window.innerHeight - 24));
-    const menuHeight = Math.min(itemCount * 58 + 10, maxHeight);
-    const topBelow = rect.bottom + 8;
-    const top = topBelow + menuHeight <= window.innerHeight - 8
-      ? topBelow
-      : Math.max(8, rect.top - menuHeight - 8);
-    const left = Math.max(12, Math.min(rect.right - width, window.innerWidth - width - 12));
-
-    this.variantPopupStyle.set({ top: `${top}px`, left: `${left}px`, width: `${width}px`, maxHeight: `${maxHeight}px` });
+    event.stopPropagation();
     this.variantOptionsOpen.set(true);
+    this.host.nativeElement.querySelector<HTMLDialogElement>('.rh-variant-dialog')?.showModal();
   }
 
-  @HostListener('document:click', ['$event'])
-  closeVariantOptionsOnOutsideClick(event: MouseEvent) {
-    const target = event.target as Node | null;
-    const selector = this.host.nativeElement.querySelector('.rh-shared-variant-select');
-    if (!target || !selector?.contains(target)) this.variantOptionsOpen.set(false);
-  }
-
-  @HostListener('window:resize')
-  closeVariantOptionsOnResize() {
+  closeVariantDialog() {
+    this.host.nativeElement.querySelector<HTMLDialogElement>('.rh-variant-dialog')?.close();
     this.variantOptionsOpen.set(false);
   }
 
-  @HostListener('window:scroll')
-  closeVariantOptionsOnScroll() {
-    this.variantOptionsOpen.set(false);
+  closeVariantBackdrop(event: MouseEvent) {
+    if (event.target === event.currentTarget) this.closeVariantDialog();
   }
 
   addToCart(event: Event) {

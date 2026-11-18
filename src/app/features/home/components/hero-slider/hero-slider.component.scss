@@ -5,8 +5,9 @@
 }
 .rh-hero-frame {
   position: relative;
-  height: clamp(260px, 24vw, 340px);
-  min-height: 260px;
+  height: auto;
+  aspect-ratio: 1825 / 457;
+  min-height: 0;
   overflow: hidden;
   border-radius: 22px;
   isolation: isolate;
@@ -15,6 +16,10 @@
   outline: none;
   box-shadow: 0 16px 32px -8px rgba(45, 44, 146, 0.14), 0 2px 8px -2px rgba(45, 44, 146, 0.06);
 }
+
+.rh-hero-frame.rh-hero-meat { background: #211a18 !important; }
+.rh-hero-frame.rh-hero-frozen { aspect-ratio: 2172 / 545; background: #a9bec7 !important; }
+.rh-hero-frame.rh-hero-winter { background: #f4eddf !important; }
 
 .rh-hero-slide {
   position: absolute;
@@ -183,6 +188,36 @@
       color: #0c1239;
     }
   }
+}
+
+.rh-hero-slide.rh-hero-meat .rh-hero-banner-image {
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+.rh-hero-slide.rh-hero-frozen .rh-hero-banner-image {
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+.rh-hero-slide.rh-hero-winter .rh-hero-banner-image {
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+.rh-hero-slide.rh-hero-meat:hover .rh-hero-banner-image,
+.rh-hero-slide.rh-hero-meat:focus-within .rh-hero-banner-image {
+  transform: none !important;
+}
+
+.rh-hero-slide.rh-hero-frozen:hover .rh-hero-banner-image,
+.rh-hero-slide.rh-hero-frozen:focus-within .rh-hero-banner-image {
+  transform: none !important;
+}
+
+.rh-hero-slide.rh-hero-winter:hover .rh-hero-banner-image,
+.rh-hero-slide.rh-hero-winter:focus-within .rh-hero-banner-image {
+  transform: none !important;
 }
 
 .rh-hero-copy {
@@ -399,7 +434,9 @@
   }
 
   .rh-hero-frame {
-    height: clamp(250px, 34vw, 310px);
+    height: auto;
+    aspect-ratio: 1825 / 457;
+    min-height: 0;
   }
 
   .rh-hero-slide {
@@ -431,7 +468,8 @@
   }
 
   .rh-hero-frame {
-    height: clamp(230px, 64vw, 290px);
+    height: auto;
+    aspect-ratio: 1825 / 457;
     min-height: 0;
     border-radius: 18px;
     border: none;
@@ -572,7 +610,8 @@
 
 @media (max-width: 390px) {
   .rh-hero-frame {
-    height: clamp(215px, 64vw, 255px);
+    height: auto;
+    aspect-ratio: 1825 / 457;
   }
 
   .rh-hero-slide.rh-hero-banner-slide {

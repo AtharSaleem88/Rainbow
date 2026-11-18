@@ -13,16 +13,5 @@
         </a>
       </div>
     </div>
-    <div class="rh-campaign-dots" role="group" aria-label="Choose a campaign">
-      <button
-        *ngFor="let banner of banners; let i = index"
-        type="button"
-        [class.active]="activeCampaignIndex() === i"
-        [attr.aria-label]="'Show ' + banner.title"
-        [attr.aria-current]="activeCampaignIndex() === i ? 'true' : null"
-        (click)="selectCampaignBanner(i)">
-        <span class="rh-campaign-progress" aria-hidden="true"></span>
-      </button>
-    </div>
   </div>
 </section>

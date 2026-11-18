@@ -13,16 +13,6 @@
       (focusin)="pauseCategoryAutoSlide()"
       (focusout)="resumeCategoryAutoSlide()"
       (touchstart)="pauseCategoryAutoSlide()">
-      <button
-        *ngIf="categoryHasOverflow()"
-        type="button"
-        class="rh-category-arrow rh-category-arrow-prev"
-        aria-label="Previous categories"
-        aria-controls="home-category-grid"
-        [disabled]="activeCategoryPageIndex() === 0"
-        (click)="scrollToCategoryPage(activeCategoryPageIndex() - 1)">
-        <i class="fal fa-chevron-left" aria-hidden="true"></i>
-      </button>
       <div
         class="rh-category-grid py-2"
         id="home-category-grid"
@@ -45,16 +35,9 @@
           <span class="rh-category-name px-1">{{ cat.name }}</span>
         </a>
       </div>
-      <button
-        *ngIf="categoryHasOverflow()"
-        type="button"
-        class="rh-category-arrow rh-category-arrow-next"
-        aria-label="Next categories"
-        aria-controls="home-category-grid"
-        [disabled]="activeCategoryPageIndex() === 2"
-        (click)="scrollToCategoryPage(activeCategoryPageIndex() + 1)">
-        <i class="fal fa-chevron-right" aria-hidden="true"></i>
-      </button>
+      <div *ngIf="categoryHasOverflow()" class="rh-category-dots" role="group" aria-label="Category pages">
+        <button *ngFor="let page of [0, 1, 2]" type="button" [class.active]="activeCategoryPageIndex() === page" [attr.aria-label]="'Show category page ' + (page + 1)" [attr.aria-current]="activeCategoryPageIndex() === page ? 'true' : null" aria-controls="home-category-grid" (click)="scrollToCategoryPage(page)"></button>
+      </div>
     </div>
   </div>
 </section>

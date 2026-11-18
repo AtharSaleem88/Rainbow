@@ -24,13 +24,16 @@
         <button type="button" class="rh-variant-select-trigger" [attr.aria-expanded]="variantOptionsOpen()" [attr.aria-label]="'Choose size for ' + product.title" (click)="toggleVariantOptions($event)">
           <span>{{ selectedVariant?.label || 'Choose size' }}</span><i class="fal fa-chevron-down" aria-hidden="true"></i>
         </button>
-        <div *ngIf="variantOptionsOpen()" class="rh-variant-options-menu" [ngStyle]="variantPopupStyle()" role="listbox" [attr.aria-label]="'Available sizes for ' + product.title">
+        <dialog class="rh-variant-dialog" [attr.aria-label]="'Choose size for ' + product.title" (cancel)="variantOptionsOpen.set(false)" (click)="closeVariantBackdrop($event)">
+          <header class="rh-variant-dialog-header"><span><i class="fal fa-tag" aria-hidden="true"></i> Choose size</span><button type="button" class="rh-variant-close" aria-label="Close" (click)="closeVariantDialog()"><i class="fal fa-times" aria-hidden="true"></i></button></header>
+          <div class="rh-variant-dialog-body"><p>{{ product.title }}</p><div role="listbox" [attr.aria-label]="'Available sizes for ' + product.title">
           <button *ngFor="let variant of product.variants" type="button" class="rh-variant-option" [class.is-selected]="selectedVariantId() === variant.id" [attr.aria-selected]="selectedVariantId() === variant.id" role="option" (click)="selectVariant($event, variant.id)">
             <span class="rh-variant-option-copy"><strong>{{ variant.label }}</strong></span>
             <span class="rh-variant-option-price">Rs. {{ variant.price | number:'1.0-0' }}</span>
             <i *ngIf="selectedVariantId() === variant.id" class="fal fa-check" aria-hidden="true"></i>
           </button>
-        </div>
+          </div></div>
+        </dialog>
       </div>
     </div>
     <button *ngIf="!product.inStock" 
