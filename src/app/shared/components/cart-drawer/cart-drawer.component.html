@@ -13,12 +13,6 @@
     <span>Your total savings</span><strong>Rs. {{ totalSavings() | number:'1.0-0' }}</strong>
   </div>
 
-  <div class="rh-drawer-delivery" *ngIf="cartService.cartItems().length > 0">
-    <span class="rh-drawer-delivery-icon"><i class="fal fa-shipping-fast" aria-hidden="true"></i></span>
-    <div><strong>Ready for delivery</strong><small>Delivery charge</small></div>
-    <b>FREE</b>
-  </div>
-
   <div class="rh-drawer-items" *ngIf="cartService.cartItems().length > 0; else emptyDrawer">
     <article class="rh-drawer-item" *ngFor="let item of cartService.cartItems(); trackBy: trackByCartItem">
       <a class="rh-drawer-image" [routerLink]="['/products', item.product.id]" (click)="onClose()" [attr.aria-label]="'View ' + item.product.title">

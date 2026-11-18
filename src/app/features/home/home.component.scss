@@ -2,6 +2,31 @@
   display: block;
 }
 
+:host app-category-grid,
+:host app-monthly-deals,
+:host app-category-spotlights,
+:host app-product-collection-rail,
+:host app-promo-banners,
+:host app-brand-showcase,
+:host app-campaign-slider,
+:host app-store-policy {
+  display: block;
+  margin-top: clamp(16px, 2.2vw, 30px);
+}
+:host app-category-spotlights { margin-top: 8px; }
+
+@media (max-width: 767px) {
+  :host app-category-grid,
+  :host app-monthly-deals,
+  :host app-category-spotlights,
+  :host app-product-collection-rail,
+  :host app-promo-banners,
+  :host app-brand-showcase,
+  :host app-campaign-slider,
+  :host app-store-policy { margin-top: 14px; }
+  :host app-category-spotlights { margin-top: 6px; }
+}
+
 :host app-hero-slider.rh-home-reveal,
 :host app-category-grid.rh-home-reveal,
 :host app-monthly-deals.rh-home-reveal,

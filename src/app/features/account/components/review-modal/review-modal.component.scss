@@ -8,12 +8,12 @@
 .rainbow-review-medallion { display: grid; width: 52px; height: 52px; place-items: center; margin-bottom: 9px; border: 6px solid #fff; border-radius: 50%; color: #b87800; background: #ffdc5b; box-shadow: 0 0 0 4px #e0e6f5, 0 6px 15px rgb(34 43 109 / 10%); font-size: 20px; }
 .rainbow-review-medallion.is-rated { background: #fff; }
 .rainbow-review-emoji { display: block; font-size: 30px; line-height: 1; }
-.rainbow-review-header h2 { margin: 0 0 7px; color: var(--rh-primary); font-size: clamp(21px, 5vw, 25px); font-weight: 750; line-height: 1.2; }
+.rainbow-review-header h2 { margin: 0 0 7px; color: var(--rh-primary); font-size: clamp(21px, 5vw, 25px); font-weight: 600; line-height: 1.2; }
 .rainbow-review-order { display: inline-flex; align-items: center; gap: 7px; padding: 4px 12px; border: 1px solid #dfe5f2; border-radius: 999px; color: var(--rh-primary); background: #fff; font-size: 12px; font-weight: 700; }
 .rainbow-review-body { min-height: 0; flex: 1 1 auto; padding: 15px 22px 12px; overflow-y: auto; scrollbar-width: none; }
 .rainbow-review-body::-webkit-scrollbar { display: none; }
 .rainbow-review-rating { display: flex; min-height: 122px; flex-direction: column; align-items: center; justify-content: center; padding: 12px; border: 1px solid #e6eaf2; border-radius: 16px; background: #f9faff; }
-.rainbow-review-rating-label { color: #81899a; font-size: 12px; font-weight: 750; letter-spacing: .14em; }
+.rainbow-review-rating-label { color: #81899a; font-size: 12px; font-weight: 600; letter-spacing: .14em; }
 .rainbow-review-stars { display: flex; align-items: center; justify-content: center; gap: clamp(4px, 2vw, 13px); margin: 7px 0; }
 .rainbow-review-star { display: grid; width: clamp(42px, 10vw, 55px); height: clamp(45px, 11vw, 58px); place-items: center; padding: 0; border: 0; color: #cbd1e0; background: transparent; cursor: pointer; transition: color .18s ease, transform .18s ease; }
 .rainbow-review-star span { font-size: clamp(38px, 9vw, 53px); line-height: 1; }
@@ -21,14 +21,14 @@
 .rainbow-review-star:hover { transform: scale(1.12); }
 .rainbow-review-star:focus-visible, .rainbow-review-close:focus-visible, .rainbow-review-footer button:focus-visible { outline: 3px solid var(--rh-secondary); outline-offset: 3px; }
 .rainbow-review-rating-result { padding: 5px 17px; border: 1px solid #d5e4f5; border-radius: 999px; color: var(--rh-primary); background: #eef6ff; font-size: 13px; font-weight: 700; }
-.rainbow-review-feedback-label { display: block; margin: 12px 0 7px; color: #242839; font-size: 14px; font-weight: 750; }
+.rainbow-review-feedback-label { display: block; margin: 12px 0 7px; color: #242839; font-size: 14px; font-weight: 600; }
 .rainbow-review-feedback-label span { color: #707b90; font-weight: 500; }
 .rainbow-review-body textarea { display: block; width: 100%; min-height: 82px; max-height: 120px; padding: 11px 14px; resize: vertical; border: 1.5px solid #cdd5e5; border-radius: 12px; outline: 0; color: #242839; background: #fff; font: inherit; font-size: 13px; line-height: 1.45; }
 .rainbow-review-body textarea:focus { border-color: var(--rh-primary); box-shadow: 0 0 0 3px rgb(46 49 146 / 10%); }
 .rainbow-review-body textarea::placeholder { color: #9aa3b3; }
 .rainbow-review-character-count { display: block; margin-top: 5px; color: #9aa3b3; font-size: 12px; text-align: right; }
 .rainbow-review-footer { display: grid; flex: 0 0 auto; grid-template-columns: .7fr 1.3fr; gap: 10px; padding: 12px 22px 14px; border-top: 1px solid #edf0f5; }
-.rainbow-review-footer button { min-height: 42px; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 750; cursor: pointer; }
+.rainbow-review-footer button { min-height: 42px; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
 .rainbow-review-cancel { color: #4c5569; background: #eef1f7; }
 .rainbow-review-submit { display: inline-flex; align-items: center; justify-content: center; gap: 9px; color: #fff; background: var(--rh-primary); }
 .rainbow-review-submit:disabled { opacity: .5; cursor: not-allowed; }

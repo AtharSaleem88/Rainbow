@@ -1,5 +1,5 @@
 <!-- announcement_bar - start -->
-<div class="rh-announce" id="rh-announce" role="region" aria-label="Announcements">
+<div class="rh-announce" id="rh-announce" [class.rh-announce-scrolled]="isScrolled()" role="region" aria-label="Announcements">
 	<div class="rh-announce-track">
 		<div class="rh-announce-content">
 			<span class="rh-announce-item"><i class="fal fa-truck-moving" aria-hidden="true"></i> FREE DELIVERY ON ORDERS ABOVE RS. 2,000</span>
@@ -45,8 +45,8 @@
 			        [attr.aria-expanded]="isLocationDropdownOpen()">
 				<span class="rh-hdr-pill-icon"><i class="fal fa-map-marker-alt"></i></span>
 				<div class="rh-hdr-pill-text">
-					<span class="rh-hdr-lbl">{{ fulfillmentMode() === 'pickup' ? 'Picking up at' : 'Delivering to' }}</span>
-					<strong class="rh-hdr-val">{{ fulfillmentMode() === 'pickup' ? (selectedPickupBranch() || selectedLocation().name) : selectedLocation().name }}</strong>
+					<span class="rh-hdr-lbl">Delivering to</span>
+					<strong class="rh-hdr-val">{{ selectedLocation().name }}</strong>
 				</div>
 				<i class="far fa-angle-down ms-1 text-muted transition-transform" 
 				   [class.rotate-180]="isLocationDropdownOpen()" 
@@ -195,10 +195,6 @@
 		</div>
 
 		<!-- 4. DELIVERY / PICKUP CONTROLS (original header row) -->
-		<div class="rh-hdr-col rh-hdr-fulfillment d-none d-lg-flex">
-			<button type="button" class="rh-hdr-mode-button" [class.is-active]="fulfillmentMode() === 'delivery'" (click)="openFulfillmentDropdown('delivery', $event)" [attr.aria-expanded]="isLocationDropdownOpen() && locationDropdownView() === 'delivery'"><i class="fal fa-truck" aria-hidden="true"></i><span>Delivery</span></button>
-			<button type="button" class="rh-hdr-mode-button" [class.is-active]="fulfillmentMode() === 'pickup'" (click)="openFulfillmentDropdown('pickup', $event)" [attr.aria-expanded]="isLocationDropdownOpen() && locationDropdownView() === 'pickup'"><i class="fal fa-store" aria-hidden="true"></i><span>Pickup</span></button>
-		</div>
 
 		<!-- 5. LOGIN & REGISTER / CART -->
 		<div class="rh-hdr-col rh-hdr-actions d-flex align-items-center gap-2">
@@ -237,8 +233,8 @@
 				        [attr.aria-expanded]="isLocationDropdownOpen()">
 					<span class="rh-hdr-pill-icon"><i class="fal fa-map-marker-alt"></i></span>
 					<div class="rh-hdr-pill-text text-start">
-						<span class="rh-hdr-lbl">{{ fulfillmentMode() === 'pickup' ? 'Picking up at' : 'Delivering to' }}</span>
-						<strong class="rh-hdr-val">{{ fulfillmentMode() === 'pickup' ? (selectedPickupBranch() || selectedLocation().name) : selectedLocation().name }}</strong>
+						<span class="rh-hdr-lbl">Delivering to</span>
+						<strong class="rh-hdr-val">{{ selectedLocation().name }}</strong>
 					</div>
 					<i class="far fa-angle-down ms-auto text-muted transition-transform" 
 					   [class.rotate-180]="isLocationDropdownOpen()" 
@@ -401,10 +397,6 @@
 			</form>
 		</div>
 
-		<div class="rh-mobile-fulfillment d-flex d-lg-none align-items-center gap-2">
-			<button type="button" class="rh-hdr-mode-button flex-fill" [class.is-active]="fulfillmentMode() === 'delivery'" (click)="openFulfillmentDropdown('delivery', $event)" [attr.aria-expanded]="isLocationDropdownOpen() && locationDropdownView() === 'delivery'"><i class="fal fa-truck" aria-hidden="true"></i><span>Delivery</span></button>
-			<button type="button" class="rh-hdr-mode-button flex-fill" [class.is-active]="fulfillmentMode() === 'pickup'" (click)="openFulfillmentDropdown('pickup', $event)" [attr.aria-expanded]="isLocationDropdownOpen() && locationDropdownView() === 'pickup'"><i class="fal fa-store" aria-hidden="true"></i><span>Pickup</span></button>
-		</div>
 
 	</div>
 

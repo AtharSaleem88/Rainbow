@@ -98,7 +98,7 @@
   color: #fff;
   background: var(--rh-primary);
   font-size: 0.74rem;
-  font-weight: 750;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -154,7 +154,7 @@
   color: #17192e;
   font-family: 'Poppins', sans-serif;
   font-size: clamp(1.5rem, 2.5vw, 2.1rem);
-  font-weight: 750;
+  font-weight: 600;
   line-height: 1.25;
 }
 
@@ -194,7 +194,7 @@
   padding: 4px 10px;
   border-radius: 8px;
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight: 600;
 
   &.is-out-of-stock {
       background: #fff1f2;
@@ -269,7 +269,7 @@
   .rh-price-current {
     color: var(--rh-primary);
     font-size: 1.85rem;
-    font-weight: 750;
+    font-weight: 600;
   }
 
   .rh-price-old {
@@ -283,7 +283,7 @@
     color: #e8101f;
     background: rgba(232, 16, 31, 0.08);
     font-size: 0.78rem;
-    font-weight: 750;
+    font-weight: 600;
   }
 }
 
@@ -301,7 +301,7 @@
   margin-bottom: 8px;
   color: #3e4157;
   font-size: 0.82rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rh-details-variant-grid {
@@ -483,7 +483,7 @@
     border-color: var(--rh-primary) !important;
     color: #ffffff !important;
     font-size: 0.95rem;
-    font-weight: 750;
+    font-weight: 600;
 
     i {
       font-size: 1rem;
@@ -580,7 +580,7 @@
     min-width: 30px;
     text-align: center;
     font-size: 1.05rem;
-    font-weight: 750;
+    font-weight: 600;
     user-select: none;
   }
 }
@@ -685,7 +685,7 @@
     color: #17192e;
     font-family: 'Poppins', sans-serif;
     font-size: 1.35rem;
-    font-weight: 750;
+    font-weight: 600;
   }
 
   a {

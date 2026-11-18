@@ -36,6 +36,7 @@
           <label>Category<select [value]="selectedCategory()" (change)="onCategorySelect($any($event.target).value)"><option value="">All categories</option><option *ngFor="let category of categories" [value]="category.slug">{{ category.name }}</option></select></label>
           <label>Subcategory<select [value]="selectedSubCategory()" (change)="onSubCategorySelect($any($event.target).value)"><option value="">All subcategories</option><option *ngFor="let category of dealSubCategories" [value]="category">{{ category }}</option></select></label>
           <label>Brand<select [value]="selectedBrand()" (change)="onBrandChange($any($event.target).value)"><option value="">All brands</option><option *ngFor="let brand of dealBrands" [value]="brand">{{ brand }}</option></select></label>
+          <button type="button" class="rh-deals-clear" (click)="clearMonthlyFilters()">Clear filters</button>
         </div>
 
         <!-- Products Count & Title -->

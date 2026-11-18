@@ -11,6 +11,12 @@
   background: #f4f6fc;
 }
 
+.rainbow-cart-header h1 { font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 600; }
+.rainbow-cart-product-details h3 { font-size: .88rem; font-weight: 550; }
+.rainbow-cart-bill h2, .rainbow-cart-policy h2, .rainbow-cart-delivery h2 { font-size: 1rem; font-weight: 600; }
+.rainbow-cart-bill-row, .rainbow-cart-delivery p, .rainbow-cart-policy p { font-size: .82rem; }
+.rainbow-cart-primary, .rainbow-cart-continue { font-size: .82rem; font-weight: 600; }
+
 .rainbow-cart-container {
   max-width: 1120px;
 }
@@ -27,7 +33,7 @@
   margin: 0;
   color: #17192e;
   font-size: clamp(1.35rem, 2.5vw, 1.75rem);
-  font-weight: 750;
+  font-weight: 600;
   letter-spacing: -0.035em;
 }
 
@@ -136,7 +142,7 @@
   margin: 0 0 3px;
   color: #17192c;
   font-size: 1.12rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-cart-delivery p {
@@ -231,7 +237,7 @@
   border: 1px solid rgba(46, 49, 146, 0.2);
   color: var(--rh-primary);
   font-size: 0.70rem;
-  font-weight: 750;
+  font-weight: 600;
   border-radius: 5px;
   line-height: 1.25;
 }
@@ -300,7 +306,7 @@
 .rainbow-cart-quantity span {
   min-width: 20px;
   text-align: center;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-cart-prices {
@@ -416,7 +422,7 @@
   margin: 0 0 16px;
   color: #202239;
   font-size: 1.22rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-cart-bill-row {
@@ -494,7 +500,7 @@
   border-radius: 14px;
   color: #fff;
   background: var(--rh-primary);
-  font-weight: 750;
+  font-weight: 600;
   text-align: center;
   text-decoration: none;
   transition: all 180ms ease;
@@ -565,7 +571,7 @@
 .rainbow-cart-empty h2 {
   margin: 0 0 8px;
   font-size: 1.45rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-cart-empty p {
@@ -795,6 +801,11 @@
 }
 .rainbow-cart-instruction-link > span { flex: 1; }
 .rainbow-cart-instruction-link > span small { display: block; margin-top: 2px; color: #777d8d; font-size: .76rem; }
+.rainbow-cart-header h1 { font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 600; }
+.rainbow-cart-product-details h3 { font-size: .88rem; font-weight: 550; }
+.rainbow-cart-bill h2, .rainbow-cart-policy h2, .rainbow-cart-delivery h2 { font-size: 1rem; font-weight: 600; }
+.rainbow-cart-bill-row, .rainbow-cart-delivery p, .rainbow-cart-policy p { font-size: .82rem; }
+.rainbow-cart-primary, .rainbow-cart-continue { font-size: .82rem; font-weight: 600; }
 .rainbow-cart-instruction-link > i:first-child { color: var(--rh-primary); }
 .rainbow-cart-instruction-link > i:last-child { font-size: .78rem; }
 
@@ -816,3 +827,11 @@
     font-size: 0.74rem;
   }
 }
+
+/* Match checkout and dialog typography */
+.rainbow-cart-header h1 { font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 600; }
+.rainbow-cart-bill h2, .rainbow-cart-policy h2, .rainbow-cart-delivery h2, .rainbow-cart-empty h2 { font-size: 1.05rem; font-weight: 600; }
+.rainbow-cart-product-details h3 { font-size: .85rem; font-weight: 550; }
+.rainbow-cart-bill-row, .rainbow-cart-policy p, .rainbow-cart-delivery p, .rainbow-cart-empty p { font-size: .84rem; line-height: 1.45; }
+.rainbow-cart-primary, .rainbow-cart-continue, .rainbow-cart-actions button, .rainbow-cart-actions a { font-size: .82rem; font-weight: 600; }
+.rainbow-cart-savings, .rainbow-cart-bill-total { font-size: .88rem; font-weight: 600; }

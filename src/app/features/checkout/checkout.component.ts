@@ -43,6 +43,11 @@ export class CheckoutComponent implements OnInit {
   readonly pointsToEarn = computed(() => this.loyaltyService.isMember() ? this.loyaltyService.pointsForAmount(this.payment().earningAmount) : 0);
 
   readonly currentStep = signal<1 | 2 | 3>(1);
+  readonly fulfillmentMode = signal<'delivery' | 'pickup'>('delivery');
+  setFulfillmentMode(mode: 'delivery' | 'pickup'): void {
+    this.fulfillmentMode.set(mode);
+    if (mode === 'pickup') this.tipAmount.set(0);
+  }
 
   // Delivery Schedule State for Checkout
   readonly isScheduleModalOpen = signal(false);
@@ -98,6 +103,8 @@ export class CheckoutComponent implements OnInit {
   };
 
   selectedAddressId = signal<string | null>(null);
+  readonly addressChoicesOpen = signal(false);
+  readonly selectedSavedAddress = computed(() => this.authService.savedAddresses().find(address => address.id === this.selectedAddressId()));
   selectedSavedCardId = signal<string | null>(null);
 
   selectedPaymentMethod = 'cod';
@@ -152,12 +159,20 @@ export class CheckoutComponent implements OnInit {
 
   selectSavedAddress(addr: SavedAddress) {
     this.selectedAddressId.set(addr.id);
+    this.addressChoicesOpen.set(false);
     const names = addr.recipientName.split(' ');
     this.billingData.firstName = names[0] || '';
     this.billingData.lastName = names.slice(1).join(' ') || '';
     this.billingData.phone = addr.phone;
     this.billingData.address = addr.addressLine;
     this.billingData.city = addr.city;
+  }
+
+  addNewDeliveryAddress(): void {
+    this.selectedAddressId.set(null);
+    this.addressChoicesOpen.set(false);
+    this.billingData.address = '';
+    setTimeout(() => document.getElementById('address')?.focus());
   }
 
   selectBranch(branch: string) {
@@ -200,6 +215,16 @@ export class CheckoutComponent implements OnInit {
   goToStep(step: 1 | 2) {
     this.currentStep.set(step);
     this.scrollToTop();
+  }
+
+  editDeliveryAddress(): void {
+    this.currentStep.set(1);
+    this.isMobileSummaryOpen.set(false);
+    setTimeout(() => {
+      const field = document.getElementById('address');
+      field?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      field?.focus({ preventScroll: true });
+    });
   }
 
   nextStep() {

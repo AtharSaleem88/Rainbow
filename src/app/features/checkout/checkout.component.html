@@ -46,6 +46,8 @@
             [isMember]="loyaltyService.isMember()"
             [spendPerPoint]="loyaltyService.spendPerPoint"
             [fulfillingBranch]="billingData.branch"
+            [fulfillmentMode]="fulfillmentMode()"
+            [deliveryAddress]="billingData.address" [deliveryCity]="billingData.city" (changeAddress)="editDeliveryAddress()"
             [deliveryType]="cartService.deliveryType()"
             [deliveryDate]="cartService.selectedDeliveryDate()"
             [deliveryTimeSlot]="cartService.selectedDeliveryTimeSlot()">
@@ -64,7 +66,11 @@
             </header>
 
             <!-- Delivery Method Selection (Instant vs Scheduled) -->
-            <div class="mb-4">
+            <div class="rainbow-fulfillment-options" role="group" aria-label="Fulfillment method">
+              <button type="button" [class.is-selected]="fulfillmentMode() === 'delivery'" [attr.aria-pressed]="fulfillmentMode() === 'delivery'" (click)="setFulfillmentMode('delivery')"><i class="fal fa-truck"></i> Delivery</button>
+              <button type="button" [class.is-selected]="fulfillmentMode() === 'pickup'" [attr.aria-pressed]="fulfillmentMode() === 'pickup'" (click)="setFulfillmentMode('pickup')"><i class="fal fa-store"></i> Pickup</button>
+            </div>
+            <div class="mb-4" *ngIf="fulfillmentMode() === 'delivery'">
               <label class="rainbow-form-label mb-2">Delivery Method</label>
               <div class="rainbow-delivery-cards-grid">
                 <!-- Instant Express Delivery Card -->
@@ -80,7 +86,6 @@
                       <strong>Instant Express Delivery</strong>
                       <span class="rainbow-delivery-pill-badge" [class.badge-active]="cartService.deliveryType() === 'instant'">In 40 Mins</span>
                     </div>
-                    <p>Guaranteed express delivery within 40 minutes to your address</p>
                   </div>
                   <div class="rainbow-delivery-method-radio">
                     <i class="fal" [ngClass]="cartService.deliveryType() === 'instant' ? 'fa-dot-circle text-primary' : 'fa-circle text-muted'"></i>
@@ -102,7 +107,6 @@
                         {{ cartService.selectedDeliveryDate() }}, {{ cartService.selectedDeliveryTimeSlot() }}
                       </span>
                     </div>
-                    <p>Select your convenient date and 2-hour delivery window (click to customize)</p>
                   </div>
                   <div class="rainbow-delivery-method-radio">
                     <i class="fal" [ngClass]="cartService.deliveryType() === 'scheduled' ? 'fa-dot-circle text-primary' : 'fa-circle text-muted'"></i>
@@ -111,10 +115,23 @@
               </div>
             </div>
 
+            <section *ngIf="fulfillmentMode() === 'pickup'" class="rainbow-pickup-section" aria-label="Choose a pickup branch">
+              <label class="rainbow-form-label mb-2">Choose a pickup branch</label>
+              <div class="rainbow-pickup-list">
+                <button type="button" *ngFor="let branch of branches" [class.is-selected]="billingData.branch === branch" [attr.aria-pressed]="billingData.branch === branch" (click)="selectBranch(branch)">
+                  <i class="fal fa-map-marker-alt" aria-hidden="true"></i><span><strong>{{ branch }}</strong></span><i class="fal" [ngClass]="billingData.branch === branch ? 'fa-check-circle' : 'fa-circle'" aria-hidden="true"></i>
+                </button>
+              </div>
+            </section>
+
             <!-- Saved Addresses Selector -->
-            <div class="mb-4" *ngIf="authService.savedAddresses().length > 0">
-              <label class="rainbow-form-label mb-2">Select Saved Delivery Address</label>
-              <div class="rainbow-saved-addresses-grid">
+            <div class="mb-4" *ngIf="fulfillmentMode() === 'delivery' && authService.savedAddresses().length > 0">
+              <div class="rainbow-address-header"><label class="rainbow-form-label">Delivery address</label><div><button type="button" (click)="addressChoicesOpen.set(!addressChoicesOpen())" [attr.aria-expanded]="addressChoicesOpen()">Change</button><button type="button" (click)="addNewDeliveryAddress()">Add new</button></div></div>
+              <div class="rainbow-saved-addresses-grid" *ngIf="selectedSavedAddress() as selected">
+                <div class="rainbow-saved-address-card is-selected"><span class="rainbow-address-tag">{{ selected.label }}</span><strong>{{ selected.recipientName }}</strong><p>{{ selected.addressLine }}, {{ selected.city }}</p><small>{{ selected.phone }}</small></div>
+              </div>
+              <p *ngIf="!selectedSavedAddress() && !addressChoicesOpen()" class="rainbow-new-address-hint">Enter your delivery address below.</p>
+              <div class="rainbow-saved-addresses-grid rainbow-address-choices" *ngIf="addressChoicesOpen()">
                 <button type="button" 
                         *ngFor="let addr of authService.savedAddresses()" 
                         class="rainbow-saved-address-card"
@@ -176,8 +193,8 @@
                   </div>
                 </div>
 
-                <div class="rainbow-form-field">
-                  <label for="branch">Fulfilling Rainbow Branch <sup>*</sup></label>
+                <div class="rainbow-form-field" *ngIf="fulfillmentMode() === 'delivery'">
+                  <label for="branch">{{ fulfillmentMode() === 'pickup' ? 'Pickup branch' : 'Fulfilling Rainbow Branch' }} <sup>*</sup></label>
                   <div class="rainbow-branch-control" #branchControl>
                     <button
                       id="branch"
@@ -208,7 +225,7 @@
                 </div>
               </div>
 
-              <div class="rainbow-form-field">
+              <div class="rainbow-form-field" *ngIf="fulfillmentMode() === 'delivery'">
                 <label for="address">Delivery Address <sup>*</sup></label>
                 <div class="rainbow-input-wrap">
                   <i class="fal fa-home"></i>
@@ -363,7 +380,7 @@
             <p *ngIf="paymentError()" class="rainbow-payment-error" role="alert">{{ paymentError() }}</p>
 
             <!-- Rider Tip Section -->
-            <section class="rainbow-card-details-box rainbow-rider-tip mt-4 mb-3" aria-labelledby="rider-tip-heading">
+            <section *ngIf="fulfillmentMode() === 'delivery'" class="rainbow-card-details-box rainbow-rider-tip mt-4 mb-3" aria-labelledby="rider-tip-heading">
               <div id="rider-tip-heading" class="rainbow-rider-tip-heading" role="heading" aria-level="3">Tip your delivery rider</div>
               <p class="rainbow-rider-tip-description"></p>
               <div class="rainbow-tip-options" role="group" aria-label="Rider tip options">
@@ -407,6 +424,8 @@
             [isMember]="loyaltyService.isMember()"
             [spendPerPoint]="loyaltyService.spendPerPoint"
             [fulfillingBranch]="billingData.branch"
+            [fulfillmentMode]="fulfillmentMode()"
+            [deliveryAddress]="billingData.address" [deliveryCity]="billingData.city" (changeAddress)="editDeliveryAddress()"
             [deliveryType]="cartService.deliveryType()"
             [deliveryDate]="cartService.selectedDeliveryDate()"
             [deliveryTimeSlot]="cartService.selectedDeliveryTimeSlot()">
@@ -428,17 +447,17 @@
           <div class="rainbow-success-details">
             <div class="rainbow-success-col">
               <div class="rainbow-success-detail-group">
-                <span class="lbl"><i class="fal fa-map-marker-alt"></i> Delivery Address</span>
+                <span class="lbl"><i class="fal fa-map-marker-alt"></i> {{ fulfillmentMode() === 'pickup' ? 'Pickup details' : 'Delivery Address' }}</span>
                 <strong>{{ billingData.firstName }} {{ billingData.lastName }}</strong>
-                <p>{{ billingData.address }}, {{ billingData.city }}</p>
+                <p>{{ fulfillmentMode() === 'pickup' ? billingData.branch : billingData.address + ', ' + billingData.city }}</p>
                 <p class="phone"><i class="fal fa-phone"></i> {{ billingData.phone }}</p>
               </div>
             </div>
             <div class="rainbow-success-col">
               <div class="rainbow-success-detail-group rainbow-success-method">
                 <span class="lbl"><i class="fal fa-truck"></i> Delivery Method</span>
-                <strong>{{ cartService.deliveryType() === 'instant' ? 'Instant Express Delivery' : 'Scheduled Delivery' }}</strong>
-                <p>{{ cartService.deliveryType() === 'instant' ? 'In 40 minutes' : cartService.selectedDeliveryDate() + ', ' + cartService.selectedDeliveryTimeSlot() }}</p>
+                <strong>{{ fulfillmentMode() === 'pickup' ? 'Pickup' : cartService.deliveryType() === 'instant' ? 'Instant Express Delivery' : 'Scheduled Delivery' }}</strong>
+                <p *ngIf="fulfillmentMode() === 'delivery'">{{ cartService.deliveryType() === 'instant' ? 'In 40 minutes' : cartService.selectedDeliveryDate() + ', ' + cartService.selectedDeliveryTimeSlot() }}</p>
               </div>
               <div class="rainbow-success-detail-group">
                 <span class="lbl"><i class="fal fa-store"></i> Dispatching Branch</span>

@@ -1,6 +1,10 @@
 :host {
   display: block;
 }
+.rainbow-summary-address { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; padding: 11px 12px; border: 1px solid #e2eaf2; border-radius: 10px; background: #f7fbfd; }
+.rainbow-summary-address > div { display: grid; flex: 1; min-width: 0; gap: 4px; font-size: .78rem; line-height: 1.4; color: #53617b; overflow-wrap: anywhere; }
+.rainbow-summary-address strong { color: #17234a; font-weight: 600; }
+.rainbow-summary-address button { border: 0; padding: 0; color: #2e3192; background: transparent; font-size: .76rem; font-weight: 600; cursor: pointer; }
 
 .rainbow-checkout-summary {
   padding: 22px;
@@ -15,7 +19,7 @@
   color: #17192e;
   font-family: 'Poppins', sans-serif;
   font-size: 1.15rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-summary-items {
@@ -65,7 +69,7 @@
   color: #fff;
   background: var(--rh-primary);
   font-size: 0.7rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-summary-info {
@@ -91,7 +95,7 @@
 .rainbow-summary-price strong {
   color: var(--rh-primary);
   font-size: 0.92rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-cart-savings {
@@ -143,6 +147,20 @@
   font-size: 1.2rem;
 }
 
+.rainbow-checkout-summary { padding: 18px; }
+.rainbow-checkout-summary h2 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+.rainbow-summary-items { margin-bottom: 10px; }
+.rainbow-summary-item { gap: 10px; padding: 8px 0; }
+.rainbow-summary-thumb { width: 46px; height: 46px; }
+.rainbow-summary-info strong { font-size: .8rem; font-weight: 550; }
+.rainbow-summary-price strong { font-size: .82rem; font-weight: 600; }
+.rainbow-summary-row { gap: 12px; padding: 5px 0; font-size: .8rem; }
+.rainbow-summary-row > :last-child { text-align: right; }
+.rainbow-summary-method { color: #2e3192; font-weight: 500; }
+.rainbow-summary-total { font-size: .94rem; }
+.rainbow-summary-total strong:last-child { font-size: 1.05rem; }
+.rainbow-checkout-trust { margin-top: 12px; padding-top: 12px; }
+
 .rainbow-checkout-trust {
   margin-top: 20px;
   padding-top: 16px;
@@ -191,7 +209,7 @@
 .rainbow-summary-best-match {
   display: inline-block;
   font-size: 0.67rem;
-  font-weight: 750;
+  font-weight: 600;
   color: var(--rh-primary);
   background: rgba(46, 49, 146, 0.08);
   border: 1px solid rgba(46, 49, 146, 0.2);

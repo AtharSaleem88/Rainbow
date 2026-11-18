@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
@@ -30,6 +30,7 @@ export class ShopComponent implements OnInit {
   private productService = inject(ProductService);
   private seoService = inject(SeoService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   categories = this.productService.getCategories();
   filteredProducts = signal<Product[]>([]);
@@ -217,6 +218,11 @@ export class ShopComponent implements OnInit {
     this.searchQuery.set('');
     this.applyFilters();
     this.updatePageSeo();
+  }
+
+  clearMonthlyFilters(): void {
+    this.resetFilters();
+    void this.router.navigate([], { relativeTo: this.route, queryParams: { deals: 'monthly' }, replaceUrl: true });
   }
 
   openQuickView(product: Product) {

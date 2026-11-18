@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PaymentBreakdown } from '../../../../core/services/checkout-payment.service';
@@ -23,6 +23,10 @@ export class CheckoutSummaryComponent {
   @Input({ required: true }) spendPerPoint: number = 100;
   @Input({ required: true }) fulfillingBranch: string = '';
   @Input() deliveryType: 'instant' | 'scheduled' | null = 'instant';
+  @Input() fulfillmentMode: 'delivery' | 'pickup' = 'delivery';
+  @Input() deliveryAddress = '';
+  @Input() deliveryCity = '';
+  @Output() changeAddress = new EventEmitter<void>();
   @Input() deliveryDate: string = 'Today';
   @Input() deliveryTimeSlot: string = '2:00pm - 4:00pm';
 

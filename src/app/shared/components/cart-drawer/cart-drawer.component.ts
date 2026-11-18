@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
@@ -15,6 +15,16 @@ import { CartItem } from '../../../core/models/product.model';
 export class CartDrawerComponent {
   readonly cartService = inject(CartService);
   readonly loyaltyService = inject(LoyaltyService);
+
+  constructor() {
+    effect(onCleanup => {
+      if (!this.cartService.isCartOpen()) return;
+      const body = document.body;
+      const previousOverflow = body.style.overflow;
+      body.style.overflow = 'hidden';
+      onCleanup(() => { body.style.overflow = previousOverflow; });
+    });
+  }
 
   readonly totalSavings = computed(() => this.cartService.cartItems().reduce((total, item) => {
     const price = item.variant?.price ?? item.product.price;

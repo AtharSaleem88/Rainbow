@@ -227,7 +227,7 @@
   background: linear-gradient(145deg, #f7fcff, #edf8ff);
 }
 .rh-schedule-inline-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 9px; color: #28334b; font-family: 'Poppins', sans-serif; }
-.rh-schedule-inline-heading strong { font-size: 12px; font-weight: 750; }
+.rh-schedule-inline-heading strong { font-size: 12px; font-weight: 600; }
 .rh-schedule-inline-heading span { color: #708098; font-size: 10px; }
 .rh-schedule-inline-dates { gap: 7px; }
 .rh-schedule-inline-dates .rh-schedule-date-card { min-height: 50px; padding: 7px 4px; border-radius: 11px; }
@@ -284,15 +284,17 @@
 }
 
 @media (min-width: 992px) {
-  .rh-nav.rh-nav-solid { top: 8px; width: calc(100% - 48px); max-width: 1440px; border-radius: 24px; }
-  .rh-hdr-delivering { min-width: 0; max-width: 200px; }
-  .rh-hdr-delivering .rh-hdr-pill { min-width: 0; max-width: 100%; }
+  .rh-nav.rh-nav-solid { top: 0 !important; width: 100%; max-width: none; border-radius: 0; transition: background-color 200ms ease, box-shadow 200ms ease; }
+  .rh-hdr-delivering { flex: 0 1 280px; min-width: 170px; max-width: 280px; }
+  .rh-hdr-delivering .rh-hdr-pill { width: 100%; min-width: 0; max-width: 100%; }
   .rh-hdr-delivering .rh-hdr-pill-text { min-width: 0; }
   .rh-hdr-delivering .rh-hdr-val { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .rh-hdr-search { min-width: 0; }
 }
 
 @media (max-width: 991px) {
+  .rh-announce.rh-announce-scrolled { display: none; }
+  .rh-nav.rh-nav-solid { top: 0; margin-top: 0; }
   .rh-mobile-logo { display: flex; flex: 0 0 auto; align-items: center; }
   .rh-mobile-logo img { display: block; width: 76px; height: auto; max-height: 50px; object-fit: contain; }
   .rh-mobile-location-pill { min-width: 0; overflow: hidden; }

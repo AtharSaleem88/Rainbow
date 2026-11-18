@@ -21,7 +21,7 @@
 .privacy-breadcrumb a:hover { color: #9be5ff; }
 .privacy-breadcrumb [aria-current] { color: #fff; }
 .privacy-hero-copy { position: relative; z-index: 1; width: min(760px, 100%); margin-block: auto; padding-block: 70px 64px; }
-.privacy-hero-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; color: #a5eaff; font-size: 12px; font-weight: 750; letter-spacing: .2em; text-transform: uppercase; }
+.privacy-hero-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; color: #a5eaff; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
 .privacy-hero-eyebrow i { display: block; width: 28px; height: 2px; background: #8adfff; }
 .privacy-hero h1 { margin: 0; color: #fff; font-size: clamp(52px, 7vw, 88px); font-weight: 700; line-height: .99; letter-spacing: -.065em; }
 .privacy-hero h1 em { color: #a5eaff; font-style: normal; }
@@ -33,10 +33,10 @@
 .privacy-sidebar { position: sticky; top: 28px; align-self: start; max-height: calc(100vh - 56px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: #c8d0e3 transparent; }
 .privacy-sidebar.is-docked { position: fixed; z-index: 15; top: 28px; left: max(28px, calc((100vw - 1240px) / 2)); width: 250px; }
 .privacy-toc { padding: 8px 0; }
-.privacy-toc-label, .privacy-document-kicker { color: #78849b; font-size: 10px; font-weight: 750; letter-spacing: .19em; }
+.privacy-toc-label, .privacy-document-kicker { color: #78849b; font-size: 10px; font-weight: 600; letter-spacing: .19em; }
 .privacy-toc nav { display: grid; gap: 4px; margin-top: 18px; }
 .privacy-toc nav a { position: relative; display: flex; min-height: 38px; align-items: center; gap: 11px; padding: 7px 10px; border-radius: 7px; color: #69758e; font-size: 13px; font-weight: 600; text-decoration: none; transition: color .22s ease, background .22s ease, transform .22s ease; }
-.privacy-toc nav a > span { color: #a0a9ba; font-size: 9px; font-weight: 750; letter-spacing: .08em; transition: color .22s ease; }
+.privacy-toc nav a > span { color: #a0a9ba; font-size: 9px; font-weight: 600; letter-spacing: .08em; transition: color .22s ease; }
 .privacy-toc nav a:hover { transform: translateX(3px); color: var(--privacy-blue); background: #edf0fb; }
 .privacy-toc nav a.is-active { color: var(--privacy-blue); background: #ebedfa; }
 .privacy-toc nav a.is-active::before { position: absolute; top: 8px; bottom: 8px; left: 0; width: 2px; border-radius: 2px; background: #35aee0; content: ''; }
@@ -58,7 +58,7 @@
 .privacy-review-banner strong { color: var(--privacy-blue); }
 .privacy-content-section { padding: 30px 0; border-top: 1px solid var(--privacy-line); scroll-margin-top: 40px; }
 .privacy-content-section h3 { display: flex; align-items: baseline; gap: 14px; margin: 0 0 14px; color: var(--privacy-ink); font-size: clamp(20px, 2.5vw, 25px); font-weight: 700; letter-spacing: -.025em; line-height: 1.25; }
-.privacy-content-section h3 > span { flex: 0 0 auto; color: #318ec1; font-size: 11px; font-weight: 750; letter-spacing: .13em; }
+.privacy-content-section h3 > span { flex: 0 0 auto; color: #318ec1; font-size: 11px; font-weight: 600; letter-spacing: .13em; }
 .privacy-content-section p { margin: 0 0 14px; }
 .privacy-content-section p:last-child { margin-bottom: 0; }
 .privacy-review-note { margin-top: 16px !important; padding: 13px 16px; border-left: 2px solid #7ccce8; border-radius: 0 8px 8px 0; color: #65718a; background: #f5f8fc; font-size: 14px; line-height: 1.65; }

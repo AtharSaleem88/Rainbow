@@ -60,6 +60,7 @@
 .rh-footer-contact li a:hover { color: #101c3d; }
 
 .rh-footer-shop-card { padding: 16px; border: 1px solid rgba(20,35,74,.15); border-radius: 16px; background: rgba(255,255,255,.38); }
+.rh-footer-official { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; color: #2e3192; font-size: 11px; font-weight: 600; text-decoration: none; }
 .rh-footer-shop-card .rh-footer-col-title { margin-bottom: 11px; }
 .rh-footer-shop-card p { margin: 0 0 12px; color: rgba(20,35,74,.78); font-size: 11px; line-height: 1.55; }
 .rh-footer-app-link { display: flex; min-height: 45px; align-items: center; gap: 10px; margin-top: 7px; padding: 7px 10px; border: 1px solid rgba(20,35,74,.13); border-radius: 9px; color: #14234a; background: rgba(255,255,255,.7); text-decoration: none; transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
@@ -76,7 +77,7 @@
 .rh-footer-extra strong { color: #14234a; font-size: 12px; }
 .rh-payment-badges { display: flex; flex-wrap: wrap; gap: 6px; }
 .rh-payment-badges > span { padding: 4px 8px; border: 1px solid #e0e4ea; border-radius: 6px; color: #23315c; background: #fff; font-weight: 650; }
-.rh-payment-badges .rh-payment-visa { color: #1a1f71; font-style: italic; font-weight: 800; }
+.rh-payment-badges .rh-payment-visa { color: #1a1f71; font-style: italic; font-weight: 600; }
 .rh-payment-badges > span { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
 .rh-payment-badges > span { justify-content: center; width: 100px; height: 60px; padding: 0; overflow: hidden; border: 0; background: transparent; }
 .rh-payment-badges img { display: block; width: 100%; height: 100%; object-fit: contain; }
@@ -97,24 +98,40 @@
 .rh-footer-social-icons a:hover { transform: translateY(-2px); border-color: #25aae1; color: #fff; background: #25aae1; }
 .rh-footer a:focus-visible { outline: 2px solid #302f98; outline-offset: 4px; }
 
+/* Consistent spacing and alignment across the footer. */
+.rh-footer-main { width: min(1460px, calc(100% - 64px)); padding: 52px 0 38px; }
+.rh-footer-columns { grid-template-columns: minmax(190px, 1.35fr) repeat(4, minmax(110px, 1fr)) minmax(220px, 1.3fr); gap: 28px; }
+.rh-footer-col-title { margin-bottom: 18px; }
+.rh-footer-contact { gap: 10px; }
+.rh-footer-shop-card { padding: 18px; }
+.rh-footer-extra { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 1fr); gap: 36px; margin-top: 30px; padding-top: 20px; }
+.rh-footer-contact-details .rh-footer-contact { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; margin: 10px 0 0; padding: 0; list-style: none; }
+.rh-footer-payments { align-items: flex-start; }
+.rh-payment-badges { justify-content: flex-start; gap: 8px; margin: 4px 0 0; }
+.rh-payment-badges > span { width: 84px; height: 48px; padding: 3px; border: 1px solid #e5e9f0; border-radius: 5px; background: #fff; }
+.rh-footer-bottom-inner { width: min(1460px, calc(100% - 64px)); }
+
 @media (max-width: 1240px) {
   .rh-footer-main { width: calc(100% - 48px); }
   .rh-footer-columns { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px 22px; }
   .rh-footer-brand-col { display: grid; grid-column: 1 / -1; grid-template-columns: 124px minmax(0,1fr); align-items: center; column-gap: 17px; }
   .rh-footer-brand-description { margin: 0; }
   .rh-footer-brand-col .rh-footer-contact { grid-column: 1 / -1; grid-template-columns: repeat(2,minmax(0,1fr)); margin-top: 18px; }
+  .rh-footer-brand-col { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
+  .rh-footer-brand-col .rh-footer-contact { width: 100%; }
   .rh-footer-shop-card { align-self: stretch; }
 }
 
 @media (max-width: 760px) {
   .rh-footer-main { width: calc(100% - 36px); padding: 28px 0 24px; }
   .rh-footer-columns { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 22px 18px; }
-  .rh-footer-brand-col { display: flex; grid-column: 1 / -1; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .rh-footer-brand-col { display: flex; grid-column: 1 / -1; flex-direction: column; align-items: flex-start; gap: 0; }
   .rh-footer-brand-description { margin: 0; }
-  .rh-footer-brand-col .rh-footer-contact { width: 100%; grid-template-columns: minmax(0,1fr); margin-top: 12px; }
+  .rh-footer-brand-col .rh-footer-contact { width: 100%; grid-template-columns: minmax(0,1fr); margin-top: 20px; }
   .rh-footer-shop-card { grid-column: 1 / -1; }
-  .rh-footer-extra { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-  .rh-footer-payments { grid-column: 1 / -1; }
+  .rh-footer-extra { grid-template-columns: minmax(0, 1fr); gap: 24px; margin-top: 28px; padding-top: 22px; }
+  .rh-footer-contact-details .rh-footer-contact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rh-footer-payments { grid-column: auto; }
   .rh-footer-bottom-inner { width: calc(100% - 36px); flex-wrap: wrap; justify-content: space-between; gap: 10px 14px; padding: 12px 0; }
   .rh-footer-social-icons { margin-left: auto; }
 }
@@ -129,6 +146,7 @@
   .rh-footer-bottom-links { justify-content: center; }
   .rh-footer-social-icons { width: 100%; justify-content: center; margin: 2px 0 0; }
   .rh-footer-watermark { right: -50px; bottom: 42px; width: 150px; height: 130px; }
+  .rh-footer-contact-details .rh-footer-contact { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -31,7 +31,7 @@
   color: #17192e;
   font-family: 'Poppins', sans-serif;
   font-size: clamp(1.35rem, 2.5vw, 1.75rem);
-  font-weight: 750;
+  font-weight: 600;
   letter-spacing: -0.035em;
 }
 
@@ -99,7 +99,7 @@
   color: #17192c;
   font-family: 'Poppins', sans-serif;
   font-size: 1.25rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-card-header h2 i {
@@ -392,7 +392,7 @@
 .rainbow-payment-title strong {
   color: #17192e;
   font-size: 0.98rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-badge-recommended {
@@ -401,7 +401,7 @@
   color: #fff;
   background: #2bbf4e;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -411,7 +411,7 @@
   color: #fff;
   background: #e8101f;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -462,7 +462,7 @@
 .rainbow-rider-tip-heading {
   color: #17192e;
   font-size: 1.05rem;
-  font-weight: 750;
+  font-weight: 600;
   line-height: 1.3;
 }
 
@@ -662,6 +662,15 @@
   margin-top: 2px;
 }
 
+.rainbow-delivery-cards-grid { gap: 9px; }
+.rainbow-delivery-method-card { align-items: center; gap: 10px; padding: 11px 12px; border-width: 1px; border-radius: 12px; }
+.rainbow-delivery-method-icon { width: 34px; height: 34px; font-size: .95rem; }
+.rainbow-delivery-method-content strong { font-size: .83rem; font-weight: 550; }
+.rainbow-delivery-method-heading { gap: 4px; }
+.rainbow-delivery-method-heading strong { min-height: 0; }
+.rainbow-delivery-pill-badge { font-size: .7rem; font-weight: 500; }
+.rainbow-delivery-method-radio { font-size: 1rem; margin-top: 0; }
+
 @media (max-width: 991px) {
   .rainbow-delivery-cards-grid {
     grid-template-columns: 1fr;
@@ -700,7 +709,7 @@
     color: var(--rh-primary);
     background: rgba(75, 0, 130, 0.08);
     font-size: 0.72rem;
-    font-weight: 750;
+    font-weight: 600;
   }
 
   .rainbow-address-check {
@@ -786,7 +795,7 @@
   color: #fff;
   background: var(--rh-primary);
   font-family: 'Poppins', sans-serif;
-  font-weight: 750;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
   transition: all 180ms ease;
@@ -817,7 +826,7 @@
   background: #fff;
   font-family: 'Poppins', sans-serif;
   font-size: 0.88rem;
-  font-weight: 750;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
   transition: background-color 160ms ease, border-color 160ms ease;
@@ -858,7 +867,7 @@
   margin: 0 0 8px;
   font-family: 'Poppins', sans-serif;
   font-size: 1.45rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-checkout-empty p {
@@ -902,7 +911,7 @@
 .rainbow-success-kicker {
   color: #2bbf4e;
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -912,7 +921,7 @@
   color: #17192e;
   font-family: 'Poppins', sans-serif;
   font-size: 1.65rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-success-card p {
@@ -937,7 +946,7 @@
   margin-bottom: 8px;
   color: #17192e;
   font-size: 1rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-payment-receipt-items {
@@ -966,7 +975,7 @@
 
 .rainbow-payment-receipt-quantity {
   color: var(--rh-primary);
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-payment-receipt-item-name {
@@ -1009,7 +1018,7 @@
   padding-top: 14px;
   border-top: 1px solid #e8ecf3;
   color: #17192e;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .rainbow-success-details {
@@ -1267,7 +1276,7 @@
 .rainbow-mobile-summary-total {
   color: var(--rh-primary);
   font-size: 1.05rem;
-  font-weight: 750;
+  font-weight: 600;
   white-space: nowrap;
   margin-left: auto;
   flex-shrink: 0;
@@ -1285,3 +1294,43 @@
     background: transparent;
   }
 }
+.rainbow-fulfillment-options { display: flex; gap: 10px; margin: 0 0 20px; }
+.rainbow-fulfillment-options button { flex: 1; min-height: 46px; border: 1px solid #c7e8f7; border-radius: 12px; color: #2e3192; background: #eff9ff; font-weight: 600; cursor: pointer; }
+.rainbow-fulfillment-options button.is-selected { color: #fff; background: #2e3192; border-color: #2e3192; }
+.rainbow-fulfillment-options button i { margin-right: 6px; }
+.rainbow-pickup-section { margin-bottom: 24px; }
+.rainbow-pickup-list { display: grid; gap: 9px; }
+.rainbow-pickup-list button { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border: 1px solid #dce5f1; border-radius: 12px; color: #17234a; background: #fff; text-align: left; cursor: pointer; }
+.rainbow-pickup-list button.is-selected { border-color: #2e3192; background: #eff8ff; }
+.rainbow-pickup-list button > i { color: #2e3192; }
+.rainbow-pickup-list button > span { display: flex; flex: 1; flex-direction: column; gap: 3px; }
+.rainbow-pickup-list small { color: #66748d; }
+.rainbow-checkout-header h1 { font-weight: 600; font-size: clamp(1.25rem, 2vw, 1.55rem); }
+.rainbow-checkout-continue { font-size: .85rem; font-weight: 600; }
+.rainbow-checkout-card { padding: 20px; }
+.rainbow-card-header { margin-bottom: 16px; padding-bottom: 12px; }
+.rainbow-card-header h2 { font-size: 1.05rem; font-weight: 600; }
+.rainbow-form-label, .rainbow-form-field label { font-size: .8rem; font-weight: 500; }
+.rainbow-pickup-list { gap: 7px; }
+.rainbow-pickup-list button { min-height: 46px; padding: 9px 12px; font-size: .83rem; }
+.rainbow-pickup-list button strong { font-weight: 550; }
+.rainbow-checkout-form { gap: 13px; }
+.rainbow-address-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.rainbow-address-header > div { display: flex; gap: 14px; }
+.rainbow-address-header button { padding: 4px 0; border: 0; color: #2e3192; background: transparent; font: 600 .76rem 'Poppins', sans-serif; cursor: pointer; }
+.rainbow-address-choices { margin-top: 10px; }
+.rainbow-new-address-hint { color: #66748d; font-size: .8rem; }
+.rainbow-input-wrap input, .rainbow-input-wrap select, .rainbow-input-wrap textarea { font-size: .82rem; font-weight: 400; }
+.rainbow-checkout-primary, .rainbow-btn-secondary { font-size: .82rem; font-weight: 600; }
+.rainbow-saved-address-card strong { font-size: .84rem; font-weight: 600; }
+.rainbow-saved-address-card p, .rainbow-saved-address-card small { font-size: .75rem; }
+.rainbow-payment-title strong { font-size: .85rem; font-weight: 600; }
+.rainbow-payment-info p { font-size: .78rem; }
+.rainbow-fulfillment-options button, .rainbow-tip-option { font-size: .83rem; font-weight: 600; }
+.rainbow-success-card h2 { font-size: clamp(1.25rem, 2vw, 1.6rem); font-weight: 600; }
+.rainbow-success-card p, .rainbow-success-detail-group { font-size: .84rem; }
+.rainbow-fulfillment-options { margin-bottom: 16px; }
+.rh-schedule-dialog .rh-schedule-header { background: #fff; border-bottom: 1px solid #edf1f7; }
+.rh-schedule-dialog .rh-schedule-header h2 { color: #0f172a; }
+.rh-schedule-dialog .rh-schedule-header-icon { color: #2e3192; background: #eef0fa; }
+.rh-schedule-dialog .rh-schedule-close { color: #dc2626; background: #fff1f2; border: 0; }

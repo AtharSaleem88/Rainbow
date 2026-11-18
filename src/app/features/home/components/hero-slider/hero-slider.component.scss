@@ -207,7 +207,7 @@
 
 .rh-winter-copy { position: absolute; z-index: 1; left: 5%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-start; color: #102c70; line-height: 1; }
 .rh-winter-title { font: 700 clamp(24px, 4vw, 58px)/.95 Georgia, serif; }
-.rh-winter-copy strong { margin-top: 8px; font: 800 clamp(24px, 4.3vw, 64px)/1 'Poppins', sans-serif; }
+.rh-winter-copy strong { margin-top: 8px; font: 600 clamp(24px, 4.3vw, 64px)/1 'Poppins', sans-serif; }
 .rh-winter-copy strong small { font-size: .35em; }
 .rh-winter-subtitle { margin-top: 8px; font: 600 clamp(10px, 1.3vw, 18px)/1.2 'Poppins', sans-serif; }
 .rh-winter-date { margin-top: 8px; font: 700 clamp(9px, 1.1vw, 15px)/1.2 'Poppins', sans-serif; }
@@ -256,7 +256,7 @@
   color: var(--rh-white);
   font-family: 'Poppins', sans-serif;
   font-size: clamp(1.65rem, 3.2vw, 2.6rem);
-  font-weight: 750;
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.08;
 }

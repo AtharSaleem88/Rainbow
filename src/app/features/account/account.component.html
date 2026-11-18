@@ -161,7 +161,7 @@
         </div>
 
         <!-- TAB 2: RAINBOW WALLET -->
-        <div *ngIf="activeTab() === 'wallet'" class="rainbow-tab-content">
+        <div *ngIf="activeTab() === 'wallet'" class="rainbow-tab-content rainbow-balance-tab">
           <header class="rainbow-tab-header">
             <div>
               <h2>Rainbow Wallet</h2>
@@ -214,7 +214,7 @@
           </div>
         </div>
 
-        <div *ngIf="activeTab() === 'loyalty' && loyaltyService.isMember()" class="rainbow-tab-content">
+        <div *ngIf="activeTab() === 'loyalty' && loyaltyService.isMember()" class="rainbow-tab-content rainbow-balance-tab">
           <header class="rainbow-tab-header"><h2>Loyalty Points</h2></header>
           <div class="rainbow-wallet-hero">
             <div class="rainbow-wallet-hero-card">

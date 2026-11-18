@@ -5,7 +5,7 @@
 }
 .rh-category-spotlights-inner { width: min(1460px, calc(100% - 48px)); margin: 0 auto; }
 .rh-category-spotlights-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 14px; }
-.rh-category-spotlights-heading span { color: var(--rh-primary); font-size: 11px; font-weight: 800; letter-spacing: .15em; }
+.rh-category-spotlights-heading span { color: var(--rh-primary); font-size: 11px; font-weight: 600; letter-spacing: .15em; }
 .rh-category-spotlights-heading h2 { margin: 3px 0 0; color: #171717; font: 700 clamp(22px, 3vw, 30px)/1.2 'Poppins', sans-serif; }
 .rh-category-spotlights-heading p { margin: 0 0 2px; color: #777b8d; font-size: 14px; }
 .rh-category-spotlights-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
@@ -30,7 +30,7 @@
 .rh-category-spotlight-content { display: flex; flex: 1 1 auto; flex-direction: column; align-items: flex-start; padding: 16px 16px 15px; }
 .rh-category-spotlight-title { color: #171717; font: 700 19px/1.2 'Poppins', sans-serif; }
 .rh-category-spotlight-description { margin-top: 7px; color: #30366e; font-size: 13px; line-height: 1.45; }
-.rh-category-spotlight-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; margin-top: auto; padding: 0 18px; border-radius: 10px; color: #fff; background: #2e3192; font-size: 13px; font-weight: 750; transition: background-color 160ms ease, transform 160ms ease; }
+.rh-category-spotlight-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; margin-top: auto; padding: 0 18px; border-radius: 10px; color: #fff; background: #2e3192; font-size: 13px; font-weight: 600; transition: background-color 160ms ease, transform 160ms ease; }
 .rh-category-spotlight:hover .rh-category-spotlight-link { color: #fff; background: #242374; transform: translateY(-1px); }
 
 @media (max-width: 900px) {
@@ -77,3 +77,27 @@
 .rh-category-spotlight-description { color: #17234a; }
 .rh-category-spotlight-link { color: #fff; background: #2e3192; }
 .rh-category-spotlight:hover .rh-category-spotlight-link { color: #fff; background: #20236f; }
+
+/* Spotlight panel */
+.rh-category-spotlights { padding: 6px 0; background: #fff; }
+.rh-category-spotlights-inner { padding: 0; border-radius: 26px; background: #fff; }
+.rh-spotlight-header { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; }
+.rh-spotlight-header h2 { margin: 0; color: #fff; font: 600 clamp(22px, 2.4vw, 32px)/1.2 'Poppins', sans-serif; }
+.rh-spotlight-header a { color: #e6e6ee; font-size: 12px; text-decoration: none; }
+.rh-spotlight-header a i { margin-left: 5px; }
+.rh-category-spotlight, .rh-category-spotlight:hover { min-height: 350px; padding: 20px; border: 0; border-radius: 22px; color: #17171e; background: #e3f6fc; }
+.rh-category-spotlight-beauty, .rh-category-spotlight-beauty:hover { background: #fae8f4; }
+.rh-category-spotlight-beverages, .rh-category-spotlight-beverages:hover { background: #fff1d8; }
+.rh-category-spotlight-pharmacy, .rh-category-spotlight-pharmacy:hover { background: #e5f6e8; }
+.rh-category-spotlight-title { padding: 0; color: #17171e; font-weight: 600; text-align: left; }
+.rh-category-spotlight-image { flex: 1 1 auto; min-height: 160px; aspect-ratio: auto; border-radius: 0; background: transparent; }
+.rh-category-spotlight-image img { padding: 10px; }
+.rh-category-spotlight-content { min-height: 0; flex: 0 0 auto; margin: 0; padding: 0; border-radius: 0; background: transparent; }
+.rh-category-spotlight-description { color: #4f505b; font-size: 12px; }
+.rh-category-spotlight-link, .rh-category-spotlight:hover .rh-category-spotlight-link { align-self: stretch; min-height: 38px; color: #fff; background: var(--rh-primary); }
+@media (max-width: 575px) {
+  .rh-category-spotlights-inner { width: calc(100% - 28px); padding: 0; border-radius: 22px; }
+  .rh-category-spotlights-grid { margin-right: -16px; padding-right: 16px; scrollbar-width: none; }
+  .rh-category-spotlights-grid::-webkit-scrollbar { display: none; }
+  .rh-category-spotlight, .rh-category-spotlight:hover { flex-basis: min(72vw, 275px); min-height: 315px; }
+}

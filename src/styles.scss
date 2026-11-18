@@ -1867,6 +1867,14 @@ body.rh-monthly-flyer-modal-open {
   text-align: center;
 }
 
+/* Login and signup typography */
+.rh-auth-card-header h2 { font-size: clamp(1.3rem, 3vw, 1.55rem); font-weight: 600; letter-spacing: -.02em; }
+.rh-auth-field { font-size: .8rem; font-weight: 500; }
+.rh-auth-input-wrap input { font-size: .84rem; font-weight: 400; }
+.rh-auth-submit, .rh-auth-tab { font-size: .84rem; font-weight: 600; }
+.rh-auth-text-link, .rh-auth-link-bold, .rh-auth-link-primary { font-weight: 600; }
+.rh-auth-footer-text, .rh-auth-link-primary { font-size: .82rem; }
+
 @keyframes rh-auth-orbit { to { transform: rotate(360deg); } }
 
 @media (max-width: 800px) {
@@ -2397,3 +2405,25 @@ body.rh-monthly-flyer-modal-open {
 }
 
 
+/* Shared dialog typography */
+[role="dialog"]:not(.rh-cart-drawer) h2,
+[role="dialog"]:not(.rh-cart-drawer) h3.rh-loc-popover-title,
+dialog.rh-variant-dialog .rh-variant-dialog-header {
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3;
+}
+[role="dialog"]:not(.rh-cart-drawer) p,
+[role="dialog"]:not(.rh-cart-drawer) label,
+[role="dialog"]:not(.rh-cart-drawer) input,
+[role="dialog"]:not(.rh-cart-drawer) select,
+[role="dialog"]:not(.rh-cart-drawer) textarea {
+  font-size: .84rem;
+  line-height: 1.45;
+}
+[role="dialog"]:not(.rh-cart-drawer) footer button,
+[role="dialog"]:not(.rh-cart-drawer) .rh-schedule-footer button,
+[role="dialog"]:not(.rh-cart-drawer) .rh-alt-footer button {
+  font-size: .82rem !important;
+  font-weight: 600 !important;
+}
