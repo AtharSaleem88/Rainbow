@@ -276,8 +276,12 @@
 
 .rh-variant-options-menu {
   position: fixed;
-  z-index: 2200;
-  overflow: hidden;
+  z-index: 3200;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b8c4e5 transparent;
   padding: 5px;
   border: 1px solid #e5e8f0;
   border-radius: 14px;
@@ -289,7 +293,7 @@
 .rh-variant-option {
   display: flex;
   width: 100%;
-  min-height: 52px;
+  min-height: 48px;
   align-items: center;
   gap: 8px;
   padding: 7px 9px;
@@ -303,6 +307,11 @@
   & + & { border-top: 1px solid #f0f1f5; }
   &:hover, &.is-selected { background: #f2f7ff; }
   > i { color: var(--rh-primary); font-size: .78rem; }
+}
+
+.rh-variant-option:focus-visible {
+  outline: 2px solid rgba(46, 49, 146, .42);
+  outline-offset: -2px;
 }
 
 .rh-variant-option-copy {

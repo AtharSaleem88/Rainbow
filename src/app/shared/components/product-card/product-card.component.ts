@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Product, ProductVariant } from '../../../core/models/product.model';
 import { CartService } from '../../../core/services/cart.service';
 import { AlternateModalService } from '../../../core/services/alternate-modal.service';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-product-card',
@@ -21,6 +22,7 @@ export class ProductCardComponent implements OnChanges {
 
   cartService = inject(CartService);
   alternateModalService = inject(AlternateModalService);
+  private toastService = inject(ToastService);
   private host = inject(ElementRef<HTMLElement>);
   favorite = signal(false);
   selectedVariantId = signal<string | null>(null);
@@ -91,8 +93,13 @@ export class ProductCardComponent implements OnChanges {
   selectVariant(event: Event, variantId: string) {
     event.preventDefault();
     event.stopPropagation();
+    const changed = this.selectedVariantId() !== variantId;
     this.selectedVariantId.set(variantId);
     this.variantOptionsOpen.set(false);
+    if (changed) {
+      const variant = this.product.variants?.find(item => item.id === variantId);
+      if (variant) this.toastService.show(`${variant.label} selected for ${this.product.title}.`);
+    }
   }
 
   toggleVariantOptions(event: MouseEvent) {
@@ -104,16 +111,17 @@ export class ProductCardComponent implements OnChanges {
 
     const trigger = event.currentTarget as HTMLElement;
     const rect = trigger.getBoundingClientRect();
-    const width = Math.min(250, window.innerWidth - 24);
-    const itemCount = Math.min(this.product.variants?.length ?? 0, 4);
-    const menuHeight = itemCount * 58 + 10;
+    const width = Math.min(312, window.innerWidth - 24);
+    const itemCount = this.product.variants?.length ?? 0;
+    const maxHeight = Math.max(140, Math.min(360, window.innerHeight - 24));
+    const menuHeight = Math.min(itemCount * 58 + 10, maxHeight);
     const topBelow = rect.bottom + 8;
     const top = topBelow + menuHeight <= window.innerHeight - 8
       ? topBelow
       : Math.max(8, rect.top - menuHeight - 8);
     const left = Math.max(12, Math.min(rect.right - width, window.innerWidth - width - 12));
 
-    this.variantPopupStyle.set({ top: `${top}px`, left: `${left}px`, width: `${width}px` });
+    this.variantPopupStyle.set({ top: `${top}px`, left: `${left}px`, width: `${width}px`, maxHeight: `${maxHeight}px` });
     this.variantOptionsOpen.set(true);
   }
 
@@ -124,22 +132,35 @@ export class ProductCardComponent implements OnChanges {
     if (!target || !selector?.contains(target)) this.variantOptionsOpen.set(false);
   }
 
+  @HostListener('window:resize')
+  closeVariantOptionsOnResize() {
+    this.variantOptionsOpen.set(false);
+  }
+
+  @HostListener('window:scroll')
+  closeVariantOptionsOnScroll() {
+    this.variantOptionsOpen.set(false);
+  }
+
   addToCart(event: Event) {
     event.stopPropagation();
     event.preventDefault();
     this.cartService.addToCart(this.product, 1, this.selectedVariant);
+    this.toastService.show(`${this.product.title} added to your cart.`);
   }
 
   changeQuantity(event: Event, change: -1 | 1) {
     event.stopPropagation();
     event.preventDefault();
     this.cartService.updateQuantity(this.product.id, this.cartQuantity + change, this.selectedVariant?.id);
+    this.toastService.show('Cart quantity updated.');
   }
 
   toggleFavorite(event: Event) {
     event.stopPropagation();
     event.preventDefault();
     this.favorite.update(value => !value);
+    this.toastService.show(this.favorite() ? 'Added to your wishlist.' : 'Removed from your wishlist.');
   }
 
   onQuickView(event: Event) {

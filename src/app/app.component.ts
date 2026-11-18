@@ -6,11 +6,12 @@ import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { CartDrawerComponent } from './shared/components/cart-drawer/cart-drawer.component';
 import { AlternateProductModalComponent } from './shared/components/modals/alternate-product-modal/alternate-product-modal.component';
+import { ToastComponent } from './shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, CartDrawerComponent, AlternateProductModalComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, CartDrawerComponent, AlternateProductModalComponent, ToastComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

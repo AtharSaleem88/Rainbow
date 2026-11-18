@@ -1,0 +1,74 @@
+:host {
+  position: fixed;
+  z-index: 5000;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: block;
+  width: min(360px, calc(100vw - 28px));
+  pointer-events: none;
+}
+
+.rh-toast-stack {
+  display: grid;
+  gap: 9px;
+}
+
+.rh-toast-message {
+  display: flex;
+  min-height: 54px;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border: 1px solid rgba(46, 49, 146, .12);
+  border-radius: 13px;
+  color: #202748;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(22, 31, 63, .18);
+  font: 600 13px/1.4 'Poppins', sans-serif;
+  pointer-events: auto;
+  animation: rhToastIn 180ms ease-out both;
+}
+
+.rh-toast-icon {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--rh-primary);
+  background: #e8f7fd;
+  font-size: 13px;
+}
+
+.rh-toast-copy { flex: 1 1 auto; min-width: 0; }
+
+.rh-toast-dismiss {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: #7b8498;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rh-toast-dismiss:hover { color: var(--rh-primary); background: #f0f5fb; }
+.rh-toast-dismiss:focus-visible { outline: 2px solid var(--rh-primary); }
+
+@keyframes rhToastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 575px) {
+  :host { right: 14px; bottom: max(14px, env(safe-area-inset-bottom)); width: calc(100vw - 28px); }
+  .rh-toast-message { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-toast-message { animation: none; }
+}

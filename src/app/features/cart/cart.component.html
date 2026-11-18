@@ -21,14 +21,6 @@
           <strong>Rs. {{ totalSavings() | number:'1.0-0' }}</strong>
         </div>
 
-        <section class="rainbow-cart-delivery" aria-label="Delivery information">
-          <span class="rainbow-cart-delivery-icon"><i class="fal fa-shipping-fast" aria-hidden="true"></i></span>
-          <div>
-            <h2>Ready for delivery</h2>
-            <p>{{ cartService.cartCount() }} {{ cartService.cartCount() === 1 ? 'item' : 'items' }} in your cart</p>
-          </div>
-        </section>
-
         <section class="rainbow-cart-items" aria-label="Items in your cart">
           <article class="rainbow-cart-item" *ngFor="let item of cartService.cartItems(); trackBy: trackByCartItem">
             <a class="rainbow-cart-product-image" [routerLink]="['/products', item.product.id]" [attr.aria-label]="'View ' + item.product.title">

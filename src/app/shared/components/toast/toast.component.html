@@ -1,0 +1,9 @@
+<div class="rh-toast-stack" aria-live="polite" aria-relevant="additions removals">
+  <div *ngFor="let message of toastService.messages()" class="rh-toast-message" role="status">
+    <span class="rh-toast-icon" aria-hidden="true"><i class="fal fa-check"></i></span>
+    <span class="rh-toast-copy">{{ message.text }}</span>
+    <button type="button" class="rh-toast-dismiss" aria-label="Dismiss notification" (click)="toastService.dismiss(message.id)">
+      <i class="fal fa-times" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>

@@ -38,9 +38,16 @@ export class AccountComponent implements OnInit, OnDestroy {
   private reviewToastTimer: ReturnType<typeof setTimeout> | null = null;
   readonly orderStatusOptions = ['All', 'In Transit', 'Delivered', 'Cancelled'] as const;
   readonly orderStatusFilter = signal<(typeof this.orderStatusOptions)[number]>('All');
-  readonly filteredOrders = computed(() => this.orderStatusFilter() === 'All'
-    ? this.authService.orders()
-    : this.authService.orders().filter(order => order.status === this.orderStatusFilter()));
+  readonly orderSearch = signal('');
+  readonly filteredOrders = computed(() => {
+    const status = this.orderStatusFilter();
+    const query = this.orderSearch().trim().toLowerCase();
+    return this.authService.orders().filter(order => {
+      const matchesStatus = status === 'All' || order.status === status;
+      const searchableText = `${order.id} ${order.date} ${order.status} ${order.items.map(item => item.title).join(' ')}`.toLowerCase();
+      return matchesStatus && (!query || searchableText.includes(query));
+    });
+  });
 
   // New Address Modal State
   isAddressModalOpen = signal<boolean>(false);
@@ -54,6 +61,16 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   // Profile Form Data
   profileForm = { ...this.authService.userProfile() };
+
+  // Password update requires a server-side SMS OTP service. Keep the UI state
+  // ready for that integration without generating or validating OTPs in-browser.
+  passwordOtpRequested = signal(false);
+  passwordOtp = '';
+  newPassword = '';
+  confirmNewPassword = '';
+  passwordNotice = signal<{ message: string; type: 'error' | 'success' } | null>(null);
+  passwordVisible = signal(false);
+  confirmPasswordVisible = signal(false);
 
   // New Return Modal State
   isReturnModalOpen = signal<boolean>(false);
@@ -129,6 +146,25 @@ export class AccountComponent implements OnInit, OnDestroy {
   onSaveProfile() {
     this.authService.updateProfile(this.profileForm);
     alert('Account settings updated successfully!');
+  }
+
+  requestPasswordOtp(): void {
+    this.passwordNotice.set({
+      type: 'error',
+      message: 'SMS verification is not connected yet. Please contact support to change your password.'
+    });
+  }
+
+  submitPasswordChange(): void {
+    this.passwordNotice.set({
+      type: 'error',
+      message: 'Password changes need server-side OTP verification, which is not configured for this account yet.'
+    });
+  }
+
+  togglePasswordVisibility(confirm = false): void {
+    if (confirm) this.confirmPasswordVisible.update(value => !value);
+    else this.passwordVisible.update(value => !value);
   }
 
   onTopUpWallet() {

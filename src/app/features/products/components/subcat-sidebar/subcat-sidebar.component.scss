@@ -72,7 +72,7 @@
     background: #e7f7fd;
     margin-bottom: 4px;
     transition: all 180ms ease;
-    overflow: visible;
+    overflow: hidden;
     pointer-events: none;
 
     @media (max-width: 575px) {
@@ -89,6 +89,8 @@
       object-fit: contain;
       object-position: center;
       background: transparent;
+      border-radius: 50%;
+      mix-blend-mode: multiply;
       pointer-events: none;
       transition: transform 320ms cubic-bezier(0.18, 0.85, 0.2, 1);
     }
@@ -119,16 +121,7 @@
   }
 
   &::before {
-    content: '';
-    position: absolute;
-    left: -4px;
-    top: 3px;
-    bottom: 3px;
-    width: 3.5px;
-    border-radius: 0 4px 4px 0;
-    background: var(--rh-green);
-    opacity: 0;
-    transition: opacity 180ms ease;
+    display: none;
   }
 
   @media (hover: hover) and (pointer: fine) {

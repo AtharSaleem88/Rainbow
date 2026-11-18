@@ -7,10 +7,7 @@
         <div class="rh-alt-icon-wrap">
           <i class="fal fa-exchange-alt"></i>
         </div>
-        <div>
-          <h2 id="rh-alt-title" class="rh-alt-title">Alternate Preference</h2>
-          <p class="rh-alt-sub">Choose your replacement option for when this item is unavailable:</p>
-        </div>
+        <h2 id="rh-alt-title" class="rh-alt-title">Alternate Preference</h2>
       </div>
       <button type="button" class="rh-alt-close-btn" aria-label="Close" (click)="modalService.close()">
         <i class="fal fa-times"></i>
@@ -88,7 +85,6 @@
 
           <ng-template #noAlternates>
             <div class="rh-alt-empty">
-              <i class="fal fa-box-open"></i>
               <p>No similar in-stock products found for replacement right now.</p>
             </div>
           </ng-template>

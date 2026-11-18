@@ -3,7 +3,9 @@
   <div class="container rainbow-account-container">
     <header class="rainbow-account-header">
       <a routerLink="/" class="rainbow-account-back" aria-label="Back to Home"><i class="fal fa-arrow-left"></i></a>
-      <h1>My Account</h1>
+      <div class="rainbow-account-heading">
+        <h1>My Account</h1>
+      </div>
       <button type="button" class="rainbow-account-logout-btn" (click)="onLogout()">
         <i class="fal fa-sign-out-alt"></i> <span>Logout</span>
       </button>
@@ -20,25 +22,9 @@
           <div class="rainbow-user-info">
             <strong>{{ authService.userProfile().name }}</strong>
             <p>{{ authService.userProfile().email }}</p>
-            <span class="rainbow-user-badge"><i class="fal fa-shield-check"></i> Member since {{ authService.userProfile().memberSince }}</span>
+            <span class="rainbow-user-badge"> Member since {{ authService.userProfile().memberSince }}</span>
           </div>
         </div>
-
-        <!-- Wallet Quick Widget -->
-        <div class="rainbow-wallet-quick-widget" (click)="setActiveTab('wallet')">
-          <div>
-            <span>Rainbow Wallet</span>
-            <strong>Rs. {{ authService.walletBalance() | number:'1.0-0' }}</strong>
-          </div>
-        </div>
-
-        <button *ngIf="loyaltyService.isMember()" type="button" class="rainbow-wallet-quick-widget w-100 text-start mt-3" (click)="setActiveTab('loyalty')">
-          <div>
-            <span>Loyalty Points</span>
-            <strong aria-live="polite">{{ loyaltyService.balance() | number:'1.0-0' }} points</strong>
-          </div>
-          <i class="fal fa-star" aria-hidden="true"></i>
-        </button>
 
         <!-- Menu Tabs -->
         <nav class="rainbow-account-nav">
@@ -100,20 +86,26 @@
             </div>
           </header>
 
-          <div class="rainbow-order-status-filters" role="group" aria-label="Filter orders by status">
-            <button *ngFor="let status of orderStatusOptions" type="button" [class.is-active]="orderStatusFilter() === status" [attr.aria-pressed]="orderStatusFilter() === status" (click)="orderStatusFilter.set(status)">{{ status }}</button>
+          <div class="rainbow-orders-toolbar">
+            <div class="rainbow-order-status-filters" role="group" aria-label="Filter orders by status">
+              <button *ngFor="let status of orderStatusOptions" type="button" [class.is-active]="orderStatusFilter() === status" [attr.aria-pressed]="orderStatusFilter() === status" (click)="orderStatusFilter.set(status)">{{ status }}<span *ngIf="status === 'All'" class="rainbow-order-filter-count">{{ authService.orders().length }}</span></button>
+            </div>
+            <label class="rainbow-order-search">
+              <i class="fal fa-search" aria-hidden="true"></i>
+              <input type="search" aria-label="Search orders" placeholder="Search order or product" [ngModel]="orderSearch()" (ngModelChange)="orderSearch.set($event)">
+            </label>
           </div>
 
           <div class="rainbow-orders-list">
             <article *ngFor="let order of filteredOrders()" class="rainbow-order-card">
               <header class="rainbow-order-header rainbow-order-compact-header">
                 <div class="rainbow-order-meta">
-                  <span class="rainbow-order-id">#{{ order.id }}</span>
+                  <span class="rainbow-order-id"> #{{ order.id }}</span>
                   <span class="rainbow-order-date">{{ order.date }}</span>
                 </div>
                 <div class="rainbow-order-header-actions">
                   <span class="rainbow-order-status" [ngClass]="'status-' + order.status.toLowerCase().replace(' ', '-')">
-                    <i class="fal fa-circle" aria-hidden="true"></i> {{ order.status }}
+                    {{ order.status }}
                   </span>
                 </div>
               </header>
@@ -121,6 +113,7 @@
               <div class="rainbow-order-items rainbow-order-compact-items">
                 <div *ngFor="let item of order.items" class="rainbow-order-compact-item" [class.is-returned]="!!getOrderItemReturn(order.id, item.title)">
                   <span class="rainbow-order-item-quantity">{{ item.quantity }}x</span>
+                  <img class="rainbow-order-item-thumb" [src]="item.image" [alt]="item.title" loading="lazy" (error)="$any($event.target).style.visibility='hidden'">
                   <strong class="rainbow-order-item-name">{{ item.title }}</strong>
                   <span *ngIf="getOrderItemReturn(order.id, item.title) as itemReturn" class="rainbow-order-item-return-badge" [class.is-pending]="itemReturn.status === 'Pending'" [class.is-rejected]="itemReturn.status === 'Rejected'">
                     <i class="fal fa-check" aria-hidden="true"></i> {{ itemReturn.status === 'Approved' ? 'Refunded' : itemReturn.status === 'Pending' ? 'Return Pending' : 'Return Rejected' }}
@@ -156,15 +149,13 @@
             </article>
 
             <div *ngIf="authService.orders().length === 0" class="rainbow-account-empty">
-              <i class="fal fa-box-open"></i>
               <h3>No Orders Yet</h3>
               <p>You haven't placed any orders yet.</p>
               <a routerLink="/shop" class="rainbow-btn-primary">Start Shopping</a>
             </div>
             <div *ngIf="authService.orders().length > 0 && filteredOrders().length === 0" class="rainbow-account-empty">
-              <i class="fal fa-box-open" aria-hidden="true"></i>
-              <h3>No {{ orderStatusFilter() }} Orders</h3>
-              <p>Orders with this status will appear here.</p>
+              <h3>{{ orderSearch() ? 'No matching orders' : 'No ' + orderStatusFilter() + ' orders' }}</h3>
+              <p>{{ orderSearch() ? 'Try another order number or product name.' : 'Orders with this status will appear here.' }}</p>
             </div>
           </div>
         </div>
@@ -275,7 +266,7 @@
             <article *ngFor="let addr of authService.savedAddresses()" class="rainbow-address-card-item">
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="rainbow-address-tag"><i class="fal" [ngClass]="addr.label === 'Home' ? 'fa-home' : addr.label === 'Office' ? 'fa-building' : 'fa-map-pin'"></i> {{ addr.label }}</span>
-                <span *ngIf="addr.isDefault" class="rainbow-default-badge"><i class="fal fa-check-circle"></i> Default Address</span>
+                <span *ngIf="addr.isDefault" class="rainbow-default-badge"> Default Address</span>
               </div>
               <strong>{{ addr.recipientName }}</strong>
               <p>{{ addr.addressLine }}, {{ addr.city }}</p>
@@ -311,7 +302,7 @@
             <article *ngFor="let card of authService.savedCards()" class="rainbow-card-item">
               <div class="rainbow-card-top">
                 <i class="fal fa-credit-card"></i>
-                <span *ngIf="card.isDefault" class="rainbow-default-badge"><i class="fal fa-check-circle"></i> Default Card</span>
+                <span *ngIf="card.isDefault" class="rainbow-default-badge"> Default Card</span>
               </div>
               <strong class="rainbow-card-num">{{ card.cardNumber }}</strong>
               <div class="rainbow-card-meta">
@@ -432,6 +423,50 @@
               <button type="submit" class="rainbow-btn-primary">Save Changes <i class="fal fa-check"></i></button>
             </div>
           </form>
+
+          <section class="rainbow-password-panel" aria-labelledby="password-panel-title">
+            <div class="rainbow-password-heading">
+              <span class="rainbow-password-icon" aria-hidden="true"><i class="fal fa-lock"></i></span>
+              <div>
+                <h3 id="password-panel-title">Change password</h3>
+              </div>
+            </div>
+
+            <div class="rainbow-password-phone">
+              <i class="fal fa-mobile-alt" aria-hidden="true"></i>
+              <span>Verification code sent to your account phone</span>
+              <strong>{{ profileForm.phone || 'Phone number not added' }}</strong>
+            </div>
+
+            <div *ngIf="passwordNotice()" class="rainbow-password-notice" [class.is-error]="passwordNotice()?.type === 'error'" [class.is-success]="passwordNotice()?.type === 'success'" role="status" aria-live="polite">
+              <i class="fal" [ngClass]="passwordNotice()?.type === 'error' ? 'fa-circle-exclamation' : 'fa-check-circle'" aria-hidden="true"></i>
+              <span>{{ passwordNotice()?.message }}</span>
+            </div>
+
+            <div class="rainbow-password-actions">
+              <button type="button" class="rainbow-btn-primary" (click)="requestPasswordOtp()">
+                Send SMS code <i class="fal fa-paper-plane" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <form *ngIf="passwordOtpRequested()" class="rainbow-password-form" (submit)="submitPasswordChange(); $event.preventDefault();">
+              <div class="rainbow-form-field">
+                <label for="passwordOtp">SMS verification code</label>
+                <div class="rainbow-input-wrap"><i class="fal fa-shield-check" aria-hidden="true"></i><input id="passwordOtp" name="passwordOtp" [(ngModel)]="passwordOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit code" required></div>
+              </div>
+              <div class="rainbow-form-row">
+                <div class="rainbow-form-field">
+                  <label for="newPassword">New password</label>
+                  <div class="rainbow-input-wrap"><i class="fal fa-lock" aria-hidden="true"></i><input id="newPassword" name="newPassword" [(ngModel)]="newPassword" [type]="passwordVisible() ? 'text' : 'password'" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required><button type="button" class="rainbow-password-toggle" (click)="togglePasswordVisibility()" [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"><i class="fal" [ngClass]="passwordVisible() ? 'fa-eye-slash' : 'fa-eye'" aria-hidden="true"></i></button></div>
+                </div>
+                <div class="rainbow-form-field">
+                  <label for="confirmNewPassword">Confirm new password</label>
+                  <div class="rainbow-input-wrap"><i class="fal fa-lock" aria-hidden="true"></i><input id="confirmNewPassword" name="confirmNewPassword" [(ngModel)]="confirmNewPassword" [type]="confirmPasswordVisible() ? 'text' : 'password'" autocomplete="new-password" minlength="8" placeholder="Re-enter new password" required><button type="button" class="rainbow-password-toggle" (click)="togglePasswordVisibility(true)" [attr.aria-label]="confirmPasswordVisible() ? 'Hide password' : 'Show password'"><i class="fal" [ngClass]="confirmPasswordVisible() ? 'fa-eye-slash' : 'fa-eye'" aria-hidden="true"></i></button></div>
+                </div>
+              </div>
+              <button type="submit" class="rainbow-btn-primary">Verify &amp; update password <i class="fal fa-check" aria-hidden="true"></i></button>
+            </form>
+          </section>
         </div>
 
       </main>
@@ -495,7 +530,6 @@
 
       <div class="rainbow-return-details-items">
         <div *ngFor="let item of request.items" class="rainbow-return-details-item">
-          <span class="rainbow-return-details-item-icon"><i class="fal fa-cube" aria-hidden="true"></i></span>
           <div>
             <strong>{{ item.itemTitle }}</strong>
             <small>Reason: {{ item.reason }}</small>

@@ -23,7 +23,7 @@
   position: relative;
   display: flex;
   min-width: 0;
-  min-height: 252px;
+  aspect-ratio: 718 / 255;
   align-items: center;
   overflow: hidden;
   isolation: isolate;
@@ -52,12 +52,13 @@
 }
 
 .rh-promo-banner-image {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
+  background: #f8f5ee;
   transition: transform 700ms cubic-bezier(.2, .75, .25, 1);
 }
 
-.rh-promo-banner:hover .rh-promo-banner-image { transform: scale(1.045); }
+.rh-promo-banner:hover .rh-promo-banner-image { transform: scale(1.01); }
 
 .rh-promo-banner-shade {
   z-index: -1;
@@ -68,9 +69,14 @@
   background: linear-gradient(90deg, rgba(12, 18, 57, .96) 0%, rgba(17, 29, 77, .87) 38%, rgba(17, 29, 77, .22) 72%, rgba(17, 29, 77, .04) 100%);
 }
 
+.rh-promo-grocery .rh-promo-banner-shade,
+.rh-promo-beauty .rh-promo-banner-shade {
+  background: linear-gradient(90deg, rgba(255, 253, 249, .96) 0%, rgba(255, 253, 249, .9) 34%, rgba(255, 253, 249, .42) 48%, rgba(255, 253, 249, 0) 68%);
+}
+
 .rh-promo-banner-copy {
   display: flex;
-  width: min(66%, 360px);
+  width: min(48%, 360px);
   flex-direction: column;
   align-items: flex-start;
   gap: 9px;
@@ -135,17 +141,19 @@
 @media (max-width: 767px) {
   .rh-promo-banners { padding: 10px 0 16px; }
   .rh-promo-banner-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .rh-promo-banner { min-height: 232px; border-radius: 18px; }
-  .rh-promo-banner-copy { width: 68%; gap: 8px; padding: 23px 21px; }
-  .rh-promo-banner-title { font-size: clamp(1.45rem, 6vw, 1.85rem); }
-  .rh-promo-banner-description { font-size: .84rem; }
+  .rh-promo-banner { border-radius: 16px; }
+  .rh-promo-banner-copy { width: 52%; gap: 5px; padding: 14px 16px; }
+  .rh-promo-banner-eyebrow { font-size: .58rem; }
+  .rh-promo-banner-title { font-size: clamp(1rem, 4.8vw, 1.45rem); }
+  .rh-promo-banner-description { display: none; }
+  .rh-promo-banner-cta { min-height: 32px; margin-top: 1px; padding: 6px 10px; font-size: .72rem; }
 }
 
 @media (max-width: 420px) {
-  .rh-promo-banner { min-height: 220px; }
-  .rh-promo-banner-copy { width: 72%; padding: 20px 16px; }
-  .rh-promo-banner-eyebrow { font-size: .62rem; letter-spacing: .1em; }
-  .rh-promo-banner-cta { min-height: 35px; font-size: .75rem; }
+  .rh-promo-banner-copy { width: 58%; padding: 10px 12px; }
+  .rh-promo-banner-eyebrow { font-size: .52rem; letter-spacing: .08em; }
+  .rh-promo-banner-title { font-size: 1rem; }
+  .rh-promo-banner-cta { min-height: 29px; gap: 6px; padding: 5px 8px; font-size: .68rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
