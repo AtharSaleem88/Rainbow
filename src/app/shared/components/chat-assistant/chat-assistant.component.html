@@ -1,30 +1,32 @@
-<div class="chat-widget" [style.--chat-header-bottom.px]="headerBottom()" [class.chat-footer-visible]="footerVisible() && !open()" [class.chat-no-scroll-top]="!showScrollTop()">
-  <section *ngIf="open()" class="chat-panel" role="dialog" aria-label="Rainbow chat assistant">
-    <header><div class="chat-heading"><span class="chat-heading-icon" aria-hidden="true"><i class="fal fa-comment-alt"></i></span><div><strong>Rainbow Assistant</strong><small>Here to help you shop</small></div></div><button type="button" (click)="open.set(false)" aria-label="Close chat">×</button></header>
-    <div #chatBody class="chat-body" aria-live="polite">
-      <div *ngIf="messages().length === 1" class="chat-welcome">
-        <div class="chat-welcome-art" aria-hidden="true"><span class="chat-orbit chat-orbit-one"></span><span class="chat-orbit chat-orbit-two"></span><span class="chat-welcome-bubble"><i class="fal fa-comment-alt"></i></span><span class="chat-sparkle chat-sparkle-one">✦</span><span class="chat-sparkle chat-sparkle-two">✦</span></div>
-        <span class="chat-welcome-eyebrow">HELLO FROM RAINBOW</span>
-        <h2>How can we help?</h2>
-        <p>Choose a topic to get started.</p>
-        <div class="chat-welcome-actions" aria-label="Suggested questions">
-          <button type="button" (click)="send('Track my order')"><span class="chat-action-icon chat-action-track"><i class="fal fa-box" aria-hidden="true"></i></span><span><strong>Track an order</strong><small>Check order status</small></span><i class="fal fa-arrow-right" aria-hidden="true"></i></button>
-          <button type="button" (click)="send('How do I place an order?')"><span class="chat-action-icon chat-action-shop"><i class="fal fa-shopping-bag" aria-hidden="true"></i></span><span><strong>Place an order</strong><small>Start shopping</small></span><i class="fal fa-arrow-right" aria-hidden="true"></i></button>
-          <button type="button" (click)="send('Other questions')"><span class="chat-action-icon chat-action-help"><i class="fal fa-headset" aria-hidden="true"></i></span><span><strong>Other questions</strong><small>Contact our team</small></span><i class="fal fa-arrow-right" aria-hidden="true"></i></button>
-        </div>
-      </div>
-      <div *ngFor="let message of messages().length > 1 ? messages() : []" class="chat-message" [class.is-customer]="message.from === 'customer'">
-        <span>{{ message.text }}</span><a *ngIf="message.link" [routerLink]="message.link" (click)="open.set(false)">{{ message.linkText }} →</a>
-        <ng-container *ngIf="message.showContactDetails"><a href="tel:+923107779651">+92 310 7779651</a><a href="mailto:online&#64;rainbowcc.com.pk">online&#64;rainbowcc.com.pk</a></ng-container>
-      </div>
-      <div *ngIf="messages().length > 1" class="chat-quick" aria-label="Suggested questions">
-        <button type="button" (click)="send('Track my order')">Track my order</button>
-        <button type="button" (click)="send('How do I place an order?')">Place an order</button>
-        <button type="button" (click)="send('Other questions')">Other questions</button>
+<section class="assistant-page" aria-labelledby="assistant-title">
+  <header class="assistant-header"><span>RAINBOW ASSISTANT</span><button *ngIf="messages().length" type="button" (click)="newConversation()"><i class="fal fa-plus" aria-hidden="true"></i> New conversation</button></header>
+  <div class="assistant-content">
+    <div *ngIf="!messages().length" class="assistant-welcome">
+      <div class="assistant-mark" aria-hidden="true"><span class="assistant-mark-ring"></span><i class="fal fa-comment-alt"></i><span class="assistant-sparkle">✦</span></div>
+      <p>Hello, {{ firstName }}</p>
+      <h2 id="assistant-title">How can I help you today?</h2>
+      <span class="assistant-intro">Ask about your orders, shopping, or anything else.</span>
+    </div>
+    <div *ngIf="messages().length" #chatHistory class="assistant-history" aria-live="polite" aria-label="Conversation">
+      <h2 id="assistant-title" class="assistant-history-title">Your conversation</h2>
+      <div *ngFor="let message of messages()" class="assistant-message" [class.is-customer]="message.from === 'customer'">
+        <span class="assistant-message-label">{{ message.from === 'customer' ? 'You' : 'Rainbow Assistant' }}</span>
+        <p>{{ message.text }}</p>
+        <a *ngIf="message.link" [routerLink]="message.link">{{ message.linkText }} <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+        <button *ngIf="message.showOrders" type="button" class="assistant-inline-link" (click)="viewOrders.emit()">View order history <i class="fal fa-arrow-right" aria-hidden="true"></i></button>
+        <div *ngIf="message.showContactDetails" class="assistant-contact"><a href="tel:+923107779651">+92 310 7779651</a><a href="mailto:online&#64;rainbowcc.com.pk">online&#64;rainbowcc.com.pk</a></div>
       </div>
     </div>
-    <form class="chat-input" (ngSubmit)="send(draft)"><input name="message" [(ngModel)]="draft" placeholder="Type a question" aria-label="Type a question" autocomplete="off"><button type="submit" [disabled]="!draft.trim()" aria-label="Send message"><i class="fal fa-paper-plane" aria-hidden="true"></i></button></form>
-    <small class="chat-disclaimer">Demo responses · For live help, contact our team.</small>
-  </section>
-  <button type="button" class="chat-launcher" (click)="toggleChat()" [attr.aria-expanded]="open()" [attr.aria-label]="open() ? 'Close Rainbow assistant' : 'Open Rainbow AI assistant'" title="Rainbow AI assistant"><svg *ngIf="!open()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8 8.6 8.6 0 0 1-3.2-.6L4 20l1.2-4.3A8 8 0 1 1 20 11.5Z"/><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01" stroke-width="2.5"/></svg><span *ngIf="open()" aria-hidden="true">×</span><span *ngIf="!open()" class="chat-launcher-label" aria-hidden="true">Ask AI</span></button>
-</div>
+    <form class="assistant-compose" (ngSubmit)="send(draft)">
+      <label for="assistant-question" class="assistant-visually-hidden">Ask Rainbow Assistant</label>
+      <textarea id="assistant-question" name="message" [(ngModel)]="draft" rows="2" placeholder="Ask me about your order or shopping..."></textarea>
+      <div class="assistant-compose-footer"><span><i class="fal fa-comment-alt" aria-hidden="true"></i> Rainbow Assistant</span><button type="submit" [disabled]="!draft.trim()" aria-label="Send message"><i class="fal fa-arrow-right" aria-hidden="true"></i></button></div>
+    </form>
+    <div class="assistant-suggestions" aria-label="Suggested questions">
+      <button type="button" (click)="send('Track my order')"><span class="assistant-suggestion-icon"><i class="fal fa-box" aria-hidden="true"></i></span><strong>Track my order</strong><small>Find your order status</small></button>
+      <button type="button" (click)="send('How do I place an order?')"><span class="assistant-suggestion-icon assistant-icon-shop"><i class="fal fa-shopping-bag" aria-hidden="true"></i></span><strong>Place an order</strong><small>Get started with shopping</small></button>
+      <button type="button" (click)="send('Other questions')"><span class="assistant-suggestion-icon assistant-icon-help"><i class="fal fa-headset" aria-hidden="true"></i></span><strong>Other questions</strong><small>Contact the Rainbow team</small></button>
+    </div>
+    <p class="assistant-disclaimer">Demo assistant · Responses are guided. For live help, contact our team.</p>
+  </div>
+</section>

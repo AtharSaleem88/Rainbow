@@ -4,7 +4,7 @@
     <header class="rainbow-cart-header">
       <a routerLink="/" class="rainbow-cart-back" aria-label="Back to home"><i class="fal fa-arrow-left" aria-hidden="true"></i></a>
       <h1>My Cart</h1>
-      <a routerLink="/shop" class="rainbow-cart-continue"><i class="fal fa-shopping-bag" aria-hidden="true"></i><span>Continue shopping</span></a>
+      <a routerLink="/shop" class="rainbow-cart-continue"><span>Continue shopping</span></a>
     </header>
 
     <div *ngIf="cartService.cartItems().length === 0" class="rainbow-cart-empty">
@@ -54,7 +54,7 @@
         </section>
 
         <div class="rainbow-cart-actions">
-          <a routerLink="/shop"><i class="fal fa-arrow-left" aria-hidden="true"></i> Continue shopping</a>
+          <a routerLink="/shop">Continue shopping</a>
           <button type="button" (click)="clearAll()"><i class="fal fa-trash-alt" aria-hidden="true"></i> Clear cart</button>
         </div>
       </main>

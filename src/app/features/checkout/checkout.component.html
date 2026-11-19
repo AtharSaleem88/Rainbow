@@ -1,10 +1,10 @@
 <!-- Checkout page -->
-<section id="checkout-top" class="rainbow-checkout-page">
+<section id="checkout-top" class="rainbow-checkout-page" [class.rainbow-checkout-complete]="currentStep() === 3">
   <div class="container rainbow-checkout-container">
-    <header class="rainbow-checkout-header">
+    <header *ngIf="currentStep() !== 3" class="rainbow-checkout-header">
       <button type="button" class="rainbow-checkout-back" aria-label="Open cart" (click)="cartService.openCartDrawer()"><i class="fal fa-arrow-left" aria-hidden="true"></i></button>
       <h1>Checkout</h1>
-      <a routerLink="/shop" class="rainbow-checkout-continue"><i class="fal fa-shopping-bag" aria-hidden="true"></i><span class="d-none d-sm-inline">Continue shopping</span></a>
+      <a routerLink="/shop" class="rainbow-checkout-continue"><span>Continue shopping</span></a>
     </header>
 
     <!-- Empty Checkout Guard (when step is not finished and cart is empty) -->
@@ -279,7 +279,7 @@
                     <strong>Cash on Delivery (COD)</strong>
                   </div>
                 </div>
-                <img class="rainbow-payment-logo rainbow-payment-logo-cod" src="assets/images/payments/cod.jpg" alt="">
+                <span class="rainbow-payment-logo-cod" aria-hidden="true"><img src="assets/images/payments/cash-on-delivery-truck.jpg" alt=""></span>
               </label>
 
               <!-- JazzCash Option -->
@@ -428,41 +428,17 @@
       <!-- STEP 3: ORDER COMPLETED SUCCESS -->
       <div *ngIf="currentStep() === 3" class="rainbow-order-success">
         <div class="rainbow-success-card">
-          <div class="rainbow-success-icon">
-            <i class="fal fa-check"></i>
-          </div>
-          <span class="rainbow-success-kicker">Order Placed Successfully</span>
-          <h2>Thank You For Shopping With Us!</h2>
-          <p>Your order number is <strong class="rainbow-order-num">{{ generatedOrderNumber() }}</strong>.</p>
-          <p *ngIf="earnedLoyaltyPoints() > 0" aria-live="polite"><i class="fal fa-star" aria-hidden="true"></i> You earned <strong>{{ earnedLoyaltyPoints() | number:'1.0-0' }} loyalty points</strong> on this order. Your balance is <strong>{{ loyaltyService.balance() | number:'1.0-0' }} points</strong>. <a routerLink="/account">View your account</a></p>
-
-          <div class="rainbow-success-details">
-            <div class="rainbow-success-col">
-              <div class="rainbow-success-detail-group">
-                <span class="lbl"><i class="fal fa-map-marker-alt"></i> {{ fulfillmentMode() === 'pickup' ? 'Pickup details' : 'Delivery Address' }}</span>
-                <strong>{{ billingData.firstName }} {{ billingData.lastName }}</strong>
-                <p>{{ fulfillmentMode() === 'pickup' ? billingData.branch : billingData.address }}</p>
-                <p class="phone"><i class="fal fa-phone"></i> {{ billingData.phone }}</p>
-              </div>
+          <div class="rainbow-receipt-printer" *ngIf="completedPayment() as paid">
+            <div class="rainbow-receipt-window" [class.is-pending]="receiptState() === 'pending'" [class.is-printing]="receiptState() === 'printing'" [class.is-printed]="receiptState() === 'printed'" [style.--receipt-height.px]="receiptHeight()" [style.--receipt-duration.s]="receiptDuration()" (animationend)="finishReceiptPrint($event)">
+              <div class="rainbow-receipt-window-inner">
+          <section #receiptPaper class="rainbow-card-details-box rainbow-payment-receipt w-100 text-left" aria-labelledby="payment-summary-title">
+            <div class="rainbow-receipt-brand"><img src="assets/images/logo/RainbowLogo.png" alt="Rainbow Cash &amp; Carry"><span class="rainbow-receipt-confirmed">Order placed successfully</span><strong>Thank you for shopping with us!</strong><span>ORDER {{ generatedOrderNumber() }}</span></div>
+            <div class="rainbow-receipt-details">
+              <div><span>{{ fulfillmentMode() === 'pickup' ? 'Pickup details' : 'Delivery address' }}</span><strong>{{ billingData.firstName }} {{ billingData.lastName }}</strong><p>{{ fulfillmentMode() === 'pickup' ? billingData.branch : billingData.address }}</p><p>{{ billingData.phone }}</p></div>
+              <div><span>{{ fulfillmentMode() === 'pickup' ? 'Collection' : 'Delivery method' }}</span><strong>{{ fulfillmentMode() === 'pickup' ? 'Pickup' : cartService.deliveryType() === 'instant' ? 'Instant Express Delivery' : 'Scheduled Delivery' }}</strong><p *ngIf="fulfillmentMode() === 'delivery'">{{ cartService.deliveryType() === 'instant' ? 'In 40 minutes' : cartService.selectedDeliveryDate() + ', ' + cartService.selectedDeliveryTimeSlot() }}</p></div>
+              <div><span>Branch</span><strong>{{ billingData.branch }}</strong></div>
+              <div><span>Payment method</span><strong>{{ paid.payable === 0 ? (paid.walletApplied > 0 ? 'Rainbow Wallet' : 'Loyalty Points') : selectedPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : selectedPaymentMethod === 'jazzcash' ? 'JazzCash Mobile Wallet' : selectedPaymentMethod === 'easypaisa' ? 'Easypaisa Wallet' : 'Credit / Debit Card' }}</strong></div>
             </div>
-            <div class="rainbow-success-col">
-              <div class="rainbow-success-detail-group rainbow-success-method">
-                <span class="lbl"><i class="fal fa-truck"></i> Delivery Method</span>
-                <strong>{{ fulfillmentMode() === 'pickup' ? 'Pickup' : cartService.deliveryType() === 'instant' ? 'Instant Express Delivery' : 'Scheduled Delivery' }}</strong>
-                <p *ngIf="fulfillmentMode() === 'delivery'">{{ cartService.deliveryType() === 'instant' ? 'In 40 minutes' : cartService.selectedDeliveryDate() + ', ' + cartService.selectedDeliveryTimeSlot() }}</p>
-              </div>
-              <div class="rainbow-success-detail-group">
-                <span class="lbl"><i class="fal fa-store"></i> Dispatching Branch</span>
-                <strong>{{ billingData.branch }}</strong>
-              </div>
-              <div class="rainbow-success-detail-group">
-                <span class="lbl"><i class="fal fa-credit-card"></i> Payment Method</span>
-                <strong>{{ payment().payable === 0 ? (payment().walletApplied > 0 ? 'Rainbow Wallet' : 'Loyalty Points') : selectedPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : selectedPaymentMethod === 'jazzcash' ? 'JazzCash Mobile Wallet' : selectedPaymentMethod === 'easypaisa' ? 'Easypaisa Wallet' : 'Credit / Debit Card' }}</strong>
-              </div>
-            </div>
-          </div>
-
-          <section class="rainbow-card-details-box rainbow-payment-receipt w-100 text-left mt-0 mb-4" *ngIf="completedPayment() as paid" aria-labelledby="payment-summary-title">
             <div id="payment-summary-title" class="rainbow-payment-receipt-title" role="heading" aria-level="3"><i class="fal fa-receipt rainbow-order-num" aria-hidden="true"></i>Payment Summary</div>
             <div class="rainbow-payment-receipt-items" aria-label="Ordered items">
               <div *ngFor="let item of checkoutItems(); trackBy: trackByCartItem" class="rainbow-payment-receipt-item">
@@ -479,11 +455,23 @@
             <div class="rainbow-payment-receipt-row" *ngIf="paid.pointsUsed > 0"><span>Loyalty points used: {{ paid.pointsUsed }}</span><strong class="text-success">- Rs. {{ paid.loyaltyDiscount | number:'1.0-2' }}</strong></div>
             <div class="rainbow-payment-receipt-row" *ngIf="paid.walletApplied > 0"><span>Paid from wallet</span><strong>- Rs. {{ paid.walletApplied | number:'1.0-2' }}</strong></div>
             <div class="rainbow-payment-receipt-total"><strong>{{ paid.payable > 0 ? 'Remaining payment' : 'Remaining payable' }}</strong><strong>Rs. {{ paid.payable | number:'1.0-2' }}</strong></div>
+            <div *ngIf="earnedLoyaltyPoints() > 0" class="rainbow-receipt-loyalty" aria-live="polite">You earned <strong>{{ earnedLoyaltyPoints() | number:'1.0-0' }} loyalty points</strong>. Your balance is {{ loyaltyService.balance() | number:'1.0-0' }} points. <a routerLink="/account">View your account</a></div>
           </section>
+              </div>
+            </div>
+            <div class="rainbow-printer-base" aria-hidden="true"><span class="rainbow-printer-slot"></span><span class="rainbow-printer-brand">RAINBOW</span><span class="rainbow-printer-controls"><span class="rainbow-printer-light"></span><span class="rainbow-printer-button"></span></span></div>
+          </div>
           <div class="rainbow-success-actions">
-            <a routerLink="/shop" class="rainbow-checkout-primary">Continue Shopping <i class="fal fa-arrow-right"></i></a>
+            <a routerLink="/shop" class="rainbow-checkout-primary">Continue Shopping</a>
             <a routerLink="/" class="rainbow-btn-secondary">Return to Home</a>
           </div>
+          <dialog #receiptThanksDialog class="rainbow-thanks-dialog" aria-labelledby="receipt-thanks-title" (click)="$event.target === receiptThanksDialog && closeReceiptThanks()">
+            <button type="button" class="rainbow-thanks-close" aria-label="Close" (click)="closeReceiptThanks()">×</button>
+            <div class="rainbow-thanks-art" aria-hidden="true"><span class="rainbow-thanks-sparkle">✨</span><span class="rainbow-thanks-emoji">🎉</span><span class="rainbow-thanks-sparkle">✨</span></div>
+            <h2 id="receipt-thanks-title">Thank you for shopping!</h2>
+            <p>Your order <strong>{{ generatedOrderNumber() }}</strong> has been placed.</p>
+            <button type="button" class="rainbow-checkout-primary" (click)="closeReceiptThanks()">Done</button>
+          </dialog>
         </div>
       </div>
 

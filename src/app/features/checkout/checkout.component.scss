@@ -11,7 +11,9 @@
   padding: 24px 0 64px;
   background: #f4f6fc;
   overflow-x: hidden;
+  overflow-anchor: none;
 }
+.rainbow-checkout-page.rainbow-checkout-complete { padding-top: 12px; }
 
 .rainbow-checkout-container {
   max-width: 1120px;
@@ -395,8 +397,14 @@
 }
 
 .rainbow-payment-logo-cod {
-  filter: contrast(3);
+  display: block;
+  width: 64px;
+  height: 38px;
+  flex: 0 0 64px;
+  overflow: hidden;
+  mix-blend-mode: multiply;
 }
+.rainbow-payment-logo-cod img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 @media (max-width: 480px) {
   .rainbow-payment-logo {
@@ -404,6 +412,7 @@
     height: 32px;
     flex-basis: 52px;
   }
+  .rainbow-payment-logo-cod { width: 52px; height: 32px; flex-basis: 52px; }
 }
 
 .rainbow-payment-title {
@@ -825,9 +834,9 @@
   transition: all 180ms ease;
 
   &:hover {
-    border-color: var(--rh-secondary) !important;
-    color: var(--rh-primary) !important;
-    background: var(--rh-secondary) !important;
+    border-color: var(--rh-primary) !important;
+    color: #fff !important;
+    background: var(--rh-primary) !important;
     transform: translateY(-2px);
   }
 }
@@ -903,7 +912,7 @@
 .rainbow-order-success {
   display: flex;
   justify-content: center;
-  padding: 20px 0;
+  padding: 8px 0 20px;
 }
 
 .rainbow-success-card {
@@ -911,11 +920,11 @@
   width: min(100%, 680px);
   flex-direction: column;
   align-items: center;
-  padding: 42px 32px;
-  border: 1px solid rgba(35, 42, 92, 0.06);
-  border-radius: 24px;
-  background: #fff;
-  box-shadow: 0 12px 36px rgba(33, 42, 90, 0.06);
+  padding: 16px 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   text-align: center;
 }
 
@@ -957,6 +966,66 @@
 .rainbow-order-num {
   color: var(--rh-primary);
 }
+
+/* The order receipt rises out of the printer while remaining part of the page. */
+.rainbow-receipt-printer { order: 1; display: flex; flex-direction: column; justify-content: flex-end; width: min(100%, 420px); min-height: min(55dvh, 440px); margin: 0 auto 20px; }
+.rainbow-receipt-window { position: relative; flex: 0 0 auto; width: 100%; height: auto; padding: 0 17px; }
+.rainbow-receipt-window.is-pending { height: 0; overflow: hidden; }
+.rainbow-receipt-window.is-printing { overflow: hidden; animation: rainbow-receipt-feed var(--receipt-duration, 2.5s) linear both; }
+.rainbow-receipt-window.is-printed { height: auto; overflow: visible; }
+.rainbow-receipt-window-inner { min-height: 0; }
+.rainbow-receipt-window .rainbow-payment-receipt {
+  position: relative;
+  margin: 0 !important;
+  padding: 20px 18px 24px;
+  border: 1px solid #e1e6ed;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgba(24, 35, 66, .12);
+}
+.rainbow-receipt-window .rainbow-payment-receipt::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: 0;
+  left: 0;
+  height: 8px;
+  background: linear-gradient(135deg, #f4f7fa 25%, transparent 25%) -5px 0 / 10px 10px repeat-x,
+              linear-gradient(225deg, #f4f7fa 25%, transparent 25%) -5px 0 / 10px 10px repeat-x;
+}
+.rainbow-receipt-brand { display: grid; justify-items: center; gap: 7px; padding-bottom: 14px; border-bottom: 1px dashed #cbd4df; color: #607087; font-size: .68rem; font-weight: 600; letter-spacing: .06em; }
+.rainbow-receipt-brand img { display: block; width: 86px; max-width: 50%; height: auto; }
+.rainbow-receipt-brand strong { color: #17234a; font-size: .9rem; text-align: center; letter-spacing: 0; }
+.rainbow-receipt-brand .rainbow-receipt-confirmed { color: #208449; font-size: .65rem; text-transform: uppercase; }
+.rainbow-receipt-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 13px 0; border-bottom: 1px dashed #cbd4df; }
+.rainbow-receipt-details > div { display: flex; min-width: 0; flex-direction: column; gap: 3px; text-align: left; overflow-wrap: anywhere; }
+.rainbow-receipt-details span { color: #78849a; font-size: .65rem; font-weight: 600; text-transform: uppercase; }
+.rainbow-receipt-details strong, .rainbow-success-card .rainbow-receipt-details p { margin: 0; color: #26324a; font-size: .75rem; line-height: 1.4; }
+.rainbow-receipt-loyalty { padding-top: 12px; border-top: 1px dashed #cbd4df; color: #53617a; font-size: .73rem; line-height: 1.5; }
+.rainbow-receipt-loyalty a { color: var(--rh-primary); }
+.rainbow-printer-base { position: relative; z-index: 1; height: 78px; flex: 0 0 78px; width: 100%; margin-top: -3px; border: 1px solid #252b3d; border-bottom: 7px solid #141a2a; border-radius: 15px 15px 12px 12px; background: #343c4d; box-shadow: 0 10px 20px rgba(22, 30, 49, .2), inset 0 2px 0 rgba(255, 255, 255, .13); }
+.rainbow-printer-slot { position: absolute; top: 9px; right: 9%; left: 9%; height: 10px; border: 2px solid #4c566a; border-radius: 7px; background: #101522; box-shadow: inset 0 2px 4px rgba(0, 0, 0, .45); }
+.rainbow-printer-brand { position: absolute; left: 20px; bottom: 16px; color: #c6ceda; font-size: .57rem; font-weight: 600; letter-spacing: .14em; }
+.rainbow-printer-controls { position: absolute; right: 17px; bottom: 12px; display: flex; align-items: center; gap: 12px; }
+.rainbow-printer-light { width: 7px; height: 7px; border-radius: 50%; background: #8de2bf; box-shadow: 0 0 8px rgba(141, 226, 191, .8); }
+.rainbow-printer-button { width: 20px; height: 20px; border: 1px solid #737f91; border-radius: 50%; background: #252d3d; box-shadow: inset 0 1px 2px rgba(255,255,255,.15); }
+.rainbow-success-actions { flex-wrap: wrap; }
+.rainbow-thanks-dialog { position: fixed; width: min(360px, calc(100% - 32px)); max-width: none; padding: 28px 24px; border: 1px solid #e7edf5; border-radius: 20px; background: #fff; box-shadow: 0 24px 70px rgba(10, 14, 50, .26); text-align: center; }
+.rainbow-thanks-dialog::backdrop { background: rgba(15, 18, 48, .58); }
+.rainbow-thanks-close { position: absolute; top: 12px; right: 12px; display: grid; width: 34px; height: 34px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #fff1f2; color: #dc2626; font-size: 22px; cursor: pointer; }
+.rainbow-thanks-art { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+.rainbow-thanks-emoji { display: grid; width: 64px; height: 64px; place-items: center; border-radius: 50%; background: #eaf8fd; font-size: 30px; animation: rainbow-thanks-bounce 1s ease-in-out infinite alternate; }
+.rainbow-thanks-sparkle { font-size: 18px; animation: rainbow-thanks-sparkle 1.2s ease-in-out infinite alternate; }
+.rainbow-thanks-sparkle:last-child { animation-delay: .4s; }
+.rainbow-thanks-dialog h2 { margin: 0 0 8px; color: #17234a; font-size: 1.15rem; font-weight: 600; }
+.rainbow-thanks-dialog p { margin: 0 0 18px; color: #66758b; font-size: .8rem; }
+@keyframes rainbow-thanks-bounce { from { transform: translateY(0) rotate(-5deg); } to { transform: translateY(-5px) rotate(5deg); } }
+@keyframes rainbow-thanks-sparkle { from { opacity: .45; transform: scale(.8); } to { opacity: 1; transform: scale(1.15); } }
+@media (prefers-reduced-motion: reduce) { .rainbow-thanks-emoji, .rainbow-thanks-sparkle { animation: none; } }
+.rainbow-success-details { order: 2; }
+.rainbow-success-actions { order: 3; }
+@keyframes rainbow-receipt-feed { from { height: 0; } to { height: var(--receipt-height); } }
+@media (prefers-reduced-motion: reduce) { .rainbow-receipt-window.is-pending, .rainbow-receipt-window.is-printing { height: auto; overflow: visible; animation: none; } }
 
 .rainbow-payment-receipt {
   gap: 8px;

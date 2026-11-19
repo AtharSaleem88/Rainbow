@@ -12,11 +12,12 @@ import { AddressModalComponent } from './components/address-modal/address-modal.
 import { CardModalComponent } from './components/card-modal/card-modal.component';
 import { ReturnModalComponent } from './components/return-modal/return-modal.component';
 import { ReviewModalComponent } from './components/review-modal/review-modal.component';
+import { ChatAssistantComponent } from '../../shared/components/chat-assistant/chat-assistant.component';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, AddressModalComponent, CardModalComponent, ReturnModalComponent, ReviewModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, AddressModalComponent, CardModalComponent, ReturnModalComponent, ReviewModalComponent, ChatAssistantComponent],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
@@ -30,7 +31,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   @ViewChild('accountMainContent') accountMainContent?: ElementRef<HTMLElement>;
 
-  activeTab = signal<'orders' | 'wallet' | 'loyalty' | 'addresses' | 'cards' | 'settings' | 'returns'>('orders');
+  activeTab = signal<'orders' | 'wallet' | 'loyalty' | 'addresses' | 'cards' | 'settings' | 'returns' | 'assistant'>('orders');
   expandedOrder = signal<{ id: string; view: 'details' | 'track' } | null>(null);
   selectedReturnDetails = signal<ReturnRequest | null>(null);
   selectedReviewOrder = signal<UserOrder | null>(null);
@@ -90,7 +91,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     if (this.reviewToastTimer) clearTimeout(this.reviewToastTimer);
   }
 
-  setActiveTab(tab: 'orders' | 'wallet' | 'loyalty' | 'addresses' | 'cards' | 'settings' | 'returns') {
+  setActiveTab(tab: 'orders' | 'wallet' | 'loyalty' | 'addresses' | 'cards' | 'settings' | 'returns' | 'assistant') {
     this.activeTab.set(tab);
     if (window.innerWidth < 992 && this.accountMainContent?.nativeElement) {
       setTimeout(() => {

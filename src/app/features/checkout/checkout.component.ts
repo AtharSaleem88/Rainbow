@@ -20,6 +20,38 @@ import { CheckoutSummaryComponent } from './components/checkout-summary/checkout
 })
 export class CheckoutComponent implements OnInit {
   @ViewChild('branchControl') branchControl?: ElementRef<HTMLElement>;
+  @ViewChild('receiptThanksDialog') receiptThanksDialog?: ElementRef<HTMLDialogElement>;
+  @ViewChild('receiptPaper') set receiptPaper(ref: ElementRef<HTMLElement> | undefined) {
+    if (!ref || typeof window === 'undefined') return;
+    requestAnimationFrame(() => {
+      if (this.currentStep() !== 3 || !ref.nativeElement.isConnected) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        this.showReceiptThanks();
+        return;
+      }
+      const height = ref.nativeElement.getBoundingClientRect().height;
+      if (!height) { this.showReceiptThanks(); return; }
+      this.receiptHeight.set(Math.ceil(height));
+      this.receiptDuration.set(Math.min(5, Math.max(2.5, height / 220)));
+      this.receiptState.set('printing');
+    });
+  }
+
+  readonly receiptState = signal<'pending' | 'printing' | 'printed'>('pending');
+  readonly receiptHeight = signal(0);
+  readonly receiptDuration = signal(2.5);
+  finishReceiptPrint(event: AnimationEvent): void {
+    if (event.animationName === 'rainbow-receipt-feed') this.showReceiptThanks();
+  }
+  private showReceiptThanks(): void {
+    this.receiptState.set('printed');
+    requestAnimationFrame(() => {
+      const dialog = this.receiptThanksDialog?.nativeElement;
+      if (this.currentStep() === 3 && dialog && !dialog.open) dialog.showModal();
+    });
+  }
+  closeReceiptThanks(): void { this.receiptThanksDialog?.nativeElement.close(); }
+
 
   readonly branches = APP_CONFIG.branches;
   branchMenuOpen = false;
@@ -314,6 +346,7 @@ export class CheckoutComponent implements OnInit {
       this.paymentError.set('Unable to apply your balances. Please review your payment options and try again.');
       return;
     }
+    this.receiptState.set('pending');
     this.completedPayment.set(payment);
     this.paymentError.set('');
     this.cardDetails = { holder: '', number: '', expiry: '', cvv: '' };
@@ -326,36 +359,17 @@ export class CheckoutComponent implements OnInit {
 
   private scrollToTop() {
     if (typeof window === 'undefined') return;
-
-    // 1. Defocus active input/button to prevent mobile browsers from anchoring scroll to focused element
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
-
-    // 2. Immediate synchronous reset
-    window.scrollTo(0, 0);
-    if (document.documentElement) document.documentElement.scrollTop = 0;
-    if (document.body) document.body.scrollTop = 0;
-
-    // 3. Post-render RAF scroll to ensure new step's top is in view
-    requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-      const topEl = document.getElementById('checkout-top') || document.querySelector('.rainbow-checkout-header');
-      if (topEl) {
-        topEl.scrollIntoView({ behavior: 'auto', block: 'start' });
-      }
-    });
-
-    // 4. Fallback timeout for mobile virtual keyboard dismissal / async layout stabilization
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-      if (document.documentElement) document.documentElement.scrollTop = 0;
-      if (document.body) document.body.scrollTop = 0;
-      const topEl = document.getElementById('checkout-top') || document.querySelector('.rainbow-checkout-header');
-      if (topEl) {
-        topEl.scrollIntoView({ behavior: 'auto', block: 'start' });
-      }
-    }, 60);
+    const reset = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+    };
+    reset();
+    requestAnimationFrame(() => requestAnimationFrame(reset));
+    // Mobile browsers can restore the previous position after the keyboard closes.
+    setTimeout(reset, 100);
   }
 
   trackByCartItem = (_index: number, item: any): string => `${item.product?.id}:${item.variant?.id ?? 'default'}`;

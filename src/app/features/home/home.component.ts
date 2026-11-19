@@ -15,7 +15,6 @@ import {
   StorePolicyComponent
 } from './components';
 import { FloatingActionsComponent } from '../../shared/components/floating-actions/floating-actions.component';
-import { ChatAssistantComponent } from '../../shared/components/chat-assistant/chat-assistant.component';
 
 @Component({
   selector: 'app-home',
@@ -31,8 +30,7 @@ import { ChatAssistantComponent } from '../../shared/components/chat-assistant/c
     BrandShowcaseComponent,
     CampaignSliderComponent,
     StorePolicyComponent,
-    FloatingActionsComponent,
-    ChatAssistantComponent
+    FloatingActionsComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

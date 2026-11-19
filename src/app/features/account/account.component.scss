@@ -895,16 +895,18 @@
   }
 
   .rainbow-order-footer-actions {
-    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
     width: 100%;
     justify-content: flex-start;
     flex-wrap: wrap;
   }
 
   .rainbow-order-action {
-    min-height: 25px;
-    padding: 4px 5px;
-    font-size: 0.58rem;
+    min-height: 38px;
+    padding: 7px 8px;
+    font-size: 0.68rem;
   }
 
   .rainbow-order-item-return-badge {
@@ -1200,9 +1202,9 @@
   transition: all 180ms ease;
 
   &:hover {
-    border-color: var(--rh-secondary) !important;
-    color: var(--rh-primary) !important;
-    background: var(--rh-secondary) !important;
+    border-color: var(--rh-primary) !important;
+    color: #fff !important;
+    background: var(--rh-primary) !important;
     transform: translateY(-2px);
   }
 }

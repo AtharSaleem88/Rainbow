@@ -4,7 +4,7 @@ html, body, a, button, input, select, textarea, [role="button"] {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Global Application Button Styling (Primary Navy & Sky Blue Hover with Primary Text) */
+/* Primary buttons retain their colour on hover and focus. */
 .btn-primary,
 .rainbow-btn-primary,
 .rainbow-checkout-primary,
@@ -18,17 +18,19 @@ html, body, a, button, input, select, textarea, [role="button"] {
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      border-color: var(--rh-secondary) !important;
-      color: var(--rh-primary) !important;
-      background: var(--rh-secondary) !important;
-      box-shadow: 0 4px 14px rgba(135, 206, 235, 0.4) !important;
+      border-color: var(--rh-primary) !important;
+      color: #fff !important;
+      background: var(--rh-primary) !important;
+      box-shadow: 0 4px 14px rgba(46, 49, 146, 0.22) !important;
     }
   }
 
   &:focus-visible {
-    border-color: var(--rh-secondary) !important;
-    color: var(--rh-primary) !important;
-    background: var(--rh-secondary) !important;
+    border-color: var(--rh-primary) !important;
+    color: #fff !important;
+    background: var(--rh-primary) !important;
+    outline: 2px solid var(--rh-secondary);
+    outline-offset: 3px;
   }
 
   &:active {
@@ -1030,7 +1032,7 @@ app-root {
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      background: var(--rh-secondary);
+      background: var(--rh-primary);
     }
   }
 

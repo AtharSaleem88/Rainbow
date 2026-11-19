@@ -85,7 +85,7 @@
 .rh-payment-badges > span { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
 .rh-payment-badges > span { justify-content: center; width: 100px; height: 60px; padding: 0; overflow: hidden; border: 0; background: transparent; }
 .rh-payment-badges img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.rh-payment-badges img[alt="Cash on Delivery"] { filter: contrast(3); mix-blend-mode: multiply; }
+.rh-payment-badges img[alt="Cash on Delivery"] { object-fit: cover; mix-blend-mode: multiply; }
 .rh-payment-badges i { font-size: 17px; }
 .rh-payment-badges .rh-payment-jazz { color: #e82222; }
 .rh-payment-badges .rh-payment-easy { color: #00a84f; }

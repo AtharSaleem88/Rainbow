@@ -69,6 +69,11 @@
             <span>Account Settings</span>
           </button>
 
+          <button type="button" [class.is-active]="activeTab() === 'assistant'" (click)="setActiveTab('assistant')">
+            <i class="fal fa-comment-alt" aria-hidden="true"></i>
+            <span>Rainbow Assistant</span>
+          </button>
+
           <button type="button" class="logout-link" (click)="onLogout()">
             <i class="fal fa-sign-out-alt"></i>
             <span>Logout</span>
@@ -78,6 +83,7 @@
 
       <!-- Main Content Area -->
       <main class="rainbow-account-main" #accountMainContent>
+        <app-chat-assistant *ngIf="activeTab() === 'assistant'" [customerName]="authService.userProfile().name" (viewOrders)="setActiveTab('orders')"></app-chat-assistant>
         <!-- TAB 1: ORDER HISTORY -->
         <div *ngIf="activeTab() === 'orders'" class="rainbow-tab-content">
           <header class="rainbow-tab-header">
