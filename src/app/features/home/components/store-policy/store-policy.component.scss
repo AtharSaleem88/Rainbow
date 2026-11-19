@@ -53,6 +53,7 @@
   background: #fff;
 }
 .rh-app-store-badge > i, .rh-google-play-mark { width: 32px; flex: 0 0 32px; color: var(--rh-primary); font-size: 31px; text-align: center; }
+.rh-app-store-badge > i.fa-apple { color: #000; }
 .rh-google-play-mark { height: 36px; }
 .rh-app-store-badge span { display: grid; gap: 1px; }
 .rh-app-store-badge small { color: #3f4960; font: 400 11px/1.2 'Poppins', sans-serif; }

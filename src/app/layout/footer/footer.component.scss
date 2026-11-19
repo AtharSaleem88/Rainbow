@@ -68,6 +68,7 @@
 .rh-footer-shop-card p { margin: 0 0 12px; color: rgba(20,35,74,.78); font-size: 11px; line-height: 1.55; }
 .rh-footer-app-link { display: flex; min-height: 45px; align-items: center; gap: 10px; margin-top: 7px; padding: 7px 10px; border: 1px solid rgba(20,35,74,.13); border-radius: 9px; color: #14234a; background: rgba(255,255,255,.7); text-decoration: none; transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
 .rh-footer-app-link > i:first-child { width: 20px; color: #302f98; font-size: 18px; text-align: center; }
+.rh-footer-app-link > i.rh-store-apple:first-child { color: #000; font-size: 21px; }
 .rh-footer-app-link > i:last-child { margin-left: auto; color: #302f98; font-size: 12px; }
 .rh-footer-app-link span { display: grid; gap: 1px; }
 .rh-footer-app-link small { color: rgba(20,35,74,.7); font-size: 9px; line-height: 1.2; }
