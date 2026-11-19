@@ -1,6 +1,7 @@
 <section
   class="rh-product-collection"
   [class.rh-product-collection-tint]="isTinted"
+  [class.rh-product-collection-mobile-grid]="mobileProductGrid"
   [attr.aria-labelledby]="sectionId">
   <div class="container maxw_1460">
     <header class="rh-collection-heading-centered">
@@ -19,7 +20,7 @@
         </a>
       </div>
     </header>
-    <div class="rh-product-rail" [attr.aria-label]="title + ' products'">
+    <div class="rh-product-rail" [class.rh-mobile-product-grid]="mobileProductGrid" [class.rh-grid-with-promo]="showRainbowCard" [attr.aria-label]="title + ' products'">
       <a *ngIf="showRainbowCard" class="rh-rainbow-promo" [routerLink]="seeAllLink" [queryParams]="seeAllQueryParams" aria-label="Explore Rainbow Finds">
         <img src="assets/images/logo/RainbowLogo.png" alt="Rainbow" class="rh-rainbow-promo-logo">
         <div class="rh-rainbow-promo-copy"><span>EVERYDAY FINDS</span><strong>A little more<br>to discover.</strong><small>Fresh finds. Great value.</small></div>
@@ -28,8 +29,11 @@
       <app-product-card
         *ngFor="let product of products"
         [product]="product"
+        [compactMobile]="mobileProductGrid"
+        [showTopSellingBadge]="showTopSellingBadge"
         [sectionLabel]="sectionLabel">
       </app-product-card>
     </div>
+    <a *ngIf="seeAllLink" [routerLink]="seeAllLink" [queryParams]="seeAllQueryParams" class="rh-collection-see-all-bottom">{{ seeAllText }} <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
   </div>
 </section>

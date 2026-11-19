@@ -161,7 +161,7 @@
         </div>
 
         <!-- TAB 2: RAINBOW WALLET -->
-        <div *ngIf="activeTab() === 'wallet'" class="rainbow-tab-content rainbow-balance-tab">
+        <div *ngIf="activeTab() === 'wallet'" class="rainbow-tab-content rainbow-balance-tab rainbow-wallet-tab">
           <header class="rainbow-tab-header">
             <div>
               <h2>Rainbow Wallet</h2>
@@ -197,13 +197,13 @@
               <label class="rainbow-form-label mb-2">Select Payment Source</label>
               <div class="rainbow-topup-methods">
                 <button type="button" [class.is-selected]="selectedTopUpMethod() === 'jazzcash'" (click)="selectedTopUpMethod.set('jazzcash')">
-                  <i class="fal fa-mobile-alt"></i> JazzCash
+                  <img src="assets/images/payments/jazzcash.png" alt=""> JazzCash
                 </button>
                 <button type="button" [class.is-selected]="selectedTopUpMethod() === 'easypaisa'" (click)="selectedTopUpMethod.set('easypaisa')">
-                  <i class="fal fa-wallet"></i> Easypaisa
+                  <img src="assets/images/payments/easypaisa.jpg" alt=""> Easypaisa
                 </button>
                 <button type="button" [class.is-selected]="selectedTopUpMethod() === 'card'" (click)="selectedTopUpMethod.set('card')">
-                  <i class="fal fa-credit-card"></i> Card
+                  <img src="assets/images/payments/visa.jpg" alt=""> Card
                 </button>
               </div>
 
@@ -269,7 +269,7 @@
                 <span *ngIf="addr.isDefault" class="rainbow-default-badge"> Default Address</span>
               </div>
               <strong>{{ addr.recipientName }}</strong>
-              <p>{{ addr.addressLine }}, {{ addr.city }}</p>
+              <p>{{ addr.addressLine }}</p>
               <small><i class="fal fa-phone"></i> {{ addr.phone }}</small>
 
               <div class="rainbow-address-actions">
@@ -402,13 +402,6 @@
                 </div>
               </div>
 
-              <div class="rainbow-form-field">
-                <label for="profCity">Default City</label>
-                <div class="rainbow-input-wrap">
-                  <i class="fal fa-city"></i>
-                  <input type="text" id="profCity" [(ngModel)]="profileForm.city" name="profCity" required>
-                </div>
-              </div>
             </div>
 
             <div class="rainbow-form-field">
@@ -434,13 +427,8 @@
 
             <div class="rainbow-password-phone">
               <i class="fal fa-mobile-alt" aria-hidden="true"></i>
-              <span>Verification code sent to your account phone</span>
+              <span>Verify using your account phone</span>
               <strong>{{ profileForm.phone || 'Phone number not added' }}</strong>
-            </div>
-
-            <div *ngIf="passwordNotice()" class="rainbow-password-notice" [class.is-error]="passwordNotice()?.type === 'error'" [class.is-success]="passwordNotice()?.type === 'success'" role="status" aria-live="polite">
-              <i class="fal" [ngClass]="passwordNotice()?.type === 'error' ? 'fa-circle-exclamation' : 'fa-check-circle'" aria-hidden="true"></i>
-              <span>{{ passwordNotice()?.message }}</span>
             </div>
 
             <div class="rainbow-password-actions">
@@ -449,7 +437,17 @@
               </button>
             </div>
 
-            <form *ngIf="passwordOtpRequested()" class="rainbow-password-form" (submit)="submitPasswordChange(); $event.preventDefault();">
+          </section>
+
+          <div *ngIf="passwordOtpRequested()" class="rh-schedule-backdrop" (click)="closePasswordOtp()">
+            <div class="rh-schedule-dialog rainbow-password-dialog" role="dialog" aria-modal="true" aria-labelledby="password-otp-title" (click)="$event.stopPropagation()">
+              <header class="rh-schedule-header">
+                <div class="rh-schedule-header-icon"><i class="fal fa-lock" aria-hidden="true"></i></div>
+                <h2 id="password-otp-title">Verify and change password</h2>
+                <button type="button" class="rh-schedule-close" aria-label="Close password verification" (click)="closePasswordOtp()"><i class="fal fa-times" aria-hidden="true"></i></button>
+              </header>
+              <form class="rainbow-password-form rh-schedule-body" (submit)="submitPasswordChange(); $event.preventDefault();">
+              <div *ngIf="passwordNotice()" class="rainbow-password-notice" [class.is-error]="passwordNotice()?.type === 'error'" role="status" aria-live="polite">{{ passwordNotice()?.message }}</div>
               <div class="rainbow-form-field">
                 <label for="passwordOtp">SMS verification code</label>
                 <div class="rainbow-input-wrap"><i class="fal fa-shield-check" aria-hidden="true"></i><input id="passwordOtp" name="passwordOtp" [(ngModel)]="passwordOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit code" required></div>
@@ -464,9 +462,10 @@
                   <div class="rainbow-input-wrap"><i class="fal fa-lock" aria-hidden="true"></i><input id="confirmNewPassword" name="confirmNewPassword" [(ngModel)]="confirmNewPassword" [type]="confirmPasswordVisible() ? 'text' : 'password'" autocomplete="new-password" minlength="8" placeholder="Re-enter new password" required><button type="button" class="rainbow-password-toggle" (click)="togglePasswordVisibility(true)" [attr.aria-label]="confirmPasswordVisible() ? 'Hide password' : 'Show password'"><i class="fal" [ngClass]="confirmPasswordVisible() ? 'fa-eye-slash' : 'fa-eye'" aria-hidden="true"></i></button></div>
                 </div>
               </div>
-              <button type="submit" class="rainbow-btn-primary">Verify &amp; update password <i class="fal fa-check" aria-hidden="true"></i></button>
+              <button type="submit" class="rainbow-btn-primary" disabled>Verify &amp; update password <i class="fal fa-check" aria-hidden="true"></i></button>
             </form>
-          </section>
+            </div>
+          </div>
         </div>
 
       </main>
@@ -533,6 +532,7 @@
           <div>
             <strong>{{ item.itemTitle }}</strong>
             <small>Reason: {{ item.reason }}</small>
+            <a *ngIf="item.evidenceImage" [href]="item.evidenceImage" target="_blank" rel="noopener">View attached photo</a>
           </div>
           <strong class="rainbow-return-details-item-price">Rs. {{ item.refundAmount | number:'1.0-0' }}</strong>
         </div>

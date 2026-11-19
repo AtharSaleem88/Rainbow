@@ -382,6 +382,30 @@
   min-width: 0;
 }
 
+.rainbow-wallet-payment { background: #f4faff; border-color: #cce8f6; }
+.rainbow-payment-info .rainbow-wallet-available { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; margin: 0; color: #5b6b82; }
+.rainbow-wallet-available strong { color: var(--rh-primary, #2e3192); font-size: 1rem; font-weight: 600; }
+
+.rainbow-payment-logo {
+  width: 64px;
+  height: 38px;
+  flex: 0 0 64px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.rainbow-payment-logo-cod {
+  filter: contrast(3);
+}
+
+@media (max-width: 480px) {
+  .rainbow-payment-logo {
+    width: 52px;
+    height: 32px;
+    flex-basis: 52px;
+  }
+}
+
 .rainbow-payment-title {
   display: flex;
   align-items: center;

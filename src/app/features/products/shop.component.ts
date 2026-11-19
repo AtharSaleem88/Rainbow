@@ -46,6 +46,7 @@ export class ShopComponent implements OnInit {
   maxPrice = signal<number>(1000);
   searchQuery = signal<string>('');
   monthlyDealsOnly = signal(false);
+  readonly allDealProducts = this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined);
   get dealBrands(): string[] { return [...new Set(this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined && (!this.selectedCategory() || p.categorySlug === this.selectedCategory()) && (!this.selectedSubCategory() || p.subCategory === this.selectedSubCategory())).map(p => p.brand))].sort(); }
   get dealSubCategories(): string[] { return [...new Set(this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined && (!this.selectedCategory() || p.categorySlug === this.selectedCategory())).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
 
@@ -92,7 +93,10 @@ export class ShopComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
+      const wasMonthly = this.monthlyDealsOnly();
       this.monthlyDealsOnly.set(params['deals'] === 'monthly');
+      if (this.monthlyDealsOnly() && !wasMonthly) this.maxPrice.set(0);
+      if (!this.monthlyDealsOnly() && wasMonthly) this.maxPrice.set(1000);
       if (params['category']) {
         this.selectedCategory.set(params['category']);
       } else {
@@ -132,7 +136,7 @@ export class ShopComponent implements OnInit {
       subCategory: this.selectedSubCategory(),
       brand: this.selectedBrand(),
       minPrice: this.minPrice(),
-      maxPrice: this.monthlyDealsOnly() ? undefined : this.maxPrice(),
+      maxPrice: this.monthlyDealsOnly() && !this.maxPrice() ? undefined : this.maxPrice(),
       sortBy: this.selectedSort(),
       searchQuery: this.searchQuery()
     };
@@ -157,6 +161,7 @@ export class ShopComponent implements OnInit {
     this.selectedCategory.set(catSlug === this.selectedCategory() ? '' : catSlug);
     this.selectedSubCategory.set('');
     this.selectedSubSubCategory.set('');
+    if (this.monthlyDealsOnly() && this.selectedBrand() && !this.dealBrands.includes(this.selectedBrand())) this.selectedBrand.set('');
     this.applyFilters();
     this.updatePageSeo();
   }
@@ -164,6 +169,7 @@ export class ShopComponent implements OnInit {
   onSubCategorySelect(subCategory: string) {
     this.selectedSubCategory.set(subCategory === this.selectedSubCategory() ? '' : subCategory);
     this.selectedSubSubCategory.set('');
+    if (this.monthlyDealsOnly() && this.selectedBrand() && !this.dealBrands.includes(this.selectedBrand())) this.selectedBrand.set('');
     this.applyFilters();
   }
 
@@ -213,7 +219,7 @@ export class ShopComponent implements OnInit {
     this.selectedSubSubCategory.set('');
     this.selectedBrand.set('');
     this.minPrice.set(0);
-    this.maxPrice.set(1000);
+    this.maxPrice.set(this.monthlyDealsOnly() ? 0 : 1000);
     this.selectedSort.set('featured');
     this.searchQuery.set('');
     this.applyFilters();
@@ -222,6 +228,8 @@ export class ShopComponent implements OnInit {
 
   clearMonthlyFilters(): void {
     this.resetFilters();
+    this.maxPrice.set(0);
+    this.applyFilters();
     void this.router.navigate([], { relativeTo: this.route, queryParams: { deals: 'monthly' }, replaceUrl: true });
   }
 

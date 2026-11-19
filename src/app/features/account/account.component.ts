@@ -94,7 +94,12 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.activeTab.set(tab);
     if (window.innerWidth < 992 && this.accountMainContent?.nativeElement) {
       setTimeout(() => {
-        this.accountMainContent?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const content = this.accountMainContent?.nativeElement;
+        if (!content) return;
+        const headerBottom = Math.max(0, document.getElementById('rh-nav')?.getBoundingClientRect().bottom ?? 0);
+        const top = Math.max(0, window.scrollY + content.getBoundingClientRect().top - headerBottom - 12);
+        const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+        window.scrollTo({ top, behavior });
       }, 50);
     }
   }
@@ -149,10 +154,19 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   requestPasswordOtp(): void {
+    this.passwordOtpRequested.set(true);
     this.passwordNotice.set({
       type: 'error',
       message: 'SMS verification is not connected yet. Please contact support to change your password.'
     });
+  }
+
+  closePasswordOtp(): void {
+    this.passwordOtpRequested.set(false);
+    this.passwordNotice.set(null);
+    this.passwordOtp = '';
+    this.newPassword = '';
+    this.confirmNewPassword = '';
   }
 
   submitPasswordChange(): void {
@@ -272,18 +286,19 @@ export class AccountComponent implements OnInit, OnDestroy {
         } satisfies Product;
       this.cartService.addToCart(product, item.quantity);
     });
-    this.router.navigate(['/cart']);
+    this.cartService.openCartDrawer();
   }
 
   closeReturnModal() {
     this.isReturnModalOpen.set(false);
   }
 
-  submitReturnRequest(data: { orderId: string; items: Array<UserOrder['items'][number] & { reason: string }> }) {
+  submitReturnRequest(data: { orderId: string; items: Array<UserOrder['items'][number] & { reason: string; evidenceImage?: string }> }) {
     this.authService.requestReturn(data.orderId, data.items.map(item => ({
       itemTitle: item.title,
       reason: item.reason,
-      refundAmount: item.price * item.quantity
+      refundAmount: item.price * item.quantity,
+      evidenceImage: item.evidenceImage
     })));
     this.closeReturnModal();
     this.setActiveTab('returns');

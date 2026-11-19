@@ -4,6 +4,7 @@
       <div class="gray_line" aria-hidden="true"></div>
       <h2 id="home-category-title"><span class="rh-category-heading-blue">SHOP</span> <span class="rh-category-heading-by">BY</span> <span class="rh-category-heading-blue">CATEGORY</span></h2>
       <div class="gray_line" aria-hidden="true"></div>
+      <button type="button" class="rh-category-view-all" (click)="openCategories()">VIEW ALL <i class="fal fa-arrow-right" aria-hidden="true"></i></button>
     </div>
     <div
       class="rh-category-carousel"
@@ -39,5 +40,14 @@
         <button *ngFor="let page of [0, 1, 2]" type="button" [class.active]="activeCategoryPageIndex() === page" [attr.aria-label]="'Show category page ' + (page + 1)" [attr.aria-current]="activeCategoryPageIndex() === page ? 'true' : null" aria-controls="home-category-grid" (click)="scrollToCategoryPage(page)"></button>
       </div>
     </div>
+    <button type="button" class="rh-category-view-all-bottom" (click)="openCategories()">VIEW ALL <i class="fal fa-arrow-right" aria-hidden="true"></i></button>
   </div>
 </section>
+<dialog #categoriesDialog class="rh-categories-dialog" aria-labelledby="all-categories-title" (click)="closeOnBackdrop($event)">
+    <header><h2 id="all-categories-title">Shop by category</h2><button type="button" aria-label="Close categories" (click)="closeCategories()">×</button></header>
+    <div class="rh-categories-all-grid">
+      <a *ngFor="let cat of categories; trackBy: trackCategory" [routerLink]="['/shop']" [queryParams]="{ category: cat.slug }" (click)="closeCategories()">
+        <span class="rh-category-image"><img *ngIf="cat.image" [src]="cat.image" [alt]="cat.name" loading="lazy"><i *ngIf="!cat.image && cat.icon" class="fas" [ngClass]="cat.icon" aria-hidden="true"></i></span><span>{{ cat.name }}</span>
+      </a>
+    </div>
+</dialog>

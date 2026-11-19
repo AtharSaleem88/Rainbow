@@ -15,6 +15,7 @@ import {
   StorePolicyComponent
 } from './components';
 import { FloatingActionsComponent } from '../../shared/components/floating-actions/floating-actions.component';
+import { ChatAssistantComponent } from '../../shared/components/chat-assistant/chat-assistant.component';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +31,8 @@ import { FloatingActionsComponent } from '../../shared/components/floating-actio
     BrandShowcaseComponent,
     CampaignSliderComponent,
     StorePolicyComponent,
-    FloatingActionsComponent
+    FloatingActionsComponent,
+    ChatAssistantComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
@@ -43,6 +45,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   readonly categories = this.productService.getCategories();
   readonly allProducts = this.productService.getProducts();
+  // The demo catalog has no sales figures; use review counts as a popularity proxy.
+  readonly topSellingProducts = [...this.allProducts].filter(p => p.inStock).sort ( (a, b) => b.reviewCount - a.reviewCount).slice(0, 12);
 
   readonly farmProducts = this.allProducts.filter(p => ['ultra-fresh', 'organic-veggies'].includes(p.categorySlug));
   readonly priceDropProducts = this.allProducts.filter(p => p.oldPrice && p.oldPrice > p.price);

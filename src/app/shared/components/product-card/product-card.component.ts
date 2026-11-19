@@ -18,6 +18,8 @@ export class ProductCardComponent implements OnChanges {
   @Input() viewMode: 'grid' | 'list' = 'grid';
   @Input() sectionLabel = '';
   @Input() showSectionLabel = true;
+  @Input() showTopSellingBadge = false;
+  @Input() compactMobile = false;
   @Output() quickView = new EventEmitter<Product>();
 
   cartService = inject(CartService);

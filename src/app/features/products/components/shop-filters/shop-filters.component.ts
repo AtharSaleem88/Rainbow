@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Category, Product } from '../../../../core/models/product.model';
 
 @Component({
   selector: 'app-shop-filters',
@@ -54,6 +55,19 @@ export class ShopFiltersComponent {
   tempMaxPrice = 1000;
   tempSelectedSort = 'featured';
   tempSelectedSubSubCategory = '';
+  tempCategory = '';
+  tempSubCategory = '';
+  tempBrand = '';
+
+  @Input() monthlyMode = false;
+  @Input() categories: Category[] = [];
+  @Input() dealProducts: Product[] = [];
+  @Input() selectedCategory = '';
+  @Input() selectedSubCategory = '';
+  @Output() categoryChanged = new EventEmitter<string>();
+  @Output() subCategoryChanged = new EventEmitter<string>();
+  get mobileDealSubCategories(): string[] { return [...new Set(this.dealProducts.filter(p => !this.tempCategory || p.categorySlug === this.tempCategory).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
+  get mobileDealBrands(): string[] { return [...new Set(this.dealProducts.filter(p => (!this.tempCategory || p.categorySlug === this.tempCategory) && (!this.tempSubCategory || p.subCategory === this.tempSubCategory)).map(p => p.brand))].sort(); }
 
   @Input() selectedBrand = '';
   @Input() minPrice = 0;
@@ -75,8 +89,9 @@ export class ShopFiltersComponent {
   get activeMobileFilterCount(): number {
     let count = 0;
     if (this.selectedSort && this.selectedSort !== 'featured') count++;
-    if (this.minPrice > 0 || (this.maxPrice && this.maxPrice < 1000)) count++;
+    if (this.minPrice > 0 || (this.monthlyMode ? this.maxPrice > 0 : this.maxPrice !== 1000)) count++;
     if (this.selectedSubSubCategory) count++;
+    if (this.monthlyMode) { if (this.selectedCategory) count++; if (this.selectedSubCategory) count++; if (this.selectedBrand) count++; }
     return count;
   }
 
@@ -115,6 +130,9 @@ export class ShopFiltersComponent {
     this.tempMaxPrice = this.maxPrice;
     this.tempSelectedSort = this.selectedSort;
     this.tempSelectedSubSubCategory = this.selectedSubSubCategory;
+    this.tempCategory = this.selectedCategory;
+    this.tempSubCategory = this.selectedSubCategory;
+    this.tempBrand = this.selectedBrand;
     this.mobileFilterModalOpen = true;
     if (typeof document !== 'undefined') {
       document.body.classList.add('rh-filter-modal-open');
@@ -134,6 +152,12 @@ export class ShopFiltersComponent {
   }
 
   applyMobileFilters(): void {
+    if (this.monthlyMode) {
+      const categoryChanged = this.tempCategory !== this.selectedCategory;
+      if (categoryChanged) this.categoryChanged.emit(this.tempCategory);
+      if (categoryChanged || this.tempSubCategory !== this.selectedSubCategory) this.subCategoryChanged.emit(this.tempSubCategory);
+      if (this.tempBrand !== this.selectedBrand) this.brandChanged.emit(this.tempBrand);
+    }
     if (this.tempMinPrice !== this.minPrice) {
       this.minPriceChanged.emit(this.tempMinPrice);
     }
@@ -151,9 +175,12 @@ export class ShopFiltersComponent {
 
   resetTempFilters(): void {
     this.tempMinPrice = 0;
-    this.tempMaxPrice = 1000;
+    this.tempMaxPrice = this.monthlyMode ? 0 : 1000;
     this.tempSelectedSort = 'featured';
     this.tempSelectedSubSubCategory = '';
+    this.tempCategory = '';
+    this.tempSubCategory = '';
+    this.tempBrand = '';
   }
 
   @HostListener('document:click', ['$event'])

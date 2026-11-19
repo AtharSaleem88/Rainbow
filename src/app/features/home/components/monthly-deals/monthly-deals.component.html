@@ -19,7 +19,7 @@
 
     <div class="rh-monthly-deal-content">
       <div class="rh-monthly-subheading">
-        <div><h3 id="rh-monthly-deal-list-title">Explore this month’s offers</h3></div>
+        <div><h3 id="rh-monthly-deal-list-title">Explore Our Month’s Offers</h3></div>
         <a class="rh-monthly-explore-all" routerLink="/shop" [queryParams]="{ deals: 'monthly' }">Explore all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
       </div>
 
@@ -31,11 +31,12 @@
         aria-label="Monthly offers carousel"
         (scroll)="onMonthlyOffersScroll()"
         *ngIf="monthlyDeals.length; else noMonthlyDeals">
-        <app-product-card *ngFor="let deal of monthlyDeals" [product]="deal" [sectionLabel]="'Monthly Deals'"></app-product-card>
+        <app-product-card *ngFor="let deal of monthlyDeals" [product]="deal" [compactMobile]="true" [sectionLabel]="'Monthly Deals'"></app-product-card>
       </div>
       <ng-template #noMonthlyDeals>
         <p class="rh-monthly-empty">There are no deals in this category right now.</p>
       </ng-template>
+      <a class="rh-monthly-explore-bottom" routerLink="/shop" [queryParams]="{ deals: 'monthly' }">Explore all <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
     </div>
 
   </div>

@@ -5,7 +5,7 @@
 .rh-brands-heading-row {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 
   .rh-brands-title {
     display: flex;
@@ -24,6 +24,12 @@
 
 .rh-brands-title-dark,
 .rh-brands-title-blue { color: #171717; font-weight: 550; }
+
+@media (max-width: 767px) {
+  .rh-brands-heading-row { gap: 10px; }
+  .rh-brands-heading-row .gray_line { flex: 1 1 0; min-width: 0; }
+  .rh-brands-heading-row .rh-brands-title { font-size: clamp(.9rem, 3.5vw, 1.15rem); }
+}
 
 .rh-brands-subtitle {
   margin: 0 0 16px;

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, HostListener, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReturnModalComponent {
+  private readonly changeDetector = inject(ChangeDetectorRef);
   readonly reasonOptions = [
     'Damaged or defective item',
     'Expired or near expiry',
@@ -25,15 +26,32 @@ export class ReturnModalComponent {
   @Input() returnedItemTitles: string[] = [];
 
   @Output() close = new EventEmitter<void>();
-  @Output() submitReturn = new EventEmitter<{ orderId: string; items: Array<{ title: string; image: string; quantity: number; price: number; categorySlug?: string; reason: string }> }>();
+  @Output() submitReturn = new EventEmitter<{ orderId: string; items: Array<{ title: string; image: string; quantity: number; price: number; categorySlug?: string; reason: string; evidenceImage?: string }> }>();
 
   selectedItemIndices: number[] = [];
   itemReasons: Record<number, string> = {};
+  itemEvidence: Record<number, string> = {};
+  uploadErrors: Record<number, string> = {};
 
-  get selectedItems(): Array<{ title: string; image: string; quantity: number; price: number; categorySlug?: string; reason: string }> {
+  get selectedItems(): Array<{ title: string; image: string; quantity: number; price: number; categorySlug?: string; reason: string; evidenceImage?: string }> {
     return this.selectedItemIndices
       .filter(index => this.items[index] && this.canSelectItem(this.items[index]))
-      .map(index => ({ ...this.items[index], reason: this.itemReasons[index] ?? '' }));
+      .map(index => ({ ...this.items[index], reason: this.itemReasons[index] ?? '', evidenceImage: this.itemEvidence[index] }));
+  }
+
+  onEvidenceChange(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
+      this.uploadErrors[index] = 'Choose an image up to 5 MB.';
+      input.value = '';
+      return;
+    }
+    delete this.uploadErrors[index];
+    const reader = new FileReader();
+    reader.onload = () => { if (this.selectedItemIndices.includes(index)) this.itemEvidence[index] = String(reader.result); this.changeDetector.markForCheck(); };
+    reader.readAsDataURL(file);
   }
 
   get refundAmount(): number {
@@ -62,6 +80,8 @@ export class ReturnModalComponent {
       this.itemReasons = Object.fromEntries(
         Object.entries(this.itemReasons).filter(([index]) => !available.has(Number(index)))
       );
+      this.itemEvidence = Object.fromEntries(Object.entries(this.itemEvidence).filter(([index]) => !available.has(Number(index))));
+      this.uploadErrors = Object.fromEntries(Object.entries(this.uploadErrors).filter(([index]) => !available.has(Number(index))));
       return;
     }
 
@@ -92,7 +112,7 @@ export class ReturnModalComponent {
     this.selectedItemIndices = this.selectedItemIndices.includes(index)
       ? this.selectedItemIndices.filter(selectedIndex => selectedIndex !== index)
       : [...this.selectedItemIndices, index];
-    if (!this.selectedItemIndices.includes(index)) delete this.itemReasons[index];
+    if (!this.selectedItemIndices.includes(index)) { delete this.itemReasons[index]; delete this.itemEvidence[index]; delete this.uploadErrors[index]; }
   }
 
   toggleReasonMenu(index: number): void {

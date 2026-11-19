@@ -1,6 +1,7 @@
 import { afterNextRender, Component, DestroyRef, ElementRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CartService } from '../../core/services/cart.service';
 
 @Component({
   selector: 'app-footer',
@@ -10,6 +11,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent {
+  readonly cartService = inject(CartService);
   private readonly hostElement = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
 

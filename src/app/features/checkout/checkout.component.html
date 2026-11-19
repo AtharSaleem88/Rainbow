@@ -2,7 +2,7 @@
 <section id="checkout-top" class="rainbow-checkout-page">
   <div class="container rainbow-checkout-container">
     <header class="rainbow-checkout-header">
-      <a routerLink="/cart" class="rainbow-checkout-back" aria-label="Back to cart"><i class="fal fa-arrow-left" aria-hidden="true"></i></a>
+      <button type="button" class="rainbow-checkout-back" aria-label="Open cart" (click)="cartService.openCartDrawer()"><i class="fal fa-arrow-left" aria-hidden="true"></i></button>
       <h1>Checkout</h1>
       <a routerLink="/shop" class="rainbow-checkout-continue"><i class="fal fa-shopping-bag" aria-hidden="true"></i><span class="d-none d-sm-inline">Continue shopping</span></a>
     </header>
@@ -126,9 +126,9 @@
 
             <!-- Saved Addresses Selector -->
             <div class="mb-4" *ngIf="fulfillmentMode() === 'delivery' && authService.savedAddresses().length > 0">
-              <div class="rainbow-address-header"><label class="rainbow-form-label">Delivery address</label><div><button type="button" (click)="addressChoicesOpen.set(!addressChoicesOpen())" [attr.aria-expanded]="addressChoicesOpen()">Change</button><button type="button" (click)="addNewDeliveryAddress()">Add new</button></div></div>
+              <div class="rainbow-address-header"><label class="rainbow-form-label">Delivery address</label><div><button type="button" (click)="addressChoicesOpen.set(!addressChoicesOpen())" [attr.aria-expanded]="addressChoicesOpen()">Change</button></div></div>
               <div class="rainbow-saved-addresses-grid" *ngIf="selectedSavedAddress() as selected">
-                <div class="rainbow-saved-address-card is-selected"><span class="rainbow-address-tag">{{ selected.label }}</span><strong>{{ selected.recipientName }}</strong><p>{{ selected.addressLine }}, {{ selected.city }}</p><small>{{ selected.phone }}</small></div>
+                <div class="rainbow-saved-address-card is-selected"><span class="rainbow-address-tag">{{ selected.label }}</span><strong>{{ selected.recipientName }}</strong><p>{{ selected.addressLine }}</p><small>{{ selected.phone }}</small></div>
               </div>
               <p *ngIf="!selectedSavedAddress() && !addressChoicesOpen()" class="rainbow-new-address-hint">Enter your delivery address below.</p>
               <div class="rainbow-saved-addresses-grid rainbow-address-choices" *ngIf="addressChoicesOpen()">
@@ -141,7 +141,7 @@
                     <span class="rainbow-address-tag"><i class="fal" [ngClass]="addr.label === 'Home' ? 'fa-home' : addr.label === 'Office' ? 'fa-building' : 'fa-map-pin'"></i> {{ addr.label }}</span>
                   </div>
                   <strong>{{ addr.recipientName }}</strong>
-                  <p>{{ addr.addressLine }}, {{ addr.city }}</p>
+                  <p>{{ addr.addressLine }}</p>
                   <small>{{ addr.phone }}</small>
                 </button>
               </div>
@@ -185,14 +185,6 @@
               </div>
 
               <div class="rainbow-form-row">
-                <div class="rainbow-form-field">
-                  <label for="city">City <sup>*</sup></label>
-                  <div class="rainbow-input-wrap">
-                    <i class="fal fa-city"></i>
-                    <input type="text" id="city" name="city" required [(ngModel)]="billingData.city" readonly>
-                  </div>
-                </div>
-
                 <div class="rainbow-form-field" *ngIf="fulfillmentMode() === 'delivery'">
                   <label for="branch">{{ fulfillmentMode() === 'pickup' ? 'Pickup branch' : 'Fulfilling Rainbow Branch' }} <sup>*</sup></label>
                   <div class="rainbow-branch-control" #branchControl>
@@ -242,7 +234,7 @@
               </div>
 
               <div class="rainbow-form-actions mt-4">
-                <a routerLink="/cart" class="rainbow-btn-secondary"><i class="fal fa-arrow-left"></i> Back to Cart</a>
+                <button type="button" class="rainbow-btn-secondary" (click)="cartService.openCartDrawer()"><i class="fal fa-arrow-left"></i> Back to Cart</button>
                 <button type="submit" class="rainbow-checkout-primary">Continue to Payment <i class="fal fa-arrow-right"></i></button>
               </div>
             </form>
@@ -255,27 +247,23 @@
             </header>
 
             <div class="rainbow-payment-options mb-3">
-              <div class="rainbow-payment-card align-items-center p-3" [class.is-selected]="useWallet() && payment().walletApplied > 0">
+              <div class="rainbow-payment-card rainbow-wallet-payment align-items-center p-3" [class.is-selected]="useWallet() && payment().walletApplied > 0">
                 <div class="rainbow-payment-info">
                   <label class="rainbow-payment-title" for="use-wallet"><strong>Use Wallet</strong></label>
-                  <p>Available: Rs. {{ (authService.isLoggedIn() ? authService.walletBalance() : 0) | number:'1.0-2' }}</p>
+                  <p class="rainbow-wallet-available">Available balance <strong>Rs. {{ (authService.isLoggedIn() ? authService.walletBalance() : 0) | number:'1.0-2' }}</strong></p>
                 </div>
                 <div class="custom-control custom-switch mb-0 ml-auto">
                   <input id="use-wallet" type="checkbox" role="switch" class="custom-control-input" aria-label="Use Wallet" [ngModel]="useWallet()" (ngModelChange)="useWallet.set($event)" [disabled]="!authService.isLoggedIn() || authService.walletBalance() <= 0">
                   <label class="custom-control-label" for="use-wallet"><span class="sr-only">Use Wallet</span></label>
                 </div>
               </div>
-              <div class="rainbow-payment-card align-items-center p-3" [class.is-selected]="useLoyaltyPoints() && payment().pointsUsed > 0">
+              <div class="rainbow-payment-card align-items-center p-3">
                 <div class="rainbow-payment-info">
-                  <label class="rainbow-payment-title" for="use-loyalty-points"><strong>Use Loyalty Points</strong></label>
+                  <div class="rainbow-payment-title"><strong>Loyalty Points</strong></div>
                   <p>{{ loyaltyService.balance() | number:'1.0-0' }} points available &middot; 1 point = Rs. {{ loyaltyService.valuePerPoint | number:'1.0-2' }}</p>
                 </div>
-                <div class="custom-control custom-switch mb-0 ml-auto">
-                  <input id="use-loyalty-points" type="checkbox" role="switch" class="custom-control-input" aria-label="Use Loyalty Points" [ngModel]="useLoyaltyPoints()" (ngModelChange)="useLoyaltyPoints.set($event)" [disabled]="!loyaltyService.isMember() || loyaltyService.balance() <= 0">
-                  <label class="custom-control-label" for="use-loyalty-points"><span class="sr-only">Use Loyalty Points</span></label>
-                </div>
               </div>
-              <p *ngIf="!authService.isLoggedIn()" class="small text-muted mb-0"><a routerLink="/login">Sign in</a> to use your wallet and loyalty points.</p>
+              <p *ngIf="!authService.isLoggedIn()" class="small text-muted mb-0"><a routerLink="/login">Sign in</a> to use your wallet and view your loyalty points.</p>
             </div>
 
             <p *ngIf="payment().payable > 0" class="small text-muted">Pay the remaining <strong>Rs. {{ payment().payable | number:'1.0-2' }}</strong> with your chosen payment method.</p>
@@ -291,6 +279,7 @@
                     <strong>Cash on Delivery (COD)</strong>
                   </div>
                 </div>
+                <img class="rainbow-payment-logo rainbow-payment-logo-cod" src="assets/images/payments/cod.jpg" alt="">
               </label>
 
               <!-- JazzCash Option -->
@@ -302,6 +291,7 @@
                     <strong>JazzCash Mobile Wallet</strong>
                   </div>
                 </div>
+                <img class="rainbow-payment-logo" src="assets/images/payments/jazzcash.png" alt="">
               </label>
               <div *ngIf="selectedPaymentMethod === 'jazzcash'" class="rainbow-payment-entry">
                 <div class="rainbow-form-field">
@@ -322,6 +312,7 @@
                     <strong>Easypaisa Mobile Account</strong>
                   </div>
                 </div>
+                <img class="rainbow-payment-logo" src="assets/images/payments/easypaisa.jpg" alt="">
               </label>
               <div *ngIf="selectedPaymentMethod === 'easypaisa'" class="rainbow-payment-entry">
                 <div class="rainbow-form-field">
@@ -342,6 +333,7 @@
                     <strong>Debit / Credit Card (Visa / Mastercard)</strong>
                   </div>
                 </div>
+                <img class="rainbow-payment-logo" src="assets/images/payments/visa.jpg" alt="">
               </label>
               <div *ngIf="selectedPaymentMethod === 'card'" class="rainbow-payment-entry">
                 <div class="rainbow-form-field">
@@ -449,7 +441,7 @@
               <div class="rainbow-success-detail-group">
                 <span class="lbl"><i class="fal fa-map-marker-alt"></i> {{ fulfillmentMode() === 'pickup' ? 'Pickup details' : 'Delivery Address' }}</span>
                 <strong>{{ billingData.firstName }} {{ billingData.lastName }}</strong>
-                <p>{{ fulfillmentMode() === 'pickup' ? billingData.branch : billingData.address + ', ' + billingData.city }}</p>
+                <p>{{ fulfillmentMode() === 'pickup' ? billingData.branch : billingData.address }}</p>
                 <p class="phone"><i class="fal fa-phone"></i> {{ billingData.phone }}</p>
               </div>
             </div>

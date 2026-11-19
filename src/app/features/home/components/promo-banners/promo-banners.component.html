@@ -1,6 +1,6 @@
 <section class="rh-promo-banners" aria-label="Explore more at Rainbow">
   <div class="container maxw_1460">
-    <div class="rh-promo-banner-grid">
+    <div #bannerTrack class="rh-promo-banner-grid" (scroll)="onScroll()">
       <a routerLink="/shop" [queryParams]="{ category: 'grocery' }" class="rh-promo-banner rh-promo-grocery">
         <img
           class="rh-promo-banner-image"
@@ -32,6 +32,9 @@
           <span class="rh-promo-banner-cta">Shop the collection <i class="fal fa-arrow-right" aria-hidden="true"></i></span>
         </span>
       </a>
+    </div>
+    <div class="rh-promo-dots" aria-label="Promotional banners">
+      <button *ngFor="let slide of [0, 1]" type="button" [class.active]="activeSlide() === slide" [attr.aria-label]="'Show banner ' + (slide + 1)" [attr.aria-current]="activeSlide() === slide ? 'true' : null" (click)="showSlide(slide)"></button>
     </div>
   </div>
 </section>

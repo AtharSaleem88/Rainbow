@@ -7,7 +7,7 @@
       <div>
         <h2 id="add-addr-modal-title">Add New Address</h2>
       </div>
-      <button type="button" class="rh-schedule-close" (click)="onClose()"><i class="fal fa-times"></i></button>
+      <button type="button" class="rh-schedule-close" aria-label="Close address form" (click)="onClose()"><i class="fal fa-times" aria-hidden="true"></i></button>
     </header>
 
     <div class="rh-schedule-body">
@@ -35,14 +35,6 @@
             <i class="fal fa-phone"></i>
             <input type="tel" [(ngModel)]="form.phone" placeholder="+92 300 1234567">
           </div>
-        </div>
-      </div>
-
-      <div class="rainbow-form-field mb-3">
-        <label>City</label>
-        <div class="rainbow-input-wrap">
-          <i class="fal fa-city"></i>
-          <input type="text" [(ngModel)]="form.city" readonly>
         </div>
       </div>
 

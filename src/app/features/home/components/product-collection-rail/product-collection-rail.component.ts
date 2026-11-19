@@ -23,5 +23,7 @@ export class ProductCollectionRailComponent {
   @Input() seeAllText = 'VIEW ALL';
   @Input() isTinted = false;
   @Input() showRainbowCard = false;
+  @Input() showTopSellingBadge = false;
+  @Input() mobileProductGrid = true;
   @Input() sectionId = 'rh-collection-' + Math.floor(1000 + Math.random() * 9000);
 }

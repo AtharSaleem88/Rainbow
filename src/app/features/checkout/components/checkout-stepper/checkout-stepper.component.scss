@@ -18,9 +18,16 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
   cursor: pointer;
   user-select: none;
 }
+.rainbow-step:disabled { cursor: default; }
+.rainbow-step:focus-visible { outline: 2px solid var(--rh-primary); outline-offset: 4px; border-radius: 3px; }
 
 .rainbow-step-num {
   display: grid;
@@ -92,8 +99,11 @@
     border-radius: 14px;
   }
   .rainbow-step-line {
+    display: block;
+    min-width: 12px;
     margin: 0 8px;
   }
+  .rainbow-step-text strong { font-size: .75rem; white-space: nowrap; }
   .rainbow-step-num {
     width: 30px;
     height: 30px;

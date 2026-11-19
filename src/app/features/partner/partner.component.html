@@ -1,0 +1,37 @@
+<section class="partner-page">
+  <div class="partner-wrap">
+    <a routerLink="/" class="partner-back"><i class="fal fa-arrow-left" aria-hidden="true"></i> Back to shopping</a>
+    <div class="partner-layout">
+      <div class="partner-intro">
+        <span class="partner-kicker">ADVERTISE WITH RAINBOW</span>
+        <h1>Grow your brand with Rainbow.</h1>
+        <p>Connect with Rainbow shoppers through advertising, product promotions and banner placements. Tell us about your campaign and we’ll help you explore the opportunities.</p>
+        <div class="partner-opportunities">
+          <span><i class="fal fa-bullhorn" aria-hidden="true"></i> Brand advertising</span>
+          <span><i class="fal fa-tags" aria-hidden="true"></i> Product promotions</span>
+          <span><i class="fal fa-image" aria-hidden="true"></i> Banner placements</span>
+        </div>
+        <p class="partner-contact">Email <a href="mailto:online&#64;rainbowcc.com.pk">online&#64;rainbowcc.com.pk</a><br>Helpline <a href="tel:+923107779651">+92 310 7779651</a></p>
+      </div>
+      <div class="partner-form-card">
+        <h2>Advertise with us</h2>
+        <form #partnerForm="ngForm" (ngSubmit)="submit(partnerForm)">
+          <div class="partner-fields">
+            <label>Full name * <input type="text" name="name" [(ngModel)]="inquiry.name" autocomplete="name" required></label>
+            <label>Company or brand <input type="text" name="company" [(ngModel)]="inquiry.company" autocomplete="organization"></label>
+            <label>Email address * <input type="email" name="email" [(ngModel)]="inquiry.email" autocomplete="email" email required></label>
+            <label>Phone number (optional) <input type="tel" name="phone" [(ngModel)]="inquiry.phone" autocomplete="tel"></label>
+          </div>
+          <label>Advertising interest *
+            <select name="interest" [(ngModel)]="inquiry.interest" required>
+              <option value="" disabled>Select an opportunity</option>
+              <option>Brand advertising</option><option>Product promotions</option><option>Banner placements</option><option>Partnership</option><option>Other</option>
+            </select>
+          </label>
+          <label>Your message * <textarea name="message" [(ngModel)]="inquiry.message" rows="4" required placeholder="How can we help?"></textarea></label>
+          <button type="submit">Submit Request<i class="fal fa-arrow-right" aria-hidden="true"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'partner-with-us',
+    loadComponent: () => import('./features/partner/partner.component').then(m => m.PartnerComponent),
+    title: 'Advertise With Us — Rainbow'
+  },
+  {
     path: '',
     loadChildren: () => import('./features/home/home.routes').then(m => m.HOME_ROUTES)
   },
@@ -16,7 +21,7 @@ export const routes: Routes = [
   },
   {
     path: 'cart',
-    loadChildren: () => import('./features/cart/cart.routes').then(m => m.CART_ROUTES)
+    redirectTo: ''
   },
   {
     path: 'checkout',

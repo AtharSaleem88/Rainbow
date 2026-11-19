@@ -284,7 +284,6 @@
 }
 
 @media (min-width: 992px) {
-  .rh-nav.rh-nav-solid { top: 0 !important; width: 100%; max-width: none; border-radius: 0; transition: background-color 200ms ease, box-shadow 200ms ease; }
   .rh-hdr-delivering { flex: 0 1 280px; min-width: 170px; max-width: 280px; }
   .rh-hdr-delivering .rh-hdr-pill { width: 100%; min-width: 0; max-width: 100%; }
   .rh-hdr-delivering .rh-hdr-pill-text { min-width: 0; }
@@ -293,11 +292,14 @@
 }
 
 @media (max-width: 991px) {
-  .rh-announce.rh-announce-scrolled { display: none; }
-  .rh-nav.rh-nav-solid { top: 0; margin-top: 0; }
   .rh-mobile-logo { display: flex; flex: 0 0 auto; align-items: center; }
   .rh-mobile-logo img { display: block; width: 76px; height: auto; max-height: 50px; object-fit: contain; }
   .rh-mobile-location-pill { min-width: 0; overflow: hidden; }
+  .rh-mobile-location-row, .rh-mobile-location-pill { width: 100%; }
+  .rh-mobile-location-pill { min-height: 44px; }
+  .rh-mobile-account { min-width: 0; max-width: 125px; padding: 6px 10px; gap: 6px; }
+  .rh-mobile-account .rh-hdr-pill-text { min-width: 0; }
+  .rh-mobile-account .rh-hdr-val { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .rh-mobile-location-pill .rh-hdr-pill-text { flex: 1 1 auto; min-width: 0; }
   .rh-mobile-location-pill .rh-hdr-val { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .rh-mobile-row-2 .rh-search-wrap { min-height: 44px; }

@@ -4,6 +4,8 @@
 <!-- Shop by Category -->
 <app-category-grid [categories]="categories"></app-category-grid>
 
+<app-product-collection-rail title="Top Selling Products" titleLead="TOP SELLING" titleAccent="PRODUCTS" [products]="topSellingProducts" sectionLabel="Top Selling Products" [showTopSellingBadge]="true" seeAllLink="/shop"></app-product-collection-rail>
+
 <!-- Monthly Deals -->
 <app-monthly-deals [dealData]="monthlyDeal" [products]="allProducts"></app-monthly-deals>
 
@@ -43,6 +45,7 @@
   titleLead="FROZEN FOOD"
   titleAccent="SECTION"
   [products]="frozenProducts"
+  [mobileProductGrid]="true"
   sectionLabel="Frozen Food Section"
   seeAllLink="/shop"
   [seeAllQueryParams]="{ category: 'frozen-food' }">
@@ -70,3 +73,4 @@
 
 <!-- Floating Quick Actions (Top Scroller & WhatsApp) -->
 <app-floating-actions></app-floating-actions>
+<app-chat-assistant></app-chat-assistant>

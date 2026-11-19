@@ -4,6 +4,21 @@
   height: 100%;
 }
 
+@media (max-width: 767px) {
+  .rh-compact-mobile .rh-shared-card-top { padding: 6px 6px 0; }
+  .rh-compact-mobile .rh-shared-favorite { width: 26px; height: 26px; font-size: .72rem; }
+  .rh-compact-mobile .rh-shared-discount-badge { min-height: 20px; padding: 3px 4px; font-size: .55rem; }
+  .rh-compact-mobile .rh-shared-product-image { height: clamp(120px, 38vw, 165px); }
+  .rh-compact-mobile .rh-shared-product-copy { padding: 7px; }
+  .rh-compact-mobile .rh-shared-product-copy h3 { font-size: .78rem; }
+  .rh-compact-mobile .rh-shared-price-row { flex-wrap: wrap; gap: 3px; }
+  .rh-compact-mobile .rh-shared-price-wrap { flex-wrap: wrap; gap: 2px 4px; }
+  .rh-compact-mobile .rh-shared-price-row strong { font-size: .82rem; }
+  .rh-compact-mobile .rh-shared-price-row del { font-size: .62rem; }
+  .rh-compact-mobile .rh-variant-select-trigger { min-height: 26px; padding: 3px 5px; font-size: .62rem; }
+  .rh-compact-mobile .rh-shared-add-button { min-height: 34px; gap: 4px; font-size: .7rem; }
+}
+
 .rh-shared-product-card {
   position: relative;
   display: flex;
@@ -138,6 +153,13 @@
   line-height: 1;
   white-space: nowrap;
   pointer-events: none;
+}
+
+.rh-top-selling-badge {
+  background: #e5f5fb;
+  color: #253387;
+  border-color: #d0eaf5;
+  box-shadow: none;
 }
 
 .rh-no-section-label .rh-shared-product-image {

@@ -41,12 +41,18 @@
   }
 }
 
-.rh-deals-filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; padding: 16px; border: 1px solid #e1e8f1; border-radius: 16px; background: #fff; }
-.rh-deals-filters label { display: flex; min-width: 150px; flex: 1 1 180px; flex-direction: column; gap: 6px; color: #526079; font-size: 12px; font-weight: 600; }
+.rh-deals-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 18px; padding: 16px; border: 1px solid #e1e8f1; border-radius: 16px; background: #fff; }
+.rh-deals-filters label { display: flex; min-width: 150px; flex: 1 1 180px; flex-direction: column; gap: 6px; margin: 0; color: #526079; font-size: 12px; font-weight: 600; }
 .rh-deals-filters select { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid #dce5f1; border-radius: 9px; color: #17234a; background: #f8fbfd; font: inherit; }
 .rh-deals-clear { align-self: flex-end; min-height: 42px; padding: 0 16px; border: 1px solid #cbd6e8; border-radius: 9px; color: #2e3192; background: #fff; font-size: .8rem; font-weight: 600; cursor: pointer; }
 .rh-deals-clear:hover { background: #eef8fd; }
 .rh-deals-clear:focus-visible { outline: 2px solid #2e3192; outline-offset: 2px; }
+.rh-deals-mobile-filters { display: none; }
+@media (max-width: 767px) {
+  .rh-deals-filters { display: none; }
+  .rh-deals-mobile-filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; align-items: center; gap: 7px; margin-bottom: 12px; }
+  .rh-deals-mobile-filters > select { width: 100%; min-width: 0; min-height: 40px; padding: 0 6px; border: 1px solid #dce5f1; border-radius: 9px; background: #fff; color: #17234a; font: 500 .7rem 'Poppins', sans-serif; }
+}
 
 /* Products Grid */
 .rh-shop-products {

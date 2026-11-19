@@ -673,3 +673,6 @@
 
   .rainbow-return-submit { flex: 1 1 auto; }
 }
+.return-image-label { display: block; margin-top: 14px; font-size: .8rem; font-weight: 600; }
+.return-image-input { display: block; max-width: 100%; margin-top: 8px; font-size: .8rem; }
+.return-image-preview { display: block; width: 64px; height: 64px; margin-top: 8px; border-radius: 8px; object-fit: cover; }

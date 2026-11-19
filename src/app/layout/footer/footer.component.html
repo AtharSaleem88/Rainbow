@@ -16,7 +16,7 @@
 					<li><a routerLink="/about">About Rainbow</a></li>
 					<li><a routerLink="/shop">All Departments</a></li>
 					<li><a routerLink="/about" fragment="our-story">Our Story</a></li>
-					<li><a routerLink="/contact">Contact</a></li>
+					<li><a routerLink="/partner-with-us">Advertise With Us</a></li>
 				</ul>
 			</div>
 			<div class="rh-footer-col">
@@ -32,7 +32,7 @@
 				<h4 class="rh-footer-col-title">My Account</h4>
 				<ul>
 					<li><a routerLink="/account">My Account</a></li>
-					<li><a routerLink="/cart">Shopping Cart</a></li>
+					<li><a href="#" (click)="$event.preventDefault(); cartService.openCartDrawer()">Shopping Cart</a></li>
 					<li><a routerLink="/account">Wishlist</a></li>
 					<li><a routerLink="/account">Order History</a></li>
 				</ul>
@@ -47,12 +47,12 @@
 				</ul>
 			</div>
 			<div class="rh-footer-col rh-footer-shop-card">
-				<div class="rh-footer-app-link rh-footer-app-pending"><i class="fab fa-apple" aria-hidden="true"></i><span><small>iOS</small><strong>App Store</strong></span></div>
-				<div class="rh-footer-app-link rh-footer-app-pending"><i class="fab fa-google-play" aria-hidden="true"></i><span><small>Android</small><strong>Google Play</strong></span></div>
-				<a routerLink="/" class="rh-footer-official">Rainbow official website <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+				<div class="rh-footer-app-link rh-footer-app-pending"><i class="fab fa-apple rh-store-apple" aria-hidden="true"></i><span><small>iOS</small><strong>App Store</strong></span></div>
+				<div class="rh-footer-app-link rh-footer-app-pending"><svg class="rh-store-play" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" d="M3 2.5v19l9.5-9.5z"/><path fill="#34a853" d="M3 2.5 14.7 9 12.5 12z"/><path fill="#fbbc04" d="m12.5 12 2.2-3 4.9 2.7c.8.4.8 1.2 0 1.6l-4.9 2.7z"/><path fill="#ea4335" d="M3 21.5 14.7 16l-2.2-4z"/></svg><span><small>Android</small><strong>Google Play</strong></span></div>
+				<a routerLink="/" class="rh-footer-official"><i class="fal fa-globe" aria-hidden="true"></i> Rainbow official website</a>
 			</div>
 		</div>
-		<div class="rh-footer-extra"><div class="rh-footer-payments"><strong>We accept</strong><span class="rh-payment-badges"><span><img src="assets/images/payments/cod.jpg" alt="Cash on Delivery"></span><span><img src="assets/images/payments/jazzcash.png" alt="JazzCash"></span><span><img src="assets/images/payments/easypaisa.jpg" alt="easypaisa"></span><span><img src="assets/images/payments/visa.jpg" alt="Visa"></span></span></div>
+		<div class="rh-footer-extra"><div class="rh-footer-payments"><strong>We Accept</strong><span class="rh-payment-badges"><span><img src="assets/images/payments/cod.jpg" alt="Cash on Delivery"></span><span><img src="assets/images/payments/jazzcash.png" alt="JazzCash"></span><span><img src="assets/images/payments/easypaisa.jpg" alt="easypaisa"></span><span><img src="assets/images/payments/visa.jpg" alt="Visa"></span></span></div>
 			<div class="rh-footer-contact-details"><strong>Contact us</strong><ul class="rh-footer-contact">
 				<li><i class="fal fa-map-marker-alt" aria-hidden="true"></i><span>Bahria Town, Lahore</span></li>
 				<li><i class="fal fa-phone-alt" aria-hidden="true"></i><a href="tel:+923107779651">Helpline: +92 310 7779651</a></li>

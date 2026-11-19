@@ -17,7 +17,7 @@ export class FloatingActionsComponent {
   onWindowScroll(): void {
     this.showScrollTop.set(window.scrollY > 300);
     const footer = document.getElementById('rh-footer');
-    this.footerVisible.set(window.innerWidth <= 767 && !!footer && footer.getBoundingClientRect().top < window.innerHeight);
+    this.footerVisible.set(!!footer && footer.getBoundingClientRect().top < window.innerHeight);
   }
 
   scrollToTop(): void {

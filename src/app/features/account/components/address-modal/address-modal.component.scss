@@ -2,6 +2,12 @@
   display: contents;
 }
 
+.rh-schedule-header { align-items: center; background: #fff; border-bottom: 1px solid #edf1f7; }
+.rh-schedule-header h2 { margin: 0; color: #0f172a; font-size: 1.05rem; font-weight: 600; }
+.rh-schedule-header-icon { color: var(--rh-primary); background: #eef0fa; }
+.rh-schedule-close { color: #dc2626; background: #fff1f2; border: 0; }
+.rh-schedule-close:hover { background: #ffe4e6; }
+
 .rainbow-form-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -17,7 +23,7 @@
 .rainbow-form-field label {
   color: #3e4157;
   font-size: 0.83rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .rainbow-input-wrap {
@@ -101,7 +107,7 @@
     background: #fff;
     font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
-    font-weight: 700;
+    font-weight: 600;
     white-space: nowrap;
     line-height: 1;
     cursor: pointer;

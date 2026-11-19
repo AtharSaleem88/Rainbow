@@ -2,6 +2,13 @@
   display: block;
 }
 
+.rh-deals-sheet-fields { display: grid; gap: 12px; }
+.rh-deals-sheet-fields label { display: grid; gap: 6px; margin: 0; color: #526079; font-size: .75rem; font-weight: 600; }
+.rh-deals-sheet-fields select { width: 100%; min-height: 42px; padding: 0 10px; border: 1px solid #dce5f1; border-radius: 9px; background: #f8fbfd; color: #17234a; font: inherit; }
+@media (max-width: 767px) {
+  .rh-shop-header-filters.rh-monthly-mobile-trigger { margin: 0; padding: 0; border: 0; background: transparent; box-shadow: none; }
+}
+
 .rh-shop-header-filters {
   background: #ffffff;
   border: 1px solid #e8edf5;

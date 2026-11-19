@@ -15,6 +15,10 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
 
   readonly trackCategory = (_index: number, category: Category) => category.id;
   readonly categoryHasOverflow = signal(false);
+  @ViewChild('categoriesDialog') categoriesDialog?: ElementRef<HTMLDialogElement>;
+  openCategories(): void { this.categoriesDialog?.nativeElement.showModal(); }
+  closeCategories(): void { this.categoriesDialog?.nativeElement.close(); }
+  closeOnBackdrop(event: MouseEvent): void { if (event.target === this.categoriesDialog?.nativeElement) this.closeCategories(); }
   activeCategoryPageIndex = signal<number>(0);
 
   @ViewChild('categoryGrid') categoryGrid?: ElementRef<HTMLElement>;

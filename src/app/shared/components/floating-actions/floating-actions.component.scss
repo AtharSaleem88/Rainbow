@@ -50,14 +50,19 @@
 }
 
 .rh-scroll-top-btn {
-  background: var(--rh-primary, #2E3192);
-  color: #ffffff;
+  display: none;
+  background: rgba(232, 245, 252, 0.86);
+  color: var(--rh-primary, #2E3192);
+  border: 1px solid rgba(46, 49, 146, 0.14);
+  box-shadow: 0 3px 12px rgba(23, 31, 83, 0.1);
+  backdrop-filter: blur(4px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transform: translateY(10px);
 
   &.visible {
+    display: flex;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -65,15 +70,20 @@
   }
 
   &:hover {
-    background: #1e2060;
+    background: rgba(216, 239, 251, 0.96);
+    box-shadow: 0 4px 14px rgba(23, 31, 83, 0.14);
   }
 }
 
 .rh-whatsapp-btn {
-  background: #25D366;
-  color: #ffffff;
+  background: rgba(232, 245, 252, 0.86);
+  color: var(--rh-primary, #2E3192);
+  border: 1px solid rgba(46, 49, 146, 0.14);
+  box-shadow: 0 3px 12px rgba(23, 31, 83, 0.1);
+  backdrop-filter: blur(4px);
 
   &:hover {
-    background: #20ba5a;
+    background: rgba(216, 239, 251, 0.96);
+    box-shadow: 0 4px 14px rgba(23, 31, 83, 0.14);
   }
 }

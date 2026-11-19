@@ -49,6 +49,7 @@ export interface ReturnRequestItem {
   itemTitle: string;
   reason: string;
   refundAmount: number;
+  evidenceImage?: string;
 }
 
 export interface ReturnRequest {

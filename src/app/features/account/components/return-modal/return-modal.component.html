@@ -19,7 +19,6 @@
             {{ allAvailableItemsSelected ? 'Clear Selection' : 'Select All' }}
           </button>
         </div>
-        <p class="rainbow-return-help">Choose available items and specify a reason for each.</p>
         <div class="rainbow-return-item-list" role="group" aria-label="Items in this order">
           <div *ngFor="let item of items; let i = index" class="rainbow-return-item-entry" [class.has-selection]="selectedItemIndices.includes(i)">
             <label class="rainbow-return-item-option" [class.is-selected]="selectedItemIndices.includes(i)" [class.is-unavailable]="!canSelectItem(item)">
@@ -60,6 +59,10 @@
                   </button>
                 </div>
               </div>
+              <label class="return-image-label" [attr.for]="'return-image-' + i">Photo of item (optional)</label>
+              <input class="return-image-input" [id]="'return-image-' + i" type="file" accept="image/*" (change)="onEvidenceChange(i, $event)">
+              <span *ngIf="uploadErrors[i]" role="alert">{{ uploadErrors[i] }}</span>
+              <img *ngIf="itemEvidence[i]" class="return-image-preview" [src]="itemEvidence[i]" [alt]="'Photo of ' + item.title">
             </div>
           </div>
         </div>

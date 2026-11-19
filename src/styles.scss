@@ -126,7 +126,7 @@ app-root {
 
 /* Announcement bar (Moving Marquee) */
 .rh-announce {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -222,11 +222,11 @@ app-root {
   position: fixed;
   top: 38px; left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 48px);
-  max-width: 1440px;
+  width: calc(100% - 32px);
+  max-width: none;
   z-index: 1050;
   border-radius: 24px;
-  background: rgba(255,255,255,0.92);
+  background: #fff;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.5);
