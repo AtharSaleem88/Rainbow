@@ -12,6 +12,7 @@ import { PaymentBreakdown } from '../../../../core/services/checkout-payment.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckoutSummaryComponent {
+  @Input() mobilePreview = false;
   @Input({ required: true }) items: any[] = [];
   @Input({ required: true }) cartCount: number = 0;
   @Input({ required: true }) checkoutTotal: number = 0;

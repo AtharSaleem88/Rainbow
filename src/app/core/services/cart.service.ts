@@ -97,6 +97,20 @@ export class CartService {
     }
   }
 
+  replaceUnavailableWith(originalProductId: number, replacement: Product): void {
+    if (!replacement.inStock || replacement.id === originalProductId) return;
+    this.cartItems.update(items => {
+      const unavailable = items.filter(item => item.product.id === originalProductId && !item.product.inStock);
+      const quantity = unavailable.length ? unavailable.reduce((sum, item) => sum + item.quantity, 0) : 1;
+      const remaining = items.filter(item => !(item.product.id === originalProductId && !item.product.inStock));
+      const existingIndex = remaining.findIndex(item => this.isSameItem(item, replacement.id, null));
+      if (existingIndex >= 0) {
+        return remaining.map((item, index) => index === existingIndex ? { ...item, quantity: item.quantity + quantity } : item);
+      }
+      return [...remaining, { product: replacement, quantity }];
+    });
+  }
+
   updateInstruction(productId: number, instruction: string, variantId?: string | null) {
     const trimmed = instruction.trim();
     this.cartItems.update(items => items.map(item =>

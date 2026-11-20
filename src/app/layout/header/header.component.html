@@ -294,6 +294,9 @@
 						<i class="fal fa-times"></i>
 					</button>
 
+					<button type="button" class="rh-mobile-scan-btn" (click)="openScanner()" aria-label="Scan a product barcode">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M8 9v6m3-6v6m3-6v6m2-6v6"/></svg>
+					</button>
 					<!-- Dynamic Search Suggestions Dropdown (Mobile) -->
 					<div class="rh-search-dropdown" 
 					     *ngIf="isSearchDropdownOpen() && (searchSuggestionsData().categorySuggestions.length > 0 || searchSuggestionsData().productSuggestions.length > 0 || searchSuggestionsData().hasQuery)"
@@ -393,7 +396,7 @@
 			</form>
 		</div>
 		<!-- Mobile Row 3: full-width delivery location -->
-		<div class="rh-mobile-location-row">
+		<div *ngIf="router.url.split('?')[0].split('#')[0] === '/'" class="rh-mobile-location-row" [class.rh-mobile-location-hidden]="isScrolled()">
 			<button type="button" class="rh-hdr-pill rh-mobile-location-pill border-0" (click)="toggleLocationDropdown($event)" aria-haspopup="dialog" [attr.aria-expanded]="isLocationDropdownOpen()">
 				<span class="rh-hdr-pill-icon"><i class="fal fa-map-marker-alt" aria-hidden="true"></i></span>
 				<span class="rh-hdr-pill-text text-start"><span class="rh-hdr-lbl">Delivering to</span><strong class="rh-hdr-val">{{ selectedLocation().name }}</strong></span>
@@ -537,6 +540,13 @@
 			</ng-container>
 		</div>
 	</div>
+</div>
+
+<div *ngIf="isScannerOpen()" class="rh-scanner-overlay" (click)="closeScanner()">
+  <section class="rh-scanner-dialog" role="dialog" aria-modal="true" aria-labelledby="rh-scanner-title" (click)="$event.stopPropagation()">
+    <header><h2 id="rh-scanner-title">Scan a product</h2><button type="button" (click)="closeScanner()" aria-label="Close scanner">&times;</button></header>
+    <div class="rh-scanner-body"><video class="rh-scanner-video" [class.is-ready]="scannerReady()" autoplay muted playsinline aria-label="Camera preview"></video><p role="status">{{ scannerMessage() }}</p><small>Barcode matching depends on product barcode data being available.</small></div>
+  </section>
 </div>
 
 <!-- Scheduled Delivery Modal -->

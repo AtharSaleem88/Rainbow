@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -14,7 +14,6 @@ interface ChatMessage { from: 'assistant' | 'customer'; text: string; link?: str
 export class ChatAssistantComponent {
   @Input() customerName = '';
   @Output() viewOrders = new EventEmitter<void>();
-  @ViewChild('chatHistory') chatHistory?: ElementRef<HTMLElement>;
   readonly messages = signal<ChatMessage[]>([]);
   draft = '';
 
@@ -38,8 +37,6 @@ export class ChatAssistantComponent {
     }
     this.messages.update(items => [...items, { from: 'customer', text: message }, response]);
     this.draft = '';
-    setTimeout(() => { const history = this.chatHistory?.nativeElement; if (history) history.scrollTop = history.scrollHeight; });
   }
 
-  newConversation(): void { this.messages.set([]); this.draft = ''; }
 }

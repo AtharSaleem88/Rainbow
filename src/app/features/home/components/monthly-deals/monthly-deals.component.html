@@ -9,10 +9,20 @@
         </a>
       </div>
       <div class="rh-monthly-banner-visual" aria-hidden="true">
-        <div class="rh-monthly-tiles">
-          <div class="rh-monthly-tile rh-monthly-tile-fresh"><img src="assets/images/home/fruits-vegetables.png" alt=""><span>Fresh picks</span></div>
-          <div class="rh-monthly-tile rh-monthly-tile-dairy"><img src="assets/images/home/dairy-bread-eggs.png" alt=""><span>Everyday favourites</span></div>
-          <div class="rh-monthly-tile rh-monthly-tile-feature"><span class="rh-monthly-feature-eyebrow">A LITTLE MORE VALUE</span><img class="rh-monthly-rainbow-mark" src="assets/images/logo/rainbow-cloud-hd.png" alt=""><strong>Good things<br>every month.</strong><div class="rh-monthly-tags"><span>Fresh produce</span><span>Everyday essentials</span></div></div>
+        <div class="rh-deals-book">
+          <div class="rh-book-spread">
+            <div class="rh-book-sheet rh-book-sheet-first">
+              <span class="rh-book-page-title">THIS MONTH'S PICKS</span>
+              <div class="rh-book-products"><div class="rh-book-product" *ngFor="let product of monthlyDeals.slice(0, 4)"><img [src]="product.image" alt=""><strong>{{ product.title }}</strong><span>Rs. {{ product.price | number:'1.0-0' }}</span><del *ngIf="product.oldPrice">Rs. {{ product.oldPrice | number:'1.0-0' }}</del></div></div>
+              <div class="rh-book-back"><span class="rh-book-page-title">MORE MONTHLY PICKS</span><div class="rh-book-products"><div class="rh-book-product" *ngFor="let product of monthlyDeals.slice(0, 4)"><img [src]="product.image" alt=""><strong>{{ product.title }}</strong><span>Rs. {{ product.price | number:'1.0-0' }}</span><del *ngIf="product.oldPrice">Rs. {{ product.oldPrice | number:'1.0-0' }}</del></div></div></div>
+            </div>
+            <div class="rh-book-sheet rh-book-sheet-second">
+              <span class="rh-book-page-title">MORE TO DISCOVER</span>
+              <div class="rh-book-products"><div class="rh-book-product" *ngFor="let product of monthlyDeals.slice(4, 8)"><img [src]="product.image" alt=""><strong>{{ product.title }}</strong><span>Rs. {{ product.price | number:'1.0-0' }}</span><del *ngIf="product.oldPrice">Rs. {{ product.oldPrice | number:'1.0-0' }}</del></div></div>
+            </div>
+          </div>
+          <div class="rh-book-back-cover"><div class="rh-book-closing-products"><span class="rh-book-page-title">MORE TO DISCOVER</span><div class="rh-book-products"><div class="rh-book-product" *ngFor="let product of monthlyDeals.slice(4, 8)"><img [src]="product.image" alt=""><strong>{{ product.title }}</strong><span>Rs. {{ product.price | number:'1.0-0' }}</span><del *ngIf="product.oldPrice">Rs. {{ product.oldPrice | number:'1.0-0' }}</del></div></div></div><img class="rh-book-back-logo" src="assets/images/logo/RainbowLogo.png" alt=""><span class="rh-book-back-caption">Thank you for shopping with us</span></div>
+          <div class="rh-deals-book-cover"><img src="assets/images/logo/RainbowLogo.png" alt=""><span>THE MONTHLY EDIT</span><strong>Good things<br>for every shop.</strong><small>Open up this month's offers</small><div class="rh-book-back"><span class="rh-book-page-title">MONTHLY FAVOURITES</span><div class="rh-book-products"><div class="rh-book-product" *ngFor="let product of monthlyDeals.slice(4, 8)"><img [src]="product.image" alt=""><strong>{{ product.title }}</strong><span>Rs. {{ product.price | number:'1.0-0' }}</span><del *ngIf="product.oldPrice">Rs. {{ product.oldPrice | number:'1.0-0' }}</del></div></div></div></div>
         </div>
       </div>
     </div>

@@ -158,7 +158,7 @@
         <button
           type="button"
           class="rh-sheet-reset-btn"
-          *ngIf="tempSelectedSort !== 'featured' || tempMinPrice > 0 || (monthlyMode ? tempMaxPrice > 0 : (tempMaxPrice && tempMaxPrice !== 1000)) || tempSelectedSubSubCategory || tempCategory || tempSubCategory || tempBrand"
+          *ngIf="tempSelectedSort !== 'featured' || tempMinPrice > 0 || tempMaxPrice !== defaultMaxPrice || tempSelectedSubSubCategory || tempCategory || tempSubCategory || (tempBrand && !brandLocked)"
           (click)="resetTempFilters()">
           Clear All
         </button>
@@ -174,7 +174,7 @@
 
     <!-- Sheet Body -->
     <div class="rh-sheet-body">
-      <section *ngIf="monthlyMode" class="rh-sheet-section rh-deals-sheet-fields">
+      <section *ngIf="monthlyMode && !brandLocked" class="rh-sheet-section rh-deals-sheet-fields">
         <label>Brand<select [(ngModel)]="tempBrand"><option value="">All brands</option><option *ngFor="let brand of mobileDealBrands" [value]="brand">{{ brand }}</option></select></label>
       </section>
       <!-- 1. Sort By Section -->
@@ -254,8 +254,8 @@
           <button
             type="button"
             class="rh-sheet-quick-chip"
-            [class.active]="tempMinPrice === 0 && tempMaxPrice === (monthlyMode ? 0 : 1000)"
-            (click)="setQuickPrice(0, monthlyMode ? 0 : 1000)">
+            [class.active]="tempMinPrice === 0 && tempMaxPrice === defaultMaxPrice"
+            (click)="setQuickPrice(0, defaultMaxPrice)">
             All Prices
           </button>
         </div>

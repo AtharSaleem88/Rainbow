@@ -22,7 +22,8 @@
       (click)="selectSubCategory(item.name)"
       [attr.aria-label]="item.name">
       <span class="rh-subcat-tile">
-        <img *ngIf="item.image" [src]="item.image" [alt]="item.name" loading="lazy">
+        <span *ngIf="item.image && item.imagePosition" class="rh-subcat-sprite" [style.background-image]="'url(' + item.image + ')'" [style.background-position]="item.imagePosition" aria-hidden="true"></span>
+        <img *ngIf="item.image && !item.imagePosition" [src]="item.image" [alt]="item.name" loading="lazy">
         <i *ngIf="!item.image && item.icon" class="fas" [ngClass]="item.icon" aria-hidden="true"></i>
         <i *ngIf="!item.image && !item.icon" class="fal fa-tags" aria-hidden="true"></i>
       </span>

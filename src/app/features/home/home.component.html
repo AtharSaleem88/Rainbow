@@ -4,7 +4,16 @@
 <!-- Shop by Category -->
 <app-category-grid [categories]="categories"></app-category-grid>
 
-<app-product-collection-rail title="Top Selling Products" titleLead="TOP SELLING" titleAccent="PRODUCTS" [products]="topSellingProducts" sectionLabel="Top Selling Products" [showTopSellingBadge]="true" seeAllLink="/shop"></app-product-collection-rail>
+<!-- Price Drops Collection -->
+<app-product-collection-rail
+  title="Price Drops"
+  titleLead="PRICE"
+  titleAccent="DROPS"
+  [products]="priceDropProducts"
+  sectionLabel="Price Drop"
+  [isTinted]="true"
+  seeAllLink="/shop">
+</app-product-collection-rail>
 
 <!-- Monthly Deals -->
 <app-monthly-deals [dealData]="monthlyDeal" [products]="allProducts"></app-monthly-deals>
@@ -39,6 +48,12 @@
 <!-- Promotional Category Banners -->
 <app-promo-banners></app-promo-banners>
 
+<!-- Top Selling Products -->
+<app-product-collection-rail title="Top Selling Products" titleLead="TOP SELLING" titleAccent="PRODUCTS" [products]="topSellingProducts" sectionLabel="Top Selling Products" [showTopSellingBadge]="true" seeAllLink="/shop"></app-product-collection-rail>
+
+<!-- Brands You Trust Infinite Ticker & Brand Store Modal -->
+<app-brand-showcase [brands]="brands" [products]="allProducts"></app-brand-showcase>
+
 <!-- Frozen Food Section -->
 <app-product-collection-rail
   title="Frozen Food Section"
@@ -49,20 +64,6 @@
   sectionLabel="Frozen Food Section"
   seeAllLink="/shop"
   [seeAllQueryParams]="{ category: 'frozen-food' }">
-</app-product-collection-rail>
-
-<!-- Brands You Trust Infinite Ticker & Brand Store Modal -->
-<app-brand-showcase [brands]="brands" [products]="allProducts"></app-brand-showcase>
-
-<!-- Price Drops Collection -->
-<app-product-collection-rail
-  title="Price Drops"
-  titleLead="PRICE"
-  titleAccent="DROPS"
-  [products]="priceDropProducts"
-  sectionLabel="Price Drop"
-  [isTinted]="true"
-  seeAllLink="/shop">
 </app-product-collection-rail>
 
 <!-- Campaign banners without section headings -->

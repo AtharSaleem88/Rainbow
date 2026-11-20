@@ -6,10 +6,14 @@
 
 <section class="rh-shop-section">
   <div class="container maxw_1460">
+    <div *ngIf="cocaColaStore()" class="rh-coca-banner" aria-label="Coca-Cola brand store">
+      <div class="rh-coca-banner-copy"><span>BRAND SPOTLIGHT</span><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/330px-Coca-Cola_logo.svg.png" alt="Coca-Cola"><h1>Discover Coca-Cola</h1><p>Explore products from a brand you know and love.</p></div>
+      <div class="rh-coca-banner-art" aria-hidden="true"><span class="rh-coca-circle rh-coca-circle-one"></span><span class="rh-coca-circle rh-coca-circle-two"></span><span class="rh-coca-circle rh-coca-circle-three"></span><span class="rh-coca-wordmark">Coca-Cola</span></div>
+    </div>
     <div class="rh-shop-layout">
       <!-- 1. VERTICAL SUBCATEGORIES SIDEBAR -->
       <app-subcat-sidebar
-        *ngIf="!monthlyDealsOnly()"
+        *ngIf="!monthlyDealsOnly() && !cocaColaStore()"
         [items]="subCategoryItems()"
         [selectedSubCategory]="selectedSubCategory()"
         (subCategorySelected)="onSubCategorySelect($event)">
@@ -19,7 +23,7 @@
       <main class="rh-shop-results flex-grow-1">
         <!-- Header Filters Bar -->
         <app-shop-filters
-          *ngIf="!monthlyDealsOnly()"
+          *ngIf="!monthlyDealsOnly() && !cocaColaStore()"
           [selectedBrand]="selectedBrand()"
           [minPrice]="minPrice()"
           [maxPrice]="maxPrice()"
@@ -38,6 +42,16 @@
           <label>Brand<select [value]="selectedBrand()" (change)="onBrandChange($any($event.target).value)"><option value="">All brands</option><option *ngFor="let brand of dealBrands" [value]="brand">{{ brand }}</option></select></label>
           <button type="button" class="rh-deals-clear" (click)="clearMonthlyFilters()">Clear filters</button>
         </div>
+
+        <div *ngIf="cocaColaStore()" class="rh-deals-filters rh-coca-filters" aria-label="Filter Coca-Cola products">
+          <label>Min price<input type="number" min="0" [value]="minPrice()" (change)="onMinPriceChange($any($event.target).valueAsNumber || 0)"></label>
+          <label>Max price<input type="number" min="0" [value]="maxPrice()" (change)="onMaxPriceChange($any($event.target).valueAsNumber || 0)"></label>
+          <label>Sort by<select [value]="selectedSort()" (change)="onSortChangeValue($any($event.target).value)"><option value="featured">Recommended</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="rating">Top Rated</option></select></label>
+          <button type="button" class="rh-deals-clear" (click)="resetFilters()">Clear filters</button>
+        </div>
+        <div *ngIf="cocaColaStore()" class="rh-deals-mobile-filters rh-coca-mobile-filters">
+          <app-shop-filters [monthlyMode]="true" [brandLocked]="true" [allPricesMax]="cocaColaMaxPrice" [dealProducts]="cocaColaProducts" [selectedBrand]="selectedBrand()" [minPrice]="minPrice()" [maxPrice]="maxPrice()" [selectedSort]="selectedSort()" (minPriceChanged)="onMinPriceChange($event)" (maxPriceChanged)="onMaxPriceChange($event)" (sortChanged)="onSortChangeValue($event)"></app-shop-filters>
+        </div>
         <div *ngIf="monthlyDealsOnly()" class="rh-deals-mobile-filters">
           <select aria-label="Category" [value]="selectedCategory()" (change)="onCategorySelect($any($event.target).value)"><option value="">All categories</option><option *ngFor="let category of categories" [value]="category.slug">{{ category.name }}</option></select>
           <select aria-label="Subcategory" [value]="selectedSubCategory()" (change)="onSubCategorySelect($any($event.target).value)"><option value="">All subcategories</option><option *ngFor="let category of dealSubCategories" [value]="category">{{ category }}</option></select>
@@ -49,7 +63,6 @@
           <h2 class="h5 mb-0 font-Poppins fw-bold text-primary">{{ subCategoryDisplayName }}</h2>
           <small class="text-muted">Showing {{ filteredProducts().length }} products</small>
         </div>
-
         <!-- Products Grid -->
         <div class="rh-shop-products" [class.rh-shop-products-list]="viewMode() === 'list'" *ngIf="filteredProducts().length; else emptyResults">
           <app-product-card
@@ -62,11 +75,11 @@
 
         <ng-template #emptyResults>
           <app-empty-state
-            title="No products found"
-            description="Try adjusting your filters or selecting another category."
+            [title]="cocaColaStore() && !cocaColaProducts.length ? 'Coca-Cola products coming soon' : 'No products found'"
+            [description]="cocaColaStore() && !cocaColaProducts.length ? 'Products for this brand are not in the catalog yet.' : 'Try adjusting your filters or selecting another category.'"
             iconClass="fal fa-search"
-            actionText="Clear filters"
-            (actionClicked)="resetFilters()">
+            [actionText]="cocaColaStore() && !cocaColaProducts.length ? 'Explore all products' : 'Clear filters'"
+            (actionClicked)="cocaColaStore() && !cocaColaProducts.length ? leaveBrandStore() : resetFilters()">
           </app-empty-state>
         </ng-template>
       </main>

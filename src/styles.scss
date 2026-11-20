@@ -498,8 +498,8 @@ app-root {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: 154px;
-  height: 118px;
+  width: 172px;
+  height: 130px;
   flex-shrink: 0;
   background: rgba(255,255,255,0.78);
   backdrop-filter: blur(10px);
@@ -537,10 +537,10 @@ app-root {
 
   img {
     display: block;
-    width: 128px;
-    height: 66px;
+    width: 140px;
+    height: 74px;
     max-width: calc(100% - 24px);
-    max-height: 66px;
+    max-height: 74px;
     object-fit: contain;
     object-position: center;
     background: transparent;
@@ -1491,8 +1491,8 @@ app-root {
   .rh-brands-title { font-size: 24px; }
   .rh-brands-subtitle { font-size: 14px; }
   .rh-brands-header { margin-bottom: 16px; }
-  .rh-brand-item { width: 132px; height: 104px; border-radius: 14px; }
-  .rh-brand-item img { max-width: 108px; max-height: 58px; }
+  .rh-brand-item { width: 146px; height: 112px; border-radius: 14px; }
+  .rh-brand-item img { max-width: 120px; max-height: 65px; }
   .rh-brand-item span { font-size: 12px; }
   .rh-brands-set { gap: 16px; padding: 0; }
   .rh-brands-track { padding: 0 14px; }
@@ -1512,8 +1512,8 @@ app-root {
   .rh-nav-icon { width: 34px; height: 34px; font-size: 15px; }
   .rh-brands { padding: 14px 0 18px; }
   .rh-brands-title { font-size: 22px; }
-  .rh-brand-item { width: 116px; height: 92px; border-radius: 12px; }
-  .rh-brand-item img { max-width: 94px; max-height: 52px; }
+  .rh-brand-item { width: 130px; height: 102px; border-radius: 12px; }
+  .rh-brand-item img { max-width: 108px; max-height: 60px; }
   .rh-brand-item span { font-size: 11px; }
   .rh-brands-set { gap: 12px; padding: 0; }
   .rh-brands-track { padding: 0 10px; }

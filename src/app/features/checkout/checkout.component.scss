@@ -967,9 +967,9 @@
   color: var(--rh-primary);
 }
 
-/* The order receipt rises out of the printer while remaining part of the page. */
-.rainbow-receipt-printer { order: 1; display: flex; flex-direction: column; justify-content: flex-end; width: min(100%, 420px); min-height: min(55dvh, 440px); margin: 0 auto 20px; }
-.rainbow-receipt-window { position: relative; flex: 0 0 auto; width: 100%; height: auto; padding: 0 17px; }
+/* Reveal the receipt upward from the printer slot in the normal page flow. */
+.rainbow-receipt-printer { order: 1; display: flex; flex-direction: column; justify-content: flex-end; width: min(100%, 420px); min-width: 0; min-height: min(55dvh, 440px); margin: 0 auto 20px; }
+.rainbow-receipt-window { position: relative; order: 0; flex: 0 0 auto; width: 100%; padding: 0 9%; }
 .rainbow-receipt-window.is-pending { height: 0; overflow: hidden; }
 .rainbow-receipt-window.is-printing { overflow: hidden; animation: rainbow-receipt-feed var(--receipt-duration, 2.5s) linear both; }
 .rainbow-receipt-window.is-printed { height: auto; overflow: visible; }
@@ -977,22 +977,13 @@
 .rainbow-receipt-window .rainbow-payment-receipt {
   position: relative;
   margin: 0 !important;
-  padding: 20px 18px 24px;
+  padding: 20px 9% 32px;
   border: 1px solid #e1e6ed;
-  border-radius: 2px;
-  background: #fff;
-  box-shadow: 0 5px 18px rgba(24, 35, 66, .12);
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(to top, rgba(224,228,232,.55), rgba(255,255,255,0) 28px), linear-gradient(90deg, #f5f6f7 0%, #fff 12%, #fff 88%, #f2f4f6 100%);
+  box-shadow: inset 12px 0 20px -20px rgba(55, 65, 81, .4), inset -12px 0 20px -20px rgba(55, 65, 81, .4), 0 12px 22px rgba(24, 35, 66, .14);
 }
-.rainbow-receipt-window .rainbow-payment-receipt::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  right: 0;
-  left: 0;
-  height: 8px;
-  background: linear-gradient(135deg, #f4f7fa 25%, transparent 25%) -5px 0 / 10px 10px repeat-x,
-              linear-gradient(225deg, #f4f7fa 25%, transparent 25%) -5px 0 / 10px 10px repeat-x;
-}
+.rainbow-receipt-window .rainbow-payment-receipt::before { position: absolute; right: 4%; bottom: -5px; left: 4%; height: 9px; border-radius: 50%; background: rgba(33, 42, 55, .12); filter: blur(7px); content: ''; pointer-events: none; }
 .rainbow-receipt-brand { display: grid; justify-items: center; gap: 7px; padding-bottom: 14px; border-bottom: 1px dashed #cbd4df; color: #607087; font-size: .68rem; font-weight: 600; letter-spacing: .06em; }
 .rainbow-receipt-brand img { display: block; width: 86px; max-width: 50%; height: auto; }
 .rainbow-receipt-brand strong { color: #17234a; font-size: .9rem; text-align: center; letter-spacing: 0; }
@@ -1003,8 +994,9 @@
 .rainbow-receipt-details strong, .rainbow-success-card .rainbow-receipt-details p { margin: 0; color: #26324a; font-size: .75rem; line-height: 1.4; }
 .rainbow-receipt-loyalty { padding-top: 12px; border-top: 1px dashed #cbd4df; color: #53617a; font-size: .73rem; line-height: 1.5; }
 .rainbow-receipt-loyalty a { color: var(--rh-primary); }
-.rainbow-printer-base { position: relative; z-index: 1; height: 78px; flex: 0 0 78px; width: 100%; margin-top: -3px; border: 1px solid #252b3d; border-bottom: 7px solid #141a2a; border-radius: 15px 15px 12px 12px; background: #343c4d; box-shadow: 0 10px 20px rgba(22, 30, 49, .2), inset 0 2px 0 rgba(255, 255, 255, .13); }
-.rainbow-printer-slot { position: absolute; top: 9px; right: 9%; left: 9%; height: 10px; border: 2px solid #4c566a; border-radius: 7px; background: #101522; box-shadow: inset 0 2px 4px rgba(0, 0, 0, .45); }
+.rainbow-printer-base { position: relative; z-index: 2; order: 1; height: 78px; flex: 0 0 78px; width: 100%; margin-top: -9px; border: 1px solid #252b3d; border-bottom: 7px solid #141a2a; border-radius: 15px 15px 12px 12px; background: #343c4d; box-shadow: 0 10px 20px rgba(22, 30, 49, .2), inset 0 2px 0 rgba(255, 255, 255, .13); transition: margin-top 250ms ease-out; }
+.rainbow-receipt-printer.receipt-complete .rainbow-printer-base { margin-top: 7px; }
+.rainbow-printer-slot { position: absolute; z-index: 3; top: -7px; right: 7%; left: 7%; height: 17px; border: 2px solid #596579; border-radius: 11px; background: #101522; box-shadow: inset 0 4px 8px rgba(0, 0, 0, .6), 0 1px 2px rgba(255, 255, 255, .12); }
 .rainbow-printer-brand { position: absolute; left: 20px; bottom: 16px; color: #c6ceda; font-size: .57rem; font-weight: 600; letter-spacing: .14em; }
 .rainbow-printer-controls { position: absolute; right: 17px; bottom: 12px; display: flex; align-items: center; gap: 12px; }
 .rainbow-printer-light { width: 7px; height: 7px; border-radius: 50%; background: #8de2bf; box-shadow: 0 0 8px rgba(141, 226, 191, .8); }
@@ -1025,7 +1017,7 @@
 .rainbow-success-details { order: 2; }
 .rainbow-success-actions { order: 3; }
 @keyframes rainbow-receipt-feed { from { height: 0; } to { height: var(--receipt-height); } }
-@media (prefers-reduced-motion: reduce) { .rainbow-receipt-window.is-pending, .rainbow-receipt-window.is-printing { height: auto; overflow: visible; animation: none; } }
+@media (prefers-reduced-motion: reduce) { .rainbow-receipt-window.is-pending, .rainbow-receipt-window.is-printing { height: auto; overflow: visible; animation: none; } .rainbow-printer-base { transition: none; } }
 
 .rainbow-payment-receipt {
   gap: 8px;
@@ -1376,9 +1368,8 @@
 }
 
 .rainbow-mobile-summary-drawer {
-  padding: 0 14px 14px;
-  border-top: 1px solid #edf0f6;
-  background: #fbfcfe;
+  padding: 0;
+  background: #fff;
 
   .rainbow-checkout-summary {
     border: none;

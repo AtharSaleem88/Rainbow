@@ -1,14 +1,18 @@
 <!-- BRANDS YOU TRUST SECTION - start -->
-<section class="rh-brands" id="rh-brands">
+<section class="rh-brands" id="rh-brands" (pointerenter)="setPointerInside($event, true)" (pointerleave)="setPointerInside($event, false)" (touchstart)="onTouchStart()" (focusin)="setFocusInside($event, true)" (focusout)="setFocusInside($event, false)">
   <div class="container maxw_1460">
     <div class="rh-brands-heading-row">
       <div class="gray_line" aria-hidden="true"></div>
       <h2 class="rh-brands-title"><span class="rh-brands-title-dark">BRANDS YOU</span> <span class="rh-brands-title-blue">TRUST</span></h2>
       <div class="gray_line" aria-hidden="true"></div>
+      <div class="rh-brand-controls" aria-label="Brand slider controls">
+        <button type="button" class="rh-brand-arrow" aria-label="Previous brands" (click)="scrollBrands(-1)"><i class="fal fa-chevron-left" aria-hidden="true"></i></button>
+        <button type="button" class="rh-brand-arrow" aria-label="Next brands" (click)="scrollBrands(1)"><i class="fal fa-chevron-right" aria-hidden="true"></i></button>
+      </div>
     </div>
   </div>
-  <div class="rh-brands-track-wrap">
-    <div class="rh-brands-fade rh-brands-fade-left"></div>
+  <div class="rh-brands-slider">
+  <div #brandTrack class="rh-brands-track-wrap" role="region" aria-label="Browse brands" tabindex="0">
     <div class="rh-brands-track" id="rh-brands-track">
       <!-- SET A -->
       <div class="rh-brands-set">
@@ -21,20 +25,8 @@
           <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
         </button>
       </div>
-      <!-- SET B (Duplicate for smooth infinite ticker) -->
-      <div class="rh-brands-set" aria-hidden="true">
-        <button
-          *ngFor="let brand of brands"
-          type="button"
-          class="rh-brand-item"
-          (click)="openBrand(brand)"
-          tabindex="-1"
-          [attr.aria-label]="'Explore ' + brand.name + ' products'">
-          <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
-        </button>
-      </div>
     </div>
-    <div class="rh-brands-fade rh-brands-fade-right"></div>
+  </div>
   </div>
 </section>
 <!-- BRANDS YOU TRUST SECTION - end -->

@@ -25,6 +25,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isDeptOpen = signal<boolean>(false);
   searchQuery = signal<string>('');
   isSearchDropdownOpen = signal<boolean>(false);
+  isScannerOpen = signal(false);
+  scannerReady = signal(false);
+  scannerMessage = signal('Point your camera at a product barcode.');
+  private scannerStream?: MediaStream;
+  private scannerTimer?: ReturnType<typeof setTimeout>;
+  private scannerSession = 0;
   readonly availableLocations = [
     { id: 'lahore', name: 'Lahore', address: 'Lahore Main', city: 'Lahore' },
     { id: 'islamabad', name: 'Islamabad', address: 'Blue Area', city: 'Islamabad' },
@@ -167,8 +173,65 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopSuggestionAnimation();
+    this.closeScanner();
     if (this.detectionTimer) clearTimeout(this.detectionTimer);
     document.body.classList.remove('modal-open');
+  }
+
+  async openScanner(): Promise<void> {
+    this.isSearchDropdownOpen.set(false);
+    this.isScannerOpen.set(true);
+    this.scannerMessage.set('Point your camera at a product barcode.');
+    const session = ++this.scannerSession;
+    const BarcodeDetector = (window as any).BarcodeDetector;
+    if (!BarcodeDetector || !navigator.mediaDevices?.getUserMedia) {
+      this.scannerMessage.set('Barcode scanning is not available in this browser. You can search by product name instead.');
+      return;
+    }
+    try {
+      const detector = new BarcodeDetector();
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
+      if (session !== this.scannerSession) { stream.getTracks().forEach(track => track.stop()); return; }
+      this.scannerStream = stream;
+      await new Promise(resolve => setTimeout(resolve, 0));
+      const video = document.querySelector<HTMLVideoElement>('.rh-scanner-video');
+      if (!video || session !== this.scannerSession) { this.closeScanner(); return; }
+      video.srcObject = stream;
+      await video.play();
+      if (session !== this.scannerSession) return;
+      this.scannerReady.set(true);
+      const scan = async () => {
+        if (session !== this.scannerSession) return;
+        try {
+          const codes = await detector.detect(video);
+          if (session !== this.scannerSession) return;
+          const code = codes[0]?.rawValue?.trim();
+          if (code) {
+            this.closeScanner();
+            this.searchQuery.set(code);
+            this.onSearch();
+            return;
+          }
+        } catch { /* Try the next camera frame. */ }
+        if (session === this.scannerSession) this.scannerTimer = setTimeout(scan, 350);
+      };
+      void scan();
+    } catch {
+      if (session === this.scannerSession) {
+        this.scannerMessage.set('Unable to access the camera. Check camera permissions or search by product name.');
+        this.scannerStream?.getTracks().forEach(track => track.stop());
+        this.scannerStream = undefined;
+      }
+    }
+  }
+
+  closeScanner(): void {
+    this.scannerSession++;
+    if (this.scannerTimer) clearTimeout(this.scannerTimer);
+    this.scannerStream?.getTracks().forEach(track => track.stop());
+    this.scannerStream = undefined;
+    this.scannerReady.set(false);
+    this.isScannerOpen.set(false);
   }
 
   startSuggestionAnimation() {
@@ -431,6 +494,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown.escape')
   onEscape() {
+    if (this.isScannerOpen()) this.closeScanner();
     if (this.isLocationDropdownOpen()) this.closeLocationDropdown();
     if (this.isScheduleModalOpen()) this.closeScheduleModal();
     if (this.isSearchDropdownOpen()) this.isSearchDropdownOpen.set(false);

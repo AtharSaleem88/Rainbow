@@ -24,18 +24,11 @@
         (stepChange)="goToStep($event)">
       </app-checkout-stepper>
 
-      <!-- Mobile Quick Order Summary Bar (Top Collapsible Toggle) -->
+      <!-- Mobile order summary -->
       <div class="rainbow-mobile-summary-bar d-md-none mb-3" *ngIf="currentStep() !== 3">
-        <button type="button" class="rainbow-mobile-summary-btn" (click)="isMobileSummaryOpen.set(!isMobileSummaryOpen())" [attr.aria-expanded]="isMobileSummaryOpen()">
-          <span class="rainbow-mobile-summary-toggle">
-            <i class="fal fa-shopping-bag summary-bag-icon" aria-hidden="true"></i>
-            <span class="summary-text">{{ isMobileSummaryOpen() ? 'Hide order summary' : 'Show order summary' }}</span>
-            <i class="fal summary-chevron-icon" [ngClass]="isMobileSummaryOpen() ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i>
-          </span>
-          <strong class="rainbow-mobile-summary-total">Rs. {{ payment().payable | number:'1.0-2' }}</strong>
-        </button>
-        <div class="rainbow-mobile-summary-drawer" *ngIf="isMobileSummaryOpen()">
+        <div class="rainbow-mobile-summary-drawer">
           <app-checkout-summary
+            [mobilePreview]="true"
             [items]="cartService.cartItems()"
             [cartCount]="cartService.cartCount()"
             [checkoutTotal]="checkoutTotal()"
@@ -428,7 +421,7 @@
       <!-- STEP 3: ORDER COMPLETED SUCCESS -->
       <div *ngIf="currentStep() === 3" class="rainbow-order-success">
         <div class="rainbow-success-card">
-          <div class="rainbow-receipt-printer" *ngIf="completedPayment() as paid">
+          <div class="rainbow-receipt-printer" *ngIf="completedPayment() as paid" [class.receipt-complete]="receiptState() === 'printed'">
             <div class="rainbow-receipt-window" [class.is-pending]="receiptState() === 'pending'" [class.is-printing]="receiptState() === 'printing'" [class.is-printed]="receiptState() === 'printed'" [style.--receipt-height.px]="receiptHeight()" [style.--receipt-duration.s]="receiptDuration()" (animationend)="finishReceiptPrint($event)">
               <div class="rainbow-receipt-window-inner">
           <section #receiptPaper class="rainbow-card-details-box rainbow-payment-receipt w-100 text-left" aria-labelledby="payment-summary-title">
@@ -461,7 +454,7 @@
             </div>
             <div class="rainbow-printer-base" aria-hidden="true"><span class="rainbow-printer-slot"></span><span class="rainbow-printer-brand">RAINBOW</span><span class="rainbow-printer-controls"><span class="rainbow-printer-light"></span><span class="rainbow-printer-button"></span></span></div>
           </div>
-          <div class="rainbow-success-actions">
+          <div *ngIf="receiptState() === 'printed'" class="rainbow-success-actions">
             <a routerLink="/shop" class="rainbow-checkout-primary">Continue Shopping</a>
             <a routerLink="/" class="rainbow-btn-secondary">Return to Home</a>
           </div>

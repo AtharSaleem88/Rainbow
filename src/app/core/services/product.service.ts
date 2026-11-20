@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Product, Category, ProductFilter } from '../models/product.model';
+import { GROCERY_SECTIONS, PERSONAL_CARE_SECTIONS } from '../models/grocery-categories';
 
 const homepageCategoryImages: Record<string, string> = {
   'paan-corner': 'assets/images/home/paan-corner.png',
@@ -30,6 +31,8 @@ const homepageCategoryImages: Record<string, string> = {
 export class ProductService {
  private categories = signal<Category[]>(
   [
+    { id: 19, name: 'Personal Care', slug: 'personal-care', itemCount: 13 },
+    { id: 10, name: 'Grocery', slug: 'grocery', icon: 'fa-shopping-basket', itemCount: 120 },
     { id: 1, name: 'Paan Corner', slug: 'paan-corner', itemCount: 0 },
     { id: 2, name: 'Dairy, Bread & Eggs', slug: 'dairy-eggs', icon: 'fa-egg', itemCount: 32 },
     { id: 3, name: 'Fruits & Vegetables', slug: 'ultra-fresh', icon: 'fa-apple-alt', itemCount: 48 },
@@ -39,7 +42,6 @@ export class ProductService {
     { id: 7, name: 'Sweet Tooth', slug: 'sweet-tooth', itemCount: 0 },
     { id: 8, name: 'Bakery & Biscuits', slug: 'bakery-biscuits', itemCount: 0 },
     { id: 9, name: 'Tea & Coffee', slug: 'tea-coffee-milk-drinks', itemCount: 0 },
-    { id: 10, name: 'Atta, Rice & Dal', slug: 'grocery', icon: 'fa-shopping-basket', itemCount: 120 },
     { id: 11, name: 'Oil & Ghee', slug: 'masala-oil-more', itemCount: 0 },
     { id: 12, name: 'Sauces & Spreads', slug: 'sauces-spreads', itemCount: 0 },
     { id: 13, name: 'Chicken, Meat & Fish', slug: 'chicken-meat-fish', itemCount: 0 },
@@ -48,7 +50,6 @@ export class ProductService {
     { id: 16, name: 'Pharma & Wellness', slug: 'pharma-wellness', itemCount: 2 },
     { id: 17, name: 'Cleaning Essentials', slug: 'cleaning-essentials', itemCount: 0 },
     { id: 18, name: 'Home & Office', slug: 'home-office', itemCount: 0 },
-    { id: 19, name: 'Personal Care', slug: 'personal-care', itemCount: 13 },
     { id: 20, name: 'Frozen Food', slug: 'frozen-food', itemCount: 11 },
   ].map(category => ({
     ...category,
@@ -57,6 +58,36 @@ export class ProductService {
 );
 
   private products = signal<Product[]>([
+    {
+      id: 901,
+      title: 'Coca-Cola Classic Bottle 500 ml (Demo)',
+      subtitle: 'Illustrative demo product and price',
+      subCategory: 'Soft Drinks',
+      category: 'Cold Drinks & Juices',
+      categorySlug: 'beverages',
+      brand: 'Coca-Cola',
+      price: 120,
+      rating: 0,
+      reviewCount: 0,
+      image: 'assets/images/demo-coca-cola/classic-bottle.png',
+      description: 'Demo product for preview. Price and availability are illustrative.',
+      inStock: true
+    },
+    {
+      id: 902,
+      title: 'Coca-Cola Classic Can 330 ml (Demo)',
+      subtitle: 'Illustrative demo product and price',
+      subCategory: 'Soft Drinks',
+      category: 'Cold Drinks & Juices',
+      categorySlug: 'beverages',
+      brand: 'Coca-Cola',
+      price: 160,
+      rating: 0,
+      reviewCount: 0,
+      image: 'assets/images/demo-coca-cola/classic-can.png',
+      description: 'Demo product for preview. Price and availability are illustrative.',
+      inStock: true
+    },
     {
       id: 101,
       title: 'Fresh Organic Guava',
@@ -1015,17 +1046,37 @@ export class ProductService {
     return this.categories();
   }
 
+  getGrocerySections() { return GROCERY_SECTIONS; }
+  getPersonalCareSections() { return PERSONAL_CARE_SECTIONS; }
+
   getProducts(filter?: ProductFilter): Product[] {
     let result = this.products();
 
     if (!filter) return result;
 
-    if (filter.category) {
+    let grocerySectionApplied = false;
+    if (filter.category === 'grocery') {
+      const section = GROCERY_SECTIONS.find(item => item.name === filter.subCategory);
+      if (section) {
+        result = result.filter(product => product.categorySlug === section.categorySlug && (!section.productSubCategories || section.productSubCategories.includes(product.subCategory ?? '')));
+        grocerySectionApplied = true;
+      } else {
+        const grocerySlugs = new Set(['grocery', ...GROCERY_SECTIONS.map(item => item.categorySlug)]);
+        result = result.filter(product => grocerySlugs.has(product.categorySlug));
+      }
+    } else if (filter.category) {
       const cat = filter.category;
       const isPulses = cat.toLowerCase() === 'pulses';
       result = result.filter(p => p.categorySlug === cat || p.category === cat || (isPulses && p.subCategory?.toLowerCase() === 'pulses'));
     }
-    if (filter.subCategory) {
+    if (filter.category === 'personal-care' && filter.subCategory) {
+      const section = PERSONAL_CARE_SECTIONS.find(item => item.name === filter.subCategory);
+      if (section) {
+        result = result.filter(product => section.productSubCategories.includes(product.subCategory ?? ''));
+        grocerySectionApplied = true;
+      }
+    }
+    if (filter.subCategory && !grocerySectionApplied) {
       result = result.filter(p => p.subCategory === filter.subCategory);
     }
     if (filter.brand) {

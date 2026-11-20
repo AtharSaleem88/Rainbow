@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'categories',
+    loadComponent: () => import('./features/categories/categories.component').then(m => m.CategoriesComponent),
+    title: 'Shop by Category — Rainbow'
+  },
+  {
     path: 'partner-with-us',
     loadComponent: () => import('./features/partner/partner.component').then(m => m.PartnerComponent),
     title: 'Advertise With Us — Rainbow'

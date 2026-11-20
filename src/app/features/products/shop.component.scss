@@ -41,6 +41,22 @@
   }
 }
 
+.rh-coca-banner { position: relative; isolation: isolate; display: flex; min-height: 275px; align-items: center; overflow: hidden; margin-bottom: 22px; padding: 32px clamp(24px, 5vw, 70px); border-radius: 22px; background: linear-gradient(115deg, #8e0615 0%, #d90d23 52%, #a20b1b 100%); color: #fff; box-shadow: 0 14px 28px rgba(115, 8, 21, .14); }
+.rh-coca-banner-copy { position: relative; z-index: 1; max-width: 60%; }
+.rh-coca-banner-copy > span { display: block; margin-bottom: 13px; font-size: .68rem; font-weight: 600; letter-spacing: .16em; }
+.rh-coca-banner-copy img { display: block; width: min(190px, 100%); height: 54px; object-fit: contain; object-position: left center; filter: brightness(0) invert(1); }
+.rh-coca-banner-copy h1 { margin: 12px 0 5px; color: #fff; font: 600 clamp(1.35rem, 2.6vw, 2.2rem)/1.2 'Poppins', sans-serif; }
+.rh-coca-banner-copy p { margin: 0; color: rgba(255,255,255,.88); font-size: .85rem; }
+.rh-coca-banner-art { position: absolute; inset: 0 0 0 50%; overflow: hidden; }
+.rh-coca-circle { position: absolute; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; }
+.rh-coca-circle-one { width: 310px; height: 310px; top: -85px; right: 8%; }
+.rh-coca-circle-two { width: 215px; height: 215px; right: -25px; bottom: -125px; background: rgba(255,255,255,.08); }
+.rh-coca-circle-three { width: 72px; height: 72px; left: 10%; bottom: 18px; background: rgba(255,255,255,.06); }
+.rh-coca-wordmark { position: absolute; right: 8%; top: 48%; color: rgba(255,255,255,.18); font: italic 600 clamp(2.6rem, 6vw, 5.5rem)/1 Georgia, serif; transform: translateY(-50%) rotate(-8deg); }
+.rh-coca-filters label { min-width: 125px; flex: 1 1 140px; }
+.rh-coca-filters input { box-sizing: border-box; width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid #dce5f1; border-radius: 9px; color: #17234a; background: #f8fbfd; font: inherit; }
+@media (max-width: 767px) { .rh-coca-banner { min-height: 200px; margin-bottom: 16px; padding: 24px 20px; border-radius: 16px; } .rh-coca-banner-copy { max-width: 78%; } .rh-coca-banner-copy img { width: 135px; height: 39px; } .rh-coca-banner-copy h1 { font-size: 1.25rem; } .rh-coca-banner-copy p { font-size: .72rem; } .rh-coca-banner-art { left: 45%; } .rh-coca-wordmark { right: -12%; opacity: .7; } }
+
 .rh-deals-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 18px; padding: 16px; border: 1px solid #e1e8f1; border-radius: 16px; background: #fff; }
 .rh-deals-filters label { display: flex; min-width: 150px; flex: 1 1 180px; flex-direction: column; gap: 6px; margin: 0; color: #526079; font-size: 12px; font-weight: 600; }
 .rh-deals-filters select { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid #dce5f1; border-radius: 9px; color: #17234a; background: #f8fbfd; font: inherit; }
@@ -48,9 +64,11 @@
 .rh-deals-clear:hover { background: #eef8fd; }
 .rh-deals-clear:focus-visible { outline: 2px solid #2e3192; outline-offset: 2px; }
 .rh-deals-mobile-filters { display: none; }
+.rh-coca-demo-note { margin: 0 0 12px; color: #66758c; font-size: .75rem; }
 @media (max-width: 767px) {
   .rh-deals-filters { display: none; }
   .rh-deals-mobile-filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; align-items: center; gap: 7px; margin-bottom: 12px; }
+  .rh-deals-mobile-filters.rh-coca-mobile-filters { display: flex; justify-content: flex-end; }
   .rh-deals-mobile-filters > select { box-sizing: border-box; width: 100%; min-width: 0; height: 40px; min-height: 40px; padding: 0 22px 0 9px; border: 1px solid #dce5f1; border-radius: 10px; appearance: none; -webkit-appearance: none; background: #f8fcff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%232E3192' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 8px center; color: #17234a; font: 500 .72rem/1.2 'Poppins', sans-serif; text-overflow: ellipsis; }
   .rh-deals-mobile-filters > select:focus-visible { outline: 2px solid #2e3192; outline-offset: 2px; }
 }

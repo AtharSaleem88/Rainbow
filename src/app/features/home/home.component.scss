@@ -11,9 +11,23 @@
 :host app-campaign-slider,
 :host app-store-policy {
   display: block;
-  margin-top: clamp(16px, 2.2vw, 30px);
+  margin-top: 12px;
 }
-:host app-category-spotlights { margin-top: 8px; }
+
+// Keep the space between adjacent sections consistent even when their
+// individual components have different default padding.
+:host ::ng-deep .rh-hero-section { padding-bottom: 12px; }
+:host ::ng-deep .rh-category-section,
+:host ::ng-deep .rh-monthly-deals,
+:host ::ng-deep .rh-category-spotlights,
+:host ::ng-deep .rh-product-collection,
+:host ::ng-deep .rh-promo-banners,
+:host ::ng-deep .rh-brands,
+:host ::ng-deep .rh-campaign-section,
+:host ::ng-deep .rh-app-promo { padding-top: 12px; padding-bottom: 12px; }
+
+/* Separate the brand ticker from the following product section. */
+:host app-brand-showcase + app-product-collection-rail { margin-top: 28px; }
 
 @media (max-width: 767px) {
   :host app-category-grid,
@@ -23,8 +37,17 @@
   :host app-promo-banners,
   :host app-brand-showcase,
   :host app-campaign-slider,
-  :host app-store-policy { margin-top: 14px; }
-  :host app-category-spotlights { margin-top: 6px; }
+  :host app-store-policy { margin-top: 8px; }
+  :host app-brand-showcase + app-product-collection-rail { margin-top: 24px; }
+  :host ::ng-deep .rh-hero-section { padding-bottom: 8px; }
+  :host ::ng-deep .rh-category-section,
+  :host ::ng-deep .rh-monthly-deals,
+  :host ::ng-deep .rh-category-spotlights,
+  :host ::ng-deep .rh-product-collection,
+  :host ::ng-deep .rh-promo-banners,
+  :host ::ng-deep .rh-brands,
+  :host ::ng-deep .rh-campaign-section,
+  :host ::ng-deep .rh-app-promo { padding-top: 8px; padding-bottom: 8px; }
 }
 
 :host app-hero-slider.rh-home-reveal,

@@ -46,20 +46,29 @@ export class ShopComponent implements OnInit {
   maxPrice = signal<number>(1000);
   searchQuery = signal<string>('');
   monthlyDealsOnly = signal(false);
+  cocaColaStore = signal(false);
+  readonly cocaColaProducts = this.productService.getProducts().filter(p => p.brand.toLowerCase() === 'coca-cola');
+  readonly cocaColaMaxPrice = Math.max(1000, ...this.cocaColaProducts.map(product => product.price));
+  get cocaColaCategories() { return this.categories.filter(category => this.cocaColaProducts.some(product => product.categorySlug === category.slug)); }
+  get cocaColaSubCategories(): string[] { return [...new Set(this.cocaColaProducts.filter(p => !this.selectedCategory() || p.categorySlug === this.selectedCategory()).map(p => p.subCategory).filter((value): value is string => !!value))].sort(); }
   readonly allDealProducts = this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined);
-  get dealBrands(): string[] { return [...new Set(this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined && (!this.selectedCategory() || p.categorySlug === this.selectedCategory()) && (!this.selectedSubCategory() || p.subCategory === this.selectedSubCategory())).map(p => p.brand))].sort(); }
-  get dealSubCategories(): string[] { return [...new Set(this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined && (!this.selectedCategory() || p.categorySlug === this.selectedCategory())).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
+  get dealBrands(): string[] { return [...new Set(this.productService.getProducts({ category: this.selectedCategory(), subCategory: this.selectedSubCategory() }).filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined).map(p => p.brand))].sort(); }
+  get dealSubCategories(): string[] { if (this.selectedCategory() === 'grocery') return this.productService.getGrocerySections().map(section => section.name); if (this.selectedCategory() === 'personal-care') return this.productService.getPersonalCareSections().map(section => section.name); return [...new Set(this.productService.getProducts({ category: this.selectedCategory() }).filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
 
   selectedQuickViewProduct = signal<Product | null>(null);
 
   readonly subSubCategories = ['Organic', 'Imported', 'Local Farm', 'Pre-Cut & Cleaned'];
 
   readonly subCategories = computed<string[]>(() => {
+    if (this.selectedCategory() === 'personal-care') return this.productService.getPersonalCareSections().map(section => section.name);
+    if (this.selectedCategory() === 'grocery') return this.productService.getGrocerySections().map(section => section.name);
     const products = this.productService.getProducts(this.selectedCategory() ? { category: this.selectedCategory() } : undefined);
     return [...new Set(products.map(product => product.subCategory).filter((category): category is string => !!category))];
   });
 
   readonly subCategoryItems = computed<SubCategoryItem[]>(() => {
+    if (this.selectedCategory() === 'personal-care') return this.productService.getPersonalCareSections().map(({ name, image, imagePosition }) => ({ name, image, imagePosition }));
+    if (this.selectedCategory() === 'grocery') return this.productService.getGrocerySections().map(({ name, image }) => ({ name, image }));
     const defaultList: SubCategoryItem[] = [
       { name: 'Fresh Vegetables', image: 'assets/images/ultra_fresh/Palak.jpg' },
       { name: 'Fresh Fruits', image: 'assets/images/ultra_fresh/gwa.jpg' },
@@ -87,22 +96,34 @@ export class ShopComponent implements OnInit {
     return [
       { label: 'Home', url: '/' },
       { label: 'Shop', url: '/shop' },
-      { label: this.categoryName }
+      { label: this.cocaColaStore() ? 'Coca-Cola' : this.categoryName }
     ];
   }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       const wasMonthly = this.monthlyDealsOnly();
-      this.monthlyDealsOnly.set(params['deals'] === 'monthly');
+      const wasBrandStore = this.cocaColaStore();
+      this.cocaColaStore.set(params['brandStore'] === 'coca-cola');
+      this.monthlyDealsOnly.set(!this.cocaColaStore() && params['deals'] === 'monthly');
+      if (!this.cocaColaStore() && wasBrandStore && !this.monthlyDealsOnly()) this.maxPrice.set(1000);
       if (this.monthlyDealsOnly() && !wasMonthly) this.maxPrice.set(0);
       if (!this.monthlyDealsOnly() && wasMonthly) this.maxPrice.set(1000);
+      if (this.cocaColaStore() && !wasBrandStore) this.maxPrice.set(this.cocaColaMaxPrice);
+      const linkedMaxPrice = Number(params['maxPrice']);
+      if (!this.cocaColaStore() && !this.monthlyDealsOnly() && Number.isFinite(linkedMaxPrice) && linkedMaxPrice > 0) this.maxPrice.set(linkedMaxPrice);
+      if (['grocery', 'personal-care'].includes(params['category']) && this.selectedCategory() !== params['category'] && !this.monthlyDealsOnly() && !this.cocaColaStore() && !params['maxPrice']) {
+        const categoryProducts = this.productService.getProducts({ category: params['category'] });
+        this.maxPrice.set(Math.max(1000, ...categoryProducts.flatMap(product => [product.price, ...(product.variants ?? []).map(variant => variant.price)])));
+      }
       if (params['category']) {
         this.selectedCategory.set(params['category']);
       } else {
         this.selectedCategory.set('');
       }
-      if (params['brand']) {
+      if (this.cocaColaStore()) {
+        this.selectedBrand.set('Coca-Cola');
+      } else if (params['brand']) {
         this.selectedBrand.set(params['brand']);
       } else {
         this.selectedBrand.set('');
@@ -124,7 +145,7 @@ export class ShopComponent implements OnInit {
   }
 
   private updatePageSeo(): void {
-    const catName = this.categoryName;
+    const catName = this.cocaColaStore() ? 'Coca-Cola' : this.categoryName;
     const title = catName === 'All Grocery' ? 'Online Supermarket & Grocery Shop' : `${catName} — Online Supermarket`;
     this.seoService.setPageTitle(title);
     this.seoService.setMetaDescription(`Explore our fresh selection of ${catName.toLowerCase()} and grocery essentials at Rainbow.`);
@@ -136,7 +157,7 @@ export class ShopComponent implements OnInit {
       subCategory: this.selectedSubCategory(),
       brand: this.selectedBrand(),
       minPrice: this.minPrice(),
-      maxPrice: this.monthlyDealsOnly() && !this.maxPrice() ? undefined : this.maxPrice(),
+      maxPrice: (this.monthlyDealsOnly() || this.cocaColaStore()) && !this.maxPrice() ? undefined : this.maxPrice(),
       sortBy: this.selectedSort(),
       searchQuery: this.searchQuery()
     };
@@ -174,7 +195,7 @@ export class ShopComponent implements OnInit {
   }
 
   onBrandChange(brand: string) {
-    this.selectedBrand.set(brand);
+    this.selectedBrand.set(this.cocaColaStore() ? 'Coca-Cola' : brand);
     this.applyFilters();
   }
 
@@ -203,6 +224,7 @@ export class ShopComponent implements OnInit {
   }
 
   get subCategoryDisplayName(): string {
+    if (this.cocaColaStore()) return this.selectedSubCategory() || 'Coca-Cola products';
     if (this.monthlyDealsOnly() && !this.selectedCategory() && !this.selectedSubCategory()) return 'Monthly Deals';
     if (this.selectedSubCategory()) {
       return this.selectedSubCategory();
@@ -217,14 +239,16 @@ export class ShopComponent implements OnInit {
     this.selectedCategory.set('');
     this.selectedSubCategory.set('');
     this.selectedSubSubCategory.set('');
-    this.selectedBrand.set('');
+    this.selectedBrand.set(this.cocaColaStore() ? 'Coca-Cola' : '');
     this.minPrice.set(0);
-    this.maxPrice.set(this.monthlyDealsOnly() ? 0 : 1000);
+    this.maxPrice.set(this.cocaColaStore() ? this.cocaColaMaxPrice : this.monthlyDealsOnly() ? 0 : 1000);
     this.selectedSort.set('featured');
     this.searchQuery.set('');
     this.applyFilters();
     this.updatePageSeo();
   }
+
+  leaveBrandStore(): void { void this.router.navigate(['/shop']); }
 
   clearMonthlyFilters(): void {
     this.resetFilters();

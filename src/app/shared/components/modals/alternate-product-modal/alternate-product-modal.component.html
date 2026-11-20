@@ -112,7 +112,7 @@
     <!-- Modal Footer Actions -->
     <footer class="rh-alt-footer">
       <button type="button" class="rh-alt-btn-cancel" (click)="modalService.close()">Cancel</button>
-      <button type="button" class="rh-alt-btn-confirm" (click)="modalService.confirmSelection()">
+      <button type="button" class="rh-alt-btn-confirm" [disabled]="modalService.currentChoice() === 'alternate' && !modalService.selectedAlternateProductId()" (click)="modalService.confirmSelection()">
         <span>{{ modalService.currentChoice() === 'alternate' ? 'Confirm Alternate & Add to Cart' : 'Confirm Best Match & Add to Cart' }}</span>
       </button>
     </footer>

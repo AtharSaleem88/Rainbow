@@ -3,6 +3,7 @@
 }
 
 .rh-brands-heading-row {
+  position: relative;
   display: flex;
   align-items: center;
   margin-bottom: 20px;
@@ -36,3 +37,13 @@
   color: #74798c;
   font-size: 0.94rem;
 }
+
+.rh-brands-slider { position: relative; }
+.rh-brands-track-wrap { width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; }
+.rh-brands-track-wrap::-webkit-scrollbar { display: none; }
+.rh-brands-track { display: flex; width: max-content; min-width: 100%; animation: none !important; transform: none !important; }
+.rh-brand-item { scroll-snap-align: start; }
+.rh-brand-controls { position: absolute; right: 0; top: 50%; z-index: 2; display: flex; gap: 6px; padding-left: 10px; background: #f7fbfe; transform: translateY(-50%); }
+.rh-brand-arrow { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid #dbe5f0; border-radius: 50%; background: #fff; color: #2e3192; box-shadow: 0 4px 14px rgba(23,35,74,.08); cursor: pointer; }
+.rh-brand-arrow:focus-visible { outline: 2px solid #2e3192; outline-offset: 2px; }
+@media (max-width: 767px) { .rh-brand-controls { gap: 4px; padding-left: 5px; } .rh-brand-arrow { width: 28px; height: 28px; font-size: 11px; } }

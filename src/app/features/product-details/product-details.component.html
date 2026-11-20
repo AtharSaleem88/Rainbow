@@ -117,7 +117,6 @@
               <ng-container *ngIf="alternateModalService.getSelection(p.id) as sel; else noDetailSelection">
                 <i class="fal fa-check me-2" aria-hidden="true"></i>
                 <span class="rh-alt-btn-text">{{ sel.type === 'alternate' ? 'Alternate Selected' : 'Best Match Selected' }}</span>
-                <small class="rh-alt-btn-change ms-2">(Change)</small>
               </ng-container>
               <ng-template #noDetailSelection>
                 <i class="fal fa-exchange-alt me-2" aria-hidden="true"></i> ALTERNATE

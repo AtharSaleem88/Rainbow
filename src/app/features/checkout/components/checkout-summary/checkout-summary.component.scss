@@ -21,6 +21,8 @@
   font-size: 1.15rem;
   font-weight: 600;
 }
+.rainbow-summary-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.rainbow-summary-heading-total { color: var(--rh-primary); font-size: .9rem; font-weight: 600; white-space: nowrap; }
 
 .rainbow-summary-items {
   max-height: 280px;
@@ -150,6 +152,21 @@
 .rainbow-checkout-summary { padding: 18px; }
 .rainbow-checkout-summary h2 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
 .rainbow-summary-items { margin-bottom: 10px; }
+.rainbow-summary-mobile { max-height: none; overflow: visible; }
+.rainbow-summary-item-hidden { display: none; }
+.rainbow-summary-show-all { display: block; margin: 8px auto 0; padding: 8px 12px; border: 1px solid #dce6f2; border-radius: 9px; background: #f2f9fd; color: #2e3192; font: 600 .75rem 'Poppins', sans-serif; cursor: pointer; }
+.rainbow-summary-dialog { position: fixed; width: min(480px, calc(100% - 28px)); max-width: none; max-height: min(85dvh, 700px); margin: auto; padding: 0; overflow: hidden; border: 1px solid #e1e7f1; border-radius: 18px; background: #fff; color: #17234a; box-shadow: 0 22px 65px rgba(15, 20, 48, .25); }
+.rainbow-summary-dialog[open] { display: flex; flex-direction: column; }
+.rainbow-summary-dialog::backdrop { background: rgba(18, 25, 51, .55); }
+.rainbow-summary-dialog-header { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-bottom: 1px solid #edf0f6; }
+.rainbow-summary-dialog-header h2 { margin: 0; color: #17234a; font-size: 1rem; font-weight: 600; }
+.rainbow-summary-dialog-header button { display: grid; width: 34px; height: 34px; place-items: center; border: 0; border-radius: 50%; background: #fff1f2; color: #dc2626; font-size: 21px; cursor: pointer; }
+.rainbow-summary-dialog-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 14px 18px 18px; }
+.rainbow-summary-dialog-body .rainbow-summary-items { max-height: none; overflow: visible; }
+.rainbow-summary-section-title { margin: 0 0 12px; color: #17234a; font-size: .84rem; font-weight: 600; }
+.rainbow-summary-section-title { margin-top: 18px; }
+.rainbow-summary-dialog-footer { display: flex; flex: 0 0 auto; justify-content: flex-end; padding: 12px 18px; border-top: 1px solid #edf0f6; }
+.rainbow-summary-dialog-footer button { min-height: 40px; padding: 0 22px; border: 0; border-radius: 9px; background: #2e3192; color: #fff; font: 600 .8rem 'Poppins', sans-serif; cursor: pointer; }
 .rainbow-summary-item { gap: 10px; padding: 8px 0; }
 .rainbow-summary-thumb { width: 46px; height: 46px; }
 .rainbow-summary-info strong { font-size: .8rem; font-weight: 550; }

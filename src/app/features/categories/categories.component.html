@@ -1,0 +1,25 @@
+<section class="categories-intro"><div class="container maxw_1460"><app-breadcrumbs [items]="breadcrumbs"></app-breadcrumbs></div></section>
+<main class="categories-page">
+  <div class="container maxw_1460">
+    <div class="categories-layout">
+      <nav class="categories-sidebar" aria-label="Departments">
+        <h2>Shop by Category</h2>
+        <button *ngFor="let category of categories" type="button" [class.is-active]="selectedSlug() === category.slug" [attr.aria-pressed]="selectedSlug() === category.slug" (click)="selectedSlug.set(category.slug)"><span>{{ category.name }}</span><i class="fal fa-chevron-right" aria-hidden="true"></i></button>
+      </nav>
+      <section *ngIf="selectedCategory() as category" class="categories-content">
+        <header class="categories-content-heading"><h2 class="categories-subcategory-title">Shop by Subcategory</h2><a routerLink="/shop" [queryParams]="{ category: category.slug, maxPrice: catalogMaxPrice }">Shop all <i class="fal fa-arrow-right" aria-hidden="true"></i></a></header>
+        <div *ngIf="subcategories().length; else noSubcategories" class="categories-grid">
+          <a *ngFor="let subcategory of subcategories(); let i = index" [routerLink]="['/shop']" [queryParams]="{ category: category.slug, subCategory: subcategory.name, maxPrice: catalogMaxPrice }" class="categories-item" [attr.aria-label]="'Shop ' + subcategory.name">
+            <span class="categories-image" [class.tone-pink]="i % 4 === 1" [class.tone-cream]="i % 4 === 2" [class.tone-green]="i % 4 === 3"><span *ngIf="subcategory.imagePosition; else standardImage" class="categories-sprite" [style.background-image]="'url(' + subcategory.image + ')'" [style.background-position]="subcategory.imagePosition" aria-hidden="true"></span><ng-template #standardImage><img [src]="subcategory.image || category.image" [alt]="subcategory.name" loading="lazy" decoding="async"></ng-template></span><span>{{ subcategory.name }}</span>
+          </a>
+        </div>
+        <ng-template #noSubcategories><div class="categories-empty"><span class="categories-empty-icon"><i class="fal fa-th-large" aria-hidden="true"></i></span><p>There are no subcategories to show here yet.</p><a routerLink="/shop" [queryParams]="{ category: category.slug, maxPrice: catalogMaxPrice }">Browse {{ category.name }} <i class="fal fa-arrow-right" aria-hidden="true"></i></a></div></ng-template>
+        <section *ngIf="categoryProducts().length" class="categories-products" aria-label="Department products">
+          <header class="categories-products-heading"><h3>Trending Products</h3><label><span>Sort by</span><select aria-label="Sort products" [value]="sort()" (change)="sort.set($any($event.target).value)"><option value="featured">Recommended</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option></select></label></header>
+          <div class="categories-products-grid"><app-product-card *ngFor="let product of featuredProducts()" [product]="product" [showSectionLabel]="false"></app-product-card></div>
+          <a class="categories-products-more" routerLink="/shop" [queryParams]="{ category: category.slug, maxPrice: catalogMaxPrice }">View all products <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+        </section>
+      </section>
+    </div>
+  </div>
+</main>

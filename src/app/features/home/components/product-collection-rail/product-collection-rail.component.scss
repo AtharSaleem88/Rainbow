@@ -48,6 +48,11 @@
 .rh-collection-title-row .gray_line { flex: 1 1 0; min-width: 0; }
 .rh-collection-see-all { position: absolute; right: 0; }
 .rh-collection-see-all-bottom { display: none; }
+@media (min-width: 768px) {
+  .rh-collection-title-row { padding-right: 0; padding-left: 0; }
+  .rh-collection-title-row .rh-collection-see-all { padding-left: 16px; background: #fff; }
+  .rh-product-collection-tint .rh-collection-see-all { background: #f5f9fc; }
+}
 @media (max-width: 767px) {
   .rh-product-collection-mobile-grid .rh-collection-title-row { padding: 0; gap: 10px; }
   .rh-product-collection-mobile-grid .rh-collection-title-row h2 { flex: 0 1 auto; font-size: clamp(.85rem, 3.5vw, 1.15rem); text-align: center; }

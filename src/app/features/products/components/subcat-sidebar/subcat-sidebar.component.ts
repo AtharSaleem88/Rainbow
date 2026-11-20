@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 export interface SubCategoryItem {
   name: string;
   image?: string;
+  imagePosition?: string;
   icon?: string;
 }
 

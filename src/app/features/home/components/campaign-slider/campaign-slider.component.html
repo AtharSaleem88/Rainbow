@@ -13,5 +13,12 @@
         </a>
       </div>
     </div>
+    <div *ngIf="banners.length > 1" class="rh-campaign-dots" aria-label="Choose a featured campaign">
+      <button *ngFor="let banner of banners; let i = index" type="button"
+        [class.active]="activeCampaignIndex() === i"
+        [attr.aria-label]="'Show ' + banner.title"
+        [attr.aria-current]="activeCampaignIndex() === i ? 'true' : null"
+        (click)="selectCampaignBanner(i)"></button>
+    </div>
   </div>
 </section>

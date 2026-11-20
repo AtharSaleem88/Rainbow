@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ElementRef, HostListener, ViewC
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Category, Product } from '../../../../core/models/product.model';
+import { GROCERY_SECTIONS } from '../../../../core/models/grocery-categories';
 
 @Component({
   selector: 'app-shop-filters',
@@ -60,14 +61,24 @@ export class ShopFiltersComponent {
   tempBrand = '';
 
   @Input() monthlyMode = false;
+  @Input() brandLocked = false;
+  @Input() allPricesMax = 0;
   @Input() categories: Category[] = [];
   @Input() dealProducts: Product[] = [];
   @Input() selectedCategory = '';
   @Input() selectedSubCategory = '';
   @Output() categoryChanged = new EventEmitter<string>();
   @Output() subCategoryChanged = new EventEmitter<string>();
-  get mobileDealSubCategories(): string[] { return [...new Set(this.dealProducts.filter(p => !this.tempCategory || p.categorySlug === this.tempCategory).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
-  get mobileDealBrands(): string[] { return [...new Set(this.dealProducts.filter(p => (!this.tempCategory || p.categorySlug === this.tempCategory) && (!this.tempSubCategory || p.subCategory === this.tempSubCategory)).map(p => p.brand))].sort(); }
+  get mobileDealSubCategories(): string[] { if (this.tempCategory === 'grocery') return GROCERY_SECTIONS.map(section => section.name); return [...new Set(this.dealProducts.filter(p => !this.tempCategory || p.categorySlug === this.tempCategory).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
+  get mobileDealBrands(): string[] {
+    const section = this.tempCategory === 'grocery' ? GROCERY_SECTIONS.find(item => item.name === this.tempSubCategory) : undefined;
+    const grocerySlugs = new Set(['grocery', ...GROCERY_SECTIONS.map(item => item.categorySlug)]);
+    return [...new Set(this.dealProducts.filter(product => {
+      if (section) return product.categorySlug === section.categorySlug && (!section.productSubCategories || section.productSubCategories.includes(product.subCategory ?? ''));
+      const categoryMatches = !this.tempCategory || (this.tempCategory === 'grocery' ? grocerySlugs.has(product.categorySlug) : product.categorySlug === this.tempCategory);
+      return categoryMatches && (!this.tempSubCategory || product.subCategory === this.tempSubCategory);
+    }).map(product => product.brand))].sort();
+  }
 
   @Input() selectedBrand = '';
   @Input() minPrice = 0;
@@ -86,12 +97,14 @@ export class ShopFiltersComponent {
     return this.sortOptions.find(option => option.value === this.selectedSort)?.label ?? 'Recommended';
   }
 
+  get defaultMaxPrice(): number { return this.monthlyMode ? this.allPricesMax : 1000; }
+
   get activeMobileFilterCount(): number {
     let count = 0;
     if (this.selectedSort && this.selectedSort !== 'featured') count++;
-    if (this.minPrice > 0 || (this.monthlyMode ? this.maxPrice > 0 : this.maxPrice !== 1000)) count++;
+    if (this.minPrice > 0 || this.maxPrice !== this.defaultMaxPrice) count++;
     if (this.selectedSubSubCategory) count++;
-    if (this.monthlyMode) { if (this.selectedCategory) count++; if (this.selectedSubCategory) count++; if (this.selectedBrand) count++; }
+    if (this.monthlyMode) { if (this.selectedCategory) count++; if (this.selectedSubCategory) count++; if (this.selectedBrand && !this.brandLocked) count++; }
     return count;
   }
 
@@ -175,12 +188,12 @@ export class ShopFiltersComponent {
 
   resetTempFilters(): void {
     this.tempMinPrice = 0;
-    this.tempMaxPrice = this.monthlyMode ? 0 : 1000;
+    this.tempMaxPrice = this.defaultMaxPrice;
     this.tempSelectedSort = 'featured';
     this.tempSelectedSubSubCategory = '';
     this.tempCategory = '';
     this.tempSubCategory = '';
-    this.tempBrand = '';
+    this.tempBrand = this.brandLocked ? this.selectedBrand : '';
   }
 
   @HostListener('document:click', ['$event'])

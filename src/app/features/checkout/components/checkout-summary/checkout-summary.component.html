@@ -1,9 +1,32 @@
 <section class="rainbow-checkout-summary">
-  <h2>Order Summary ({{ cartCount }} {{ cartCount === 1 ? 'item' : 'items' }})</h2>
+  <div class="rainbow-summary-heading">
+    <h2>Order Summary ({{ cartCount }} {{ cartCount === 1 ? 'item' : 'items' }})</h2>
+    <strong *ngIf="mobilePreview" class="rainbow-summary-heading-total">Rs. {{ payment.payable | number:'1.0-2' }}</strong>
+  </div>
 
-  <!-- Items List Snapshot -->
-  <div class="rainbow-summary-items">
-    <div class="rainbow-summary-item" *ngFor="let item of items; trackBy: trackByCartItem">
+  <ng-container [ngTemplateOutlet]="summaryItems" [ngTemplateOutletContext]="{ preview: mobilePreview }"></ng-container>
+  <ng-container *ngIf="mobilePreview">
+    <button type="button" class="rainbow-summary-show-all" (click)="summaryDialog.showModal()" aria-haspopup="dialog">View details</button>
+    <dialog #summaryDialog class="rainbow-summary-dialog" aria-labelledby="mobile-summary-title" (click)="$event.target === summaryDialog && summaryDialog.close()">
+      <header class="rainbow-summary-dialog-header"><h2 id="mobile-summary-title">Order Summary ({{ cartCount }} {{ cartCount === 1 ? 'item' : 'items' }})</h2><button type="button" aria-label="Close order summary" (click)="summaryDialog.close()">&times;</button></header>
+      <div class="rainbow-summary-dialog-body">
+        <ng-container [ngTemplateOutlet]="summaryItems" [ngTemplateOutletContext]="{ preview: false }"></ng-container>
+        <h3 class="rainbow-summary-section-title">Payment breakdown</h3>
+        <ng-container [ngTemplateOutlet]="billDetails"></ng-container>
+      </div>
+      <footer class="rainbow-summary-dialog-footer"><button type="button" (click)="summaryDialog.close()">Done</button></footer>
+    </dialog>
+  </ng-container>
+  <ng-container *ngIf="!mobilePreview" [ngTemplateOutlet]="billDetails"></ng-container>
+  <div *ngIf="!mobilePreview" class="rainbow-checkout-trust">
+    <p *ngIf="!isMember"><a routerLink="/login">Sign in</a> to earn loyalty points on this order.</p>
+    <p><i class="fal fa-shield-check"></i> Safe &amp; Encrypted Checkout</p>
+  </div>
+</section>
+
+<ng-template #summaryItems let-preview="preview">
+  <div class="rainbow-summary-items" [class.rainbow-summary-mobile]="preview">
+    <div class="rainbow-summary-item" *ngFor="let item of items; let i = index; trackBy: trackByCartItem" [class.rainbow-summary-item-hidden]="preview && i >= 3">
       <div class="rainbow-summary-thumb">
         <img [src]="item.product.image" [alt]="item.product.title">
         <span class="rainbow-summary-qty">{{ item.quantity }}</span>
@@ -24,8 +47,10 @@
       </div>
     </div>
   </div>
+</ng-template>
 
   <!-- Bill Details -->
+<ng-template #billDetails>
   <div class="rainbow-summary-bill">
     <div class="rainbow-summary-row">
       <span>Items Subtotal</span>
@@ -60,9 +85,4 @@
       <strong aria-live="polite">Rs. {{ payment.payable | number:'1.0-2' }}</strong>
     </div>
   </div>
-
-  <div class="rainbow-checkout-trust">
-    <p *ngIf="!isMember"><a routerLink="/login">Sign in</a> to earn loyalty points on this order.</p>
-    <p><i class="fal fa-shield-check"></i> Safe & Encrypted Checkout</p>
-  </div>
-</section>
+</ng-template>

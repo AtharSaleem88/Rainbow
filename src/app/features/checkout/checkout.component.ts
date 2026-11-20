@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal, OnInit, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, signal, OnInit, OnDestroy, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -18,22 +18,26 @@ import { CheckoutSummaryComponent } from './components/checkout-summary/checkout
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, OnDestroy {
+  private receiptCompletionTimer?: ReturnType<typeof setTimeout>;
   @ViewChild('branchControl') branchControl?: ElementRef<HTMLElement>;
   @ViewChild('receiptThanksDialog') receiptThanksDialog?: ElementRef<HTMLDialogElement>;
   @ViewChild('receiptPaper') set receiptPaper(ref: ElementRef<HTMLElement> | undefined) {
     if (!ref || typeof window === 'undefined') return;
     requestAnimationFrame(() => {
       if (this.currentStep() !== 3 || !ref.nativeElement.isConnected) return;
+      const height = ref.nativeElement.scrollHeight;
+      this.receiptHeight.set(height);
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         this.showReceiptThanks();
         return;
       }
-      const height = ref.nativeElement.getBoundingClientRect().height;
       if (!height) { this.showReceiptThanks(); return; }
-      this.receiptHeight.set(Math.ceil(height));
       this.receiptDuration.set(Math.min(5, Math.max(2.5, height / 220)));
       this.receiptState.set('printing');
+      this.receiptCompletionTimer = setTimeout(() => {
+        if (this.currentStep() === 3 && this.receiptState() === 'printing') this.showReceiptThanks();
+      }, this.receiptDuration() * 1000 + 250);
     });
   }
 
@@ -41,9 +45,11 @@ export class CheckoutComponent implements OnInit {
   readonly receiptHeight = signal(0);
   readonly receiptDuration = signal(2.5);
   finishReceiptPrint(event: AnimationEvent): void {
-    if (event.animationName === 'rainbow-receipt-feed') this.showReceiptThanks();
+    if (event.target === event.currentTarget && event.animationName.endsWith('rainbow-receipt-feed')) this.showReceiptThanks();
   }
   private showReceiptThanks(): void {
+    if (this.receiptState() === 'printed') return;
+    if (this.receiptCompletionTimer) clearTimeout(this.receiptCompletionTimer);
     this.receiptState.set('printed');
     requestAnimationFrame(() => {
       const dialog = this.receiptThanksDialog?.nativeElement;
@@ -51,6 +57,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
   closeReceiptThanks(): void { this.receiptThanksDialog?.nativeElement.close(); }
+  ngOnDestroy(): void { if (this.receiptCompletionTimer) clearTimeout(this.receiptCompletionTimer); }
 
 
   readonly branches = APP_CONFIG.branches;
@@ -144,7 +151,6 @@ export class CheckoutComponent implements OnInit {
   easypaisaPhone = '';
   cardDetails = { holder: '', number: '', expiry: '', cvv: '' };
   readonly isOrderPlaced = signal<boolean>(false);
-  readonly isMobileSummaryOpen = signal<boolean>(false);
   readonly generatedOrderNumber = signal<string>('RH-' + Math.floor(100000 + Math.random() * 900000));
   
   // Checkout Items Snapshot
@@ -251,7 +257,6 @@ export class CheckoutComponent implements OnInit {
 
   editDeliveryAddress(): void {
     this.currentStep.set(1);
-    this.isMobileSummaryOpen.set(false);
     setTimeout(() => {
       const field = document.getElementById('address');
       field?.scrollIntoView({ behavior: 'smooth', block: 'center' });

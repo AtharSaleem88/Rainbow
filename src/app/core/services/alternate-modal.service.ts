@@ -97,27 +97,19 @@ export class AlternateModalService {
     const choice = this.currentChoice();
     let selection: AlternateSelection;
 
-    // Check if there was a previous selection for this product in cart
-    const previous = this.productSelections()[orig.id];
-    if (previous?.type === 'alternate' && previous.alternateProduct) {
-      this.cartService.removeFromCart(previous.alternateProduct.id);
-    } else if (previous?.type === 'best-match') {
-      this.cartService.removeFromCart(orig.id);
-    }
-
     if (choice === 'alternate') {
-      const chosenAlt = this.alternateProducts().find(p => p.id === this.selectedAlternateProductId())
-        || this.alternateProducts()[0];
-      if (chosenAlt) {
-        selection = { type: 'alternate', alternateProduct: chosenAlt };
-        this.cartService.addToCart(chosenAlt, 1);
-      } else {
-        selection = { type: 'best-match' };
-      this.cartService.addToCart(orig, 1, undefined, 'best-match');
-      }
+      const chosenAlt = this.alternateProducts().find(p => p.id === this.selectedAlternateProductId() && p.inStock);
+      if (!chosenAlt) return;
+      selection = { type: 'alternate', alternateProduct: chosenAlt };
+      this.cartService.replaceUnavailableWith(orig.id, chosenAlt);
     } else {
       selection = { type: 'best-match' };
-      this.cartService.addToCart(orig, 1, undefined, 'best-match');
+      const existing = this.cartService.cartItems().filter(item => item.product.id === orig.id && !item.product.inStock);
+      if (existing.length) {
+        existing.forEach(item => this.cartService.saveOutOfStockInstruction(orig.id, 'best-match', [], item.variant?.id));
+      } else {
+        this.cartService.addToCart(orig, 1, undefined, 'best-match');
+      }
     }
 
     // Save selection

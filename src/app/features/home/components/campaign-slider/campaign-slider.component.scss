@@ -12,13 +12,14 @@
 @keyframes rh-campaign-card-in { from { opacity: .72; } to { opacity: 1; } }
 @keyframes rh-campaign-sheen { 0%, 72%, 100% { transform: skewX(-18deg) translateX(-160%); } 88% { transform: skewX(-18deg) translateX(520%); } }
 @keyframes rh-campaign-badge-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-.rh-campaign-dots { display: flex; justify-content: center; gap: 9px; padding-top: 13px; }
+.rh-campaign-dots { display: none; justify-content: center; gap: 9px; padding-top: 13px; }
 .rh-campaign-dots button { position: relative; width: 9px; height: 9px; padding: 0; overflow: hidden; border: 0; border-radius: 999px; background: #c5cadb; cursor: pointer; transition: width 180ms ease, background-color 180ms ease; }
-.rh-campaign-dots button.active { width: 30px; background: rgba(45,44,146,.2); }
+.rh-campaign-dots button.active { width: 24px; background: var(--rh-primary); }
 .rh-campaign-progress { position: absolute; inset: 0; border-radius: inherit; background: var(--rh-primary); transform: scaleX(0); transform-origin: left center; }
 .rh-campaign-dots button.active .rh-campaign-progress { animation: rh-campaign-progress 6s linear both; }
 @keyframes rh-campaign-progress { to { transform: scaleX(1); } }
 @media (max-width: 767px) {
+  .rh-campaign-dots { display: flex; }
   .rh-campaign-inner { width: calc(100% - 28px); }
   .rh-campaign-track { grid-template-columns: minmax(0, 1fr); }
   .rh-campaign-banner:not(:first-child) { display: none; }

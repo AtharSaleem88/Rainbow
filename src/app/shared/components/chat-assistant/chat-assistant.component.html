@@ -1,14 +1,12 @@
 <section class="assistant-page" aria-labelledby="assistant-title">
-  <header class="assistant-header"><span>RAINBOW ASSISTANT</span><button *ngIf="messages().length" type="button" (click)="newConversation()"><i class="fal fa-plus" aria-hidden="true"></i> New conversation</button></header>
+  <header class="assistant-header"><h2 id="assistant-title">Rainbow Assistant</h2></header>
   <div class="assistant-content">
-    <div *ngIf="!messages().length" class="assistant-welcome">
-      <div class="assistant-mark" aria-hidden="true"><span class="assistant-mark-ring"></span><i class="fal fa-comment-alt"></i><span class="assistant-sparkle">✦</span></div>
+    <div class="assistant-welcome">
+      <div class="assistant-mark" aria-hidden="true"><img src="assets/images/logo/rainbow-cloud-hd.png" alt=""></div>
       <p>Hello, {{ firstName }}</p>
-      <h2 id="assistant-title">How can I help you today?</h2>
-      <span class="assistant-intro">Ask about your orders, shopping, or anything else.</span>
+      <h3>How can we help today?</h3>
     </div>
-    <div *ngIf="messages().length" #chatHistory class="assistant-history" aria-live="polite" aria-label="Conversation">
-      <h2 id="assistant-title" class="assistant-history-title">Your conversation</h2>
+    <div *ngIf="messages().length" class="assistant-history" aria-live="polite" aria-label="Questions and answers">
       <div *ngFor="let message of messages()" class="assistant-message" [class.is-customer]="message.from === 'customer'">
         <span class="assistant-message-label">{{ message.from === 'customer' ? 'You' : 'Rainbow Assistant' }}</span>
         <p>{{ message.text }}</p>
@@ -20,13 +18,12 @@
     <form class="assistant-compose" (ngSubmit)="send(draft)">
       <label for="assistant-question" class="assistant-visually-hidden">Ask Rainbow Assistant</label>
       <textarea id="assistant-question" name="message" [(ngModel)]="draft" rows="2" placeholder="Ask me about your order or shopping..."></textarea>
-      <div class="assistant-compose-footer"><span><i class="fal fa-comment-alt" aria-hidden="true"></i> Rainbow Assistant</span><button type="submit" [disabled]="!draft.trim()" aria-label="Send message"><i class="fal fa-arrow-right" aria-hidden="true"></i></button></div>
+      <div class="assistant-compose-footer"><span class="assistant-compose-brand"><img src="assets/images/logo/rainbow-cloud-hd.png" alt=""> Rainbow Assistant</span><button type="submit" [disabled]="!draft.trim()" aria-label="Send message"><i class="fal fa-arrow-right" aria-hidden="true"></i></button></div>
     </form>
     <div class="assistant-suggestions" aria-label="Suggested questions">
-      <button type="button" (click)="send('Track my order')"><span class="assistant-suggestion-icon"><i class="fal fa-box" aria-hidden="true"></i></span><strong>Track my order</strong><small>Find your order status</small></button>
-      <button type="button" (click)="send('How do I place an order?')"><span class="assistant-suggestion-icon assistant-icon-shop"><i class="fal fa-shopping-bag" aria-hidden="true"></i></span><strong>Place an order</strong><small>Get started with shopping</small></button>
-      <button type="button" (click)="send('Other questions')"><span class="assistant-suggestion-icon assistant-icon-help"><i class="fal fa-headset" aria-hidden="true"></i></span><strong>Other questions</strong><small>Contact the Rainbow team</small></button>
+      <button type="button" (click)="send('Track my order')"><span class="assistant-suggestion-icon"><i class="fal fa-box" aria-hidden="true"></i></span><strong>Track my order</strong></button>
+      <button type="button" (click)="send('How do I place an order?')"><span class="assistant-suggestion-icon assistant-icon-shop"><i class="fal fa-shopping-bag" aria-hidden="true"></i></span><strong>Place an order</strong></button>
+      <button type="button" (click)="send('Other questions')"><span class="assistant-suggestion-icon assistant-icon-help"><i class="fal fa-headset" aria-hidden="true"></i></span><strong>Other questions</strong></button>
     </div>
-    <p class="assistant-disclaimer">Demo assistant · Responses are guided. For live help, contact our team.</p>
   </div>
 </section>
