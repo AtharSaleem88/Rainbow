@@ -47,3 +47,10 @@
 .rh-brand-arrow { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid #dbe5f0; border-radius: 50%; background: #fff; color: #2e3192; box-shadow: 0 4px 14px rgba(23,35,74,.08); cursor: pointer; }
 .rh-brand-arrow:focus-visible { outline: 2px solid #2e3192; outline-offset: 2px; }
 @media (max-width: 767px) { .rh-brand-controls { gap: 4px; padding-left: 5px; } .rh-brand-arrow { width: 28px; height: 28px; font-size: 11px; } }
+
+@media (max-width: 767px) {
+  .rh-brands-track-wrap { container-type: inline-size; scroll-padding-inline: 12px; scroll-snap-type: x mandatory; }
+  .rh-brands-track { box-sizing: border-box; padding-inline: 12px; }
+  .rh-brands-set { gap: 10px; }
+  .rh-brands-track-wrap .rh-brand-item { box-sizing: border-box; width: calc((100cqw - 44px) / 3); }
+}

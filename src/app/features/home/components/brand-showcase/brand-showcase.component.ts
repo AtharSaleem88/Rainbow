@@ -39,7 +39,7 @@ export class BrandShowcaseComponent implements AfterViewInit, OnDestroy {
       if (!track || this.pointerInside || this.focusInside || document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       const maxScroll = track.scrollWidth - track.clientWidth;
       if (maxScroll <= 1) return;
-      const next = track.scrollLeft >= maxScroll - 2 ? 0 : Math.min(maxScroll, track.scrollLeft + track.clientWidth * .75);
+      const next = track.scrollLeft >= maxScroll - 2 ? 0 : Math.min(maxScroll, track.scrollLeft + this.scrollStep(track));
       track.scrollTo({ left: next, behavior: 'smooth' });
     }, 5000);
   }
@@ -78,13 +78,22 @@ export class BrandShowcaseComponent implements AfterViewInit, OnDestroy {
     if (!track) return;
     const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
     if (!maxScroll) return;
-    const step = Math.max(1, track.clientWidth * .75);
+    const step = this.scrollStep(track);
     const target = direction > 0
       ? (track.scrollLeft >= maxScroll - 2 ? 0 : Math.min(maxScroll, track.scrollLeft + step))
       : (track.scrollLeft <= 2 ? maxScroll : Math.max(0, track.scrollLeft - step));
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     track.scrollTo({ left: target, behavior: reducedMotion ? 'auto' : 'smooth' });
     this.startAutoScroll();
+  }
+
+  private scrollStep(track: HTMLElement): number {
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      const card = track.querySelector<HTMLElement>('.rh-brand-item');
+      const set = track.querySelector<HTMLElement>('.rh-brands-set');
+      if (card && set) return 3 * (card.getBoundingClientRect().width + (parseFloat(getComputedStyle(set).gap) || 0));
+    }
+    return Math.max(1, track.clientWidth * .75);
   }
 
   private normalizeBrand(value: string): string {
