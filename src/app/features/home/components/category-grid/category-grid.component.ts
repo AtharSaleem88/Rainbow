@@ -16,6 +16,7 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
   readonly trackCategory = (_index: number, category: Category) => category.id;
   readonly categoryHasOverflow = signal(false);
   activeCategoryPageIndex = signal<number>(0);
+  categoryPages = signal<number[]>([0, 1, 2]);
 
   @ViewChild('categoryGrid') categoryGrid?: ElementRef<HTMLElement>;
   private categoryResizeObserver?: ResizeObserver;
@@ -49,7 +50,7 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
 
   onCategoryGridKeydown(event: KeyboardEvent): void {
     if (event.target !== event.currentTarget || !this.categoryHasOverflow()) return;
-    const page = event.key === 'Home' ? 0 : event.key === 'End' ? 2
+    const page = event.key === 'Home' ? 0 : event.key === 'End' ? this.categoryPages().length - 1
       : event.key === 'ArrowLeft' ? this.activeCategoryPageIndex() - 1
       : event.key === 'ArrowRight' ? this.activeCategoryPageIndex() + 1 : null;
     if (page === null) return;
@@ -60,9 +61,17 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
   scrollToCategoryPage(pageIndex: number): void {
     if (this.categoryGrid?.nativeElement) {
       const maxScroll = Math.max(0, this.categoryGrid.nativeElement.scrollWidth - this.categoryGrid.nativeElement.clientWidth);
-      const page = Math.min(2, Math.max(0, pageIndex));
+      const page = Math.min(this.categoryPages().length - 1, Math.max(0, pageIndex));
       const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-      this.categoryGrid.nativeElement.scrollTo({ left: (page / 2) * maxScroll, behavior });
+      let target = maxScroll * page / 2;
+      if (page === 1 && window.matchMedia('(max-width: 767px)').matches) {
+        const item = this.categoryGrid.nativeElement.querySelector<HTMLElement>('.rh-category-item');
+        if (item) {
+          const step = item.getBoundingClientRect().width + (parseFloat(getComputedStyle(this.categoryGrid.nativeElement).gap) || 0);
+          if (step > 0) target = Math.min(maxScroll, Math.round(target / step) * step);
+        }
+      }
+      this.categoryGrid.nativeElement.scrollTo({ left: target, behavior });
     }
   }
 
@@ -85,7 +94,7 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
       const maxScroll = Math.max(0, grid.scrollWidth - grid.clientWidth);
       if (maxScroll < 2) return;
       const currentPage = this.activeCategoryPageIndex();
-      this.scrollToCategoryPage(currentPage >= 2 ? 0 : currentPage + 1);
+      this.scrollToCategoryPage(currentPage >= this.categoryPages().length - 1 ? 0 : currentPage + 1);
     }, 5000);
   }
 

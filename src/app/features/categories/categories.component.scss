@@ -1,5 +1,5 @@
 :host { display: block; }
-.categories-intro { margin-top: 12px; padding: 6px 0; background: linear-gradient(120deg, #f4f7ff, #edf7fc); border-bottom: 1px solid #e1e9f3; }
+.categories-intro { margin-top: 0; padding: 6px 0; background: linear-gradient(120deg, #f4f7ff, #edf7fc); border-bottom: 1px solid #e1e9f3; }
 .categories-page { min-height: 55vh; padding: 28px 0 48px; background: #f8f9fc; color: #17234a; }
 .categories-layout { display: grid; grid-template-columns: minmax(210px, 275px) minmax(0, 1fr); align-items: stretch; overflow: hidden; border: 1px solid #e4eaf2; border-radius: 18px; background: #fff; box-shadow: 0 8px 28px rgba(33,42,90,.04); }
 .categories-sidebar { display: flex; min-width: 0; flex-direction: column; gap: 3px; padding: 20px 12px; border-right: 1px solid #edf0f6; }

@@ -20,12 +20,21 @@
   width: 100%;
 }
 
+.rainbow-checkout-choice { max-width: 460px; margin: 28px auto 48px; padding: 32px; border: 1px solid #e1e8f1; border-radius: 20px; background: #fff; box-shadow: 0 12px 35px rgba(35, 48, 92, .06); text-align: center; }
+.rainbow-checkout-choice-icon { display: inline-grid; width: 48px; height: 48px; place-items: center; margin-bottom: 16px; border-radius: 15px; background: #eaf7fc; color: #2e3192; font-size: 20px; }
+.rainbow-checkout-choice h1 { margin: 0 0 10px; color: #17234a; font-size: 1.2rem; font-weight: 600; }
+.rainbow-checkout-choice p { margin: 0; color: #65738a; font-size: .82rem; line-height: 1.6; }
+.rainbow-checkout-choice-actions { display: grid; gap: 10px; margin-top: 22px; }
+.rainbow-checkout-choice-actions .rainbow-checkout-primary, .rainbow-checkout-choice-actions .rainbow-btn-secondary { width: 100%; justify-content: center; }
+.rainbow-checkout-choice .rainbow-checkout-choice-note { margin-top: 16px; font-size: .7rem; }
+@media (max-width: 767px) { .rainbow-checkout-choice { margin: 8px auto 30px; padding: 24px 18px; } }
+
 .rainbow-checkout-header {
   display: flex;
-  min-height: 52px;
+  min-height: 36px;
   align-items: center;
   gap: 16px;
-  margin-bottom: 22px;
+  margin-bottom: 12px;
 }
 
 .rainbow-checkout-header h1 {

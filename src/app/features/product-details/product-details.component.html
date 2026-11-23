@@ -1,16 +1,20 @@
 <!-- Product Details Page -->
-<section class="rh-details-page" *ngIf="product() as p">
-  <div class="container rh-details-container">
+<ng-container *ngIf="product() as p">
+  <div class="rh-details-breadcrumb-bar"><div class="container maxw_1460">
     <!-- Breadcrumbs -->
     <nav class="rh-details-breadcrumb" aria-label="Breadcrumb">
+      <button type="button" class="rh-details-back" (click)="navigationHistory.back()" aria-label="Go to previous page"><i class="fal fa-arrow-left" aria-hidden="true"></i></button>
       <a routerLink="/">Home</a>
       <i class="fal fa-angle-right"></i>
-      <a routerLink="/shop">Shop</a>
+      <a routerLink="/categories">Shop</a>
       <i class="fal fa-angle-right"></i>
       <a [routerLink]="['/shop']" [queryParams]="{category: p.categorySlug}">{{ p.category }}</a>
       <i class="fal fa-angle-right"></i>
       <strong>{{ p.title }}</strong>
     </nav>
+  </div></div>
+<section class="rh-details-page">
+  <div class="container rh-details-container">
 
     <!-- Main Details Layout -->
     <div class="rh-details-layout">
@@ -175,3 +179,4 @@
 
   </div>
 </section>
+</ng-container>

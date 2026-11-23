@@ -37,7 +37,7 @@
         </a>
       </div>
       <div *ngIf="categoryHasOverflow()" class="rh-category-dots" role="group" aria-label="Category pages">
-        <button *ngFor="let page of [0, 1, 2]" type="button" [class.active]="activeCategoryPageIndex() === page" [attr.aria-label]="'Show category page ' + (page + 1)" [attr.aria-current]="activeCategoryPageIndex() === page ? 'true' : null" aria-controls="home-category-grid" (click)="scrollToCategoryPage(page)"></button>
+        <button *ngFor="let page of categoryPages()" type="button" [class.active]="activeCategoryPageIndex() === page" [attr.aria-label]="'Show category page ' + (page + 1)" [attr.aria-current]="activeCategoryPageIndex() === page ? 'true' : null" aria-controls="home-category-grid" (click)="scrollToCategoryPage(page)"></button>
       </div>
     </div>
     <a routerLink="/categories" class="rh-category-view-all-bottom">VIEW ALL <i class="fal fa-arrow-right" aria-hidden="true"></i></a>

@@ -5,6 +5,7 @@ import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { AlternateModalService } from '../../core/services/alternate-modal.service';
 import { SeoService } from '../../core/services/seo.service';
+import { NavigationHistoryService } from '../../core/services/navigation-history.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { CartItem, Product, ProductVariant } from '../../core/models/product.model';
 
@@ -16,6 +17,7 @@ import { CartItem, Product, ProductVariant } from '../../core/models/product.mod
   styleUrls: ['./product-details.component.scss']
 })
 export class ProductDetailsComponent implements OnInit {
+  readonly navigationHistory = inject(NavigationHistoryService);
   productService = inject(ProductService);
   cartService = inject(CartService);
   alternateModalService = inject(AlternateModalService);

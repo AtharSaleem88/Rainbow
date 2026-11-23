@@ -238,12 +238,12 @@
 @media (max-width: 767px) { .rh-deals-book { width: 166px; height: 220px; } .rh-book-sheet, .rh-book-back { padding: 8px; } .rh-book-product img { height: 43px; } .rh-book-product strong { font-size: 7px; } .rh-book-product span { font-size: 8px; } }
 @media (prefers-reduced-motion: reduce) { .rh-deals-book { transform: none; } .rh-book-sheet-first { transform: none; } }
 
-.rh-deals-book { animation: rh-book-cycle 24s ease-in-out infinite; }
+.rh-deals-book { animation: rh-book-cycle 20s ease-in-out infinite; }
 .rh-book-spread { background: transparent; }
-.rh-deals-book-cover { animation: rh-book-cover-forward 24s ease-in-out infinite; }
-.rh-book-sheet-first { animation: rh-book-page-forward 24s ease-in-out infinite; }
-.rh-book-sheet-second { animation: rh-book-final-page 24s ease-in-out infinite; }
-.rh-book-back-cover { position: absolute; z-index: 0; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; box-sizing: border-box; border: 7px solid #c4eafa; border-radius: 12px 18px 18px 12px; background: #d7f2fc; box-shadow: 0 4px 0 #a8d5eb, 0 12px 25px rgba(9, 13, 58, .18); transform-origin: 7px center; transform-style: preserve-3d; backface-visibility: visible; animation: rh-book-close-back 24s ease-in-out infinite; }
+.rh-deals-book-cover { animation: rh-book-cover-forward 20s ease-in-out infinite; }
+.rh-book-sheet-first { animation: rh-book-page-forward 20s ease-in-out infinite; }
+.rh-book-sheet-second { animation: rh-book-final-page 20s ease-in-out infinite; }
+.rh-book-back-cover { position: absolute; z-index: 0; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; box-sizing: border-box; border: 7px solid #c4eafa; border-radius: 12px 18px 18px 12px; background: #d7f2fc; box-shadow: 0 4px 0 #a8d5eb, 0 12px 25px rgba(9, 13, 58, .18); transform-origin: 7px center; transform-style: preserve-3d; backface-visibility: visible; animation: rh-book-close-back 20s ease-in-out infinite; }
 .rh-book-closing-products { position: absolute; inset: 0; padding: 13px 17px; border-radius: inherit; background: #fff; backface-visibility: hidden; }
 .rh-book-back-cover > .rh-book-back-logo, .rh-book-back-cover > .rh-book-back-caption { transform: rotateY(180deg) translateZ(2px); backface-visibility: hidden; }
 .rh-book-back-cover > .rh-book-back-logo { width: 115px; max-width: 75%; height: 65px; object-fit: contain; }
@@ -264,4 +264,9 @@
 @keyframes rh-book-page-forward { 0%, 34% { transform: rotateY(0); } 46%, 93% { transform: rotateY(-180deg); } 96%, 100% { transform: rotateY(0); } }
 @keyframes rh-book-final-page { 0%, 75% { opacity: 1; transform: rotateY(0); } 76%, 93% { opacity: 0; transform: rotateY(0); } 96%, 100% { opacity: 1; transform: rotateY(0); } }
 @keyframes rh-book-close-back { 0%, 69% { transform: rotateY(0); z-index: 0; } 70% { transform: rotateY(0); z-index: 4; } 81%, 93% { transform: rotateY(-180deg); z-index: 4; } 96%, 100% { transform: rotateY(0); z-index: 0; } }
-@media (prefers-reduced-motion: reduce) { .rh-deals-book, .rh-deals-book-cover, .rh-book-sheet, .rh-book-back-cover { animation: none; } .rh-book-sheet-second, .rh-book-back-cover { display: none; } }
+@media (max-width: 767px) {
+  .rh-monthly-banner { gap: 20px; padding-bottom: 26px; }
+  .rh-monthly-banner-visual { container-type: inline-size; min-height: 220px; }
+  .rh-deals-book { width: min(166px, calc((100cqw - 24px) / 2)); height: auto; aspect-ratio: 208 / 276; transform: translateX(50%) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) { .rh-deals-book, .rh-deals-book-cover, .rh-book-sheet, .rh-book-back-cover { animation: none; } .rh-deals-book { transform: none; } .rh-book-sheet-second, .rh-book-back-cover { display: none; } }

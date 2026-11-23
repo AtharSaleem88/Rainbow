@@ -95,7 +95,7 @@ export class ShopComponent implements OnInit {
   get breadcrumbs(): BreadcrumbItem[] {
     return [
       { label: 'Home', url: '/' },
-      { label: 'Shop', url: '/shop' },
+      { label: 'Shop' },
       { label: this.cocaColaStore() ? 'Coca-Cola' : this.categoryName }
     ];
   }

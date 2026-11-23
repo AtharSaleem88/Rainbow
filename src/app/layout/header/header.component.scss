@@ -871,3 +871,36 @@
 .rh-scanner-body small { color: #687793; font-size: .7rem; }
 .rh-scanner-video { display: none; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; background: #17234a; }
 .rh-scanner-video.is-ready { display: block; }
+
+/* Keep search visible at rest and use the same icon scale in both headers. */
+.rh-hdr-search .rh-search-wrap,
+.rh-mobile-row-2 .rh-search-wrap {
+  border: 1px solid #9ecfe7;
+  background: #f1faff;
+  box-shadow: 0 2px 8px rgba(37, 170, 225, .1);
+}
+.rh-hdr-search .rh-search-wrap:focus-within,
+.rh-mobile-row-2 .rh-search-wrap:focus-within {
+  border-color: #25aae1;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 170, 225, .18);
+}
+.rh-hdr-search .rh-search-icon,
+.rh-mobile-row-2 .rh-search-icon,
+.rh-mobile-scan-btn svg { width: 18px; height: 18px; color: #2e3192; }
+.rh-hdr-delivering .rh-hdr-pill-icon,
+.rh-hdr-actions .rh-hdr-pill-icon,
+.rh-mobile-account > i,
+.rh-mobile-actions .cart_btn .rh-hdr-pill-icon,
+.rh-mobile-location-pill .rh-hdr-pill-icon { font-size: 18px; line-height: 1; }
+
+.rh-hdr-delivering .rh-hdr-pill,
+.rh-mobile-location-pill {
+  box-sizing: border-box;
+  min-height: 44px;
+  background: #f1faff;
+  box-shadow: none;
+}
+.rh-hdr-search .rh-search-wrap { min-height: 44px; }
+.rh-hdr-delivering .rh-hdr-pill:focus-visible,
+.rh-mobile-location-pill:focus-visible { outline: 2px solid #25aae1; outline-offset: 2px; }

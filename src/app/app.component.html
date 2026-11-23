@@ -3,6 +3,7 @@
 
 <!-- Main Page Router Content -->
 <main class="main-content" [class.auth-layout]="!showStorefrontChrome()">
+  <div *ngIf="showPageBack()" class="rainbow-page-breadcrumb"><div class="container maxw_1460"><app-breadcrumbs [items]="pageBreadcrumbs()"></app-breadcrumbs></div></div>
   <router-outlet></router-outlet>
 </main>
 

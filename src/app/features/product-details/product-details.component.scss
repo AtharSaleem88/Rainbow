@@ -17,11 +17,12 @@
 }
 
 /* Breadcrumb Navigation */
+.rh-details-breadcrumb-bar { padding: 6px 0; background: linear-gradient(120deg, #f4f7ff, #edf7fc); border-bottom: 1px solid #e1e9f3; }
 .rh-details-breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 22px;
+  margin-bottom: 0;
   color: #777d8d;
   font-size: 0.84rem;
 
@@ -45,6 +46,10 @@
     font-weight: 700;
   }
 }
+
+.rh-details-back { display: inline-grid; width: 28px; height: 32px; flex: 0 0 auto; place-items: center; padding: 0; border: 0; background: transparent; color: #2e3192; cursor: pointer; }
+.rh-details-breadcrumb .rh-details-back i { color: inherit; font-size: 1rem; }
+.rh-details-back:focus-visible { outline: 2px solid #25aae1; outline-offset: 2px; }
 
 /* Main Layout Grid */
 .rh-details-layout {

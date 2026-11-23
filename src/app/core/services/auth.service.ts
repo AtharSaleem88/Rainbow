@@ -73,12 +73,29 @@ export interface OrderReview {
 })
 export class AuthService {
   // Authentication State
-  readonly isLoggedIn = signal<boolean>(true); // Default to true for demo experience
+  private readonly authStorageKey = 'rainbow-demo-auth-v1';
+  private readonly authEmailStorageKey = 'rainbow-demo-email-v1';
+  readonly isLoggedIn = signal<boolean>(this.readLoginState());
+
+  private readLoginState(): boolean {
+    try { return localStorage.getItem(this.authStorageKey) === 'signed-in'; }
+    catch { return false; }
+  }
+
+  private saveLoginState(signedIn: boolean): void {
+    try { localStorage.setItem(this.authStorageKey, signedIn ? 'signed-in' : 'signed-out'); }
+    catch { /* Keep the current session usable when storage is unavailable. */ }
+  }
+
+  private readLoginEmail(): string {
+    try { return this.isLoggedIn() ? localStorage.getItem(this.authEmailStorageKey) || '' : ''; }
+    catch { return ''; }
+  }
 
   // User Profile Data
   readonly userProfile = signal<UserProfile>({
     name: 'Muhammad Athar',
-    email: 'athar.saleem@example.com',
+    email: this.readLoginEmail() || 'athar.saleem@example.com',
     phone: '+92 300 1234567',
     address: 'House #42, Block C, Bahria Town',
     city: 'Lahore',
@@ -296,13 +313,16 @@ export class AuthService {
 
   login(email: string) {
     this.isLoggedIn.set(true);
+    this.saveLoginState(true);
     if (email) {
       this.userProfile.update(profile => ({ ...profile, email }));
+      try { localStorage.setItem(this.authEmailStorageKey, email); } catch { /* Session state remains available in memory. */ }
     }
   }
 
   logout() {
     this.isLoggedIn.set(false);
+    this.saveLoginState(false);
   }
 
   topUpWallet(amount: number) {

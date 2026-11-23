@@ -6,8 +6,8 @@
 
 .main-content {
   flex: 1 0 auto;
-  // The announcement strip remains in flow; this clears the fixed nav below it.
-  padding-top: 110px;
+  // Clear the fixed announcement strip and desktop navigation, with breathing room.
+  padding-top: 130px;
 }
 
 @media (max-width: 991px) {
@@ -20,3 +20,6 @@
 .main-content.auth-layout {
   padding-top: 0;
 }
+
+.rainbow-page-breadcrumb { padding: 6px 0; background: linear-gradient(120deg, #f4f7ff, #edf7fc); border-bottom: 1px solid #e1e9f3; }
+@media (max-width: 767px) { .rainbow-page-breadcrumb { padding: 4px 0; } }

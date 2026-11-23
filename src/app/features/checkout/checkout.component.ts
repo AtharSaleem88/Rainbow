@@ -67,6 +67,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   readonly loyaltyService = inject(LoyaltyService);
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
+  readonly guestCheckout = signal(false);
   private readonly paymentService = inject(CheckoutPaymentService);
   private readonly seoService = inject(SeoService);
 
@@ -176,13 +177,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     effect(() => {
       if (!this.isOrderPlaced()) this.syncCartSnapshot();
     });
-    const defaultAddr = this.authService.savedAddresses().find(a => a.isDefault);
-    if (defaultAddr) {
-      this.selectSavedAddress(defaultAddr);
-    }
-    const defaultCard = this.authService.savedCards().find(c => c.isDefault);
-    if (defaultCard) {
-      this.selectedSavedCardId.set(defaultCard.id);
+    if (this.authService.isLoggedIn()) {
+      this.billingData.email = this.authService.userProfile().email;
+      const defaultAddr = this.authService.savedAddresses().find(a => a.isDefault);
+      if (defaultAddr) this.selectSavedAddress(defaultAddr);
+      const defaultCard = this.authService.savedCards().find(c => c.isDefault);
+      if (defaultCard) this.selectedSavedCardId.set(defaultCard.id);
+    } else {
+      this.billingData.firstName = '';
+      this.billingData.lastName = '';
+      this.billingData.email = '';
+      this.billingData.phone = '';
+      this.billingData.address = '';
     }
   }
 

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -14,6 +14,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class LoginComponent {
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   readonly currentYear = new Date().getFullYear();
   credentials = { email: '', password: '' };
@@ -25,6 +26,7 @@ export class LoginComponent {
 
   onLogin() {
     this.authService.login(this.credentials.email || 'User');
-    this.router.navigate(['/account']);
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    void this.router.navigateByUrl(returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/account');
   }
 }

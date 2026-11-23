@@ -1,12 +1,6 @@
 <!-- Checkout page -->
 <section id="checkout-top" class="rainbow-checkout-page" [class.rainbow-checkout-complete]="currentStep() === 3">
   <div class="container rainbow-checkout-container">
-    <header *ngIf="currentStep() !== 3" class="rainbow-checkout-header">
-      <button type="button" class="rainbow-checkout-back" aria-label="Open cart" (click)="cartService.openCartDrawer()"><i class="fal fa-arrow-left" aria-hidden="true"></i></button>
-      <h1>Checkout</h1>
-      <a routerLink="/shop" class="rainbow-checkout-continue"><span>Continue shopping</span></a>
-    </header>
-
     <!-- Empty Checkout Guard (when step is not finished and cart is empty) -->
     <div *ngIf="cartService.cartItems().length === 0 && currentStep() !== 3" class="rainbow-checkout-empty">
       <span class="rainbow-checkout-empty-icon"><i class="fal fa-shopping-basket" aria-hidden="true"></i></span>
@@ -15,8 +9,19 @@
       <a routerLink="/shop" class="rainbow-checkout-primary">Return to Shop <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
     </div>
 
+    <section *ngIf="cartService.cartItems().length > 0 && !authService.isLoggedIn() && !guestCheckout() && currentStep() !== 3" class="rainbow-checkout-choice" aria-labelledby="checkout-choice-title">
+      <span class="rainbow-checkout-choice-icon"><i class="fal fa-shopping-bag" aria-hidden="true"></i></span>
+      <h1 id="checkout-choice-title">How would you like to checkout?</h1>
+      <p>Sign in to use your saved details, or continue as a guest.</p>
+      <div class="rainbow-checkout-choice-actions">
+        <a class="rainbow-checkout-primary" routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }">Sign in</a>
+        <button type="button" class="rainbow-btn-secondary" (click)="guestCheckout.set(true)">Continue as guest</button>
+      </div>
+      <p class="rainbow-checkout-choice-note">Sign-in and checkout are demonstrations.</p>
+    </section>
+
     <!-- Active Checkout Flow -->
-    <ng-container *ngIf="cartService.cartItems().length > 0 || currentStep() === 3">
+    <ng-container *ngIf="(cartService.cartItems().length > 0 && (authService.isLoggedIn() || guestCheckout())) || currentStep() === 3">
       <!-- Checkout Stepper Progress -->
       <app-checkout-stepper
         *ngIf="currentStep() !== 3"
@@ -118,7 +123,7 @@
             </section>
 
             <!-- Saved Addresses Selector -->
-            <div class="mb-4" *ngIf="fulfillmentMode() === 'delivery' && authService.savedAddresses().length > 0">
+            <div class="mb-4" *ngIf="authService.isLoggedIn() && fulfillmentMode() === 'delivery' && authService.savedAddresses().length > 0">
               <div class="rainbow-address-header"><label class="rainbow-form-label">Delivery address</label><div><button type="button" (click)="addressChoicesOpen.set(!addressChoicesOpen())" [attr.aria-expanded]="addressChoicesOpen()">Change</button></div></div>
               <div class="rainbow-saved-addresses-grid" *ngIf="selectedSavedAddress() as selected">
                 <div class="rainbow-saved-address-card is-selected"><span class="rainbow-address-tag">{{ selected.label }}</span><strong>{{ selected.recipientName }}</strong><p>{{ selected.addressLine }}</p><small>{{ selected.phone }}</small></div>
@@ -140,7 +145,7 @@
               </div>
             </div>
 
-            <form (submit)="nextStep(); $event.preventDefault();" class="rainbow-checkout-form">
+            <form #shippingForm="ngForm" ngNativeValidate (ngSubmit)="shippingForm.valid && nextStep()" class="rainbow-checkout-form">
               <div class="rainbow-form-row">
                 <div class="rainbow-form-field">
                   <label for="firstName">First Name <sup>*</sup></label>
@@ -227,7 +232,7 @@
               </div>
 
               <div class="rainbow-form-actions mt-4">
-                <button type="button" class="rainbow-btn-secondary" (click)="cartService.openCartDrawer()"><i class="fal fa-arrow-left"></i> Back to Cart</button>
+                <a routerLink="/" class="rainbow-btn-secondary">Continue Shopping</a>
                 <button type="submit" class="rainbow-checkout-primary">Continue to Payment <i class="fal fa-arrow-right"></i></button>
               </div>
             </form>
@@ -239,7 +244,7 @@
               <h2><i class="fal fa-credit-card"></i> Choose Payment Method</h2>
             </header>
 
-            <div class="rainbow-payment-options mb-3">
+            <div *ngIf="authService.isLoggedIn()" class="rainbow-payment-options mb-3">
               <div class="rainbow-payment-card rainbow-wallet-payment align-items-center p-3" [class.is-selected]="useWallet() && payment().walletApplied > 0">
                 <div class="rainbow-payment-info">
                   <label class="rainbow-payment-title" for="use-wallet"><strong>Use Wallet</strong></label>
@@ -256,7 +261,6 @@
                   <p>{{ loyaltyService.balance() | number:'1.0-0' }} points available &middot; 1 point = Rs. {{ loyaltyService.valuePerPoint | number:'1.0-2' }}</p>
                 </div>
               </div>
-              <p *ngIf="!authService.isLoggedIn()" class="small text-muted mb-0"><a routerLink="/login">Sign in</a> to use your wallet and view your loyalty points.</p>
             </div>
 
             <p *ngIf="payment().payable > 0" class="small text-muted">Pay the remaining <strong>Rs. {{ payment().payable | number:'1.0-2' }}</strong> with your chosen payment method.</p>
@@ -455,7 +459,7 @@
             <div class="rainbow-printer-base" aria-hidden="true"><span class="rainbow-printer-slot"></span><span class="rainbow-printer-brand">RAINBOW</span><span class="rainbow-printer-controls"><span class="rainbow-printer-light"></span><span class="rainbow-printer-button"></span></span></div>
           </div>
           <div *ngIf="receiptState() === 'printed'" class="rainbow-success-actions">
-            <a routerLink="/shop" class="rainbow-checkout-primary">Continue Shopping</a>
+            <a routerLink="/" class="rainbow-checkout-primary">Continue Shopping</a>
             <a routerLink="/" class="rainbow-btn-secondary">Return to Home</a>
           </div>
           <dialog #receiptThanksDialog class="rainbow-thanks-dialog" aria-labelledby="receipt-thanks-title" (click)="$event.target === receiptThanksDialog && closeReceiptThanks()">
