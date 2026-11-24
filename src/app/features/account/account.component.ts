@@ -53,6 +53,9 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   activeTab = signal<'orders' | 'wishlist' | 'wallet' | 'loyalty' | 'addresses' | 'cards' | 'settings' | 'returns' | 'assistant'>('orders');
   readonly accountMenuOpen = signal(false);
+  toggleAccountMenu(): void {
+    this.accountMenuOpen.update(open => !open);
+  }
   readonly activeSectionLabel = computed(() => ({
     orders: 'Orders & Returns', returns: 'Orders & Returns', wishlist: 'Wishlist & Buy Again',
     wallet: 'Wallet & Loyalty', loyalty: 'Wallet & Loyalty', addresses: 'Addresses',
