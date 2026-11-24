@@ -24,8 +24,10 @@
         (scroll)="onCategoryScroll($event)"
         (keydown)="onCategoryGridKeydown($event)">
         <a
-          *ngFor="let cat of categories; trackBy: trackCategory"
+          *ngFor="let cat of categories; let i = index; trackBy: trackCategory"
           class="rh-category-item py-2 p-md-2 h-100"
+          [style.--mobile-row]="categoryRow(i)"
+          [style.--mobile-column]="categoryColumn(i)"
           [routerLink]="['/shop']"
           [queryParams]="{ category: cat.slug }"
           [attr.aria-label]="'Shop ' + cat.name">

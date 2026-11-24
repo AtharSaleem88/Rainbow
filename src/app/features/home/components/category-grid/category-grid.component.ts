@@ -14,6 +14,8 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
   @Input({ required: true }) categories: Category[] = [];
 
   readonly trackCategory = (_index: number, category: Category) => category.id;
+  readonly categoryRow = (index: number): number => Math.floor((index % 9) / 3) + 1;
+  readonly categoryColumn = (index: number): number => Math.floor(index / 9) * 3 + index % 3 + 1;
   readonly categoryHasOverflow = signal(false);
   activeCategoryPageIndex = signal<number>(0);
   categoryPages = signal<number[]>([0, 1, 2]);
@@ -45,7 +47,10 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
     const maxScroll = Math.max(0, grid.scrollWidth - grid.clientWidth);
     const overflow = grid.clientWidth > 0 && maxScroll > 1;
     this.categoryHasOverflow.set(overflow);
-    this.activeCategoryPageIndex.set(overflow ? Math.round(Math.min(1, Math.max(0, grid.scrollLeft / maxScroll)) * 2) : 0);
+    const pageCount = window.matchMedia('(max-width: 767px)').matches
+      ? Math.max(1, Math.ceil(this.categories.length / 9)) : 3;
+    this.categoryPages.set(Array.from({ length: pageCount }, (_, index) => index));
+    this.activeCategoryPageIndex.set(overflow ? Math.round(Math.min(1, Math.max(0, grid.scrollLeft / maxScroll)) * (pageCount - 1)) : 0);
   }
 
   onCategoryGridKeydown(event: KeyboardEvent): void {
@@ -63,12 +68,12 @@ export class CategoryGridComponent implements AfterViewInit, OnDestroy {
       const maxScroll = Math.max(0, this.categoryGrid.nativeElement.scrollWidth - this.categoryGrid.nativeElement.clientWidth);
       const page = Math.min(this.categoryPages().length - 1, Math.max(0, pageIndex));
       const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-      let target = maxScroll * page / 2;
-      if (page === 1 && window.matchMedia('(max-width: 767px)').matches) {
+      let target = maxScroll * page / Math.max(1, this.categoryPages().length - 1);
+      if (window.matchMedia('(max-width: 767px)').matches) {
         const item = this.categoryGrid.nativeElement.querySelector<HTMLElement>('.rh-category-item');
         if (item) {
-          const step = item.getBoundingClientRect().width + (parseFloat(getComputedStyle(this.categoryGrid.nativeElement).gap) || 0);
-          if (step > 0) target = Math.min(maxScroll, Math.round(target / step) * step);
+          const step = item.getBoundingClientRect().width + (parseFloat(getComputedStyle(this.categoryGrid.nativeElement).columnGap) || 0);
+          if (step > 0) target = Math.min(maxScroll, page * step * 3);
         }
       }
       this.categoryGrid.nativeElement.scrollTo({ left: target, behavior });
