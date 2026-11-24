@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
+import { OtpDialogComponent } from '../../shared/components/otp-dialog/otp-dialog.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, OtpDialogComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -17,8 +18,10 @@ export class LoginComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly currentYear = new Date().getFullYear();
+  readonly returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
   credentials = { email: '', password: '' };
   passwordVisible = false;
+  otpOpen = false;
 
   togglePassword() {
     this.passwordVisible = !this.passwordVisible;

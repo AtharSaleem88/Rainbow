@@ -1,4 +1,19 @@
-<div class="rh-floating-actions" [class.rh-footer-visible]="footerVisible()" aria-label="Quick action controls">
+<div class="rh-floating-actions" [class.rh-footer-visible]="footerVisible()" [class.rh-help-open]="helpOpen()" aria-label="Quick action controls">
+  <div class="rh-help-control">
+    <button #helpButton type="button" class="rh-floating-btn rh-help-btn" (click)="helpOpen.set(!helpOpen())"
+      [attr.aria-expanded]="helpOpen()" aria-controls="rh-help-options" aria-label="Help options" title="Help options">
+      <i class="fal" [ngClass]="helpOpen() ? 'fa-times' : 'fa-comment-alt'" aria-hidden="true"></i>
+    </button>
+    <div *ngIf="helpOpen()" id="rh-help-options" class="rh-help-menu" role="group" aria-label="Contact options">
+      <a routerLink="/account" [queryParams]="{ tab: 'assistant' }" (click)="helpOpen.set(false)">
+        <i class="fal fa-comment-alt" aria-hidden="true"></i><span>Ask AI</span><i class="fal fa-arrow-right" aria-hidden="true"></i>
+      </a>
+      <a href="https://api.whatsapp.com/send/?phone=923107779651&amp;text=Hello%20Rainbow%20Cash%20%26%20Carry&amp;type=phone_number&amp;app_absent=0"
+        target="_blank" rel="noopener noreferrer" (click)="helpOpen.set(false)">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i><span>WhatsApp</span><i class="fal fa-external-link" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
   <!-- Top Scroller Button -->
   <button
     type="button"
@@ -10,14 +25,4 @@
     <i class="fal fa-arrow-up" aria-hidden="true"></i>
   </button>
 
-  <!-- WhatsApp Floating Button -->
-  <a
-    href="https://api.whatsapp.com/send/?phone=923107779651&text=Hello%20Rainbow%20Cash%20%26%20Carry&type=phone_number&app_absent=0"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="rh-floating-btn rh-whatsapp-btn"
-    aria-label="Chat with Rainbow on WhatsApp"
-    title="Chat on WhatsApp">
-    <i class="fab fa-whatsapp" aria-hidden="true"></i>
-  </a>
 </div>

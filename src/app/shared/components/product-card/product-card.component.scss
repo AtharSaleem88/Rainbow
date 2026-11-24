@@ -5,6 +5,7 @@
 }
 
 @media (max-width: 767px) {
+  .rh-shared-variant-select > .rh-variant-select-trigger { display: none; }
   .rh-compact-mobile .rh-shared-card-top { padding: 6px 6px 0; }
   .rh-compact-mobile .rh-shared-favorite { width: 26px; height: 26px; font-size: .72rem; }
   .rh-compact-mobile .rh-shared-discount-badge { min-height: 20px; padding: 3px 4px; font-size: .55rem; }
@@ -320,7 +321,9 @@
 .rh-variant-dialog {
   position: fixed;
   inset: 0;
-  width: min(420px, calc(100% - 32px));
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
   max-height: min(80vh, 520px);
   margin: auto;
   padding: 0;
@@ -332,6 +335,7 @@
   box-shadow: 0 24px 60px rgba(46, 49, 146, .22);
   font-family: 'Poppins', sans-serif;
 }
+.rh-variant-dialog.is-fallback[open] { z-index: 3200; box-shadow: 0 0 0 100vmax rgba(15, 23, 42, .65), 0 24px 60px rgba(46, 49, 146, .22); }
 .rh-variant-dialog::backdrop { background: rgba(15, 23, 42, .65); backdrop-filter: blur(4px); }
 .rh-variant-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid #edf1f7; font-size: 17px; font-weight: 700; }
 .rh-variant-dialog-header span { display: flex; align-items: center; gap: 12px; }
@@ -372,11 +376,19 @@
   flex: 1 1 auto;
   flex-direction: column;
   gap: 2px;
-  strong { overflow: hidden; font-size: .78rem; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+  strong { font-size: .78rem; font-weight: 600; white-space: normal; overflow-wrap: anywhere; }
   small { color: #82889a; font-size: .64rem; }
 }
 
 .rh-variant-option-price { flex: 0 0 auto; color: #2d2c92; font-size: .76rem; font-weight: 700; white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .rh-shared-product-card .rh-shared-price-row,
+  .rh-compact-mobile .rh-shared-price-row { flex-wrap: wrap; white-space: normal; align-items: center; }
+  .rh-shared-product-card .rh-shared-price-wrap,
+  .rh-compact-mobile .rh-shared-price-wrap { flex: 1 1 90px; flex-wrap: wrap; white-space: normal; gap: 2px 4px; }
+  .rh-variant-dialog { max-height: min(80dvh, 520px); }
+}
 
 @keyframes rh-variant-menu-in {
   from { opacity: 0; transform: translateY(4px) scale(.98); }

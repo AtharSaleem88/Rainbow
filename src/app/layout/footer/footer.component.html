@@ -33,7 +33,7 @@
 				<ul>
 					<li><a routerLink="/account">My Account</a></li>
 					<li><a href="#" (click)="$event.preventDefault(); cartService.openCartDrawer()">Shopping Cart</a></li>
-					<li><a routerLink="/account">Wishlist</a></li>
+					<li><a routerLink="/account" [queryParams]="{ tab: 'wishlist' }">Wishlist</a></li>
 					<li><a routerLink="/account">Order History</a></li>
 				</ul>
 			</div>

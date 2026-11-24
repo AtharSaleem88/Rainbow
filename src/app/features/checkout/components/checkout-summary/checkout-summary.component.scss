@@ -1,6 +1,12 @@
 :host {
   display: block;
 }
+.rainbow-summary-signin { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px; padding:10px 12px; border:1px solid #dcecf6; border-radius:10px; background:#f2f9fd; }
+.rainbow-summary-signin span { color:#53617a; font-size:12px; line-height:1.45; }
+.rainbow-summary-signin span i { margin-right:5px; color:#30358d; }
+.rainbow-summary-signin a { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:32px; padding:6px 12px; border-radius:8px; background:#30358d; color:#fff; font-size:12px; font-weight:600; text-decoration:none; }
+.rainbow-summary-signin a:hover { background:#30358d; color:#fff; }
+.rainbow-summary-signin a:focus-visible { outline:2px solid #25aae1; outline-offset:2px; }
 .rainbow-summary-address { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; padding: 11px 12px; border: 1px solid #e2eaf2; border-radius: 10px; background: #f7fbfd; }
 .rainbow-summary-address > div { display: grid; flex: 1; min-width: 0; gap: 4px; font-size: .78rem; line-height: 1.4; color: #53617b; overflow-wrap: anywhere; }
 .rainbow-summary-address strong { color: #17234a; font-weight: 600; }

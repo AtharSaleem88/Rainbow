@@ -4,7 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { LoyaltyService } from '../../core/services/loyalty.service';
-import { CheckoutPaymentService, PaymentBreakdown } from '../../core/services/checkout-payment.service';
+import { CheckoutPaymentService, PaymentBreakdown, promoDiscount } from '../../core/services/checkout-payment.service';
 import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.service';
 import { SeoService } from '../../core/services/seo.service';
 import { APP_CONFIG } from '../../core/core.config';
@@ -67,7 +67,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   readonly loyaltyService = inject(LoyaltyService);
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
-  readonly guestCheckout = signal(false);
+  continueAsGuest(): void {
+    document.getElementById('firstName')?.focus();
+  }
   private readonly paymentService = inject(CheckoutPaymentService);
   private readonly seoService = inject(SeoService);
 
@@ -78,8 +80,29 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   readonly tipAmount = signal(0);
   readonly saveTipPreference = signal(false);
   readonly paymentError = signal('');
+  promoInput = '';
+  readonly appliedPromoCode = signal('');
+  readonly promoError = signal('');
+  readonly completedPromoDiscount = signal<number | null>(null);
+  readonly promoAmount = computed(() => this.completedPromoDiscount() ?? promoDiscount(this.cartService.cartTotal(), this.appliedPromoCode()));
+  readonly discountedTotal = computed(() => Math.max(0, Math.round((this.cartService.cartTotal() - this.promoAmount()) * 100) / 100));
+  applyPromo(): void {
+    const code = this.promoInput.trim().toUpperCase();
+    if (code !== 'RAINBOW10') {
+      this.promoError.set(code ? 'This promo code is not valid.' : 'Enter a promo code.');
+      return;
+    }
+    this.appliedPromoCode.set(code);
+    this.promoInput = code;
+    this.promoError.set('');
+  }
+  removePromo(): void {
+    this.appliedPromoCode.set('');
+    this.promoInput = '';
+    this.promoError.set('');
+  }
   readonly completedPayment = signal<PaymentBreakdown | null>(null);
-  readonly payment = computed(() => this.completedPayment() ?? this.paymentService.quote(this.cartService.cartTotal(), this.useWallet(), this.useLoyaltyPoints(), this.tipAmount()));
+  readonly payment = computed(() => this.completedPayment() ?? this.paymentService.quote(this.discountedTotal(), this.useWallet(), this.useLoyaltyPoints(), this.tipAmount()));
   readonly pointsToEarn = computed(() => this.loyaltyService.isMember() ? this.loyaltyService.pointsForAmount(this.payment().earningAmount) : 0);
 
   readonly currentStep = signal<1 | 2 | 3>(1);
@@ -352,12 +375,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       return;
     }
     this.syncCartSnapshot();
-    const payment = this.paymentService.settle(this.generatedOrderNumber(), this.checkoutTotal(), this.useWallet(), this.useLoyaltyPoints(), this.tipAmount());
+    const payment = this.paymentService.settle(this.generatedOrderNumber(), this.discountedTotal(), this.useWallet(), this.useLoyaltyPoints(), this.tipAmount());
     if (!payment) {
       this.paymentError.set('Unable to apply your balances. Please review your payment options and try again.');
       return;
     }
     this.receiptState.set('pending');
+    this.completedPromoDiscount.set(this.promoAmount());
     this.completedPayment.set(payment);
     this.paymentError.set('');
     this.cardDetails = { holder: '', number: '', expiry: '', cvv: '' };

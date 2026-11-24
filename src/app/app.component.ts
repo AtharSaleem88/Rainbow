@@ -9,11 +9,12 @@ import { AlternateProductModalComponent } from './shared/components/modals/alter
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { NavigationHistoryService } from './core/services/navigation-history.service';
 import { BreadcrumbItem, BreadcrumbsComponent } from './shared/components/breadcrumbs/breadcrumbs.component';
+import { AlertDialogComponent } from './shared/components/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, CartDrawerComponent, AlternateProductModalComponent, ToastComponent, BreadcrumbsComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, CartDrawerComponent, AlternateProductModalComponent, ToastComponent, BreadcrumbsComponent, AlertDialogComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

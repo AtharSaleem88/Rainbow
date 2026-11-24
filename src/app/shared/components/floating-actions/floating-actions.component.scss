@@ -75,7 +75,9 @@
   }
 }
 
-.rh-whatsapp-btn {
+.rh-help-control { position: relative; }
+
+.rh-help-btn {
   background: rgba(232, 245, 252, 0.86);
   color: var(--rh-primary, #2E3192);
   border: 1px solid rgba(46, 49, 146, 0.14);
@@ -86,4 +88,40 @@
     background: rgba(216, 239, 251, 0.96);
     box-shadow: 0 4px 14px rgba(23, 31, 83, 0.14);
   }
+}
+
+.rh-help-menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  width: 190px;
+  padding: 6px;
+  border: 1px solid #dce8f2;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(23, 35, 74, .16);
+}
+
+.rh-help-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  color: #17234a;
+  font: 500 12px/1.3 var(--font-family-base, 'Poppins', sans-serif);
+  text-decoration: none;
+}
+.rh-help-menu a:hover, .rh-help-menu a:focus-visible { background: #edf7fc; color: #30358d; }
+.rh-help-menu a:focus-visible { outline: 2px solid #30358d; outline-offset: -2px; }
+.rh-help-menu a > i:first-child { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 50%; background: #eaf6fc; color: #30358d; font-size: 14px; }
+.rh-help-menu a span { flex: 1; }
+.rh-help-menu a > i:last-child { color: #8491aa; font-size: 11px; }
+
+@media (max-width: 767px) {
+  .rh-floating-btn.rh-behind-product-action { visibility: hidden; pointer-events: none; }
+  .rh-floating-actions.rh-help-open { bottom: 140px; }
+  .rh-help-open .rh-help-menu { top: calc(100% + 8px); bottom: auto; }
+  .rh-help-open .rh-scroll-top-btn { visibility: hidden; pointer-events: none; }
 }

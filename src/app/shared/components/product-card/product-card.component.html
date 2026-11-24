@@ -1,7 +1,7 @@
 <article class="rh-shared-product-card rh-no-section-label" [class.rh-compact-mobile]="compactMobile" [class.rh-shared-product-list]="viewMode === 'list'" [class.is-out-of-stock]="!product.inStock" [class.has-variant-options]="variantOptionsOpen()">
   <div class="rh-shared-card-top">
     <span *ngIf="!product.inStock" class="rh-shared-stock-tag">Out of stock</span>
-    <button *ngIf="product.inStock" type="button" class="rh-shared-favorite" [class.active]="favorite()" [attr.aria-pressed]="favorite()" [attr.aria-label]="(favorite() ? 'Remove ' : 'Add ') + product.title + ' from favorites'" (click)="toggleFavorite($event)"><i class="fal fa-heart" aria-hidden="true"></i></button>
+    <button *ngIf="product.inStock || (allowRemovingUnavailableFavorite && favorite())" type="button" class="rh-shared-favorite" [class.active]="favorite()" [attr.aria-pressed]="favorite()" [attr.aria-label]="(favorite() ? 'Remove ' : 'Add ') + product.title + ' from favorites'" (click)="toggleFavorite($event)"><i class="fal fa-heart" aria-hidden="true"></i></button>
     <ng-container *ngIf="product.inStock"><span *ngIf="showTopSellingBadge" class="rh-shared-discount-badge rh-top-selling-badge">Top Selling</span><span *ngIf="!showTopSellingBadge && displayDiscountPercent as discount" class="rh-shared-discount-badge">{{ discount }}% OFF</span></ng-container>
   </div>
 
@@ -18,10 +18,10 @@
       </div>
 
       <div class="rh-shared-variant-select" *ngIf="product.variants && product.variants.length > 1">
-        <button type="button" class="rh-variant-select-trigger" [attr.aria-expanded]="variantOptionsOpen()" [attr.aria-label]="'Choose size for ' + product.title" (click)="toggleVariantOptions($event)">
+        <button type="button" class="rh-variant-select-trigger" aria-haspopup="dialog" [attr.aria-expanded]="variantOptionsOpen()" [attr.aria-label]="'Choose size for ' + product.title" (click)="toggleVariantOptions($event)">
           <span>{{ selectedVariant?.label || 'Choose size' }}</span><i class="fal fa-chevron-down" aria-hidden="true"></i>
         </button>
-        <dialog class="rh-variant-dialog" [attr.aria-label]="'Choose size for ' + product.title" (cancel)="variantOptionsOpen.set(false)" (click)="closeVariantBackdrop($event)">
+        <dialog class="rh-variant-dialog" [attr.aria-label]="'Choose size for ' + product.title" (close)="onVariantDialogClosed()" (cancel)="onVariantDialogClosed()" (click)="closeVariantBackdrop($event)">
           <header class="rh-variant-dialog-header"><span><i class="fal fa-tag" aria-hidden="true"></i> Choose size</span><button type="button" class="rh-variant-close" aria-label="Close" (click)="closeVariantDialog()"><i class="fal fa-times" aria-hidden="true"></i></button></header>
           <div class="rh-variant-dialog-body"><p>{{ product.title }}</p><div role="listbox" [attr.aria-label]="'Available sizes for ' + product.title">
           <button *ngFor="let variant of product.variants" type="button" class="rh-variant-option" [class.is-selected]="selectedVariantId() === variant.id" [attr.aria-selected]="selectedVariantId() === variant.id" role="option" (click)="selectVariant($event, variant.id)">

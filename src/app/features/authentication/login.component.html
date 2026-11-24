@@ -1,3 +1,4 @@
+<app-otp-dialog *ngIf="otpOpen" (close)="otpOpen = false"></app-otp-dialog>
 <section class="rh-auth-page">
   <div class="rh-auth-card">
     <div class="rh-auth-card-header">
@@ -30,7 +31,7 @@
           <input type="checkbox" name="remember">
           <span>Remember Me</span>
         </label>
-        <a routerLink="/contact" class="rh-auth-text-link">Forgot password?</a>
+        <a routerLink="/forgot-password" [queryParams]="returnUrl ? { returnUrl: returnUrl } : {}" class="rh-auth-text-link">Forgot password?</a>
       </div>
 
       <button type="submit" class="rh-auth-submit">
@@ -40,7 +41,8 @@
     </form>
 
     <div class="rh-auth-card-footer">
-      <p class="rh-auth-footer-text">Don't have an account? <a routerLink="/signup" class="rh-auth-link-bold">Sign up</a></p>
+      <p class="rh-auth-footer-text"><button type="button" class="rh-auth-text-link" style="border:0;background:none;padding:0" (click)="otpOpen = true">Verify mobile number</button></p>
+      <p class="rh-auth-footer-text">Don't have an account? <a routerLink="/signup" [queryParams]="returnUrl ? { returnUrl: returnUrl } : {}" class="rh-auth-link-bold">Sign up</a></p>
       <div class="rh-auth-support">
         <span class="rh-auth-support-lbl">Need Support?</span>
         <a routerLink="/contact" class="rh-auth-link-primary">Contact customer service</a>

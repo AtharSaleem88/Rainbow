@@ -25,7 +25,7 @@ export const GROCERY_SECTIONS: GrocerySection[] = [
   { name: 'Frozen Food', image: 'assets/images/home/frozen-food.png', categorySlug: 'frozen-food' }
 ];
 
-/** Illustrative personal care departments; mappings use only products in the demo catalog. */
+/** Illustrative personal care departments; mappings use only products in the catalog. */
 export const PERSONAL_CARE_SECTIONS = [
   { name: 'Makeup', productSubCategories: ['Makeup'] },
   { name: 'Facial Care', productSubCategories: ['Face Cleansers', 'Face Creams', 'Serums & Treatments'] },

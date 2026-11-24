@@ -1,3 +1,4 @@
+<app-otp-dialog *ngIf="otpOpen" [phone]="userData.phone" (close)="otpOpen = false"></app-otp-dialog>
 <section class="rh-auth-page">
   <div class="rh-auth-card">
     <div class="rh-auth-card-header">
@@ -53,7 +54,7 @@
     </form>
 
     <div class="rh-auth-card-footer">
-      <p class="rh-auth-footer-text">Already have an account? <a routerLink="/login" class="rh-auth-link-bold">Sign in</a></p>
+      <p class="rh-auth-footer-text">Already have an account? <a routerLink="/login" [queryParams]="returnUrl ? { returnUrl: returnUrl } : {}" class="rh-auth-link-bold">Sign in</a></p>
       <div class="rh-auth-support">
         <span class="rh-auth-support-lbl">Need Support?</span>
         <a routerLink="/contact" class="rh-auth-link-primary">Contact customer service</a>

@@ -6,7 +6,7 @@
         <i *ngIf="!rating" class="fas fa-star"></i>
         <span *ngIf="rating" class="rainbow-review-emoji">{{ ratingEmojis[rating] }}</span>
       </span>
-      <h2 id="rainbow-review-title">How was your order?</h2>
+      <h2 id="rainbow-review-title">{{ existingReview ? 'Your order review' : 'How was your order?' }}</h2>
       <span class="rainbow-review-order"><i class="fal fa-receipt" aria-hidden="true"></i> Order #{{ orderId }}</span>
     </header>
 
@@ -15,6 +15,7 @@
         <span class="rainbow-review-rating-label">TAP A STAR TO RATE</span>
         <div class="rainbow-review-stars">
           <button *ngFor="let star of stars" type="button" class="rainbow-review-star"
+            [disabled]="!!existingReview"
             [class.is-selected]="star <= (hoverRating || rating)"
             [attr.aria-label]="'Rate ' + star + (star === 1 ? ' star' : ' stars')"
             [attr.aria-pressed]="rating === star"
@@ -26,14 +27,14 @@
       </div>
 
       <label class="rainbow-review-feedback-label" for="rainbow-review-feedback">Write your feedback <span>(optional)</span></label>
-      <textarea id="rainbow-review-feedback" [(ngModel)]="feedback" name="feedback" maxlength="300" rows="3"
+      <textarea id="rainbow-review-feedback" [(ngModel)]="feedback" name="feedback" maxlength="300" rows="3" [readonly]="!!existingReview"
         placeholder="Tell us about item quality, freshness, packing, or rider service..."></textarea>
       <span class="rainbow-review-character-count">{{ feedback.length }} / 300</span>
     </div>
 
     <footer class="rainbow-review-footer">
-      <button type="button" class="rainbow-review-cancel" (click)="close.emit()">Cancel</button>
-      <button type="button" class="rainbow-review-submit" [disabled]="rating === 0" (click)="onSubmit()"><i class="fas fa-check-circle" aria-hidden="true"></i> Submit Review</button>
+      <button type="button" class="rainbow-review-cancel" (click)="close.emit()">{{ existingReview ? 'Close' : 'Cancel' }}</button>
+      <button *ngIf="!existingReview" type="button" class="rainbow-review-submit" [disabled]="rating === 0" (click)="onSubmit()"><i class="fas fa-check-circle" aria-hidden="true"></i> Submit Review</button>
     </footer>
   </section>
 </div>

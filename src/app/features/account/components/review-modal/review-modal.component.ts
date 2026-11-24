@@ -1,6 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { OrderReview } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-review-modal',
@@ -10,8 +11,9 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./review-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReviewModalComponent implements AfterViewInit, OnDestroy {
+export class ReviewModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input({ required: true }) orderId = '';
+  @Input() existingReview?: OrderReview;
   @Output() close = new EventEmitter<void>();
   @Output() submitReview = new EventEmitter<{ rating: number; feedback: string }>();
   @ViewChild('dialog') dialog?: ElementRef<HTMLElement>;
@@ -23,6 +25,8 @@ export class ReviewModalComponent implements AfterViewInit, OnDestroy {
   hoverRating = 0;
   feedback = '';
   private previousBodyOverflow = '';
+
+  ngOnInit(): void { if (this.existingReview) { this.rating = this.existingReview.rating; this.feedback = this.existingReview.feedback; } }
 
   ngAfterViewInit(): void {
     this.previousBodyOverflow = document.body.style.overflow;

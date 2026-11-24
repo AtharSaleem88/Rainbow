@@ -18,6 +18,8 @@ export class CheckoutSummaryComponent {
   @Input({ required: true }) checkoutTotal: number = 0;
   @Input({ required: true }) checkoutOriginalTotal: number = 0;
   @Input({ required: true }) checkoutSavings: number = 0;
+  @Input() promoDiscount = 0;
+  @Input() promoCode = '';
   @Input({ required: true }) payment!: PaymentBreakdown;
   @Input({ required: true }) pointsToEarn: number = 0;
   @Input({ required: true }) isMember: boolean = false;

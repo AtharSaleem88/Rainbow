@@ -53,7 +53,7 @@
           min="0"
           placeholder="Min"
           class="rh-filter-input"
-          [value]="minPrice"
+          [value]="minPrice || ''"
           (input)="onMinPriceChange($event)"
           aria-label="Minimum price">
         <span class="rh-price-dash">-</span>
@@ -62,7 +62,7 @@
           min="0"
           placeholder="Max"
           class="rh-filter-input"
-          [value]="maxPrice"
+          [value]="maxPrice || ''"
           (input)="onMaxPriceChange($event)"
           aria-label="Maximum price">
       </div>
@@ -210,7 +210,7 @@
                 type="number"
                 min="0"
                 placeholder="0"
-                [(ngModel)]="tempMinPrice">
+                [ngModel]="tempMinPrice || null" (ngModelChange)="tempMinPrice = $event ?? 0">
             </div>
           </div>
           <span class="rh-sheet-price-divider">-</span>
@@ -222,8 +222,8 @@
                 id="rh-mob-max-price"
                 type="number"
                 min="0"
-                placeholder="1000"
-                [(ngModel)]="tempMaxPrice">
+                placeholder="Max"
+                [ngModel]="tempMaxPrice || null" (ngModelChange)="tempMaxPrice = $event ?? 0">
             </div>
           </div>
         </div>
@@ -247,8 +247,8 @@
           <button
             type="button"
             class="rh-sheet-quick-chip"
-            [class.active]="tempMinPrice === 1000 && tempMaxPrice === 5000"
-            (click)="setQuickPrice(1000, 5000)">
+            [class.active]="tempMinPrice === 1000 && tempMaxPrice === 0"
+            (click)="setQuickPrice(1000, 0)">
             Rs. 1000+
           </button>
           <button

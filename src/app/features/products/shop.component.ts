@@ -43,7 +43,7 @@ export class ShopComponent implements OnInit {
   selectedBrand = signal<string>('');
   selectedSort = signal<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
   minPrice = signal<number>(0);
-  maxPrice = signal<number>(1000);
+  maxPrice = signal<number>(0);
   searchQuery = signal<string>('');
   monthlyDealsOnly = signal(false);
   cocaColaStore = signal(false);
@@ -106,16 +106,13 @@ export class ShopComponent implements OnInit {
       const wasBrandStore = this.cocaColaStore();
       this.cocaColaStore.set(params['brandStore'] === 'coca-cola');
       this.monthlyDealsOnly.set(!this.cocaColaStore() && params['deals'] === 'monthly');
-      if (!this.cocaColaStore() && wasBrandStore && !this.monthlyDealsOnly()) this.maxPrice.set(1000);
-      if (this.monthlyDealsOnly() && !wasMonthly) this.maxPrice.set(0);
-      if (!this.monthlyDealsOnly() && wasMonthly) this.maxPrice.set(1000);
-      if (this.cocaColaStore() && !wasBrandStore) this.maxPrice.set(this.cocaColaMaxPrice);
+      if (wasBrandStore !== this.cocaColaStore() || wasMonthly !== this.monthlyDealsOnly() || this.selectedCategory() !== (params['category'] || '')) {
+        this.minPrice.set(0);
+        this.maxPrice.set(0);
+      }
       const linkedMaxPrice = Number(params['maxPrice']);
       if (!this.cocaColaStore() && !this.monthlyDealsOnly() && Number.isFinite(linkedMaxPrice) && linkedMaxPrice > 0) this.maxPrice.set(linkedMaxPrice);
-      if (['grocery', 'personal-care'].includes(params['category']) && this.selectedCategory() !== params['category'] && !this.monthlyDealsOnly() && !this.cocaColaStore() && !params['maxPrice']) {
-        const categoryProducts = this.productService.getProducts({ category: params['category'] });
-        this.maxPrice.set(Math.max(1000, ...categoryProducts.flatMap(product => [product.price, ...(product.variants ?? []).map(variant => variant.price)])));
-      }
+      else this.maxPrice.set(0);
       if (params['category']) {
         this.selectedCategory.set(params['category']);
       } else {
@@ -157,7 +154,7 @@ export class ShopComponent implements OnInit {
       subCategory: this.selectedSubCategory(),
       brand: this.selectedBrand(),
       minPrice: this.minPrice(),
-      maxPrice: (this.monthlyDealsOnly() || this.cocaColaStore()) && !this.maxPrice() ? undefined : this.maxPrice(),
+      maxPrice: this.maxPrice() > 0 ? this.maxPrice() : undefined,
       sortBy: this.selectedSort(),
       searchQuery: this.searchQuery()
     };
@@ -241,7 +238,7 @@ export class ShopComponent implements OnInit {
     this.selectedSubSubCategory.set('');
     this.selectedBrand.set(this.cocaColaStore() ? 'Coca-Cola' : '');
     this.minPrice.set(0);
-    this.maxPrice.set(this.cocaColaStore() ? this.cocaColaMaxPrice : this.monthlyDealsOnly() ? 0 : 1000);
+    this.maxPrice.set(0);
     this.selectedSort.set('featured');
     this.searchQuery.set('');
     this.applyFilters();

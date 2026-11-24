@@ -10,5 +10,10 @@ export const AUTH_ROUTES: Routes = [
     path: 'signup',
     loadComponent: () => import('./signup.component').then(m => m.SignupComponent),
     title: 'Create an Account — Rainbow'
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () => import('./forgot-password.component').then(m => m.ForgotPasswordComponent),
+    title: 'Forgot Password — Rainbow'
   }
 ];

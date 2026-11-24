@@ -11,6 +11,12 @@ export interface PaymentBreakdown {
   earningAmount: number;
 }
 
+// Demo promotion; first-order eligibility is not verified by a backend.
+export function promoDiscount(total: number, code: string): number {
+  if (code.trim().toUpperCase() !== 'RAINBOW10' || !Number.isFinite(total) || total <= 0) return 0;
+  return Math.round(Math.round(total * 100) * 0.1) / 100;
+}
+
 // Calculate in paisa so partial payments cannot introduce rounding differences.
 export function calculatePayment(total: number, wallet: number, points: number, useWallet: boolean, usePoints: boolean, valuePerPoint: number, tipAmount = 0): PaymentBreakdown {
   const cents = (amount: number) => Number.isFinite(amount) && amount > 0 ? Math.round(amount * 100) : 0;

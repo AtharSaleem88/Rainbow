@@ -101,6 +101,9 @@ app-root {
   margin: 0;
   padding: 0;
   overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -108,6 +111,9 @@ h1, h2, h3, h4, h5, h6,
 .home_supermarket h1, .home_supermarket h2, .home_supermarket h3,
 .home_supermarket h4, .home_supermarket h5, .home_supermarket h6 {
   font-family: 'Poppins', sans-serif !important;
+  font-weight: 600;
+  color: #17234a;
+  letter-spacing: -0.02em;
 }
 
 button, input, optgroup, select, textarea {
@@ -2429,3 +2435,4 @@ dialog.rh-variant-dialog .rh-variant-dialog-header {
   font-size: .82rem !important;
   font-weight: 600 !important;
 }
+

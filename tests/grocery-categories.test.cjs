@@ -23,7 +23,7 @@ function setup() {
   return new exports.ProductService();
 }
 
-test('Grocery is available as a department with illustrated demo sections', () => {
+test('Grocery is available as a department with illustrated sections', () => {
   const service = setup();
   assert.equal(service.getCategories()[1].slug, 'grocery');
   assert.equal(service.getCategories().find(category => category.slug === 'grocery').name, 'Grocery');
@@ -33,7 +33,7 @@ test('Grocery is available as a department with illustrated demo sections', () =
   for (const section of sections) assert.ok(fs.existsSync(path.join(__dirname, '..', section.image)), section.image);
 });
 
-test('Personal Care appears first with a full set of illustrated demo subcategories', () => {
+test('Personal Care appears first with a full set of illustrated subcategories', () => {
   const service = setup();
   assert.equal(service.getCategories()[0].slug, 'personal-care');
   const sections = service.getPersonalCareSections();

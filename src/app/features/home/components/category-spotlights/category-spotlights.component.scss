@@ -1,4 +1,6 @@
 :host { display: block; }
+.rh-category-spotlight-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-width: 0; }
+.rh-category-sponsored { flex: 0 0 auto; padding: 3px 8px; border-radius: 6px; color: #3a4771; background: rgba(255,255,255,.7); font-size: 10px; font-weight: 500; line-height: 1.3; }
 .rh-category-spotlights {
   padding: 14px 0 20px;
   background: #fff;

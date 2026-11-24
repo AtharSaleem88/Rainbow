@@ -8,16 +8,22 @@ export interface UserProfile {
   city: string;
   avatar?: string;
   memberSince: string;
+  dob?: string;
+  isEmailVerified?: boolean;
+  isPhoneVerified?: boolean;
 }
 
 export interface SavedAddress {
   id: string;
-  label: 'Home' | 'Office' | 'Other';
+  label: string;
   recipientName: string;
   phone: string;
   addressLine: string;
   city: string;
   isDefault: boolean;
+  branchZone?: string;
+  riderNote?: string;
+  isMapPinned?: boolean;
 }
 
 export interface SavedCard {
@@ -41,6 +47,7 @@ export interface UserOrder {
     image: string;
     quantity: number;
     price: number;
+    weightOrUnit?: string;
     categorySlug?: string;
   }>;
 }
@@ -59,6 +66,9 @@ export interface ReturnRequest {
   items: ReturnRequestItem[];
   refundAmount: number;
   status: 'Approved' | 'Pending' | 'Rejected';
+  stageBadge?: string;
+  stage?: number;
+  method?: string;
 }
 
 export interface OrderReview {
@@ -73,8 +83,8 @@ export interface OrderReview {
 })
 export class AuthService {
   // Authentication State
-  private readonly authStorageKey = 'rainbow-demo-auth-v1';
-  private readonly authEmailStorageKey = 'rainbow-demo-email-v1';
+  private readonly authStorageKey = 'rainbow-auth-v1';
+  private readonly authEmailStorageKey = 'rainbow-email-v1';
   readonly isLoggedIn = signal<boolean>(this.readLoginState());
 
   private readLoginState(): boolean {
@@ -95,11 +105,14 @@ export class AuthService {
   // User Profile Data
   readonly userProfile = signal<UserProfile>({
     name: 'Muhammad Athar',
-    email: this.readLoginEmail() || 'athar.saleem@example.com',
-    phone: '+92 300 1234567',
-    address: 'House #42, Block C, Bahria Town',
+    email: this.readLoginEmail() || 'muhammad.athar@gmail.com',
+    phone: '+92 310 777 9651',
+    address: 'House 42-B, Street 7, CC-Block, Sector D, Bahria Town, Lahore',
     city: 'Lahore',
-    memberSince: 'Oct 2024'
+    memberSince: 'Oct 2024',
+    dob: '12 March 1994',
+    isEmailVerified: true,
+    isPhoneVerified: true
   });
 
   // Saved Delivery Addresses
@@ -108,19 +121,37 @@ export class AuthService {
       id: 'addr-1',
       label: 'Home',
       recipientName: 'Muhammad Athar',
-      phone: '+92 300 1234567',
-      addressLine: 'House #42, Block C, Bahria Town',
+      phone: '+92 310 777 9651',
+      addressLine: 'House 42-B, Street 7, CC-Block, Sector D, Bahria Town, Lahore',
       city: 'Lahore',
-      isDefault: true
+      isDefault: true,
+      branchZone: 'Bahria Town Branch · 60-Min Express',
+      riderNote: 'Ring main gate bell, leave groceries with guard if busy.',
+      isMapPinned: true
     },
     {
       id: 'addr-2',
       label: 'Office',
       recipientName: 'Muhammad Athar',
-      phone: '+92 321 7654321',
-      addressLine: 'Floor 4, Software Park, Gulberg III',
+      phone: '+92 310 777 9651',
+      addressLine: 'Office 304, 3rd Floor, Arfa Software Technology Park, Ferozepur Rd, Lahore',
       city: 'Lahore',
-      isDefault: false
+      isDefault: false,
+      branchZone: 'Model Town Branch · 60-Min Express',
+      riderNote: 'Call on arrival at ground-floor reception desk.',
+      isMapPinned: true
+    },
+    {
+      id: 'addr-3',
+      label: "Parents' Home",
+      recipientName: 'Athar Residence',
+      phone: '+92 321 445 8820',
+      addressLine: 'House 18, Block K, Main Boulevard, Gulberg III, Lahore',
+      city: 'Lahore',
+      isDefault: false,
+      branchZone: 'Gulberg Branch · 60-Min Express',
+      riderNote: 'Call 5 minutes before reaching the gate.',
+      isMapPinned: true
     }
   ]);
 
@@ -128,7 +159,7 @@ export class AuthService {
   readonly savedCards = signal<SavedCard[]>([
     {
       id: 'card-1',
-      cardHolder: 'M Athar Saleem',
+      cardHolder: 'Muhammad Athar',
       cardNumber: '•••• •••• •••• 4821',
       expiryDate: '12/28',
       cardBrand: 'visa',
@@ -145,10 +176,51 @@ export class AuthService {
   ]);
 
   // Wallet Balance
-  readonly walletBalance = signal<number>(2500);
+  readonly walletBalance = signal<number>(450);
 
   // Orders History
   readonly orders = signal<UserOrder[]>([
+    {
+      id: 'RH-98412',
+      date: this.formatOrderDate(0),
+      itemsCount: 3,
+      totalAmount: 1830,
+      status: 'In Transit',
+      paymentMethod: 'Rainbow Wallet',
+      items: [
+        { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 2, price: 180, weightOrUnit: '1 kg', categorySlug: 'ultra-fresh' },
+        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, weightOrUnit: '500 g', categorySlug: 'dairy-eggs' },
+        { title: 'Olpers Milk 1L', image: 'assets/images/grocery/olpers.jpg', quantity: 3, price: 440, weightOrUnit: '1 L', categorySlug: 'dairy-eggs' }
+      ]
+    },
+    {
+      id: 'RH-98234',
+      date: 'Nov 18, 2026',
+      itemsCount: 3,
+      totalAmount: 1830,
+      status: 'Delivered',
+      paymentMethod: 'Rainbow Wallet',
+      items: [
+        { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 1, price: 360, weightOrUnit: '1 kg', categorySlug: 'ultra-fresh' },
+        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, weightOrUnit: '500 g', categorySlug: 'dairy-eggs' },
+        { title: 'Olpers Milk 1L', image: 'assets/images/grocery/olpers.jpg', quantity: 3, price: 440, weightOrUnit: '1 L', categorySlug: 'dairy-eggs' }
+      ]
+    },
+    {
+      id: 'RH-97891',
+      date: 'Nov 12, 2026',
+      itemsCount: 5,
+      totalAmount: 2450,
+      status: 'Delivered',
+      paymentMethod: 'Cash on Delivery',
+      items: [
+        { title: 'Whole Wheat Bread Large', image: 'assets/images/grocery/bread.png', quantity: 1, price: 160, weightOrUnit: 'Large', categorySlug: 'bakery' },
+        { title: 'Farm Fresh Eggs', image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg', quantity: 2, price: 420, weightOrUnit: 'Pack of 12', categorySlug: 'dairy-eggs' },
+        { title: 'Fresh Red Apples', image: 'assets/images/ultra_fresh/apple.png', quantity: 1, price: 380, weightOrUnit: '1 kg', categorySlug: 'ultra-fresh' },
+        { title: 'Fresh Carrots', image: 'assets/images/ultra_fresh/carrot.webp', quantity: 1, price: 90, weightOrUnit: '500 g', categorySlug: 'ultra-fresh' },
+        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 2, price: 150, weightOrUnit: '500 g', categorySlug: 'dairy-eggs' }
+      ]
+    },
     {
       id: 'RH-92842',
       date: 'Oct 27, 2026',
@@ -161,114 +233,32 @@ export class AuthService {
         { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, categorySlug: 'dairy-eggs' },
         { title: 'Farm Fresh Eggs', image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg', quantity: 1, price: 420, categorySlug: 'dairy-eggs' }
       ]
-    },
-    {
-      id: 'RH-98234',
-      date: this.formatOrderDate(0),
-      itemsCount: 3,
-      totalAmount: 1850,
-      status: 'Delivered',
-      paymentMethod: 'Rainbow Wallet',
-      items: [
-        { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 2, price: 180, categorySlug: 'ultra-fresh' },
-        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, categorySlug: 'dairy-eggs' },
-        { title: 'Olpers Milk 1L', image: 'assets/images/grocery/olpers.jpg', quantity: 3, price: 440, categorySlug: 'dairy-eggs' }
-      ]
-    },
-    {
-      id: 'RH-92658',
-      date: 'Oct 26, 2026',
-      itemsCount: 2,
-      totalAmount: 490,
-      status: 'Delivered',
-      paymentMethod: 'Rainbow Wallet',
-      items: [
-        { title: 'Fresh Carrots', image: 'assets/images/ultra_fresh/carrot.webp', quantity: 2, price: 90, categorySlug: 'ultra-fresh' },
-        { title: 'Fresh Mushrooms', image: 'assets/images/ultra_fresh/mashroom.jpg', quantity: 1, price: 310, categorySlug: 'ultra-fresh' }
-      ]
-    },
-    {
-      id: 'RH-92761',
-      date: 'Oct 26, 2026',
-      itemsCount: 2,
-      totalAmount: 660,
-      status: 'Delivered',
-      paymentMethod: 'Cash on Delivery',
-      items: [
-        { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 2, price: 180, categorySlug: 'ultra-fresh' },
-        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 2, price: 150, categorySlug: 'dairy-eggs' }
-      ]
-    },
-    {
-      id: 'RH-92510',
-      date: 'Oct 25, 2026',
-      itemsCount: 2,
-      totalAmount: 330,
-      status: 'Delivered',
-      paymentMethod: 'Cash on Delivery',
-      items: [
-        { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 1, price: 180, categorySlug: 'ultra-fresh' },
-        { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, categorySlug: 'dairy-eggs' }
-      ]
-    },
-    {
-      id: 'RH-92406',
-      date: 'Oct 24, 2026',
-      itemsCount: 2,
-      totalAmount: 660,
-      status: 'Delivered',
-      paymentMethod: 'Cash on Delivery',
-      items: [
-        { title: 'Curly Kale', image: 'assets/images/ultra_fresh/Curly-Kale.webp', quantity: 1, price: 240, categorySlug: 'ultra-fresh' },
-        { title: 'Farm Fresh Eggs', image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg', quantity: 1, price: 420, categorySlug: 'dairy-eggs' }
-      ]
-    },
-    {
-      id: 'RH-92376',
-      date: 'Oct 23, 2026',
-      itemsCount: 3,
-      totalAmount: 720,
-      status: 'Delivered',
-      paymentMethod: 'Rainbow Wallet',
-      items: [
-        { title: 'Farm Fresh Eggs', image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg', quantity: 1, price: 420, categorySlug: 'dairy-eggs' },
-        { title: 'Fresh Carrots', image: 'assets/images/ultra_fresh/carrot.webp', quantity: 2, price: 90, categorySlug: 'ultra-fresh' },
-        { title: 'Fresh Spinach', image: 'assets/images/ultra_fresh/Palak.jpg', quantity: 1, price: 120, categorySlug: 'ultra-fresh' }
-      ]
-    },
-    {
-      id: 'RH-88942',
-      date: this.formatOrderDate(2),
-      itemsCount: 1,
-      totalAmount: 950,
-      status: 'Delivered',
-      paymentMethod: 'Cash on Delivery',
-      items: [
-        { title: 'National Cooking Oil 5L', image: 'assets/images/grocery/oil.jpg', quantity: 1, price: 950, categorySlug: 'cooking-essentials' }
-      ]
-    },
-    {
-      id: 'RH-77120',
-      date: this.formatOrderDate(4),
-      itemsCount: 2,
-      totalAmount: 620,
-      status: 'In Transit',
-      paymentMethod: 'JazzCash Wallet',
-      items: [
-        { title: 'Knorr Noodles Chicken Pack', image: 'assets/images/grocery/noodles.jpg', quantity: 2, price: 310, categorySlug: 'instant-food' }
-      ]
     }
   ]);
 
   // Returns Requests
   readonly returns = signal<ReturnRequest[]>([
     {
-      id: 'RET-1042',
-      orderId: 'RH-88942',
-      date: 'Oct 03, 2026',
-      items: [{ itemTitle: 'National Cooking Oil 5L', reason: 'Packaging Seal Damaged', refundAmount: 950 }],
-      refundAmount: 950,
-      status: 'Approved'
+      id: 'RET-4021',
+      orderId: 'RH-98110',
+      date: 'Nov 20, 2026',
+      items: [{ itemTitle: 'Fresh Farm Tomatoes (1 kg)', reason: 'Damaged / Bruised item', refundAmount: 240, evidenceImage: 'assets/images/ultra_fresh/tomatoes.png' }],
+      refundAmount: 240,
+      status: 'Pending',
+      stageBadge: 'Pickup Scheduled',
+      stage: 2,
+      method: 'Rainbow Wallet'
+    },
+    {
+      id: 'RET-3988',
+      orderId: 'RH-97504',
+      date: 'Nov 10, 2026',
+      items: [{ itemTitle: 'Olpers Milk 1L Pack', reason: 'Near expiry', refundAmount: 330, evidenceImage: 'assets/images/grocery/olpers.jpg' }],
+      refundAmount: 330,
+      status: 'Approved',
+      stageBadge: 'Refunded',
+      stage: 3,
+      method: 'Rainbow Wallet'
     }
   ]);
 

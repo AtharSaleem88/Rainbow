@@ -39,18 +39,21 @@
 }
 
 .rh-brands-slider { position: relative; }
-.rh-brands-track-wrap { width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; }
-.rh-brands-track-wrap::-webkit-scrollbar { display: none; }
-.rh-brands-track { display: flex; width: max-content; min-width: 100%; animation: none !important; transform: none !important; }
-.rh-brand-item { scroll-snap-align: start; }
-.rh-brand-controls { position: absolute; right: 0; top: 50%; z-index: 2; display: flex; gap: 6px; padding-left: 10px; background: #f7fbfe; transform: translateY(-50%); }
-.rh-brand-arrow { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid #dbe5f0; border-radius: 50%; background: #fff; color: #2e3192; box-shadow: 0 4px 14px rgba(23,35,74,.08); cursor: pointer; }
-.rh-brand-arrow:focus-visible { outline: 2px solid #2e3192; outline-offset: 2px; }
-@media (max-width: 767px) { .rh-brand-controls { gap: 4px; padding-left: 5px; } .rh-brand-arrow { width: 28px; height: 28px; font-size: 11px; } }
+.rh-brands-track-wrap { width: 100%; max-width: 100%; overflow: hidden; }
+.rh-brands-track { display: flex; width: max-content; min-width: 0; padding: 0; animation: rh-brand-ticker 45s linear infinite; will-change: transform; }
+.rh-brands-set { flex: 0 0 auto; gap: 24px; padding-right: 24px; }
+.rh-brands-track-wrap:focus-within .rh-brands-track { animation-play-state: paused; }
+@keyframes rh-brand-ticker { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 
 @media (max-width: 767px) {
-  .rh-brands-track-wrap { container-type: inline-size; scroll-padding-inline: 12px; scroll-snap-type: x mandatory; }
-  .rh-brands-track { box-sizing: border-box; padding-inline: 12px; }
-  .rh-brands-set { gap: 10px; }
+  .rh-brands-track-wrap { container-type: inline-size; }
+  .rh-brands-set { gap: 10px; padding-right: 10px; }
   .rh-brands-track-wrap .rh-brand-item { box-sizing: border-box; width: calc((100cqw - 44px) / 3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-brands-track-wrap { overflow: visible; }
+  .rh-brands-track { width: 100%; animation: none; transform: none; }
+  .rh-brands-set { flex-wrap: wrap; width: 100%; justify-content: center; padding: 0; }
+  .rh-brands-duplicate { display: none; }
 }

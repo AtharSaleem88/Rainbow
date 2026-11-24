@@ -19,7 +19,10 @@
   </ng-container>
   <ng-container *ngIf="!mobilePreview" [ngTemplateOutlet]="billDetails"></ng-container>
   <div *ngIf="!mobilePreview" class="rainbow-checkout-trust">
-    <p *ngIf="!isMember"><a routerLink="/login">Sign in</a> to earn loyalty points on this order.</p>
+    <div *ngIf="!isMember" class="rainbow-summary-signin">
+      <span><i class="fal fa-gift" aria-hidden="true"></i> Earn loyalty points on this order</span>
+      <a routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }">Sign in <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
     <p><i class="fal fa-shield-check"></i> Safe &amp; Encrypted Checkout</p>
   </div>
 </section>
@@ -59,6 +62,10 @@
     <div class="rainbow-summary-row" *ngIf="checkoutSavings > 0">
       <span class="text-success">Promotional Discount</span>
       <span class="text-success">- Rs. {{ checkoutSavings | number:'1.0-0' }}</span>
+    </div>
+    <div class="rainbow-summary-row" *ngIf="promoDiscount > 0">
+      <span class="text-success">Promo code ({{ promoCode }})</span>
+      <span class="text-success">- Rs. {{ promoDiscount | number:'1.0-2' }}</span>
     </div>
     <div class="rainbow-summary-row" *ngIf="fulfillmentMode === 'delivery'">
       <span>Delivery Charge</span>

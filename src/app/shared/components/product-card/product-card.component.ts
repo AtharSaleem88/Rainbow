@@ -5,6 +5,7 @@ import { Product, ProductVariant } from '../../../core/models/product.model';
 import { CartService } from '../../../core/services/cart.service';
 import { AlternateModalService } from '../../../core/services/alternate-modal.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { WishlistService } from '../../../core/services/wishlist.service';
 
 @Component({
   selector: 'app-product-card',
@@ -20,15 +21,18 @@ export class ProductCardComponent implements OnChanges {
   @Input() showSectionLabel = true;
   @Input() showTopSellingBadge = false;
   @Input() compactMobile = false;
+  @Input() allowRemovingUnavailableFavorite = false;
   @Output() quickView = new EventEmitter<Product>();
 
   cartService = inject(CartService);
   alternateModalService = inject(AlternateModalService);
   private toastService = inject(ToastService);
   private host: ElementRef<HTMLElement> = inject(ElementRef);
-  favorite = signal(false);
+  private wishlist = inject(WishlistService);
+  favorite(): boolean { return this.wishlist.has(this.product.id); }
   selectedVariantId = signal<string | null>(null);
   variantOptionsOpen = signal(false);
+  private addAfterVariantSelection = false;
 
   openAlternateModal(event?: Event) {
     if (event) {
@@ -95,9 +99,16 @@ export class ProductCardComponent implements OnChanges {
     event.preventDefault();
     event.stopPropagation();
     const changed = this.selectedVariantId() !== variantId;
+    const shouldAdd = this.addAfterVariantSelection;
     this.selectedVariantId.set(variantId);
     this.closeVariantDialog();
-    if (changed) {
+    if (shouldAdd) {
+      const variant = this.product.variants?.find(item => item.id === variantId);
+      if (variant) {
+        this.cartService.addToCart(this.product, 1, variant);
+        this.toastService.show(`${this.product.title} added to your cart.`);
+      }
+    } else if (changed) {
       const variant = this.product.variants?.find(item => item.id === variantId);
       if (variant) this.toastService.show(`${variant.label} selected for ${this.product.title}.`);
     }
@@ -106,22 +117,49 @@ export class ProductCardComponent implements OnChanges {
   toggleVariantOptions(event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
-    this.variantOptionsOpen.set(true);
-    this.host.nativeElement.querySelector<HTMLDialogElement>('.rh-variant-dialog')?.showModal();
+    this.openVariantDialog();
+  }
+
+  private openVariantDialog(): void {
+    const dialog = this.host.nativeElement.querySelector<HTMLDialogElement>('.rh-variant-dialog');
+    if (!dialog || dialog.open || dialog.hasAttribute('open')) return;
+    try {
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else { dialog.classList.add('is-fallback'); dialog.setAttribute('open', ''); }
+    } catch {
+      dialog.classList.add('is-fallback');
+      dialog.setAttribute('open', '');
+    }
+    this.variantOptionsOpen.set(dialog.open || dialog.hasAttribute('open'));
   }
 
   closeVariantDialog() {
-    this.host.nativeElement.querySelector<HTMLDialogElement>('.rh-variant-dialog')?.close();
+    const dialog = this.host.nativeElement.querySelector<HTMLDialogElement>('.rh-variant-dialog');
+    if (dialog && (dialog.open || dialog.hasAttribute('open'))) {
+      if (dialog.classList.contains('is-fallback')) { dialog.removeAttribute('open'); dialog.classList.remove('is-fallback'); }
+      else dialog.close();
+    }
     this.variantOptionsOpen.set(false);
+    this.addAfterVariantSelection = false;
   }
 
   closeVariantBackdrop(event: MouseEvent) {
     if (event.target === event.currentTarget) this.closeVariantDialog();
   }
 
+  onVariantDialogClosed(): void {
+    this.variantOptionsOpen.set(false);
+    this.addAfterVariantSelection = false;
+  }
+
   addToCart(event: Event) {
     event.stopPropagation();
     event.preventDefault();
+    if (typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches && (this.product.variants?.length ?? 0) > 1) {
+      this.addAfterVariantSelection = true;
+      this.openVariantDialog();
+      return;
+    }
     this.cartService.addToCart(this.product, 1, this.selectedVariant);
     this.toastService.show(`${this.product.title} added to your cart.`);
   }
@@ -129,6 +167,11 @@ export class ProductCardComponent implements OnChanges {
   changeQuantity(event: Event, change: -1 | 1) {
     event.stopPropagation();
     event.preventDefault();
+    if (change > 0 && typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches && (this.product.variants?.length ?? 0) > 1) {
+      this.addAfterVariantSelection = true;
+      this.openVariantDialog();
+      return;
+    }
     this.cartService.updateQuantity(this.product.id, this.cartQuantity + change, this.selectedVariant?.id);
     this.toastService.show('Cart quantity updated.');
   }
@@ -136,8 +179,8 @@ export class ProductCardComponent implements OnChanges {
   toggleFavorite(event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    this.favorite.update(value => !value);
-    this.toastService.show(this.favorite() ? 'Added to your wishlist.' : 'Removed from your wishlist.');
+    const added = this.wishlist.toggle(this.product.id);
+    this.toastService.show(added ? 'Added to your wishlist.' : 'Removed from your wishlist.');
   }
 
   onQuickView(event: Event) {

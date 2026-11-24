@@ -44,8 +44,8 @@
         </div>
 
         <div *ngIf="cocaColaStore()" class="rh-deals-filters rh-coca-filters" aria-label="Filter Coca-Cola products">
-          <label>Min price<input type="number" min="0" [value]="minPrice()" (change)="onMinPriceChange($any($event.target).valueAsNumber || 0)"></label>
-          <label>Max price<input type="number" min="0" [value]="maxPrice()" (change)="onMaxPriceChange($any($event.target).valueAsNumber || 0)"></label>
+          <label>Min price<input type="number" min="0" placeholder="Min" [value]="minPrice() || ''" (change)="onMinPriceChange($any($event.target).valueAsNumber || 0)"></label>
+          <label>Max price<input type="number" min="0" placeholder="Max" [value]="maxPrice() || ''" (change)="onMaxPriceChange($any($event.target).valueAsNumber || 0)"></label>
           <label>Sort by<select [value]="selectedSort()" (change)="onSortChangeValue($any($event.target).value)"><option value="featured">Recommended</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="rating">Top Rated</option></select></label>
           <button type="button" class="rh-deals-clear" (click)="resetFilters()">Clear filters</button>
         </div>

@@ -53,7 +53,7 @@ export class ShopFiltersComponent {
   mobileFilterModalOpen = false;
 
   tempMinPrice = 0;
-  tempMaxPrice = 1000;
+  tempMaxPrice = 0;
   tempSelectedSort = 'featured';
   tempSelectedSubSubCategory = '';
   tempCategory = '';
@@ -82,7 +82,7 @@ export class ShopFiltersComponent {
 
   @Input() selectedBrand = '';
   @Input() minPrice = 0;
-  @Input() maxPrice = 1000;
+  @Input() maxPrice = 0;
   @Input() selectedSort = 'featured';
   @Input() subSubCategories: string[] = [];
   @Input() selectedSubSubCategory = '';
@@ -97,7 +97,7 @@ export class ShopFiltersComponent {
     return this.sortOptions.find(option => option.value === this.selectedSort)?.label ?? 'Recommended';
   }
 
-  get defaultMaxPrice(): number { return this.monthlyMode ? this.allPricesMax : 1000; }
+  get defaultMaxPrice(): number { return 0; }
 
   get activeMobileFilterCount(): number {
     let count = 0;

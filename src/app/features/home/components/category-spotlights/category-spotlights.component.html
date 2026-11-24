@@ -2,12 +2,15 @@
   <div class="rh-category-spotlights-inner">
     <div class="rh-category-spotlights-grid">
       <a
-        *ngFor="let category of spotlights"
+        *ngFor="let category of spotlights; let i = index"
         class="rh-category-spotlight"
         [ngClass]="'rh-category-spotlight-' + category.theme"
         [routerLink]="['/shop']"
         [queryParams]="{ category: category.category }">
-        <span class="rh-category-spotlight-title">{{ category.title }}</span>
+        <span class="rh-category-spotlight-heading">
+          <span class="rh-category-spotlight-title">{{ category.title }}</span>
+          <span *ngIf="i >= spotlights.length - 3" class="rh-category-sponsored">Sponsored</span>
+        </span>
         <span class="rh-category-spotlight-image">
           <img [src]="category.image" [alt]="category.title + ' essentials'" loading="lazy">
         </span>

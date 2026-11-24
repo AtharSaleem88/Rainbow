@@ -9,19 +9,8 @@
       <a routerLink="/shop" class="rainbow-checkout-primary">Return to Shop <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
     </div>
 
-    <section *ngIf="cartService.cartItems().length > 0 && !authService.isLoggedIn() && !guestCheckout() && currentStep() !== 3" class="rainbow-checkout-choice" aria-labelledby="checkout-choice-title">
-      <span class="rainbow-checkout-choice-icon"><i class="fal fa-shopping-bag" aria-hidden="true"></i></span>
-      <h1 id="checkout-choice-title">How would you like to checkout?</h1>
-      <p>Sign in to use your saved details, or continue as a guest.</p>
-      <div class="rainbow-checkout-choice-actions">
-        <a class="rainbow-checkout-primary" routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }">Sign in</a>
-        <button type="button" class="rainbow-btn-secondary" (click)="guestCheckout.set(true)">Continue as guest</button>
-      </div>
-      <p class="rainbow-checkout-choice-note">Sign-in and checkout are demonstrations.</p>
-    </section>
-
     <!-- Active Checkout Flow -->
-    <ng-container *ngIf="(cartService.cartItems().length > 0 && (authService.isLoggedIn() || guestCheckout())) || currentStep() === 3">
+    <ng-container *ngIf="cartService.cartItems().length > 0 || currentStep() === 3">
       <!-- Checkout Stepper Progress -->
       <app-checkout-stepper
         *ngIf="currentStep() !== 3"
@@ -39,6 +28,8 @@
             [checkoutTotal]="checkoutTotal()"
             [checkoutOriginalTotal]="checkoutOriginalTotal()"
             [checkoutSavings]="checkoutSavings()"
+            [promoDiscount]="promoAmount()"
+            [promoCode]="appliedPromoCode()"
             [payment]="payment()"
             [pointsToEarn]="pointsToEarn()"
             [isMember]="loyaltyService.isMember()"
@@ -62,6 +53,14 @@
             <header class="rainbow-card-header">
               <h2><i class="fal fa-map-marker-alt"></i> Shipping & Delivery Details</h2>
             </header>
+
+            <div *ngIf="!authService.isLoggedIn()" class="rainbow-guest-options" aria-label="Checkout options">
+              <p>Enter your details as a guest, or log in to use your saved details.</p>
+              <div class="rainbow-guest-options-actions">
+                <button type="button" class="rainbow-guest-continue" (click)="continueAsGuest()">Continue as guest</button>
+                <a routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }" class="rainbow-guest-login">Log in</a>
+              </div>
+            </div>
 
             <!-- Delivery Method Selection (Instant vs Scheduled) -->
             <div class="rainbow-fulfillment-options" role="group" aria-label="Fulfillment method">
@@ -244,6 +243,16 @@
               <h2><i class="fal fa-credit-card"></i> Choose Payment Method</h2>
             </header>
 
+            <section class="rainbow-promo" aria-labelledby="promo-title">
+              <label id="promo-title" for="promo-code">Promo code</label>
+              <div class="rainbow-promo-controls">
+                <input id="promo-code" type="text" [(ngModel)]="promoInput" [disabled]="!!appliedPromoCode()" placeholder="Enter promo code" autocomplete="off" (keydown.enter)="$event.preventDefault(); applyPromo()" [attr.aria-invalid]="!!promoError()" aria-describedby="promo-message">
+                <button type="button" *ngIf="!appliedPromoCode()" (click)="applyPromo()">Apply</button>
+                <button type="button" *ngIf="appliedPromoCode()" (click)="removePromo()">Remove</button>
+              </div>
+              <p id="promo-message" class="rainbow-promo-message" [class.is-error]="!!promoError()" aria-live="polite">{{ promoError() || (appliedPromoCode() ? appliedPromoCode() + ' applied — 10% off items' : 'Have a promo code? Enter it above.') }}</p>
+            </section>
+
             <div *ngIf="authService.isLoggedIn()" class="rainbow-payment-options mb-3">
               <div class="rainbow-payment-card rainbow-wallet-payment align-items-center p-3" [class.is-selected]="useWallet() && payment().walletApplied > 0">
                 <div class="rainbow-payment-info">
@@ -408,6 +417,8 @@
             [checkoutTotal]="checkoutTotal()"
             [checkoutOriginalTotal]="checkoutOriginalTotal()"
             [checkoutSavings]="checkoutSavings()"
+            [promoDiscount]="promoAmount()"
+            [promoCode]="appliedPromoCode()"
             [payment]="payment()"
             [pointsToEarn]="pointsToEarn()"
             [isMember]="loyaltyService.isMember()"
@@ -448,6 +459,7 @@
               </div>
             </div>
             <div class="rainbow-payment-receipt-row"><span>Items total</span><strong>Rs. {{ checkoutTotal() | number:'1.0-2' }}</strong></div>
+            <div class="rainbow-payment-receipt-row" *ngIf="promoAmount() > 0"><span>Promo code ({{ appliedPromoCode() }})</span><strong class="text-success">- Rs. {{ promoAmount() | number:'1.0-2' }}</strong></div>
             <div class="rainbow-payment-receipt-row" *ngIf="paid.tipAmount > 0"><span>Rider tip</span><strong>Rs. {{ paid.tipAmount | number:'1.0-2' }}</strong></div>
             <div class="rainbow-payment-receipt-row" *ngIf="paid.pointsUsed > 0"><span>Loyalty points used: {{ paid.pointsUsed }}</span><strong class="text-success">- Rs. {{ paid.loyaltyDiscount | number:'1.0-2' }}</strong></div>
             <div class="rainbow-payment-receipt-row" *ngIf="paid.walletApplied > 0"><span>Paid from wallet</span><strong>- Rs. {{ paid.walletApplied | number:'1.0-2' }}</strong></div>

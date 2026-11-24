@@ -171,3 +171,8 @@
 @media (prefers-reduced-motion: reduce) {
   .rh-category-item, .rh-category-image, .rh-category-image img, .rh-category-name, .rh-category-arrow { transition: none !important; scroll-behavior: auto; }
 }
+
+@media (max-width: 767px) {
+  .rh-category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 10px; margin: 0; padding: 8px 0; overflow: visible; }
+  .rh-category-item:nth-child(n + 10) { display: none; }
+}

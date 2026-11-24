@@ -34,8 +34,19 @@ function setup() {
     if (name === './loyalty.service') return { LoyaltyService };
     throw new Error(`Unexpected dependency: ${name}`);
   }});
-  return { calculate: exports.calculatePayment, service: new exports.CheckoutPaymentService(), auth, loyalty };
+  return { calculate: exports.calculatePayment, promoDiscount: exports.promoDiscount, service: new exports.CheckoutPaymentService(), auth, loyalty };
 }
+
+test('promo code validates and discounts items before points, wallet and tip', () => {
+  const { promoDiscount, calculate } = setup();
+  assert.equal(promoDiscount(510, ' rainbow10 '), 51);
+  assert.equal(promoDiscount(510, 'INVALID'), 0);
+  assert.equal(promoDiscount(0, 'RAINBOW10'), 0);
+  assert.equal(promoDiscount(10.05, 'RAINBOW10'), 1.01);
+  const payment = calculate(510 - promoDiscount(510, 'RAINBOW10'), 200, 50, true, true, 1, 100);
+  assert.equal(payment.payable, 309);
+  assert.equal(payment.earningAmount, 409);
+});
 
 test('no selection, wallet only, points only, and combined partial payment', () => {
   const { calculate } = setup();

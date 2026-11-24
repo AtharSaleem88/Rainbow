@@ -47,6 +47,11 @@ export const routes: Routes = [
     title: 'Create an Account — Rainbow'
   },
   {
+    path: 'forgot-password',
+    loadComponent: () => import('./features/authentication/forgot-password.component').then(m => m.ForgotPasswordComponent),
+    title: 'Forgot Password — Rainbow'
+  },
+  {
     path: 'about',
     loadComponent: () => import('./features/about/about.component').then(m => m.AboutComponent),
     title: 'About Us — Rainbow'

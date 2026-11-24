@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   readonly spotlightCategories: SpotlightCategory[] = [
-    { title: 'Baby Care', description: 'Gentle everyday care for little ones.', image: 'assets/images/home/baby-care-products.png', category: 'baby-care', theme: 'baby' },
+    { title: 'Bakery', description: 'Freshly baked favourites for every day.', image: 'assets/images/home/bakery-biscuits.png', category: 'bakery-biscuits', theme: 'baby' },
     { title: 'Cosmetics', description: 'Beauty and personal care favourites.', image: 'assets/images/home/cosmetics-products.png', category: 'personal-care', theme: 'beauty' },
     { title: 'Beverages', description: 'Refreshing drinks for every moment.', image: 'assets/images/home/beverage-products.png', category: 'beverages', theme: 'beverages' },
     { title: 'Pharmacy', description: 'Everyday wellness essentials.', image: 'assets/images/home/pharmacy-products.png', category: 'pharma-wellness', theme: 'pharmacy' }
