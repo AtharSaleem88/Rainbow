@@ -1411,9 +1411,16 @@ app-root {
 }
 
 .rh-mobile-location-pill {
-  background: #f4f5f9;
-  border-radius: 20px;
-  padding: 5px 12px;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0;
+  padding: 4px 0;
+
+  &:hover, &:focus, &:active {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
 }
 
 .rh-mobile-pill-half {

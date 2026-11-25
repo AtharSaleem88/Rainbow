@@ -295,7 +295,19 @@
 @media (max-width: 991px) {
   .rh-mobile-logo { display: flex; flex: 0 0 auto; align-items: center; }
   .rh-mobile-logo img { display: block; width: 76px; height: auto; max-height: 50px; object-fit: contain; }
-  .rh-mobile-location-pill { min-width: 0; overflow: hidden; }
+  .rh-mobile-location-row { background: transparent; }
+  .rh-mobile-location-pill {
+    min-width: 0;
+    overflow: hidden;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+
+    &:hover, &:focus, &:active {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+  }
   .rh-mobile-location-row, .rh-mobile-location-pill { width: 100%; }
   .rh-mobile-location-row.rh-mobile-location-hidden { display: none; }
   .rh-mobile-location-pill { min-height: 44px; }
@@ -894,12 +906,22 @@
 .rh-mobile-actions .cart_btn .rh-hdr-pill-icon,
 .rh-mobile-location-pill .rh-hdr-pill-icon { font-size: 18px; line-height: 1; }
 
-.rh-hdr-delivering .rh-hdr-pill,
-.rh-mobile-location-pill {
+.rh-hdr-delivering .rh-hdr-pill {
   box-sizing: border-box;
   min-height: 44px;
   background: #f1faff;
   box-shadow: none;
+}
+.rh-mobile-location-pill {
+  box-sizing: border-box;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+
+  &:hover, &:focus, &:active {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
 }
 .rh-hdr-search .rh-search-wrap { min-height: 44px; }
 .rh-hdr-delivering .rh-hdr-pill:focus-visible,
