@@ -67,9 +67,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   readonly loyaltyService = inject(LoyaltyService);
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
-  continueAsGuest(): void {
-    document.getElementById('firstName')?.focus();
-  }
   private readonly paymentService = inject(CheckoutPaymentService);
   private readonly seoService = inject(SeoService);
 

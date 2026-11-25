@@ -13,6 +13,7 @@
 
     <div class="rh-schedule-body rainbow-return-body">
       <section class="rainbow-return-selection" aria-labelledby="return-items-heading">
+        <p *ngIf="items.length && !availableItemIndices.length" role="status">No items in this order are currently eligible for a return or refund. Items may already have a request or be outside the return window.</p>
         <div class="rainbow-return-selection-heading">
           <h3 id="return-items-heading">Select Items to Return</h3>
           <button type="button" class="rainbow-return-select-all" [disabled]="availableItemIndices.length === 0" (click)="toggleSelectAll()">

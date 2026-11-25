@@ -20,8 +20,9 @@
   <ng-container *ngIf="!mobilePreview" [ngTemplateOutlet]="billDetails"></ng-container>
   <div *ngIf="!mobilePreview" class="rainbow-checkout-trust">
     <div *ngIf="!isMember" class="rainbow-summary-signin">
-      <span><i class="fal fa-gift" aria-hidden="true"></i> Earn loyalty points on this order</span>
-      <a routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }">Sign in <i class="fal fa-arrow-right" aria-hidden="true"></i></a>
+      <span class="rainbow-summary-account-icon"><i class="fal fa-user" aria-hidden="true"></i></span>
+      <div class="rainbow-summary-account-copy"><strong>Have an account?</strong><span>Sign in for faster checkout</span></div>
+      <a routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }">Sign in</a>
     </div>
     <p><i class="fal fa-shield-check"></i> Safe &amp; Encrypted Checkout</p>
   </div>

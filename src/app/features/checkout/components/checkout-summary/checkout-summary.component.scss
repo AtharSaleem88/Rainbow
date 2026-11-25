@@ -1,9 +1,11 @@
 :host {
   display: block;
 }
-.rainbow-summary-signin { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px; padding:10px 12px; border:1px solid #dcecf6; border-radius:10px; background:#f2f9fd; }
-.rainbow-summary-signin span { color:#53617a; font-size:12px; line-height:1.45; }
-.rainbow-summary-signin span i { margin-right:5px; color:#30358d; }
+.rainbow-summary-signin { display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; padding:12px; border:1px solid #e3ebf4; border-radius:10px; background:#f8fbfe; }
+.rainbow-summary-account-icon { display:grid; place-items:center; flex:0 0 34px; width:34px; height:34px; border-radius:50%; background:#e9f3fb; color:#30358d; font-size:15px; }
+.rainbow-summary-account-copy { display:flex; flex:1 1 120px; min-width:0; flex-direction:column; gap:2px; line-height:1.4; }
+.rainbow-summary-account-copy strong { color:#17234a; font-size:12px; font-weight:600; }
+.rainbow-summary-account-copy span { color:#6b7a94; font-size:11px; }
 .rainbow-summary-signin a { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:32px; padding:6px 12px; border-radius:8px; background:#30358d; color:#fff; font-size:12px; font-weight:600; text-decoration:none; }
 .rainbow-summary-signin a:hover { background:#30358d; color:#fff; }
 .rainbow-summary-signin a:focus-visible { outline:2px solid #25aae1; outline-offset:2px; }

@@ -49,6 +49,7 @@ export interface UserOrder {
   date: string;
   itemsCount: number;
   totalAmount: number;
+  deliveryCharge?: number;
   status: 'Delivered' | 'In Transit' | 'Processing' | 'Cancelled';
   paymentMethod: string;
   items: Array<{
@@ -212,6 +213,7 @@ export class AuthService {
       date: this.formatOrderDate(0),
       itemsCount: 3,
       totalAmount: 1830,
+      deliveryCharge: 0,
       status: 'In Transit',
       paymentMethod: 'Rainbow Wallet',
       items: [
@@ -222,9 +224,10 @@ export class AuthService {
     },
     {
       id: 'RH-98234',
-      date: 'Nov 18, 2026',
+      date: this.formatOrderDate(0),
       itemsCount: 3,
       totalAmount: 1830,
+      deliveryCharge: 0,
       status: 'Delivered',
       paymentMethod: 'Rainbow Wallet',
       items: [
@@ -238,6 +241,7 @@ export class AuthService {
       date: 'Nov 12, 2026',
       itemsCount: 5,
       totalAmount: 2450,
+      deliveryCharge: 0,
       status: 'Delivered',
       paymentMethod: 'Cash on Delivery',
       items: [
@@ -253,6 +257,7 @@ export class AuthService {
       date: 'Oct 27, 2026',
       itemsCount: 3,
       totalAmount: 750,
+      deliveryCharge: 0,
       status: 'Delivered',
       paymentMethod: 'Cash on Delivery',
       items: [

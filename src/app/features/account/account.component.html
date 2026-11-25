@@ -121,6 +121,25 @@
             </div>
           </ng-template>
         </section>
+        <ng-template #accountOrderItems let-order="order">
+          <div class="account-order-items" [attr.aria-label]="'Items in order ' + order.id">
+            <div class="account-order-item" *ngFor="let item of expandedOrder()?.id === order.id ? order.items : order.items.slice(0, 3)">
+              <div class="account-order-thumb"><img [src]="item.image" [alt]="item.title" (error)="$any($event.target).style.visibility='hidden'"></div>
+              <div class="account-order-item-copy"><strong>{{ item.title }}</strong><span>{{ item.quantity }}x · Rs. {{ item.price * item.quantity | number:'1.0-0' }}</span></div>
+            </div>
+            <button *ngIf="order.items.length > 3" type="button" class="account-order-show-more" [attr.aria-expanded]="expandedOrder()?.id === order.id" (click)="toggleOrderDetails(order.id)">
+              {{ expandedOrder()?.id === order.id ? 'Show Less' : 'Show More' }}
+              <i class="fal" [ngClass]="expandedOrder()?.id === order.id ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i>
+            </button>
+          </div>
+        </ng-template>
+        <ng-template #accountOrderTotals let-order="order">
+          <div class="account-order-totals" aria-label="Order total details">
+            <div><span>Subtotal</span><span>Rs. {{ getReceiptSubtotal(order) | number:'1.0-0' }}</span></div>
+            <div><span>Delivery charge</span><span [class.account-order-free]="order.deliveryCharge === 0">{{ order.deliveryCharge == null ? 'Not available' : order.deliveryCharge === 0 ? 'Free' : 'Rs. ' + (order.deliveryCharge | number:'1.0-2') }}</span></div>
+            <div class="account-order-grand-total"><strong>Order total</strong><strong>Rs. {{ order.totalAmount | number:'1.0-0' }}</strong></div>
+          </div>
+        </ng-template>
         <!-- TAB 1: ORDER HISTORY -->
         <div *ngIf="activeTab() === 'orders'" class="rainbow-tab-content">
           <header *ngIf="orderView() === 'past'" class="rainbow-orders-heading">
@@ -183,6 +202,11 @@
                   <span class="stepper-label">Delivered</span>
                 </div>
               </div>
+              <div class="active-order-details">
+                <div class="active-order-details-heading"><strong>Order details</strong><span>{{ active.date }} · {{ active.items.length }} {{ active.items.length === 1 ? 'item' : 'items' }}</span></div>
+                <ng-container [ngTemplateOutlet]="accountOrderItems" [ngTemplateOutletContext]="{ order: active }"></ng-container>
+                <ng-container [ngTemplateOutlet]="accountOrderTotals" [ngTemplateOutletContext]="{ order: active }"></ng-container>
+              </div>
             </article>
 
             <!-- Past Order Card (Displayed below on the same tab - Matches Screenshot Exactly) -->
@@ -195,23 +219,12 @@
                 <span class="sleek-order-date">Delivered on {{ recent.date }}</span>
               </header>
 
-              <div class="past-order-items-grid">
-                <div *ngFor="let item of recent.items" class="past-order-item-tile">
-                  <div class="item-tile-thumb-box">
-                    <img [src]="item.image" [alt]="item.title" (error)="$any($event.target).style.visibility='hidden'">
-                  </div>
-                  <div class="item-tile-info">
-                    <span class="item-tile-name-below">{{ item.title }}</span>
-                    <span class="item-tile-weight-price" *ngIf="item.quantity">{{ item.quantity }}x · Rs. {{ (item.price * item.quantity) | number:'1.0-0' }}</span>
-                  </div>
-                </div>
-              </div>
+              <ng-container [ngTemplateOutlet]="accountOrderItems" [ngTemplateOutletContext]="{ order: recent }"></ng-container>
+              <ng-container [ngTemplateOutlet]="accountOrderTotals" [ngTemplateOutletContext]="{ order: recent }"></ng-container>
 
               <footer class="sleek-order-footer">
-                <div class="sleek-total-group">
-                  <span class="sleek-total-label">Subtotal <strong>Rs. {{ recent.totalAmount | number:'1.0-0' }}</strong> · Delivery <strong>Free</strong> · Total <strong>Rs. {{ recent.totalAmount | number:'1.0-0' }}</strong></span>
-                </div>
                 <div class="sleek-order-actions">
+                  <button *ngIf="recent.status === 'Delivered'" type="button" class="btn-sleek-refund" (click)="openReturnModal(recent)"><i class="fal fa-exchange-alt" aria-hidden="true"></i> Refund</button>
                   <button type="button" class="btn-sleek-review" (click)="openReviewModal(recent)"><i class="fal fa-star" aria-hidden="true"></i> {{ authService.getOrderReview(recent.id) ? 'View Review' : 'Review' }}</button>
                   <button type="button" class="btn-sleek-invoice" (click)="downloadInvoice(recent)">Download Invoice</button>
                   <button type="button" class="btn-sleek-reorder" (click)="reorder(recent)">Reorder</button>
@@ -252,38 +265,17 @@
                   <span class="sleek-order-date">{{ order.date }} · {{ order.items.length }} {{ order.items.length === 1 ? 'item' : 'items' }}</span>
                 </header>
 
-                <!-- Grid of item tiles (Screenshot 6) -->
-                <div class="past-order-items-grid" [class.is-expanded]="expandedOrder()?.id === order.id">
-                  <div *ngFor="let item of expandedOrder()?.id === order.id ? order.items : order.items.slice(0, 3)" class="past-order-item-tile">
-                    <div class="item-tile-thumb-box">
-                      <img [src]="item.image" [alt]="item.title" (error)="$any($event.target).style.visibility='hidden'">
-                    </div>
-                    <div class="item-tile-info">
-                      <span class="item-tile-name-below">{{ item.title }}</span>
-                      <span class="item-tile-weight-price">{{ item.quantity }}x · Rs. {{ (item.price * item.quantity) | number:'1.0-0' }}</span>
-                    </div>
-                  </div>
-
-                  <!-- +N more tile if order has more than 3 items -->
-                  <div *ngIf="order.items.length > 3 && expandedOrder()?.id !== order.id" class="past-order-more-tile" (click)="toggleOrderDetails(order.id)">
-                    <div class="more-box">+{{ order.items.length - 3 }} more</div>
-                  </div>
-                </div>
+                <ng-container [ngTemplateOutlet]="accountOrderItems" [ngTemplateOutletContext]="{ order: order }"></ng-container>
+                <ng-container [ngTemplateOutlet]="accountOrderTotals" [ngTemplateOutletContext]="{ order: order }"></ng-container>
 
                 <footer class="sleek-order-footer">
-                  <div class="sleek-total-group">
-                    <span class="sleek-total-label">Subtotal <strong>Rs. {{ order.totalAmount | number:'1.0-0' }}</strong> · Delivery <strong>Free</strong> · Total <strong>Rs. {{ order.totalAmount | number:'1.0-0' }}</strong></span>
-                  </div>
                   <div class="sleek-order-actions">
-                    <button *ngIf="canRequestReturn(order)" type="button" class="btn-link-action" (click)="openReturnModal(order)">Return Item</button>
-                    <button type="button" class="btn-sleek-details" (click)="toggleOrderDetails(order.id)">
-                      {{ expandedOrder()?.id === order.id ? 'Hide Details' : 'Details' }}
-                    </button>
+                    <button *ngIf="order.status === 'Delivered'" type="button" class="btn-sleek-refund" (click)="openReturnModal(order)"><i class="fal fa-exchange-alt" aria-hidden="true"></i> Refund</button>
                     <button *ngIf="order.status === 'Delivered'" type="button" class="btn-sleek-review" (click)="openReviewModal(order)">
                       <i class="fal fa-star"></i> {{ authService.getOrderReview(order.id) ? 'View Review' : 'Review' }}
                     </button>
                     <button type="button" class="btn-sleek-invoice" (click)="downloadInvoice(order)">Download Invoice</button>
-                    <button type="button" class="btn-sleek-reorder" (click)="reorder(order)">1-Click Reorder</button>
+                    <button type="button" class="btn-sleek-reorder" (click)="reorder(order)"><i class="fal fa-redo" aria-hidden="true"></i> Reorder</button>
                   </div>
                 </footer>
               </article>
@@ -302,21 +294,7 @@
                 <i class="fal fa-undo-alt" aria-hidden="true"></i>
                 <span><strong>Easy Returns</strong> · Refunds credited to your Rainbow Wallet within 24 hours</span>
               </div>
-              <button type="button" class="btn-request-return-dark" (click)="returnOrderPickerOpen.set(!returnOrderPickerOpen())">
-                + Request a Return
-              </button>
             </div>
-
-            <!-- Return Picker Drawer/Section -->
-            <section *ngIf="returnOrderPickerOpen()" class="rainbow-return-picker" aria-label="Choose an order to return">
-              <strong>Choose an eligible order:</strong>
-              <div class="return-picker-list">
-                <button *ngFor="let order of returnableOrders()" type="button" (click)="openReturnModal(order)">
-                  Order #{{ order.id }} · {{ order.date }} <i class="fal fa-arrow-right"></i>
-                </button>
-                <p *ngIf="!returnableOrders().length">There are no eligible orders to return right now.</p>
-              </div>
-            </section>
 
             <!-- Card 1: Active Return -->
             <article class="return-active-card" *ngIf="authService.returns()[0] as activeRet">

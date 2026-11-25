@@ -55,10 +55,12 @@
             </header>
 
             <div *ngIf="!authService.isLoggedIn()" class="rainbow-guest-options" aria-label="Checkout options">
-              <p>Enter your details as a guest, or log in to use your saved details.</p>
+              <div class="rainbow-guest-account">
+                <span class="rainbow-guest-account-icon"><i class="fal fa-user" aria-hidden="true"></i></span>
+                <div class="rainbow-guest-account-copy"><strong>Have an account?</strong><span>Sign in for faster checkout</span></div>
+              </div>
               <div class="rainbow-guest-options-actions">
-                <button type="button" class="rainbow-guest-continue" (click)="continueAsGuest()">Continue as guest</button>
-                <a routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }" class="rainbow-guest-login">Log in</a>
+                <a routerLink="/login" [queryParams]="{ returnUrl: '/checkout' }" class="rainbow-guest-login">Sign in</a>
               </div>
             </div>
 

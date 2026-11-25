@@ -76,8 +76,6 @@ export class AccountComponent implements OnInit, OnDestroy {
   });
   expandedOrder = signal<{ id: string; view: 'details' | 'track' } | null>(null);
   selectedReturnDetails = signal<ReturnRequest | null>(null);
-  readonly returnOrderPickerOpen = signal(false);
-  readonly returnableOrders = computed(() => this.authService.orders().filter(order => order.status === 'Delivered' && this.canRequestReturn(order)));
   selectedReviewOrder = signal<UserOrder | null>(null);
   reviewToast = signal<string | null>(null);
   private reviewToastTimer: ReturnType<typeof setTimeout> | null = null;
@@ -414,7 +412,6 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   openReturnModal(order: UserOrder) {
-    this.returnOrderPickerOpen.set(false);
     this.returnForm = {
       orderId: order.id,
       orderDate: order.date,
@@ -434,6 +431,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   resetProfile(): void { this.profileForm = { ...this.authService.userProfile() }; }
 
   canRequestReturn(order: UserOrder): boolean {
+    if (order.status !== 'Delivered') return false;
     const orderedAt = new Date(order.date).getTime();
     if (!Number.isFinite(orderedAt)) return false;
 
