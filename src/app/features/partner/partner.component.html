@@ -18,8 +18,7 @@
           <div class="partner-fields">
             <label>Full name * <input type="text" name="name" [(ngModel)]="inquiry.name" autocomplete="name" required></label>
             <label>Company or brand <input type="text" name="company" [(ngModel)]="inquiry.company" autocomplete="organization"></label>
-            <label>Email address * <input type="email" name="email" [(ngModel)]="inquiry.email" autocomplete="email" email required></label>
-            <label>Phone number (optional) <input type="tel" name="phone" [(ngModel)]="inquiry.phone" autocomplete="tel"></label>
+            <label>Mobile number * <input type="tel" name="phone" [(ngModel)]="inquiry.phone" autocomplete="tel" inputmode="tel" required></label>
           </div>
           <label>Advertising interest *
             <select name="interest" [(ngModel)]="inquiry.interest" required>

@@ -6,20 +6,12 @@
       <h2>Create your account</h2>
     </div>
 
-    <form class="rh-auth-form" (ngSubmit)="onSignup()">
+    <form #signupForm="ngForm" class="rh-auth-form" (ngSubmit)="onSignup(signupForm)">
       <label class="rh-auth-field">
         <span>Full name</span>
         <span class="rh-auth-input-wrap">
           <i class="fal fa-user" aria-hidden="true"></i>
           <input type="text" name="fullname" [(ngModel)]="userData.fullName" placeholder="Enter your full name" autocomplete="name" required>
-        </span>
-      </label>
-
-      <label class="rh-auth-field">
-        <span>Email address</span>
-        <span class="rh-auth-input-wrap">
-          <i class="fal fa-envelope" aria-hidden="true"></i>
-          <input type="email" name="email" [(ngModel)]="userData.email" placeholder="you@example.com" autocomplete="email" required>
         </span>
       </label>
 
@@ -30,6 +22,7 @@
           <input type="tel" name="phone" [(ngModel)]="userData.phone" placeholder="03XX XXXXXXX" autocomplete="tel" inputmode="tel" required>
         </span>
       </label>
+      <p *ngIf="phoneError" role="alert">{{ phoneError }}</p>
 
       <label class="rh-auth-field">
         <span>Password</span>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { AuthService, ReturnRequest, SavedAddress, SavedCard, UserOrder } from '../../core/services/auth.service';
+import { AuthService, ReturnRequest, SavedAddress, SavedCard, UserOrder, normalizePhone } from '../../core/services/auth.service';
 import { CartService } from '../../core/services/cart.service';
 import { ProductService } from '../../core/services/product.service';
 import { Product } from '../../core/models/product.model';
@@ -350,7 +350,11 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   onSaveProfile() {
-    if (this.profileForm.phone.trim() !== this.authService.userProfile().phone.trim()) {
+    if (!normalizePhone(this.profileForm.phone)) {
+      void this.alerts.show({ title: 'Check mobile number', message: 'Enter a valid Pakistani mobile number.', kind: 'warning' });
+      return;
+    }
+    if (normalizePhone(this.profileForm.phone) !== normalizePhone(this.authService.userProfile().phone)) {
       this.passwordOtpRequested.set(true);
       return;
     }

@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { OtpDialogComponent } from '../../shared/components/otp-dialog/otp-dialog.component';
+import { normalizePhone } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -15,7 +16,8 @@ export class SignupComponent {
   private readonly route = inject(ActivatedRoute);
   readonly returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
   readonly currentYear = new Date().getFullYear();
-  userData = { fullName: '', email: '', phone: '', password: '' };
+  userData = { fullName: '', phone: '', password: '' };
+  phoneError = '';
   passwordVisible = false;
   otpOpen = false;
 
@@ -23,7 +25,10 @@ export class SignupComponent {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  onSignup() {
+  onSignup(form: NgForm) {
+    if (form.invalid) { form.control.markAllAsTouched(); return; }
+    if (!normalizePhone(this.userData.phone)) { this.phoneError = 'Enter a valid Pakistani mobile number.'; return; }
+    this.phoneError = '';
     this.otpOpen = true;
   }
 }

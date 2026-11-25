@@ -18,7 +18,8 @@ function signal(initial) {
 function setup() {
   class AuthService {}
   class LoyaltyService {}
-  const auth = { isLoggedIn: signal(true), walletBalance: signal(200), userProfile: signal({ email: 'member@example.com' }) };
+  const auth = { isLoggedIn: signal(true), walletBalance: signal(200), userProfile: signal({ phone: '03001234567' }) };
+  auth.debitWallet = amount => auth.walletBalance.update(balance => Math.round((balance - amount) * 100) / 100);
   const loyalty = {
     valuePerPoint: 1, balance: signal(50), isMember: () => auth.isLoggedIn(),
     redeemOrder: (_id, points) => {
@@ -30,7 +31,7 @@ function setup() {
   const exports = {};
   vm.runInNewContext(compiled, { exports, require: name => {
     if (name === '@angular/core') return { Injectable: () => target => target, inject: token => token === AuthService ? auth : loyalty };
-    if (name === './auth.service') return { AuthService };
+    if (name === './auth.service') return { AuthService, normalizePhone: phone => phone.replace(/\D/g, '').replace(/^0/, '92') };
     if (name === './loyalty.service') return { LoyaltyService };
     throw new Error(`Unexpected dependency: ${name}`);
   }});

@@ -21,7 +21,7 @@ function signal(initial) {
 function createService(storage = new Map(), options = {}) {
   class AuthService {}
   class CartService {}
-  const auth = { isLoggedIn: signal(true), userProfile: signal({ email: 'member@example.com' }) };
+  const auth = { isLoggedIn: signal(true), userProfile: signal({ phone: '03001234567' }) };
   const cart = { cartTotal: signal(510) };
   const exports = {};
   const localStorage = {
@@ -41,7 +41,7 @@ function createService(storage = new Map(), options = {}) {
         signal, computed: compute => compute, Injectable: () => target => target,
         inject: token => token === AuthService ? auth : cart
       };
-      if (name === './auth.service') return { AuthService };
+      if (name === './auth.service') return { AuthService, normalizePhone: phone => { const digits = (phone || '').replace(/\D/g, '').replace(/^0/, '92'); return /^923\d{9}$/.test(digits) ? digits : ''; } };
       if (name === './cart.service') return { CartService };
       throw new Error(`Unexpected dependency: ${name}`);
     }
@@ -87,15 +87,29 @@ test('guests cannot earn or see member points', () => {
   assert.equal(service.balance(), 5);
 });
 
-test('balances are isolated per normalized account email', () => {
+test('balances are isolated per normalized account phone', () => {
   const { service, auth } = createService();
   service.creditOrder('RH-1', 510);
-  auth.userProfile.set({ email: 'second@example.com' });
+  auth.userProfile.set({ phone: '03111234567' });
   assert.equal(service.balance(), 0);
   assert.equal(service.creditOrder('RH-1', 1000), 10);
-  auth.userProfile.set({ email: ' MEMBER@example.com ' });
+  auth.userProfile.set({ phone: '+92 300 1234567' });
   assert.equal(service.balance(), 5);
   assert.equal(service.history().length, 1);
+});
+
+test('only the known demo email maps to its phone; unknown legacy records remain unassigned', () => {
+  const entries = [
+    { email: 'muhammad.athar@gmail.com', orderId: 'RH-1', date: '2026-11-18T12:00:00Z', totalAmount: 500, points: 5 },
+    { email: 'other@example.com', orderId: 'RH-2', date: '2026-11-18T12:00:00Z', totalAmount: 1000, points: 10 }
+  ];
+  const { service, auth, storage } = createService(new Map([['rainbow-loyalty-v1', JSON.stringify(entries)]]));
+  auth.userProfile.set({ phone: '03107779651' });
+  assert.equal(service.balance(), 5);
+  auth.userProfile.set({ phone: '03001234567' });
+  assert.equal(service.balance(), 0);
+  service.creditOrder('RH-3', 100);
+  assert.equal(JSON.parse(storage.get('rainbow-loyalty-v1')).some(entry => entry.email === 'other@example.com'), true);
 });
 
 test('points and duplicate protection survive a service reload', () => {

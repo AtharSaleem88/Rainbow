@@ -1,4 +1,4 @@
-<app-otp-dialog *ngIf="otpOpen" (close)="otpOpen = false"></app-otp-dialog>
+<app-otp-dialog *ngIf="otpOpen" [phone]="credentials.phone" (close)="otpOpen = false"></app-otp-dialog>
 <section class="rh-auth-page">
   <div class="rh-auth-card">
     <div class="rh-auth-card-header">
@@ -8,12 +8,13 @@
 
     <form class="rh-auth-form" (ngSubmit)="onLogin()">
       <label class="rh-auth-field">
-        <span>Email address</span>
+        <span>Mobile number</span>
         <span class="rh-auth-input-wrap">
-          <i class="fal fa-envelope" aria-hidden="true"></i>
-          <input type="email" name="email" [(ngModel)]="credentials.email" placeholder="Enter your email address" autocomplete="email" required>
+          <i class="fal fa-phone" aria-hidden="true"></i>
+          <input type="tel" name="phone" [(ngModel)]="credentials.phone" placeholder="03XX XXXXXXX" autocomplete="tel" inputmode="tel" required>
         </span>
       </label>
+      <p *ngIf="phoneError" role="alert">{{ phoneError }}</p>
 
       <label class="rh-auth-field">
         <span>Password</span>
@@ -41,7 +42,7 @@
     </form>
 
     <div class="rh-auth-card-footer">
-      <p class="rh-auth-footer-text"><button type="button" class="rh-auth-text-link" style="border:0;background:none;padding:0" (click)="otpOpen = true">Verify mobile number</button></p>
+      <p class="rh-auth-footer-text"><button type="button" class="rh-auth-text-link" style="border:0;background:none;padding:0" (click)="openPhoneVerification()">Verify mobile number</button></p>
       <p class="rh-auth-footer-text">Don't have an account? <a routerLink="/signup" [queryParams]="returnUrl ? { returnUrl: returnUrl } : {}" class="rh-auth-link-bold">Sign up</a></p>
       <div class="rh-auth-support">
         <span class="rh-auth-support-lbl">Need Support?</span>

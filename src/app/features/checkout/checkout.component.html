@@ -165,19 +165,12 @@
 
               <div class="rainbow-form-row">
                 <div class="rainbow-form-field">
-                  <label for="email">Email Address <sup>*</sup></label>
-                  <div class="rainbow-input-wrap">
-                    <i class="fal fa-envelope"></i>
-                    <input type="email" id="email" name="email" required [(ngModel)]="billingData.email" placeholder="name@example.com">
-                  </div>
-                </div>
-
-                <div class="rainbow-form-field">
                   <label for="phone">Phone Number <sup>*</sup></label>
                   <div class="rainbow-input-wrap">
                     <i class="fal fa-phone-alt"></i>
-                    <input type="tel" id="phone" name="phone" required [(ngModel)]="billingData.phone" placeholder="+92 300 1234567">
+                    <input type="tel" id="phone" name="phone" required [(ngModel)]="billingData.phone" (ngModelChange)="shippingPhoneError.set('')" autocomplete="tel" inputmode="tel" placeholder="+92 300 1234567" [attr.aria-invalid]="!!shippingPhoneError()" aria-describedby="shipping-phone-error">
                   </div>
+                  <p id="shipping-phone-error" class="rainbow-payment-error" *ngIf="shippingPhoneError()" role="alert">{{ shippingPhoneError() }}</p>
                 </div>
               </div>
 

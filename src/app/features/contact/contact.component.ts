@@ -13,7 +13,7 @@ import { AlertService } from '../../core/services/alert.service';
 })
 export class ContactComponent {
   private readonly alerts = inject(AlertService);
-  formData = { name: '', email: '', subject: '', message: '' };
+  formData = { name: '', phone: '', subject: '', message: '' };
 
   onSubmit() {
     void this.alerts.show({ title: 'Contact form', message: 'This is a demo form. Your message has not been sent; please contact our customer service team directly.', kind: 'info' });

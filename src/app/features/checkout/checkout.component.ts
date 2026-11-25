@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { LoyaltyService } from '../../core/services/loyalty.service';
 import { CheckoutPaymentService, PaymentBreakdown, promoDiscount } from '../../core/services/checkout-payment.service';
-import { AuthService, SavedAddress, SavedCard } from '../../core/services/auth.service';
+import { AuthService, SavedAddress, SavedCard, normalizePhone } from '../../core/services/auth.service';
 import { SeoService } from '../../core/services/seo.service';
 import { APP_CONFIG } from '../../core/core.config';
 import { CheckoutStepperComponent } from './components/checkout-stepper/checkout-stepper.component';
@@ -80,6 +80,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   readonly tipAmount = signal(0);
   readonly saveTipPreference = signal(false);
   readonly paymentError = signal('');
+  readonly shippingPhoneError = signal('');
   promoInput = '';
   readonly appliedPromoCode = signal('');
   readonly promoError = signal('');
@@ -157,7 +158,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   billingData = {
     firstName: 'Muhammad',
     lastName: 'Athar',
-    email: 'athar.saleem@example.com',
     phone: '+92 300 1234567',
     address: 'House #42, Block C, Bahria Town',
     city: 'Lahore',
@@ -201,15 +201,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       if (!this.isOrderPlaced()) this.syncCartSnapshot();
     });
     if (this.authService.isLoggedIn()) {
-      this.billingData.email = this.authService.userProfile().email;
+      this.billingData.phone = this.authService.userProfile().phone;
       const defaultAddr = this.authService.savedAddresses().find(a => a.isDefault);
       if (defaultAddr) this.selectSavedAddress(defaultAddr);
+      this.billingData.phone = this.authService.userProfile().phone;
       const defaultCard = this.authService.savedCards().find(c => c.isDefault);
       if (defaultCard) this.selectedSavedCardId.set(defaultCard.id);
     } else {
       this.billingData.firstName = '';
       this.billingData.lastName = '';
-      this.billingData.email = '';
       this.billingData.phone = '';
       this.billingData.address = '';
     }
@@ -295,6 +295,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   nextStep() {
     if (this.currentStep() === 1) {
+      if (!normalizePhone(this.billingData.phone)) {
+        this.shippingPhoneError.set('Enter a valid Pakistani mobile number.');
+        document.getElementById('phone')?.focus();
+        return;
+      }
+      this.shippingPhoneError.set('');
       this.currentStep.set(2);
       this.scrollToTop();
     } else if (this.currentStep() === 2) {
@@ -353,7 +359,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   private tipPreferenceKey(): string {
-    const member = this.authService.isLoggedIn() ? this.authService.userProfile().email.trim().toLowerCase() : 'guest';
+    const member = this.authService.isLoggedIn() ? normalizePhone(this.authService.userProfile().phone) : 'guest';
     return `rainbow-rider-tip-v1:${member}`;
   }
 

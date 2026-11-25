@@ -1,5 +1,14 @@
 import { Injectable, signal, computed } from '@angular/core';
 
+/** Canonical Pakistani mobile identity; reject numbers that cannot receive SMS. */
+export function normalizePhone(phone: string): string {
+  const value = (phone || '').trim();
+  if (!/^\+?[\d\s()-]+$/.test(value)) return '';
+  const digits = value.replace(/\D/g, '');
+  const local = digits.startsWith('92') ? '0' + digits.slice(2) : digits;
+  return /^03\d{9}$/.test(local) ? '92' + local.slice(1) : '';
+}
+
 export interface UserProfile {
   name: string;
   email: string;
@@ -84,11 +93,11 @@ export interface OrderReview {
 export class AuthService {
   // Authentication State
   private readonly authStorageKey = 'rainbow-auth-v1';
-  private readonly authEmailStorageKey = 'rainbow-email-v1';
+  private readonly authPhoneStorageKey = 'rainbow-phone-v1';
   readonly isLoggedIn = signal<boolean>(this.readLoginState());
 
   private readLoginState(): boolean {
-    try { return localStorage.getItem(this.authStorageKey) === 'signed-in'; }
+    try { return localStorage.getItem(this.authStorageKey) === 'signed-in' && !!normalizePhone(localStorage.getItem(this.authPhoneStorageKey) || ''); }
     catch { return false; }
   }
 
@@ -97,16 +106,16 @@ export class AuthService {
     catch { /* Keep the current session usable when storage is unavailable. */ }
   }
 
-  private readLoginEmail(): string {
-    try { return this.isLoggedIn() ? localStorage.getItem(this.authEmailStorageKey) || '' : ''; }
+  private readLoginPhone(): string {
+    try { return this.isLoggedIn() ? localStorage.getItem(this.authPhoneStorageKey) || '' : ''; }
     catch { return ''; }
   }
 
   // User Profile Data
   readonly userProfile = signal<UserProfile>({
     name: 'Muhammad Athar',
-    email: this.readLoginEmail() || 'muhammad.athar@gmail.com',
-    phone: '+92 310 777 9651',
+    email: 'muhammad.athar@gmail.com',
+    phone: this.readLoginPhone() || '+92 310 777 9651',
     address: 'House 42-B, Street 7, CC-Block, Sector D, Bahria Town, Lahore',
     city: 'Lahore',
     memberSince: 'Oct 2024',
@@ -176,7 +185,25 @@ export class AuthService {
   ]);
 
   // Wallet Balance
-  readonly walletBalance = signal<number>(450);
+  readonly walletBalance = signal<number>(this.readWalletBalance());
+
+  private readWalletBalance(phone = normalizePhone(this.userProfile().phone)): number {
+    if (!phone || !this.isLoggedIn()) return 0;
+    try {
+      const saved = localStorage.getItem(`rainbow-wallet-v1:${phone}`);
+      if (saved !== null) {
+        const amount = Number(saved);
+        return Number.isFinite(amount) && amount >= 0 ? amount : 0;
+      }
+    } catch { /* Use the demo default when storage is unavailable. */ }
+    return phone === '923107779651' ? 450 : 0;
+  }
+
+  private saveWalletBalance(): void {
+    const phone = normalizePhone(this.userProfile().phone);
+    if (!phone || !this.isLoggedIn()) return;
+    try { localStorage.setItem(`rainbow-wallet-v1:${phone}`, String(this.walletBalance())); } catch { /* Keep this session usable. */ }
+  }
 
   // Orders History
   readonly orders = signal<UserOrder[]>([
@@ -301,16 +328,20 @@ export class AuthService {
     }
   }
 
-  login(email: string) {
+  login(phone: string): boolean {
+    const normalized = normalizePhone(phone);
+    if (!normalized) return false;
+    this.saveWalletBalance();
     this.isLoggedIn.set(true);
     this.saveLoginState(true);
-    if (email) {
-      this.userProfile.update(profile => ({ ...profile, email }));
-      try { localStorage.setItem(this.authEmailStorageKey, email); } catch { /* Session state remains available in memory. */ }
-    }
+    this.userProfile.update(profile => ({ ...profile, phone: normalized, isPhoneVerified: false }));
+    this.walletBalance.set(this.readWalletBalance(normalized));
+    try { localStorage.setItem(this.authPhoneStorageKey, normalized); } catch { /* Session state remains available in memory. */ }
+    return true;
   }
 
   logout() {
+    this.saveWalletBalance();
     this.isLoggedIn.set(false);
     this.saveLoginState(false);
   }
@@ -318,7 +349,13 @@ export class AuthService {
   topUpWallet(amount: number) {
     if (amount > 0) {
       this.walletBalance.update(bal => bal + amount);
+      this.saveWalletBalance();
     }
+  }
+
+  debitWallet(amount: number): void {
+    this.walletBalance.update(balance => Math.round((balance - amount) * 100) / 100);
+    this.saveWalletBalance();
   }
 
   updateProfile(updated: Partial<UserProfile>) {

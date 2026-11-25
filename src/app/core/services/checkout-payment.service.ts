@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService, normalizePhone } from './auth.service';
 import { LoyaltyService } from './loyalty.service';
 
 export interface PaymentBreakdown {
@@ -43,12 +43,12 @@ export class CheckoutPaymentService {
   }
 
   settle(orderId: string, total: number, useWallet: boolean, usePoints: boolean, tipAmount = 0): PaymentBreakdown | null {
-    const key = JSON.stringify([this.authService.userProfile().email.trim().toLowerCase(), orderId]);
+    const key = JSON.stringify([normalizePhone(this.authService.userProfile().phone) || 'guest', orderId]);
     if (!orderId.trim() || !Number.isFinite(total) || total <= 0 || !Number.isFinite(tipAmount) || tipAmount < 0 || this.settledOrders.has(key)) return null;
     const payment = this.quote(total, useWallet, usePoints, tipAmount);
     if (payment.pointsUsed > 0 && !this.loyaltyService.redeemOrder(orderId, payment.pointsUsed)) return null;
     if (payment.walletApplied > 0) {
-      this.authService.walletBalance.update(balance => Math.round((balance - payment.walletApplied) * 100) / 100);
+      this.authService.debitWallet(payment.walletApplied);
     }
     this.settledOrders.add(key);
     return payment;

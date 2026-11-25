@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService, normalizePhone } from '../../core/services/auth.service';
 import { OtpDialogComponent } from '../../shared/components/otp-dialog/otp-dialog.component';
 
 @Component({
@@ -19,7 +19,8 @@ export class LoginComponent {
 
   readonly currentYear = new Date().getFullYear();
   readonly returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-  credentials = { email: '', password: '' };
+  credentials = { phone: '', password: '' };
+  phoneError = '';
   passwordVisible = false;
   otpOpen = false;
 
@@ -27,8 +28,17 @@ export class LoginComponent {
     this.passwordVisible = !this.passwordVisible;
   }
 
+  openPhoneVerification(): void {
+    if (!normalizePhone(this.credentials.phone)) { this.phoneError = 'Enter a valid Pakistani mobile number.'; return; }
+    this.phoneError = '';
+    this.otpOpen = true;
+  }
+
   onLogin() {
-    this.authService.login(this.credentials.email || 'User');
+    if (!this.credentials.password || !this.authService.login(this.credentials.phone)) {
+      this.phoneError = 'Enter a valid Pakistani mobile number and password.';
+      return;
+    }
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
     void this.router.navigateByUrl(returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/account');
   }

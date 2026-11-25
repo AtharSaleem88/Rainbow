@@ -10,14 +10,14 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./partner.component.scss']
 })
 export class PartnerComponent {
-  inquiry = { name: '', company: '', email: '', phone: '', interest: '', message: '' };
+  inquiry = { name: '', company: '', phone: '', interest: '', message: '' };
 
   submit(form: NgForm): void {
     if (form.invalid) return;
     const subject = encodeURIComponent('Rainbow inquiry — ' + this.inquiry.interest);
     const body = encodeURIComponent(
       'Name: ' + this.inquiry.name + '\nCompany: ' + this.inquiry.company +
-      '\nEmail: ' + this.inquiry.email + '\nPhone: ' + this.inquiry.phone +
+      '\nPhone: ' + this.inquiry.phone +
       '\nInterest: ' + this.inquiry.interest + '\n\n' + this.inquiry.message
     );
     window.location.href = 'mailto:online@rainbowcc.com.pk?subject=' + subject + '&body=' + body;
