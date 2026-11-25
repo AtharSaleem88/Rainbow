@@ -2,7 +2,7 @@
   <header class="assistant-header"><h2 id="assistant-title">Rainbow Assistant</h2></header>
   <div class="assistant-content">
     <div class="assistant-welcome">
-      <div class="assistant-mark" aria-hidden="true"><img src="assets/images/logo/rainbow-cloud-hd.png" alt=""></div>
+      <div class="assistant-mark" aria-hidden="true"><img src="assets/images/logo/rainbow-mark.svg" alt=""></div>
       <p>Hello, {{ firstName }}</p>
       <h3>How can we help today?</h3>
     </div>
@@ -18,7 +18,7 @@
     <form class="assistant-compose" (ngSubmit)="send(draft)">
       <label for="assistant-question" class="assistant-visually-hidden">Ask Rainbow Assistant</label>
       <textarea id="assistant-question" name="message" [(ngModel)]="draft" rows="2" placeholder="Ask me about your order or shopping..."></textarea>
-      <div class="assistant-compose-footer"><span class="assistant-compose-brand"><img src="assets/images/logo/rainbow-cloud-hd.png" alt=""> Rainbow Assistant</span><button type="submit" [disabled]="!draft.trim()" aria-label="Send message"><i class="fal fa-arrow-right" aria-hidden="true"></i></button></div>
+      <div class="assistant-compose-footer"><span class="assistant-compose-brand"><img src="assets/images/logo/rainbow-mark.svg" alt=""> Rainbow Assistant</span><button type="submit" [disabled]="!draft.trim()" aria-label="Send message"><i class="fal fa-arrow-right" aria-hidden="true"></i></button></div>
     </form>
     <div class="assistant-suggestions" aria-label="Suggested questions">
       <button type="button" (click)="send('Track my order')"><span class="assistant-suggestion-icon"><i class="fal fa-box" aria-hidden="true"></i></span><strong>Track my order</strong></button>

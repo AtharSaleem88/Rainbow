@@ -619,7 +619,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     const profile = this.authService.userProfile();
     const loyaltyBalance = this.loyaltyService.balance();
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
-    const logoUrl = origin ? `${origin}/assets/images/logo/RainbowLogo.png` : 'assets/images/logo/RainbowLogo.png';
+    const logoUrl = origin ? `${origin}/assets/images/logo/rainbow-logo.svg` : 'assets/images/logo/rainbow-logo.svg';
 
     const itemsHtml = (order.items || []).map(item => `
       <div class="rainbow-payment-receipt-item">

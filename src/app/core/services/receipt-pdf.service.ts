@@ -52,7 +52,7 @@ export class ReceiptPdfService {
   }
 
   private loadLogo(): Promise<HTMLImageElement | null> {
-    return new Promise(resolve => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => resolve(null); image.src = 'assets/images/logo/RainbowLogo.png'; });
+    return new Promise(resolve => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => resolve(null); image.src = 'assets/images/logo/rainbow-logo.svg'; });
   }
 
   private createPdf(images: Uint8Array[], width: number, height: number): Blob {

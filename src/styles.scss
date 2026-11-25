@@ -2436,3 +2436,8 @@ dialog.rh-variant-dialog .rh-variant-dialog-header {
   font-weight: 600 !important;
 }
 
+/* Blend the supplied white-backed logo naturally into the app's coloured surfaces. */
+img[src$="/rainbow-logo.svg"],
+img[src$="/rainbow-mark.svg"] {
+  mix-blend-mode: multiply;
+}

@@ -46,14 +46,19 @@ export class ShopComponent implements OnInit {
   maxPrice = signal<number>(0);
   searchQuery = signal<string>('');
   monthlyDealsOnly = signal(false);
+  priceDropsOnly = signal(false);
+  readonly dealMode = computed(() => this.monthlyDealsOnly() || this.priceDropsOnly());
   cocaColaStore = signal(false);
   readonly cocaColaProducts = this.productService.getProducts().filter(p => p.brand.toLowerCase() === 'coca-cola');
   readonly cocaColaMaxPrice = Math.max(1000, ...this.cocaColaProducts.map(product => product.price));
   get cocaColaCategories() { return this.categories.filter(category => this.cocaColaProducts.some(product => product.categorySlug === category.slug)); }
   get cocaColaSubCategories(): string[] { return [...new Set(this.cocaColaProducts.filter(p => !this.selectedCategory() || p.categorySlug === this.selectedCategory()).map(p => p.subCategory).filter((value): value is string => !!value))].sort(); }
-  readonly allDealProducts = this.productService.getProducts().filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined);
-  get dealBrands(): string[] { return [...new Set(this.productService.getProducts({ category: this.selectedCategory(), subCategory: this.selectedSubCategory() }).filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined).map(p => p.brand))].sort(); }
-  get dealSubCategories(): string[] { if (this.selectedCategory() === 'grocery') return this.productService.getGrocerySections().map(section => section.name); if (this.selectedCategory() === 'personal-care') return this.productService.getPersonalCareSections().map(section => section.name); return [...new Set(this.productService.getProducts({ category: this.selectedCategory() }).filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
+  private isDealProduct(p: Product): boolean {
+    return this.priceDropsOnly() ? p.oldPrice !== undefined && p.oldPrice > p.price : p.oldPrice !== undefined && p.discountPercent !== undefined;
+  }
+  get allDealProducts(): Product[] { return this.productService.getProducts().filter(p => this.isDealProduct(p)); }
+  get dealBrands(): string[] { return [...new Set(this.productService.getProducts({ category: this.selectedCategory(), subCategory: this.selectedSubCategory() }).filter(p => this.isDealProduct(p)).map(p => p.brand))].sort(); }
+  get dealSubCategories(): string[] { if (this.selectedCategory() === 'grocery') return this.productService.getGrocerySections().map(section => section.name); if (this.selectedCategory() === 'personal-care') return this.productService.getPersonalCareSections().map(section => section.name); return [...new Set(this.productService.getProducts({ category: this.selectedCategory() }).filter(p => this.isDealProduct(p)).map(p => p.subCategory).filter((v): v is string => !!v))].sort(); }
 
   selectedQuickViewProduct = signal<Product | null>(null);
 
@@ -96,22 +101,24 @@ export class ShopComponent implements OnInit {
     return [
       { label: 'Home', url: '/' },
       { label: 'Shop' },
-      { label: this.cocaColaStore() ? 'Coca-Cola' : this.categoryName }
+      { label: this.cocaColaStore() ? 'Coca-Cola' : this.priceDropsOnly() ? 'Price Drops' : this.monthlyDealsOnly() ? 'Monthly Deals' : this.categoryName }
     ];
   }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       const wasMonthly = this.monthlyDealsOnly();
+      const wasPriceDrops = this.priceDropsOnly();
       const wasBrandStore = this.cocaColaStore();
       this.cocaColaStore.set(params['brandStore'] === 'coca-cola');
       this.monthlyDealsOnly.set(!this.cocaColaStore() && params['deals'] === 'monthly');
-      if (wasBrandStore !== this.cocaColaStore() || wasMonthly !== this.monthlyDealsOnly() || this.selectedCategory() !== (params['category'] || '')) {
+      this.priceDropsOnly.set(!this.cocaColaStore() && params['deals'] === 'price-drops');
+      if (wasBrandStore !== this.cocaColaStore() || wasMonthly !== this.monthlyDealsOnly() || wasPriceDrops !== this.priceDropsOnly() || this.selectedCategory() !== (params['category'] || '')) {
         this.minPrice.set(0);
         this.maxPrice.set(0);
       }
       const linkedMaxPrice = Number(params['maxPrice']);
-      if (!this.cocaColaStore() && !this.monthlyDealsOnly() && Number.isFinite(linkedMaxPrice) && linkedMaxPrice > 0) this.maxPrice.set(linkedMaxPrice);
+      if (!this.cocaColaStore() && !this.dealMode() && Number.isFinite(linkedMaxPrice) && linkedMaxPrice > 0) this.maxPrice.set(linkedMaxPrice);
       else this.maxPrice.set(0);
       if (params['category']) {
         this.selectedCategory.set(params['category']);
@@ -142,7 +149,7 @@ export class ShopComponent implements OnInit {
   }
 
   private updatePageSeo(): void {
-    const catName = this.cocaColaStore() ? 'Coca-Cola' : this.categoryName;
+    const catName = this.cocaColaStore() ? 'Coca-Cola' : this.priceDropsOnly() ? 'Price Drops' : this.monthlyDealsOnly() ? 'Monthly Deals' : this.categoryName;
     const title = catName === 'All Grocery' ? 'Online Supermarket & Grocery Shop' : `${catName} — Online Supermarket`;
     this.seoService.setPageTitle(title);
     this.seoService.setMetaDescription(`Explore our fresh selection of ${catName.toLowerCase()} and grocery essentials at Rainbow.`);
@@ -159,7 +166,7 @@ export class ShopComponent implements OnInit {
       searchQuery: this.searchQuery()
     };
     let products = this.productService.getProducts(filter);
-    if (this.monthlyDealsOnly()) products = products.filter(p => p.oldPrice !== undefined && p.discountPercent !== undefined);
+    if (this.dealMode()) products = products.filter(p => this.isDealProduct(p));
 
     // Apply sub-subcategory query filter if selected
     if (this.selectedSubSubCategory()) {
@@ -179,7 +186,7 @@ export class ShopComponent implements OnInit {
     this.selectedCategory.set(catSlug === this.selectedCategory() ? '' : catSlug);
     this.selectedSubCategory.set('');
     this.selectedSubSubCategory.set('');
-    if (this.monthlyDealsOnly() && this.selectedBrand() && !this.dealBrands.includes(this.selectedBrand())) this.selectedBrand.set('');
+    if (this.dealMode() && this.selectedBrand() && !this.dealBrands.includes(this.selectedBrand())) this.selectedBrand.set('');
     this.applyFilters();
     this.updatePageSeo();
   }
@@ -187,7 +194,7 @@ export class ShopComponent implements OnInit {
   onSubCategorySelect(subCategory: string) {
     this.selectedSubCategory.set(subCategory === this.selectedSubCategory() ? '' : subCategory);
     this.selectedSubSubCategory.set('');
-    if (this.monthlyDealsOnly() && this.selectedBrand() && !this.dealBrands.includes(this.selectedBrand())) this.selectedBrand.set('');
+    if (this.dealMode() && this.selectedBrand() && !this.dealBrands.includes(this.selectedBrand())) this.selectedBrand.set('');
     this.applyFilters();
   }
 
@@ -222,6 +229,7 @@ export class ShopComponent implements OnInit {
 
   get subCategoryDisplayName(): string {
     if (this.cocaColaStore()) return this.selectedSubCategory() || 'Coca-Cola products';
+    if (this.priceDropsOnly() && !this.selectedCategory() && !this.selectedSubCategory()) return 'Price Drops';
     if (this.monthlyDealsOnly() && !this.selectedCategory() && !this.selectedSubCategory()) return 'Monthly Deals';
     if (this.selectedSubCategory()) {
       return this.selectedSubCategory();
@@ -251,7 +259,7 @@ export class ShopComponent implements OnInit {
     this.resetFilters();
     this.maxPrice.set(0);
     this.applyFilters();
-    void this.router.navigate([], { relativeTo: this.route, queryParams: { deals: 'monthly' }, replaceUrl: true });
+    void this.router.navigate([], { relativeTo: this.route, queryParams: { deals: this.priceDropsOnly() ? 'price-drops' : 'monthly' }, replaceUrl: true });
   }
 
   openQuickView(product: Product) {

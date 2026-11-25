@@ -13,7 +13,7 @@
     <div class="rh-shop-layout">
       <!-- 1. VERTICAL SUBCATEGORIES SIDEBAR -->
       <app-subcat-sidebar
-        *ngIf="!monthlyDealsOnly() && !cocaColaStore()"
+        *ngIf="!dealMode() && !cocaColaStore()"
         [items]="subCategoryItems()"
         [selectedSubCategory]="selectedSubCategory()"
         (subCategorySelected)="onSubCategorySelect($event)">
@@ -23,7 +23,7 @@
       <main class="rh-shop-results flex-grow-1">
         <!-- Header Filters Bar -->
         <app-shop-filters
-          *ngIf="!monthlyDealsOnly() && !cocaColaStore()"
+          *ngIf="!dealMode() && !cocaColaStore()"
           [selectedBrand]="selectedBrand()"
           [minPrice]="minPrice()"
           [maxPrice]="maxPrice()"
@@ -36,7 +36,7 @@
           (sortChanged)="onSortChangeValue($event)"
           (subSubCategoryChanged)="onSubSubCategoryChange($event)">
         </app-shop-filters>
-        <div *ngIf="monthlyDealsOnly()" class="rh-deals-filters" aria-label="Filter monthly deals">
+        <div *ngIf="dealMode()" class="rh-deals-filters" [attr.aria-label]="priceDropsOnly() ? 'Filter price drops' : 'Filter monthly deals'">
           <label>Category<select [value]="selectedCategory()" (change)="onCategorySelect($any($event.target).value)"><option value="">All categories</option><option *ngFor="let category of categories" [value]="category.slug">{{ category.name }}</option></select></label>
           <label>Subcategory<select [value]="selectedSubCategory()" (change)="onSubCategorySelect($any($event.target).value)"><option value="">All subcategories</option><option *ngFor="let category of dealSubCategories" [value]="category">{{ category }}</option></select></label>
           <label>Brand<select [value]="selectedBrand()" (change)="onBrandChange($any($event.target).value)"><option value="">All brands</option><option *ngFor="let brand of dealBrands" [value]="brand">{{ brand }}</option></select></label>
@@ -52,7 +52,7 @@
         <div *ngIf="cocaColaStore()" class="rh-deals-mobile-filters rh-coca-mobile-filters">
           <app-shop-filters [monthlyMode]="true" [brandLocked]="true" [allPricesMax]="cocaColaMaxPrice" [dealProducts]="cocaColaProducts" [selectedBrand]="selectedBrand()" [minPrice]="minPrice()" [maxPrice]="maxPrice()" [selectedSort]="selectedSort()" (minPriceChanged)="onMinPriceChange($event)" (maxPriceChanged)="onMaxPriceChange($event)" (sortChanged)="onSortChangeValue($event)"></app-shop-filters>
         </div>
-        <div *ngIf="monthlyDealsOnly()" class="rh-deals-mobile-filters">
+        <div *ngIf="dealMode()" class="rh-deals-mobile-filters">
           <select aria-label="Category" [value]="selectedCategory()" (change)="onCategorySelect($any($event.target).value)"><option value="">All categories</option><option *ngFor="let category of categories" [value]="category.slug">{{ category.name }}</option></select>
           <select aria-label="Subcategory" [value]="selectedSubCategory()" (change)="onSubCategorySelect($any($event.target).value)"><option value="">All subcategories</option><option *ngFor="let category of dealSubCategories" [value]="category">{{ category }}</option></select>
           <app-shop-filters [monthlyMode]="true" [categories]="categories" [dealProducts]="allDealProducts" [selectedCategory]="selectedCategory()" [selectedSubCategory]="selectedSubCategory()" [selectedBrand]="selectedBrand()" [minPrice]="minPrice()" [maxPrice]="maxPrice()" [selectedSort]="selectedSort()" (categoryChanged)="onCategorySelect($event)" (subCategoryChanged)="onSubCategorySelect($event)" (brandChanged)="onBrandChange($event)" (minPriceChanged)="onMinPriceChange($event)" (maxPriceChanged)="onMaxPriceChange($event)" (sortChanged)="onSortChangeValue($event)"></app-shop-filters>
