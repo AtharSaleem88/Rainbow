@@ -3057,13 +3057,26 @@
   }
   .sleek-order-card .sleek-order-header { gap: 12px; flex-wrap: wrap; }
   .sleek-order-card .sleek-order-meta { flex-wrap: wrap; }
-  .sleek-order-card .past-order-items-grid { flex-wrap: wrap; overflow: visible; gap: 16px; }
-  .sleek-order-card .past-order-item-tile { width: 120px; min-width: 0; }
-  .sleek-order-card .past-order-item-tile .item-tile-name-below {
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
+  @media (min-width: 768px) {
+    .sleek-order-card .past-order-items-grid {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 16px;
+    }
+    .sleek-order-card .past-order-item-tile {
+      width: 120px;
+      min-width: 120px;
+      flex-shrink: 0;
+    }
+    .sleek-order-card .past-order-item-tile .item-tile-name-below {
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
   }
 }
 
@@ -3073,7 +3086,6 @@
     .rainbow-account-order-tabs button { padding: 9px 2px; }
     .rainbow-exact-active-orders-view .rainbow-live-tracking-card { padding: 16px 12px; }
     .rainbow-exact-active-orders-view .tracking-stepper .stepper-label { font-size: 10px; }
-    .sleek-order-card .past-order-item-tile { width: calc(50% - 8px); }
   }
 }
 
@@ -3351,3 +3363,114 @@
     .wallet-balance-val, .loyalty-pts-val { font-size: 22px !important; }
   }
 }
+
+// Mobile View Only: Display order products in vertical shape with image
+@media (max-width: 767px) {
+  .rainbow-account-page {
+    .sleek-order-card {
+      .past-order-items-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        width: 100% !important;
+        overflow: visible !important;
+        flex-wrap: nowrap !important;
+        margin-bottom: 14px !important;
+
+        .past-order-item-tile {
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          gap: 12px !important;
+          padding: 8px 10px !important;
+          background: #f8fafc !important;
+          border: 1px solid #edf1f6 !important;
+          border-radius: 10px !important;
+          box-sizing: border-box !important;
+
+          .item-tile-thumb-box {
+            flex: 0 0 54px !important;
+            width: 54px !important;
+            height: 54px !important;
+            border-radius: 8px !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 4px !important;
+
+            img {
+              max-width: 100% !important;
+              max-height: 100% !important;
+              object-fit: contain !important;
+            }
+          }
+
+          .item-tile-info {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2px !important;
+            min-width: 0 !important;
+            flex: 1 !important;
+            text-align: left !important;
+
+            .item-tile-name-below,
+            strong {
+              display: block !important;
+              font-size: 13px !important;
+              font-weight: 600 !important;
+              color: #111827 !important;
+              line-height: 1.35 !important;
+              max-width: none !important;
+              white-space: normal !important;
+              overflow: visible !important;
+              text-overflow: clip !important;
+              word-break: break-word !important;
+            }
+
+            .item-tile-weight-price,
+            span {
+              display: block !important;
+              font-size: 12px !important;
+              font-weight: 500 !important;
+              color: #64748b !important;
+            }
+          }
+
+          > .item-tile-name-below {
+            display: block !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            color: #111827 !important;
+            line-height: 1.35 !important;
+            white-space: normal !important;
+            flex: 1 !important;
+            text-align: left !important;
+          }
+        }
+
+        .past-order-more-tile {
+          width: 100% !important;
+
+          .more-box {
+            width: 100% !important;
+            height: 38px !important;
+            border-radius: 8px !important;
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -206,7 +206,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       id: 'act-3',
       type: 'wallet' as const,
       title: 'Refund Credited · Return #RET-3988',
-      subtitle: 'Nov 10, 2026 · Olpers Milk 1L Pack',
+      subtitle: 'Nov 10, 2026 · Farm Fresh Eggs (Pack of 12)',
       amountText: '+ Rs. 330',
       isPositive: true,
       categoryLabel: 'Wallet' as const,
@@ -546,7 +546,6 @@ export class AccountComponent implements OnInit, OnDestroy {
     const lower = title.toLowerCase();
     if (lower.includes('guava')) return 'Guava';
     if (lower.includes('yogurt')) return 'Yogurt';
-    if (lower.includes('olpers')) return 'Olpers Milk';
     if (lower.includes('egg')) return 'Farm Eggs';
     if (lower.includes('carrot')) return 'Carrots';
     if (lower.includes('mushroom')) return 'Mushrooms';
@@ -603,11 +602,11 @@ export class AccountComponent implements OnInit, OnDestroy {
       status: 'Delivered',
       paymentMethod: 'Rainbow Wallet',
       items: [{
-        title: 'Olpers Milk 1L Pack',
-        image: 'assets/images/grocery/olpers.jpg',
+        title: 'Farm Fresh Eggs (Pack of 12)',
+        image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg',
         quantity: 1,
         price: 330,
-        weightOrUnit: '1 L',
+        weightOrUnit: 'Pack of 12',
         categorySlug: 'dairy-eggs'
       }]
     };

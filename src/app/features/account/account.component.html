@@ -8,7 +8,7 @@
         <button type="button" class="rainbow-account-menu-trigger" (click)="toggleAccountMenu()" [attr.aria-expanded]="accountMenuOpen()" aria-controls="account-section-menu">
           <span class="rainbow-account-menu-icon"><i class="fal fa-user" aria-hidden="true"></i></span>
           <span class="rainbow-account-menu-label"><small>MY ACCOUNT</small><strong>{{ activeSectionLabel() }}</strong></span>
-          <span class="rainbow-account-menu-action">{{ accountMenuOpen() ? 'Close' : 'Menu' }} <i class="fal" [ngClass]="accountMenuOpen() ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i></span>
+          <span class="rainbow-account-menu-action"> <i class="fal" [ngClass]="accountMenuOpen() ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i></span>
         </button>
         <!-- Menu Tabs -->
         <nav id="account-section-menu" class="rainbow-account-nav" [class.is-menu-open]="accountMenuOpen()" aria-label="Account sections">
@@ -200,7 +200,10 @@
                   <div class="item-tile-thumb-box">
                     <img [src]="item.image" [alt]="item.title" (error)="$any($event.target).style.visibility='hidden'">
                   </div>
-                  <span class="item-tile-name-below">{{ item.title }}</span>
+                  <div class="item-tile-info">
+                    <span class="item-tile-name-below">{{ item.title }}</span>
+                    <span class="item-tile-weight-price" *ngIf="item.quantity">{{ item.quantity }}x · Rs. {{ (item.price * item.quantity) | number:'1.0-0' }}</span>
+                  </div>
                 </div>
               </div>
 
@@ -367,7 +370,7 @@
 
               <div class="return-card-body" *ngIf="compRet.items[0] as item">
                 <div class="return-item-info">
-                  <img class="return-thumb" [src]="item.evidenceImage || 'assets/images/grocery/olpers.jpg'" [alt]="item.itemTitle" (error)="$any($event.target).style.display='none'">
+                  <img class="return-thumb" [src]="item.evidenceImage || 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg'" [alt]="item.itemTitle" (error)="$any($event.target).style.display='none'">
                   <div>
                     <h4 class="return-item-name">{{ item.itemTitle }}</h4>
                     <span class="return-item-reason">Reason: {{ item.reason }}</span>

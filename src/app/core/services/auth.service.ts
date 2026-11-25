@@ -217,7 +217,7 @@ export class AuthService {
       items: [
         { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 2, price: 180, weightOrUnit: '1 kg', categorySlug: 'ultra-fresh' },
         { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, weightOrUnit: '500 g', categorySlug: 'dairy-eggs' },
-        { title: 'Olpers Milk 1L', image: 'assets/images/grocery/olpers.jpg', quantity: 3, price: 440, weightOrUnit: '1 L', categorySlug: 'dairy-eggs' }
+        { title: 'Farm Fresh Eggs', image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg', quantity: 3, price: 440, weightOrUnit: 'Pack of 12', categorySlug: 'dairy-eggs' }
       ]
     },
     {
@@ -230,7 +230,7 @@ export class AuthService {
       items: [
         { title: 'Fresh Organic Guava', image: 'assets/images/ultra_fresh/fresh-organic-guava.png', quantity: 1, price: 360, weightOrUnit: '1 kg', categorySlug: 'ultra-fresh' },
         { title: 'Pure Farm Milk Yogurt', image: 'assets/images/ultra_fresh/Yogurt.png', quantity: 1, price: 150, weightOrUnit: '500 g', categorySlug: 'dairy-eggs' },
-        { title: 'Olpers Milk 1L', image: 'assets/images/grocery/olpers.jpg', quantity: 3, price: 440, weightOrUnit: '1 L', categorySlug: 'dairy-eggs' }
+        { title: 'Farm Fresh Eggs', image: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg', quantity: 3, price: 440, weightOrUnit: 'Pack of 12', categorySlug: 'dairy-eggs' }
       ]
     },
     {
@@ -280,7 +280,7 @@ export class AuthService {
       id: 'RET-3988',
       orderId: 'RH-97504',
       date: 'Nov 10, 2026',
-      items: [{ itemTitle: 'Olpers Milk 1L Pack', reason: 'Near expiry', refundAmount: 330, evidenceImage: 'assets/images/grocery/olpers.jpg' }],
+      items: [{ itemTitle: 'Farm Fresh Eggs (Pack of 12)', reason: 'Damaged packaging', refundAmount: 330, evidenceImage: 'assets/images/ultra_fresh/grocerry-fresh-eggs.jpeg' }],
       refundAmount: 330,
       status: 'Approved',
       stageBadge: 'Refunded',

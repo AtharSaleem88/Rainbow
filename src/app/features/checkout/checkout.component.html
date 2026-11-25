@@ -467,13 +467,6 @@
             <a routerLink="/" class="rainbow-checkout-primary">Continue Shopping</a>
             <a routerLink="/" class="rainbow-btn-secondary">Return to Home</a>
           </div>
-          <dialog #receiptThanksDialog class="rainbow-thanks-dialog" aria-labelledby="receipt-thanks-title" (click)="$event.target === receiptThanksDialog && closeReceiptThanks()">
-            <button type="button" class="rainbow-thanks-close" aria-label="Close" (click)="closeReceiptThanks()">×</button>
-            <div class="rainbow-thanks-art" aria-hidden="true"><span class="rainbow-thanks-sparkle">✨</span><span class="rainbow-thanks-emoji">🎉</span><span class="rainbow-thanks-sparkle">✨</span></div>
-            <h2 id="receipt-thanks-title">Thank you for shopping!</h2>
-            <p>Your order <strong>{{ generatedOrderNumber() }}</strong> has been placed.</p>
-            <button type="button" class="rainbow-checkout-primary" (click)="closeReceiptThanks()">Done</button>
-          </dialog>
         </div>
       </div>
 

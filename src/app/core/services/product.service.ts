@@ -151,7 +151,7 @@ export class ProductService {
       price: 620,
       rating: 4.7,
       reviewCount: 15,
-      image: 'assets/images/grocery/olpers.jpg',
+      image: 'assets/images/home/dairy-bread-eggs.png',
       description: 'Plant-based unsweetened creamy almond milk.',
       inStock: true
     },
